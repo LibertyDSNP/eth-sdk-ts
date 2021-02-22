@@ -1,0 +1,9 @@
+# package.json is formatted by package managers, so we ignore it here
+package.json
+build/*
+coverage/*
+src/index.ts
+multimodules/*
+/*.d.ts
+/*.map
+/*.js

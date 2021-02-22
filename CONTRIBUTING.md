@@ -1,0 +1,38 @@
+# DSNP SDK TypeScript Development
+
+## Library Development Notes
+- `.js` files are not allowed in the root directory. For more information why see `scripts/multimodules.js`.
+- Update the docs folder as needed by running `npm run docs:markdown`
+
+### Local Development Library Use
+
+1. sdk-ts: `npm install`
+2. sdk-ts: `npm run build`
+3. sdk-ts: `npm link`
+4. In other project: `npm link @LibertyDSNP/sdk`
+5. The other project now uses the sdk-ts folder as the node_modules folder for the SDK
+6. sdk-ts: `npm run watch`
+
+### Documentation Generation Notes
+
+- `npm run docs` generates HTML documentation in `dist`
+- `npm run docs:markdown` generates markdown documentation in `docs`
+- Edit the list of excluded files in `tsconfig.json` -> `typedocOptions` -> `exclude`
+
+### How to Release
+
+1. Draft New Release on GitHub.com
+2. Set tag to v0.0.0 following [Semver 2.0](https://semver.org/)
+3. Set title to "v0.0.0 Major Feature Name"
+4. Set contents to follow [KeepAChangeLog.com 1.0](https://keepachangelog.com/en/1.0.0/), but limited to just the new release information
+    ```markdown
+    ## [0.1.0] - 2017-06-20
+    ### Added
+    - New thing
+    ### Changed
+    - Different thing
+    ### Removed
+    - Not a thing anymore
+    ```
+5. Publish
+6. TODO: CI will build and publish to the npm repository
