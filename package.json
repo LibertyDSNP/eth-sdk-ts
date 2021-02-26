@@ -1,0 +1,73 @@
+{
+  "name": "@LibertyDSNP/sdk",
+  "version": "0.0.0",
+  "description": "SDK Library for the DSNP",
+  "main": "dist/main/index.js",
+  "types": "dist/main/index.d.ts",
+  "module": "dist/module/index.js",
+  "repository": "https://github.com/LibertyDSNP/sdk-ts",
+  "license": "CC-BY-SA-4.0",
+  "keywords": [],
+  "scripts": {
+    "build": "npm run clean && run-p build:*",
+    "build:main": "tsc -p tsconfig.json",
+    "build:module": "tsc -p tsconfig.module.json",
+    "build:multimodules": "node scripts/multimodules.js",
+    "coverage": "jest test --coverage --collectCoverageFrom='src/**/*.ts'",
+    "clean": "rm -Rf dist ./*.d.ts ./*.js",
+    "doc": "rm -Rf dist/docs && run-s doc:html",
+    "doc:html": "typedoc src/ --plugin none --theme default --out dist/docs",
+    "doc:json": "typedoc src/ --json dist/docs/typedoc.json",
+    "doc:markdown": "rm -Rf docs && typedoc src/ --theme markdown --out docs",
+    "format": "eslint \"**/*.{js,ts}\" --fix",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean",
+    "test": "jest",
+    "watch": "run-s build && run-p \"build:main -- -w\" \"build:module -- -w\" \"test -- --watch\""
+  },
+  "files": [
+    "dist/**/*",
+    "*.d.ts",
+    "*.js"
+  ],
+  "engines": {
+    "node": ">=14.5.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "26.0.20",
+    "@typescript-eslint/eslint-plugin": "4.15.1",
+    "@typescript-eslint/parser": "4.15.1",
+    "eslint": "7.20.0",
+    "eslint-config-prettier": "7.2.0",
+    "eslint-plugin-jest": "24.1.5",
+    "eslint-plugin-prettier": "3.3.1",
+    "jest": "26.6.3",
+    "jest-junit": "12.0.0",
+    "npm-run-all": "4.1.5",
+    "prettier": "2.2.1",
+    "ts-jest": "26.5.1",
+    "typedoc": "0.20.25",
+    "typedoc-plugin-markdown": "3.5.0",
+    "typescript": "4.1.5"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.(ts|js)"
+    ],
+    "testEnvironment": "node"
+  }
+}
