@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.927">
+  <testsuite name="src/utilities/testEnabler.test.ts" errors="0" failures="0" skipped="0" timestamp="2021-03-03T23:40:00" time="1.879" tests="1">
+    <testcase classname="testEnabler" name="enables testing" time="0.003">
+    </testcase>
+  </testsuite>
+</testsuites>
