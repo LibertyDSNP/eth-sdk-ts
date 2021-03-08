@@ -316,4 +316,4 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,vim,emacs,vscode,git,node
 
-junit*.xml
+junit.xml
