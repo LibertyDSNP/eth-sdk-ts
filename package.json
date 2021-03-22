@@ -58,7 +58,10 @@
         "tsconfig": "tsconfig.json"
       }
     },
-    "reporters": [ "default", "jest-junit" ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "testResultsProcessor": "jest-junit",
     "moduleFileExtensions": [
       "ts",
@@ -76,5 +79,8 @@
     "suiteNameTemplate": "{filepath}",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
+  },
+  "dependencies": {
+    "@liberty30/lib-privacy-js": "^0.1.5"
   }
 }
