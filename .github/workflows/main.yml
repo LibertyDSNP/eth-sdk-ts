@@ -24,7 +24,7 @@ jobs:
           node-version: '14.16.0'
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: npm run build
