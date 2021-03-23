@@ -80,7 +80,6 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "@liberty30/lib-privacy-js": "^0.1.5",
     "typescript": "^4.1.5"
   }
 }
