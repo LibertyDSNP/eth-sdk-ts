@@ -7,7 +7,7 @@
 /**
  * 0x prefixed Hexadecimal String
  */
-export declare type HexString = `0x${Lowercase<string>}`;
+export declare type HexString = `0x${string}`;
 
 /**
  * 0x prefixed Hexadecimal representation of an Ethereum Address
