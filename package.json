@@ -49,8 +49,7 @@
     "prettier": "2.2.1",
     "ts-jest": "26.5.1",
     "typedoc": "0.20.25",
-    "typedoc-plugin-markdown": "3.5.0",
-    "typescript": "4.1.5"
+    "typedoc-plugin-markdown": "3.5.0"
   },
   "jest": {
     "globals": {
@@ -58,7 +57,10 @@
         "tsconfig": "tsconfig.json"
       }
     },
-    "reporters": [ "default", "jest-junit" ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "testResultsProcessor": "jest-junit",
     "moduleFileExtensions": [
       "ts",
@@ -76,5 +78,8 @@
     "suiteNameTemplate": "{filepath}",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
+  },
+  "dependencies": {
+    "typescript": "^4.1.5"
   }
 }
