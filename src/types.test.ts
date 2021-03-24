@@ -1,5 +1,6 @@
 import { DSNP, DSNPMessage } from "./types/DSNP";
 import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "./types/SimpleEncryptedFormat";
+import { HexString } from "./types/Strings";
 
 describe("tests are enabled and types can be used", () => {
   it("enables testing", () => {
