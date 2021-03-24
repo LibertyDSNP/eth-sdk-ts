@@ -1,5 +1,5 @@
 import { DSNP, DSNPMessage } from "../types/DSNP";
-import {SEMx25519, WrappedSEM, WrappedSEMxSalsa20} from "../types/SimpleEncryptedFormat";
+import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "../types/SimpleEncryptedFormat";
 
 describe("tests are enabled and types can be used", () => {
   it("enables testing", () => {
@@ -30,11 +30,11 @@ describe("tests are enabled and types can be used", () => {
       n: "MQ==",
       t: "xsalsa20",
       v: "xsalsa20-poly1305",
-      w: [semx25519]
+      w: [semx25519],
     };
 
-    const wm: WrappedSEM = wrappedSEMxSalsa20
-    expect(wm).not.toBe(undefined)
-    expect(wm.t).toEqual("xsalsa20")
+    const wm: WrappedSEM = wrappedSEMxSalsa20;
+    expect(wm).not.toBe(undefined);
+    expect(wm.t).toEqual("xsalsa20");
   });
 });

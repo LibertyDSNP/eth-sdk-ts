@@ -1,6 +1,6 @@
 import { EthereumAddress } from "./Strings";
 
-export type DSNPMessage =
+export declare type DSNPMessage =
   | DSNP.Broadcast
   | DSNP.Reply
   | DSNP.Drop
@@ -11,7 +11,7 @@ export type DSNPMessage =
   | DSNP.Private
   | DSNP.EncryptionKeyList;
 
-export namespace DSNP {
+export declare namespace DSNP {
   /**
    * Broadcast: a public post
    */

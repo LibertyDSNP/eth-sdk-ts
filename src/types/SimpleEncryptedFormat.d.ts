@@ -13,7 +13,7 @@ export type Algorithms = "x25519-xsalsa20-poly1305" | "xsalsa20-poly1305";
 /**
  * Simple Encrypted Message x25519-xsalsa20-poly1305
  */
-export interface SEMx25519 {
+export declare interface SEMx25519 {
   /** Ciphertext */
   c: Base64UrlString;
   /** Ephemeral Public Key */
@@ -29,7 +29,7 @@ export interface SEMx25519 {
 /**
  * Simple Encrypted Message xsalsa20-poly1305
  */
-export interface SEMxSalsa20 {
+export declare interface SEMxSalsa20 {
   /** Ciphertext */
   c: Base64UrlString;
   /** Key Identifier */
@@ -40,7 +40,7 @@ export interface SEMxSalsa20 {
   v: "xsalsa20-poly1305";
 }
 
-export type SimpleEncryptedMessage = SEMx25519 | SEMxSalsa20;
+export declare type SimpleEncryptedMessage = SEMx25519 | SEMxSalsa20;
 
 /**
  * Simple Key Format for the x25519 Curve

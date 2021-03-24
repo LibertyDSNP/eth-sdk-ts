@@ -23,6 +23,7 @@
     // use @typescript-eslint/no-unused-vars
     "no-use-before-define": "off",
     "no-var": "error",
+    "allow-namespace":  "off",
     "@typescript-eslint/no-inferrable-types": [
       "warn",
       {
