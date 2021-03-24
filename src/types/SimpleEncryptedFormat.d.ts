@@ -1,6 +1,5 @@
 /**
  * Simple Encryption Formats
- * Type interfaces based on https://github.com/Liberty30/admin/wiki/Simple-Encryption-Formats
  *
  * @packageDocumentation
  */
