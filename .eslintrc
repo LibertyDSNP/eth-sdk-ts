@@ -37,5 +37,10 @@
         "argsIgnorePattern": "^_"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.{js,ts}", "src/**/*.d.ts", "src/**/*.test.{js,ts}"]
+    }
+  ]
 }
