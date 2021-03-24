@@ -1,5 +1,5 @@
 {
-  "name": "@LibertyDSNP/sdk",
+  "name": "@liberty-dsnp/sdk",
   "version": "0.0.0",
   "description": "SDK Library for the DSNP",
   "main": "dist/main/index.js",
