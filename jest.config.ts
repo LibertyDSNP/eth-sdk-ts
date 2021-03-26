@@ -1,5 +1,5 @@
 // jest.config.ts
-import type { Config } from "@jest/types";
+import type {Config} from '@jest/types';
 
 // Sync object
 const config: Config.InitialOptions = {
@@ -8,18 +8,15 @@ const config: Config.InitialOptions = {
 // This prevents jest from running compiled js
 // apparently it's not enough to set test root as <rootDir>/src
 module.exports = {
-  moduleFileExtensions: ["js", "d.ts", "ts", "json"],
-  preset: "ts-jest",
+  moduleFileExtensions: ["ts", "js", "json"],
+  preset: 'ts-jest',
   roots: ["<rootDir>/src"],
-  testEnvironment: "node",
-  testPathIgnorePatterns: [".d.ts", ".js"],
-  reporters: ["default", "jest-junit"],
+  testEnvironment: 'node',
+  testPathIgnorePatterns: ["/node_modules/", ".js"],
   testResultsProcessor: "jest-junit",
-  transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
-  },
+  transform: {"^.+\\.(ts|tsx)$": "ts-jest"},
+  testMatch: ["**/*.test.(ts|js)"],
 };
 
-//     "testPathIgnorePatterns": [".d.ts", ".js"],
-
 export default config;
+

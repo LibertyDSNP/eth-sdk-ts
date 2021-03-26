@@ -1,4 +1,4 @@
-import { DSNP, DSNPMessage } from "./types/DSNP";
+import * as DSNP from "./types/DSNP.d";
 import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "./types/SimpleEncryptedFormat";
 
 describe("tests are enabled and types can be used", () => {
@@ -8,14 +8,17 @@ describe("tests are enabled and types can be used", () => {
 
   it("can use DSNP types", () => {
     const reply: DSNP.Reply = {
-      actionType: 12, // FIXME: TS isn't finding DSNP.ActionType.Reply right now
+      actionType: DSNP.ActionTypeReply,
       fromAddress: "0xdeadbeef",
       messageID: new Uint8Array(5),
       inReplyTo: new Uint8Array(5),
       uri: "http://www.placekitten.com/400/600",
     };
-    const message: DSNPMessage = reply;
+    const message: DSNP.Message = reply;
     expect(message).not.toBe(undefined);
+
+    const aDSNPMessage:DSNP.MessageType = reply;
+    expect(aDSNPMessage).not.toBeUndefined();
   });
   it("can use SimpleEncryptedFormat types", () => {
     const semx25519: SEMx25519 = {

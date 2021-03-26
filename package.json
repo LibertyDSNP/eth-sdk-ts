@@ -32,14 +32,15 @@
     "*.js"
   ],
   "engines": {
-    "node": ">=14.5.0"
+    "node": ">=14.15.5"
   },
   "devDependencies": {
+    "ts-jest": "26.5.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5",
     "@types/jest": "26.0.20",
     "@typescript-eslint/eslint-plugin": "4.15.1",
     "@typescript-eslint/parser": "4.15.1",
-    "babel-jest": "^26.6.3",
-    "eslint": "7.20.0",
     "eslint-config-prettier": "7.2.0",
     "eslint-plugin-jest": "24.1.5",
     "eslint-plugin-prettier": "3.3.1",
@@ -47,25 +48,27 @@
     "jest-junit": "12.0.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.2.1",
-    "ts-jest": "26.5.1",
     "typedoc": "0.20.25",
     "typedoc-plugin-markdown": "3.5.0"
   },
   "jest": {
     "setupFiles": [
-      "jest.config.js"
+      "./jest.config.js"
     ],
-    "testMatch": [
-      "<rootDir>/src/**/*.{test}.{js,jsx,ts,tsx}"
-    ]
+    "reporters": [
+      "default",
+      "junit"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.json"
+      }
+    }
   },
   "jest-junit": {
     "suiteNameTemplate": "{filepath}",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
   },
-  "dependencies": {
-    "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
-  }
+  "dependencies": {}
 }
