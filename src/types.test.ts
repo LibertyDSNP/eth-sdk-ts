@@ -8,6 +8,7 @@ describe("tests are enabled and types can be used", () => {
 
   it("can use DSNP types", () => {
     const reply: DSNP.Reply = {
+      actionType: 12, // FIXME: TS isn't finding DSNP.ActionType.Reply right now
       fromAddress: "0xdeadbeef",
       messageID: new Uint8Array(5),
       inReplyTo: new Uint8Array(5),

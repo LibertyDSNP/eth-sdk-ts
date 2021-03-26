@@ -52,27 +52,12 @@
     "typedoc-plugin-markdown": "3.5.0"
   },
   "jest": {
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.json"
-      }
-    },
-    "reporters": [
-      "default",
-      "jest-junit"
+    "setupFiles": [
+      "jest.config.js"
     ],
-    "testResultsProcessor": "jest-junit",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
     "testMatch": [
-      "**/*.test.(ts|js)"
-    ],
-    "testEnvironment": "node"
+      "<rootDir>/src/**/*.{test}.{js,jsx,ts,tsx}"
+    ]
   },
   "jest-junit": {
     "suiteNameTemplate": "{filepath}",
@@ -80,6 +65,7 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   }
 }
