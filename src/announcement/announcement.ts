@@ -1,9 +1,8 @@
+require("dotenv").config();
 import * as ethers from "ethers";
-import fetch from "node-fetch";
 import { KeccakHash } from "../types/hash";
 
-const RPC_URL = "http://localhost:8545";
-const BATCH_CONTRACT_ADDRESS = "0x1123949C3D569F93295Ef76aaC537c1287fa83D9";
+const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
 const BATCH_CONTRACT_ABI = [
   {
     anonymous: false,
