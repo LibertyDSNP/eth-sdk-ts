@@ -1,5 +1,4 @@
 require("dotenv").config();
-import * as ethers from "ethers";
 import { KeccakHash } from "../types/hash";
 
 const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
@@ -43,15 +42,15 @@ const BATCH_CONTRACT_ABI = [
   },
 ];
 
-let contract: ethers.Contract | null = null;
+const contract = null;
 
-export const getContract = (wallet: ethers.Signer): ethers.Contract => {
+export const getContract = (provider: any) => {
   if (contract) return contract;
-
-  contract = new ethers.Contract(BATCH_CONTRACT_ADDRESS, BATCH_CONTRACT_ABI, wallet);
-  return contract;
+  return new provider.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
-export const post = async (wallet: ethers.Signer, uri: string, hash: KeccakHash) => {
-  return getContract(wallet).batch(`0x${hash}`, uri);
+export const post = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
+  return getContract(provider).methods.batch(`0x${hash}`, uri).send({
+    from: account.address,
+  });
 };
