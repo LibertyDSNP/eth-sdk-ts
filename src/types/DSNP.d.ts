@@ -1,6 +1,6 @@
 import {EthereumAddress} from "./Strings";
 
-export type ActionType = 1|2|3|4|5|6|7|8|9|10|11|12
+export type ActionType = 0|1|2|3|4|5|6|7|8|9|10|11|12
 
 export const ActionTypePrivate=0;
 export const ActionTypeGraphChange=1;
@@ -15,6 +15,7 @@ export const ActionTypeDrop=9;
 export const ActionTypeEncryptedInbox=10;
 export const ActionTypePrivateBroadcast=11;
 export const ActionTypeReply=12;
+export const ActionTypeBatch=13;
 
 declare type MessageType =
   | Private
@@ -42,7 +43,7 @@ export type Message = {
  */
 export interface Broadcast extends Message {
   /** messageID keccak-256 hash of content stored at URI bytes32 */
-  messageID: Uint8Array;
+  messageID: string;
   /** uri content URI string */
   uri: string;
 }
@@ -54,9 +55,9 @@ export interface Reply extends Message {
   /** fromAddress ID of the sender bytes20 */
   fromAddress: EthereumAddress;
   /** messageID keccak-256 hash of content stored at uri bytes32 */
-  messageID: Uint8Array;
+  messageID: string;
   /** inReplyTo ID of the message the reply references bytes32 */
-  inReplyTo: Uint8Array;
+  inReplyTo: string;
   /** uri content uri string */
   uri: string;
 }
@@ -66,9 +67,9 @@ export interface Reply extends Message {
  */
 export interface Drop extends Message {
   /** deadDropID The Dead Drop ID (See DeadDrops bytes32) */
-  deadDropID: Uint8Array;
+  deadDropID: string;
   /** messageID keccak-256 hash of content bytes32 */
-  messageID: Uint8Array;
+  messageID: string;
   /** uri content uri string */
   uri: string;
 }
@@ -85,16 +86,16 @@ export interface GraphChange extends Message {
  * KeyList, PrivateGraphKeyList, EncryptionKeyList
  */
 export interface KeyList extends Message {
-  keyList: Uint8Array[];
+  keyList: string[];
   /** keyList new list of valid keys bytes[] */
 }
 
 export interface PrivateGraphKeyList extends Message {
-  keyList: Uint8Array[];
+  keyList: string[];
 }
 
 export interface EncryptionKeyList extends Message {
-  keyList: Uint8Array[];
+  keyList: string[];
 }
 
 /**
@@ -102,7 +103,7 @@ export interface EncryptionKeyList extends Message {
  */
 export interface Profile extends Message {
   /** messageID keccak-256 hash of content bytes32 */
-  messageID: Uint8Array;
+  messageID: string;
   /** uri content uri string */
   uri: string;
 }
@@ -112,7 +113,7 @@ export interface EncryptedInbox extends Message {
   /** toAddress ID of the recipient bytes20 */
   toAddress: EthereumAddress;
   /** messageID keccak-256 hash of content bytes32 */
-  messageID: Uint8Array;
+  messageID: string;
   /** uri content uri string */
   uri: string;
 }
@@ -122,9 +123,9 @@ export interface EncryptedInbox extends Message {
  */
 export interface Reaction extends Message {
   /** emoji the encoded reaction number / UTF-8 bytes[] */
-  emoji: Uint8Array;
+  emoji: string;
   /** inReplyTo ID of the message the reaction references bytes32 */
-  inReplyTo: Uint8Array;
+  inReplyTo: string;
 }
 
 /**
@@ -132,8 +133,8 @@ export interface Reaction extends Message {
  */
 export interface Private extends Message {
   /** encrypted graph change data */
-  data: Uint8Array;
+  data: string;
   /** keccak-256 hash of unencrypted content */
-  messageID: Uint8Array;
+  messageID: string;
 }
 
