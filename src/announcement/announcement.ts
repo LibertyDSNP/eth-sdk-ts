@@ -1,5 +1,5 @@
 require("dotenv").config();
-import {KeccakHash} from "../types/hash";
+import { KeccakHash } from "../types/hash";
 
 const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
 const BATCH_CONTRACT_ABI = [
@@ -49,12 +49,14 @@ export const getContract = (web3Instance: any) => {
   return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
-
-export const post = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
-  const receipt = await getContract(provider).methods.batch(`0x${hash}`, uri).send({
-    from: account.address,
-    gasPrice: 6000000000
-  }).on("receipt", console.log);
+export const batch = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
+  const receipt = await getContract(provider)
+    .methods.batch(`0x${hash}`, uri)
+    .send({
+      from: account.address,
+      gasPrice: 6000000000,
+    })
+    .on("receipt", console.log);
 
   return receipt;
 };
