@@ -49,6 +49,16 @@ export const getContract = (web3Instance: any) => {
   return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
+/**
+ * batch() allows users call the batch smart contract and post the URI and hash
+ * of a generated batch to the blockchain.
+ *
+ * @param provider  The web3 instance used for calling the smart contract
+ * @param account   The account from which to post the batch
+ * @param uri       The URI of the hosted batch to post
+ * @param hash      A hash of the batch contents for use in verification
+ * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
+ */
 export const batch = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
   const receipt = await getContract(provider)
     .methods.batch(`0x${hash}`, uri)
