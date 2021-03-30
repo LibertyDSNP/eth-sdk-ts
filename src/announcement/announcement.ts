@@ -46,7 +46,9 @@ const contract = null;
 
 export const getContract = (web3Instance: any) => {
   if (contract) return contract;
-  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
+  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS, {
+    transactionConfirmationBlocks: 1,
+  });
 };
 
 /**
@@ -60,13 +62,30 @@ export const getContract = (web3Instance: any) => {
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
 export const batch = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
-  const receipt = await getContract(provider)
-    .methods.batch(`0x${hash}`, uri)
-    .send({
-      from: account.address,
-      gasPrice: 6000000000,
-    })
-    .on("receipt", console.log);
+  const nonce = await provider.eth.getTransactionCount(account.address);
+  console.log("account.address", account.address);
+  console.log("nonce", nonce);
+  console.log("new nonce", nonce + 1);
+  const contract = await getContract(provider);
+  console.log("contract", contract);
+  const receipt = await contract.methods.batch(`0x${hash}`, uri)
+    .send(
+      {
+        from: account.address,
+        gasPrice: 6000000000,
+        gas: 1000000,
+        nonce: nonce + 1,
+      },
+      () => {
+        console.log("we are here");
+      }
+    )
+    .on("sending", console.log)
+    .on("sent", console.log)
+    .on("transactionHash", console.log)
+    .on("receipt", console.log)
+    .on("error", console.log);
 
+  console.log("receipt", receipt);
   return receipt;
 };

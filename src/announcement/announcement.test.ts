@@ -14,10 +14,10 @@ describe("#batch", () => {
   const account = web3.eth.accounts.privateKeyToAccount(TESTING_PRIVATE_KEY);
 
   it("successfully posts a batch to the chain", async () => {
+    jest.setTimeout(10000);
     const testUri = "http://www.tesconstt.com";
     const hash = keccak256("test");
     const receipt = await batch(web3, account, testUri, hash);
-    console.log("receipt", receipt);
     expect(receipt).toEqual(
       expect.objectContaining({
         chainId: 1886,
