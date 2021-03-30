@@ -2,21 +2,21 @@ require("dotenv").config();
 import Web3 from "web3";
 import { keccak256 } from "js-sha3";
 
-import { post } from "./announcement";
+import { batch } from "./announcement";
 
 const TESTING_PRIVATE_KEY = process.env.TESTING_PRIVATE_KEY as string;
 const RPC_URL = process.env.RPC_URL as string;
 
-describe("When we post a batch", () => {
+describe("#batch", () => {
   const web3 = new Web3();
   const provider = new Web3.providers.HttpProvider(RPC_URL);
   web3.setProvider(provider);
   const account = web3.eth.accounts.privateKeyToAccount(TESTING_PRIVATE_KEY);
 
-  it("is posted successfully", async () => {
+  it("successfully posts a batch to the chain", async () => {
     const testUri = "http://www.tesconstt.com";
     const hash = keccak256("test");
-    const receipt = await post(web3, account, testUri, hash);
+    const receipt = await batch(web3, account, testUri, hash);
     console.log("receipt", receipt);
     expect(receipt).toEqual(
       expect.objectContaining({
