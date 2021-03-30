@@ -9,14 +9,15 @@ const RPC_URL = process.env.RPC_URL as string;
 
 describe("When we post a batch", () => {
   const web3 = new Web3();
-  const provider = new Web3.providers.WebsocketProvider(RPC_URL);
+  const provider = new Web3.providers.HttpProvider(RPC_URL);
   web3.setProvider(provider);
   const account = web3.eth.accounts.privateKeyToAccount(TESTING_PRIVATE_KEY);
 
   it("is posted successfully", async () => {
-    const testUri = "http://www.test.com";
+    const testUri = "http://www.tesconstt.com";
     const hash = keccak256("test");
     const receipt = await post(web3, account, testUri, hash);
+    console.log("receipt", receipt);
     expect(receipt).toEqual(
       expect.objectContaining({
         chainId: 1886,
