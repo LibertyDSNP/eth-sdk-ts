@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 require("dotenv").config();
 import Web3 from "web3";
 import { keccak256 } from "js-sha3";
