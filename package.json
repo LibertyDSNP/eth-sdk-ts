@@ -61,13 +61,26 @@
     ],
     "reporters": [
       "default",
-      "junit"
+      "jest-junit"
     ],
     "globals": {
       "ts-jest": {
         "tsconfig": "tsconfig.json"
       }
-    }
+    },
+    "testResultsProcessor": "jest-junit",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.(ts|js)"
+    ],
+    "testEnvironment": "node"
   },
   "jest-junit": {
     "suiteNameTemplate": "{filepath}",
