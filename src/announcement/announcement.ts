@@ -1,5 +1,6 @@
 require("dotenv").config();
 import { KeccakHash } from "../types/hash";
+import { hashPrefix } from "../utilities/hashPrefix";
 
 const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
 const BATCH_CONTRACT_ABI = [
@@ -56,15 +57,15 @@ export const getContract = (web3Instance: any) => {
  * of a generated batch to the blockchain.
  *
  * @param provider  The web3 instance used for calling the smart contract
- * @param account   The account from which to post the batch
+ * @param accountAddress   The address from which to post the batch
  * @param uri       The URI of the hosted batch to post
  * @param hash      A hash of the batch contents for use in verification
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (provider: any, account: any, uri: string, hash: KeccakHash) => {
+export const batch = async (provider: any, accountAddress: any, uri: string, hash: KeccakHash) => {
   const contract = await getContract(provider);
-  return await contract.methods.batch(`0x${hash}`, uri).send({
-    from: account.address,
+  return await contract.methods.batch(hashPrefix(hash), uri).send({
+    from: accountAddress,
     gas: 27000,
   });
 };
