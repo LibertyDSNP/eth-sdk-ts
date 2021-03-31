@@ -12,17 +12,32 @@ describe("#batch", () => {
   const provider = new Web3.providers.HttpProvider(RPC_URL);
   web3.setProvider(provider);
   const account = web3.eth.accounts.privateKeyToAccount(TESTING_PRIVATE_KEY);
+  web3.eth.accounts.wallet.add(account);
 
   it("successfully posts a batch to the chain", async () => {
-    jest.setTimeout(10000);
-    const testUri = "http://www.tesconstt.com";
+    jest.setTimeout(12000);
+    const testUri = "http://www.testconst.com";
     const hash = keccak256("test");
     const receipt = await batch(web3, account, testUri, hash);
     expect(receipt).toEqual(
       expect.objectContaining({
-        chainId: 1886,
-        data:
-          "0x7e54d78f9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000013687474703a2f2f7777772e746573742e636f6d00000000000000000000000000",
+        events: expect.objectContaining({
+          DSNPBatch: expect.objectContaining({
+            event: "DSNPBatch",
+            raw: expect.objectContaining({
+              data:
+                "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000018687474703a2f2f7777772e74657374636f6e73742e636f6d0000000000000000",
+              topics: ["0x05b15401a1cdc64b82f68754db0847c6b6ab8900804fe703c6d30a73e9f00e7b"],
+            }),
+            returnValues: expect.objectContaining({
+              "0": "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658",
+              "1": "http://www.testconst.com",
+              dsnpUri: "http://www.testconst.com",
+              hash: "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658",
+            }),
+            type: "mined",
+          }),
+        }),
       })
     );
   });
