@@ -1,6 +1,7 @@
+//eslint-disable-next-line
 require("dotenv").config();
 import Web3 from "web3";
-import { Contract } from "web3-eth-contract"
+import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
 import { KeccakHash } from "../types/hash";
