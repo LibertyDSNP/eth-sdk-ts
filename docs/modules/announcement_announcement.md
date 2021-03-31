@@ -13,7 +13,7 @@
 
 ### batch
 
-▸ `Const`**batch**(`provider`: *any*, `account`: *any*, `uri`: *string*, `hash`: *string*): *Promise*<any\>
+▸ `Const`**batch**(`provider`: *Web3*, `accountAddress`: *string*, `uri`: *string*, `hash`: *string*): *Promise*<any\>
 
 batch() allows users call the batch smart contract and post the URI and hash
 of a generated batch to the blockchain.
