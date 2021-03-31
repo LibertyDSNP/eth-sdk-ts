@@ -18,7 +18,7 @@ describe("#batch", () => {
     jest.setTimeout(12000);
     const testUri = "http://www.testconst.com";
     const hash = keccak256("test");
-    const receipt = await batch(web3, account, testUri, hash);
+    const receipt = await batch(web3, account.address, testUri, hash);
     expect(receipt).toEqual(
       expect.objectContaining({
         events: expect.objectContaining({
