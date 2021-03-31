@@ -1,9 +1,13 @@
 require("dotenv").config();
+import Web3 from "web3";
+import { Contract } from "web3-eth-contract"
+import { AbiItem } from "web3-utils";
+
 import { KeccakHash } from "../types/hash";
 import { hashPrefix } from "../utilities/hashPrefix";
 
 const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
-const BATCH_CONTRACT_ABI = [
+const BATCH_CONTRACT_ABI: AbiItem[] = [
   {
     anonymous: false,
     inputs: [
@@ -45,11 +49,9 @@ const BATCH_CONTRACT_ABI = [
 
 const contract = null;
 
-export const getContract = (web3Instance: any) => {
+export const getContract = (web3Instance: Web3) => {
   if (contract) return contract;
-  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS, {
-    transactionConfirmationBlocks: 1,
-  });
+  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
 /**
@@ -62,8 +64,8 @@ export const getContract = (web3Instance: any) => {
  * @param hash      A hash of the batch contents for use in verification
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (provider: any, accountAddress: any, uri: string, hash: KeccakHash) => {
-  const contract = await getContract(provider);
+export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash) => {
+  const contract = (await getContract(provider)) as Contract;
   return await contract.methods.batch(hashPrefix(hash), uri).send({
     from: accountAddress,
     gas: 27000,
