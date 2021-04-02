@@ -27,10 +27,10 @@ export interface ActivityPub {
  * that identical objects with different key orders still return the same hash.
  * The underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).
  *
- * @param   data  The activity pub object to hashes
+ * @param   data  The activity pub object to hash
  * @returns       A hexadecimal string containing the Keccak hash
  */
-export const hash = (data: Record<string, unknown>): KeccakHash => {
+export const hash = (data: ActivityPub): KeccakHash => {
   const sortedData = sortJSON(data as Record<string, unknown>);
   const jsonString = JSON.stringify(sortedData);
   return keccak256(jsonString);
