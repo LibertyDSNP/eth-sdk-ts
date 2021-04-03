@@ -57,7 +57,7 @@ const createMultiModule = (name) => {
   fs.writeFileSync(`${path.join(__dirname, "..", name + ".js")}`, jsTemplate(name), throwOnError);
 };
 
-fs.readFileSync(`${path.join(__dirname, "../src/index.ts")}`, "UTF-8")
+fs.readFileSync(`${path.join(__dirname, "../src/contract.ts")}`, "UTF-8")
   .split(/\r?\n/)
   .flatMap((x) => x.match(/^import.*from.*"\.\/(.*?)"/))
   .filter((x) => !!x && !/^import/.test(x))

@@ -80,6 +80,9 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "typescript": "^4.1.5"
+    "js-sha3": "^0.8.0",
+    "typescript": "^4.1.5",
+    "node-fetch": "^2.6.1",
+    "web3": "^1.3.4"
   }
 }
