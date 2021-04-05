@@ -55,6 +55,15 @@ const getContract = (web3Instance: Web3): Contract => {
   return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
+const getGasLimit = async (contract: Contract, uri: string, hash: KeccakHash, fromAddress: string): Promise<number> => {
+  const gasEstimate = await contract.methods.batch(hashPrefix(hash), uri).estimateGas({
+    from: fromAddress,
+    gas: 27000,
+  });
+
+  return gasEstimate + 2000;
+};
+
 /**
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
@@ -67,8 +76,10 @@ const getContract = (web3Instance: Web3): Contract => {
  */
 export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash): Promise<any> => {
   const contract = await getContract(provider);
+  const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
+
   return await contract.methods.batch(hashPrefix(hash), uri).send({
     from: accountAddress,
-    gas: 27000,
+    gas: gasEstimate,
   });
 };
