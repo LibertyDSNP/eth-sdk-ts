@@ -52,8 +52,6 @@ export interface Broadcast extends Message {
  * Reply: a public reply post
  */
 export interface Reply extends Message {
-  /** fromAddress ID of the sender bytes20 */
-  fromAddress: EthereumAddress;
   /** messageID keccak-256 hash of content stored at uri bytes32 */
   messageID: string;
   /** inReplyTo ID of the message the reply references bytes32 */
@@ -78,7 +76,7 @@ export interface Drop extends Message {
  * GraphChange: a public follow/unfollow
  */
 export interface GraphChange extends Message {
-  /** actionType follow/unfollow number/enum */
+  /** followType follow/unfollow number/enum */
   followType: 0 | 1;
 }
 
