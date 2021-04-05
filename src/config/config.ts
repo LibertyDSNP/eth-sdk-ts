@@ -1,9 +1,12 @@
 import { StoreFunction, FetchFunction } from "../storage/storage";
+import { BatchEnqueueFunction, BatchDequeueFunction } from "../batch/queue";
 import { NotImplementedError } from "../utilities/errors";
 
 interface Config {
   storeMethod: StoreFunction;
   fetchMethod: FetchFunction;
+  batchEnqueueMethod: BatchEnqueueFunction;
+  batchDequeueMethod: BatchDequeueFunction;
 }
 
 /**
