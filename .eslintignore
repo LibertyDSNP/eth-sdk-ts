@@ -3,5 +3,6 @@
 dist/*
 coverage/*
 
+/*.d.ts
 /*.map
-*.js
+/src/*.js

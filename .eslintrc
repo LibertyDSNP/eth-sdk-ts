@@ -20,6 +20,7 @@
     "semi": ["error", "always"],
     "quotes": ["error", "double"],
     "prettier/prettier": "error",
+    // use @typescript-eslint/no-unused-vars
     "no-use-before-define": "off",
     "no-var": "error",
     "allow-namespace":  "off",

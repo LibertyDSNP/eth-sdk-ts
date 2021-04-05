@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "dist/module",
     "module": "esnext"
-  },
+  }
 }
