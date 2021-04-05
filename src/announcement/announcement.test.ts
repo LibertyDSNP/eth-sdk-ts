@@ -5,8 +5,8 @@ import { keccak256 } from "js-sha3";
 
 import { batch } from "./announcement";
 
-const TESTING_PRIVATE_KEY = process.env.TESTING_PRIVATE_KEY as string;
-const RPC_URL = process.env.RPC_URL as string;
+const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
+const RPC_URL = String(process.env.RPC_URL);
 
 describe("#batch", () => {
   const web3 = new Web3();

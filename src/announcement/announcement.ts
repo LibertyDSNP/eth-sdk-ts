@@ -7,7 +7,7 @@ import { AbiItem } from "web3-utils";
 import { KeccakHash } from "../types/hash";
 import { hashPrefix } from "../utilities/hashPrefix";
 
-const BATCH_CONTRACT_ADDRESS = process.env.BATCH_CONTRACT_ADDRESS as string;
+const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
 const BATCH_CONTRACT_ABI: AbiItem[] = [
   {
     anonymous: false,
