@@ -10,8 +10,8 @@ describe("tests are enabled and types can be used", () => {
     const reply: DSNP.Reply = {
       actionType: DSNP.ActionTypeReply,
       fromAddress: "0xdeadbeef",
-      messageID: new Uint8Array(5),
-      inReplyTo: new Uint8Array(5),
+      messageID: "0xdeadbeef",
+      inReplyTo: "0x12345678",
       uri: "http://www.placekitten.com/400/600",
     };
     const message: DSNP.Message = reply;
