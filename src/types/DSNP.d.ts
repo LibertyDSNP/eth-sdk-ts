@@ -1,21 +1,21 @@
-import {EthereumAddress} from "./Strings";
+import { EthereumAddress } from "./Strings";
 
-export type ActionType = 0|1|2|3|4|5|6|7|8|9|10|11|12
+export type ActionType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
-export const ActionTypePrivate=0;
-export const ActionTypeGraphChange=1;
-export const ActionTypeBroadcast=2;
-export const ActionTypeProfile=3;
-export const ActionTypeKeyList=4;
-export const ActionTypePrivateGraphKeyList=5;
-export const ActionTypeEncryptionKeyList=6;
-export const ActionTypeReaction=7;
-export const ActionTypePrivateGraphChange=8;
-export const ActionTypeDrop=9;
-export const ActionTypeEncryptedInbox=10;
-export const ActionTypePrivateBroadcast=11;
-export const ActionTypeReply=12;
-export const ActionTypeBatch=13;
+export const ActionTypePrivate = 0;
+export const ActionTypeGraphChange = 1;
+export const ActionTypeBroadcast = 2;
+export const ActionTypeProfile = 3;
+export const ActionTypeKeyList = 4;
+export const ActionTypePrivateGraphKeyList = 5;
+export const ActionTypeEncryptionKeyList = 6;
+export const ActionTypeReaction = 7;
+export const ActionTypePrivateGraphChange = 8;
+export const ActionTypeDrop = 9;
+export const ActionTypeEncryptedInbox = 10;
+export const ActionTypePrivateBroadcast = 11;
+export const ActionTypeReply = 12;
+export const ActionTypeBatch = 13;
 
 declare type MessageType =
   | Private
@@ -30,7 +30,7 @@ declare type MessageType =
   | Drop
   // | EncryptedInbox
   // | PrivateBroadcast
-  | Reply
+  | Reply;
 
 export type Message = {
   /** fromAddress ID of the sender bytes20 */
@@ -135,4 +135,3 @@ export interface Private extends Message {
   /** keccak-256 hash of unencrypted content */
   messageID: string;
 }
-

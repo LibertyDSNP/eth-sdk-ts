@@ -17,7 +17,7 @@ describe("tests are enabled and types can be used", () => {
     const message: DSNP.Message = reply;
     expect(message).not.toBe(undefined);
 
-    const aDSNPMessage:DSNP.MessageType = reply;
+    const aDSNPMessage: DSNP.MessageType = reply;
     expect(aDSNPMessage).not.toBeUndefined();
   });
   it("can use SimpleEncryptedFormat types", () => {

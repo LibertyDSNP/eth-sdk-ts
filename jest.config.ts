@@ -1,5 +1,5 @@
 // jest.config.ts
-import type {Config} from '@jest/types';
+import type { Config } from "@jest/types";
 
 // Sync object
 const config: Config.InitialOptions = {
@@ -9,14 +9,13 @@ const config: Config.InitialOptions = {
 // apparently it's not enough to set test root as <rootDir>/src
 module.exports = {
   moduleFileExtensions: ["ts", "js", "json"],
-  preset: 'ts-jest',
+  preset: "ts-jest",
   roots: ["<rootDir>/src"],
-  testEnvironment: 'node',
+  testEnvironment: "node",
   testPathIgnorePatterns: ["/node_modules/", ".js"],
   testResultsProcessor: "jest-junit",
-  transform: {"^.+\\.(ts|tsx)$": "ts-jest"},
+  transform: { "^.+\\.(ts|tsx)$": "ts-jest" },
   testMatch: ["**/*.test.(ts|js)"],
 };
 
 export default config;
-
