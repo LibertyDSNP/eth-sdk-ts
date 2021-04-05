@@ -32,11 +32,11 @@ declare type MessageType =
   // | PrivateBroadcast
   | Reply;
 
-export type Message = {
+export interface Message {
   /** fromAddress ID of the sender bytes20 */
   fromAddress: EthereumAddress;
   actionType: ActionType;
-};
+}
 
 /**
  * Broadcast: a public post
