@@ -50,7 +50,7 @@ const BATCH_CONTRACT_ABI: AbiItem[] = [
 
 const contract: Contract | null = null;
 
-export const getContract = (web3Instance: Web3): Contract => {
+const getContract = (web3Instance: Web3): Contract => {
   if (contract) return contract;
   return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
@@ -66,7 +66,7 @@ export const getContract = (web3Instance: Web3): Contract => {
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
 export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash): Promise<any> => {
-  const contract = (await getContract(provider)) as Contract;
+  const contract = await getContract(provider);
   return await contract.methods.batch(hashPrefix(hash), uri).send({
     from: accountAddress,
     gas: 27000,
