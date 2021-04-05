@@ -27,9 +27,13 @@
 
     "typeRoots": ["node_modules/@types", "src/types"]
   },
+  /* Tell Typescript compiler what version(s) of JS libs to include when compiling.
+   * See https://www.typescriptlang.org/tsconfig#lib
+   */
+  "lib": ["es2017", "esnext"],
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["node_modules/**", "./src/**/*.test.ts"],
-  "compileOnSave": true,
+  "compileOnSave": false,
   "typedocOptions": {
     "readme": "DOCS.md",
     "disableSources": true,
