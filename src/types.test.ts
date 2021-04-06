@@ -1,4 +1,4 @@
-import * as DSNP from "./types/DSNP.d";
+import * as DSNP from "./types/DSNP";
 import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "./types/SimpleEncryptedFormat";
 import { ActionType } from "./DSNP";
 
