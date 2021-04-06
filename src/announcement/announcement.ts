@@ -6,6 +6,7 @@ import { AbiItem } from "web3-utils";
 
 import { KeccakHash } from "../types/hash";
 import { hashPrefix } from "../utilities/hashPrefix";
+import { TransactionReceipt } from "web3-core/types";
 
 const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
 const BATCH_CONTRACT_ABI: AbiItem[] = [
@@ -48,6 +49,7 @@ const BATCH_CONTRACT_ABI: AbiItem[] = [
   },
 ];
 
+const GAS_LIMIT_BUFFER = 1000;
 const contract: Contract | null = null;
 
 const getContract = (web3Instance: Web3): Contract => {
@@ -58,10 +60,9 @@ const getContract = (web3Instance: Web3): Contract => {
 const getGasLimit = async (contract: Contract, uri: string, hash: KeccakHash, fromAddress: string): Promise<number> => {
   const gasEstimate = await contract.methods.batch(hashPrefix(hash), uri).estimateGas({
     from: fromAddress,
-    gas: 27000,
   });
 
-  return gasEstimate + 2000;
+  return gasEstimate + GAS_LIMIT_BUFFER;
 };
 
 /**
@@ -74,11 +75,11 @@ const getGasLimit = async (contract: Contract, uri: string, hash: KeccakHash, fr
  * @param hash      A hash of the batch contents for use in verification
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash): Promise<any> => {
+export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash): Promise<TransactionReceipt> => {
   const contract = await getContract(provider);
   const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
 
-  return await contract.methods.batch(hashPrefix(hash), uri).send({
+  return contract.methods.batch(hashPrefix(hash), uri).send({
     from: accountAddress,
     gas: gasEstimate,
   });
