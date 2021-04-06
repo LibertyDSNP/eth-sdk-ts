@@ -10,8 +10,9 @@ src/**.js
 # Don't commit compiled output
 dist
 /*.d.ts
-/*.map
-/*.js
+/**/*.map
+/**/*.js
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij+all,vim,emacs,vscode,git,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,vim,emacs,vscode,git,node
