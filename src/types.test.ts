@@ -1,5 +1,6 @@
 import * as DSNP from "./types/DSNP.d";
 import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "./types/SimpleEncryptedFormat";
+import { ActionType } from "./DSNP";
 
 describe("tests are enabled and types can be used", () => {
   it("enables testing", () => {
@@ -8,7 +9,7 @@ describe("tests are enabled and types can be used", () => {
 
   it("can use DSNP types", () => {
     const reply: DSNP.Reply = {
-      actionType: DSNP.ActionTypeReply,
+      actionType: ActionType.Reply,
       fromAddress: "0xdeadbeef",
       messageID: "0xdeadbeef",
       inReplyTo: "0x12345678",
