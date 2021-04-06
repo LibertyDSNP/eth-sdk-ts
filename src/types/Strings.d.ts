@@ -5,17 +5,17 @@
  */
 
 /**
- * 0x prefixed Hexadecimal String
+ * Hexadecimal String
  */
-export declare type HexString = `0x${string}`;
+export declare type HexString = string;
 
 /**
- * 0x prefixed Hexadecimal representation of an Ethereum Address
+ * prefixed Hexadecimal representation of an Ethereum Address
  */
 export declare type EthereumAddress = HexString;
 
 /**
- * 0x prefixed Hexadecimal representation of an Ethereum Contract that implements the Social Identity Interface
+ * prefixed Hexadecimal representation of an Ethereum Contract that implements the Social Identity Interface
  */
 export declare type SocialIdentityAddress = EthereumAddress;
 

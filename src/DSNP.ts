@@ -1,0 +1,16 @@
+export enum ActionType {
+  Private = 0,
+  GraphChange = 1,
+  Broadcast = 2,
+  Profile = 3,
+  KeyList = 4,
+  PrivateGraphKeyList = 5,
+  EncryptionKeyList = 6,
+  Reaction = 7,
+  PrivateGraphChange = 8,
+  Drop = 9,
+  EncryptedInbox = 10,
+  PrivateBroadcast = 11,
+  Reply = 12,
+  Batch = 13,
+}
