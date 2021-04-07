@@ -1,6 +1,11 @@
-import { Config } from "../config";
+import { BatchFileObject } from "../batch/batch";
+// import * as config from "../config/config";
+import { Config } from "../config/config";
 
-export type StoreFunction = async (file: BatchFileObject): string;
+export interface StorageInterface {
+  store(file: BatchFileObject): Promise<string>;
+  fetch(uri: string): Promise<BatchFileObject>;
+}
 
 /**
  * store() takes a batch file to store with the chosen hosting solution and
@@ -12,9 +17,10 @@ export type StoreFunction = async (file: BatchFileObject): string;
  */
 export const store = async (file: BatchFileObject, opts?: Config): string => {
   throw NotImplementedError();
-};
 
-export type FetchFunction = async (uri: string): BatchFileObject;
+  // const config = getConfig(opts);
+  // return await config.store.store(file);
+};
 
 /**
  * fetch() takes a URI and fetches a batch file from the given address. This
@@ -23,7 +29,14 @@ export type FetchFunction = async (uri: string): BatchFileObject;
  * @param   uri   The URI of the batch file to download
  * @param   opts  Any optional overrides for the default configuration settings
  * @returns       The batch file fetched from the given URI
+ *
+ * @throws HTTPError
+ * Indicates an error was thrown at the HTTP layer. This may indicate that the
+ * host has censored the content for legal reasons if the error code is 451.
  */
-export const fetch = async (uri: string, opts?: Config): BatchFileObject => {
+export const fetch = async (uri: string, opts?: Config): Promise<BatchFileObject> => {
   throw NotImplementedError();
+
+  // const config = getConfig(opts);
+  // return await config.storage.fetch(uri);
 };
