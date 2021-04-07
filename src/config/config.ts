@@ -1,13 +1,20 @@
-import { StoreFunction, FetchFunction } from "../storage/storage";
-import { BatchEnqueueFunction, BatchDequeueFunction } from "../batch/queue";
+// import Web3 from "web3";
+
+import { StoreInterface } from "../storage/storage";
+import { QueueInterface } from "../batch/queue";
 import { NotImplementedError } from "../utilities/errors";
 
 interface Config {
-  storeMethod: StoreFunction;
-  fetchMethod: FetchFunction;
-  batchEnqueueMethod: BatchEnqueueFunction;
-  batchDequeueMethod: BatchDequeueFunction;
+  blockchain: BlockchainProvider;
+  store: StoreInterface;
+  queue: QueueInterface;
 }
+
+// let config = {
+//   blockchain: new Web3.providers.HttpProvider(RPC_URL),
+//   storage: new MemoryStore(),
+//   queue: new MemoryQueue(),
+// };
 
 /**
  * getConfig() fetches the current configuration settings and returns them. This
@@ -15,8 +22,11 @@ interface Config {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (): Config => {
+export const getConfig = (overrides?: Config): Config => {
   throw NotImplementedError();
+
+  // if (!overrides) return config;
+  // return { ...overrides, ...config };
 };
 
 /**
@@ -27,4 +37,6 @@ export const getConfig = (): Config => {
  */
 export const setConfig = (obj: Config) => {
   throw NotImplementedError();
+
+  // config = obj;
 };
