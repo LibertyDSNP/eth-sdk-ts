@@ -1,6 +1,9 @@
+import { ActivityPub } from "../activityPub/activityPub";
 import { BatchFileObject } from "../batch/batch";
 // import * as config from "../config/config";
 import { Config } from "../config/config";
+
+type File = BatchFileObject | ActivityPub;
 
 export interface StorageInterface {
   store(file: BatchFileObject): Promise<string>;
@@ -15,7 +18,7 @@ export interface StorageInterface {
  * @param   opts  Any optional overrides for the default configuration settings
  * @returns       The URI of the hosted file
  */
-export const store = async (file: BatchFileObject, opts?: Config): string => {
+export const store = async (file: File, opts?: Config): string => {
   throw NotImplementedError();
 
   // const config = getConfig(opts);
@@ -34,7 +37,7 @@ export const store = async (file: BatchFileObject, opts?: Config): string => {
  * Indicates an error was thrown at the HTTP layer. This may indicate that the
  * host has censored the content for legal reasons if the error code is 451.
  */
-export const fetch = async (uri: string, opts?: Config): Promise<BatchFileObject> => {
+export const fetch = async (uri: string, opts?: Config): Promise<File> => {
   throw NotImplementedError();
 
   // const config = getConfig(opts);

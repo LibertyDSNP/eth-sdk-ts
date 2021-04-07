@@ -1,4 +1,6 @@
 // import Web3 from "web3";
+// import MemoryStore from "../storage/memoryStorage";
+// import MemoryQueue from "../batch/memoryQueue";
 
 import { StoreInterface } from "../storage/storage";
 import { QueueInterface } from "../batch/queue";
