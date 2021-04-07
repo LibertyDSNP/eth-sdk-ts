@@ -1,5 +1,5 @@
 import { QueueId, QueueInterface } from "./queue";
-import { DSNPMessage } from "../types/DSNP";
+import { MessageType } from "../types/DSNP";
 import { NotImplementedError } from "../utilities/errors";
 
 /**
@@ -10,8 +10,8 @@ import { NotImplementedError } from "../utilities/errors";
  * @param event The event to queue up for the next batch
  * @returns     A queue id to be used to remove the event if needed
  */
-export const enqueue = async (event: DSNPMessage): Promise<QueueId> => {
-  throw NotImplementedError();
+export const enqueue = async (_event: MessageType): Promise<QueueId> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -22,8 +22,8 @@ export const enqueue = async (event: DSNPMessage): Promise<QueueId> => {
  * @param id The id of the event to remove from the queue
  * @returns  The removed event
  */
-export const dequeue = async (id: QueueId): Promise<DSNPMessage> => {
-  throw NotImplementedError();
+export const dequeue = async (_id: QueueId): Promise<MessageType> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -33,8 +33,8 @@ export const dequeue = async (id: QueueId): Promise<DSNPMessage> => {
  *
  * @returns An array of all events currently in the queue
  */
-export const getAll = async (): Promise<DSNPMessage[]> => {
-  throw NotImplementedError();
+export const getAll = async (): Promise<MessageType[]> => {
+  throw NotImplementedError;
 };
 
 const initializer = (): QueueInterface => {

@@ -1,4 +1,4 @@
-import { File, StorageInterface } from "./store";
+import { File, StorageInterface } from "./storage";
 import { NotImplementedError } from "../utilities/errors";
 
 /**
@@ -9,8 +9,8 @@ import { NotImplementedError } from "../utilities/errors";
  * @param file The file to store
  * @returns    The URI of the stored file
  */
-export const store = async (file: File): string => {
-  throw NotImplementedError();
+export const store = async (_file: File): Promise<string> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -21,8 +21,8 @@ export const store = async (file: File): string => {
  * @param uri The URI of the file to fetch
  * @returns   The fetched file
  */
-export const fetch = async (uri: string): Promise<File> => {
-  throw NotImplementedError();
+export const fetch = async (_uri: string): Promise<File> => {
+  throw NotImplementedError;
 };
 
 const initializer = (): StorageInterface => {

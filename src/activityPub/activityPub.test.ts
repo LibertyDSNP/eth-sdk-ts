@@ -1,4 +1,4 @@
-import { activityPubHash } from "./activityPubHash";
+import { hash } from "./activityPub";
 
 describe("#activityPubHash", () => {
   it("returns a valid hash for an object", () => {
@@ -16,9 +16,7 @@ describe("#activityPubHash", () => {
       liked: "https://social.example/alyssa/liked/",
     };
 
-    expect(activityPubHash(sampleActivityPub)).toEqual(
-      "f828f3aa5d76779dc49efa69556ba89d0789cdd26ffe5d79be85da05c0afa842"
-    );
+    expect(hash(sampleActivityPub)).toEqual("f828f3aa5d76779dc49efa69556ba89d0789cdd26ffe5d79be85da05c0afa842");
   });
 
   it("returns the same hash for activityPubs in different orders", () => {
@@ -49,7 +47,7 @@ describe("#activityPubHash", () => {
       followers: "https://social.example/alyssa/followers/",
     };
 
-    expect(activityPubHash(sampleActivityPubA)).toEqual(activityPubHash(sampleActivityPubB));
+    expect(hash(sampleActivityPubA)).toEqual(hash(sampleActivityPubB));
   });
 
   it("returns the different hashes for activityPubs with different content", () => {
@@ -80,6 +78,6 @@ describe("#activityPubHash", () => {
       liked: "https://social.example/alyssa/liked/",
     };
 
-    expect(activityPubHash(sampleActivityPubA)).not.toEqual(activityPubHash(sampleActivityPubB));
+    expect(hash(sampleActivityPubA)).not.toEqual(hash(sampleActivityPubB));
   });
 });

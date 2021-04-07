@@ -1,9 +1,15 @@
 import { Config } from "../config/config";
 import { KeccakHash } from "../utilities/hash";
+import { NotImplementedError } from "../utilities/errors";
 
-interface User {}
+export interface User {
+  handle: Handle;
+  sign: string;
+  dateOfBirth: Date;
+  social: number;
+}
 
-type Handle = string;
+export type Handle = string;
 
 /**
  * authenticateHandle() claims a registry handle to the current user. If the
@@ -17,8 +23,8 @@ type Handle = string;
  * @param id  The Handle of the user for which to fetch profile data
  * @param opts Optional. Configuration overrides, such as from address, if any
  */
-export const authenticateHandle = async (id: Handle, opts?: Config) => {
-  throw NotImplementedError();
+export const authenticateHandle = async (_id: Handle, _opts?: Config): Promise<void> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -29,8 +35,8 @@ export const authenticateHandle = async (id: Handle, opts?: Config) => {
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The User object associated with the given Handle
  */
-export const getUser = async (id: Handle, opts?: Config): User => {
-  throw NotImplementedError();
+export const getUser = async (_id: Handle, _opts?: Config): Promise<User> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -43,8 +49,8 @@ export const getUser = async (id: Handle, opts?: Config): User => {
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The User object associated with the given Handle
  */
-export const updateUser = async (id: Handle, user: User, opts?: Config): User => {
-  throw NotImplementedError();
+export const updateUser = async (_id: Handle, _user: User, _opts?: Config): Promise<User> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -55,8 +61,8 @@ export const updateUser = async (id: Handle, user: User, opts?: Config): User =>
  * @param opts   Optional. Configuration overrides, such as from address, if any
  * @returns      The DSNP address associated with the given handle
  */
-export const handleToAddress = async (handle: Handle, opts?: Config) => {
-  throw NotImplementedError();
+export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<KeccakHash> => {
+  throw NotImplementedError;
 };
 
 /**
@@ -67,6 +73,6 @@ export const handleToAddress = async (handle: Handle, opts?: Config) => {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       An array of DSNP handles associated with the address
  */
-export const addressToHandles = async (address: KeccakHash, opts?: Config): Handle[] => {
-  throw NotImplementedError();
+export const addressToHandles = async (_address: KeccakHash, _opts?: Config): Promise<Handle[]> => {
+  throw NotImplementedError;
 };

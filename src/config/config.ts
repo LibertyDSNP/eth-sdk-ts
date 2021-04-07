@@ -2,13 +2,13 @@
 // import MemoryStore from "../storage/memoryStorage";
 // import MemoryQueue from "../batch/memoryQueue";
 
-import { StoreInterface } from "../storage/storage";
+import { StorageInterface } from "../storage/storage";
 import { QueueInterface } from "../batch/queue";
 import { NotImplementedError } from "../utilities/errors";
 
-interface Config {
-  blockchain: BlockchainProvider;
-  store: StoreInterface;
+export interface Config {
+  // blockchain: ChainInterface;
+  store: StorageInterface;
   queue: QueueInterface;
 }
 
@@ -24,8 +24,8 @@ interface Config {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (overrides?: Config): Config => {
-  throw NotImplementedError();
+export const getConfig = (_overrides?: Config): Config => {
+  throw NotImplementedError;
 
   // if (!overrides) return config;
   // return { ...overrides, ...config };
@@ -37,8 +37,8 @@ export const getConfig = (overrides?: Config): Config => {
  *
  * @params obj  The configuration settings to set with
  */
-export const setConfig = (obj: Config) => {
-  throw NotImplementedError();
+export const setConfig = (_obj: Config): void => {
+  throw NotImplementedError;
 
   // config = obj;
 };

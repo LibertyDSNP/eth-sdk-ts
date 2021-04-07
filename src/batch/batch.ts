@@ -1,7 +1,7 @@
-import { DSNPMessage } from "../types/DSNP";
+import { MessageType } from "../types/DSNP";
 import { NotImplementedError } from "../utilities/errors";
 
-export interface BatchFileObject {}
+export type BatchFileObject = string;
 
 /**
  * createFile() takes a series of activity pub objects and returns a Batch file
@@ -10,8 +10,8 @@ export interface BatchFileObject {}
  * @params  events  An array of DSNPEvent to include in the batch file
  * @returns         A batch file object
  */
-export const createFile = (events: DSNPMessage[]): BatchFileObject => {
-  throw NotImplementedError();
+export const createFile = (_events: MessageType[]): BatchFileObject => {
+  throw NotImplementedError;
 };
 
 /**
@@ -20,6 +20,6 @@ export const createFile = (events: DSNPMessage[]): BatchFileObject => {
  * @params  file  An array of DSNPEvent to include in the batch file
  * @returns       A batch file object
  */
-export const openFile = (file: BatchFileObject): DSNPMessage[] => {
-  throw NotImplementedError();
+export const openFile = (_file: BatchFileObject): MessageType[] => {
+  throw NotImplementedError;
 };

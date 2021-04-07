@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { keccak256 } from "js-sha3";
 
 import { batch } from "./announcement";
+import { EthereumAddress } from "../types/Strings";
 
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
 const RPC_URL = String(process.env.RPC_URL);
@@ -19,7 +20,7 @@ describe("#batch", () => {
     jest.setTimeout(12000);
     const testUri = "http://www.testconst.com";
     const hash = keccak256("test");
-    const receipt = await batch(web3, account.address, testUri, hash);
+    const receipt = await batch(web3, account.address as EthereumAddress, testUri, hash);
     expect(receipt).toEqual(
       expect.objectContaining({
         events: expect.objectContaining({

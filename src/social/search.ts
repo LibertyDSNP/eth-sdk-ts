@@ -1,6 +1,7 @@
-import { BaseFilters } from "./content";
-import { DSNPMessage } from "../types/DSNP";
+import { Handle } from "./handles";
+import { MessageType } from "../types/DSNP";
 import { KeccakHash } from "../utilities/hash";
+import { NotImplementedError } from "../utilities/errors";
 
 type BlockNumber = number;
 
@@ -30,7 +31,7 @@ interface FetchFilters extends BaseFilters {
   from?: BlockNumber;
 }
 
-type SubscriptionCallbackFn = (event: Event): void;
+type SubscriptionCallbackFn = (event: MessageType) => void;
 type SubscriptionId = string;
 
 /**
@@ -43,8 +44,8 @@ type SubscriptionId = string;
  * @param callback The callback function to be called when an event is receieved
  * @returns        A subscription id to unsubscribe later if needed
  */
-export const subscribe = (filters: BaseFilters, callback: SubscriptionCallbackFn): SubscriptionId => {
-  throw NotImplementedError();
+export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallbackFn): SubscriptionId => {
+  throw NotImplementedError;
 };
 
 /**
@@ -54,8 +55,8 @@ export const subscribe = (filters: BaseFilters, callback: SubscriptionCallbackFn
  *
  * @param subscriptionId The ID of the subscription to close
  */
-export const unsubscribe = (id: SubscriptionId) => {
-  throw NotImplementedError();
+export const unsubscribe = (_id: SubscriptionId): void => {
+  throw NotImplementedError;
 };
 
 /**
@@ -66,6 +67,6 @@ export const unsubscribe = (id: SubscriptionId) => {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       An array of events
  */
-export const fetchEvents = async (filters: FetchFilters): DSNPMessage[] => {
-  throw NotImplementedError();
+export const fetchEvents = async (_filters: FetchFilters): Promise<MessageType[]> => {
+  throw NotImplementedError;
 };

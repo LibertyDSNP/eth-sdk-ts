@@ -1,6 +1,6 @@
 import { keccak256 } from "js-sha3";
-import { KeccakHash } from "../types/hash";
-import { NotImplementedError } from "./errors";
+import { KeccakHash } from "../utilities/hash";
+import { NotImplementedError } from "../utilities/errors";
 
 const sortJSON = (obj: Record<string, unknown>): Record<string, unknown> => {
   const result: Record<string, unknown> = {};
@@ -31,12 +31,15 @@ export interface ActivityPub {
  * @returns       A hexadecimal string containing the Keccak hash
  */
 export const hash = (data: ActivityPub): KeccakHash => {
-  const sortedData = sortJSON(data as Record<string, unknown>);
+  const sortedData = (sortJSON((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
   const jsonString = JSON.stringify(sortedData);
   return keccak256(jsonString);
 };
 
-export interface ActivityPubCreateOpts {}
+export interface ActivityPubCreateOpts {
+  title: string;
+  description: string;
+}
 
 /**
  * create() provides a simple factory for generating activityPub objects. This
@@ -45,8 +48,8 @@ export interface ActivityPubCreateOpts {}
  * @param   opts  Options for the created activity pub object
  * @returns       An activity pub object
  */
-export const create = (opts: ActivityPubCreateOpts): ActivityPub => {
-  throw NotImplementedError();
+export const create = (_opts: ActivityPubCreateOpts): ActivityPub => {
+  throw NotImplementedError;
 };
 
 /**
@@ -56,6 +59,6 @@ export const create = (opts: ActivityPubCreateOpts): ActivityPub => {
  * @param   obj  An object to be validated against the activity pub standard
  * @returns      True or false depending on whether the given object is a valid
  */
-export const validate = (obj: unknown): boolean => {
-  throw NotImplementedError();
+export const validate = (_obj: unknown): boolean => {
+  throw NotImplementedError;
 };

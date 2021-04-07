@@ -3,7 +3,7 @@
 // import * as storage from "../storage/storage";
 import { ActivityPubCreateOpts } from "../activityPub/activityPub";
 import { Config } from "../config/config";
-import { Handle } from "./handles";
+import { NotImplementedError } from "../utilities/errors";
 
 /**
  * broadcast() creates a broadcast DSNP event and enqueues it for the next
@@ -13,8 +13,8 @@ import { Handle } from "./handles";
  * @param opts             Optional. Configuration overrides, such as from address, if any
  *
  */
-export const broadcast = async (activityPubOpts: ActivityPubCreateOpts, opts?: Config) => {
-  throw NotImplementedError();
+export const broadcast = async (_activityPubOpts: ActivityPubCreateOpts, _opts?: Config): Promise<void> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   //
@@ -33,8 +33,8 @@ export const broadcast = async (activityPubOpts: ActivityPubCreateOpts, opts?: C
  * @param activityPubOpts  Any options for the activity pub event to create
  * @param opts             Optional. Configuration overrides, such as from address, if any
  */
-export const reply = async (activityPubOpts: ActivityPubCreateOpts, opts: Config) => {
-  throw NotImplementedError();
+export const reply = async (_activityPubOpts: ActivityPubCreateOpts, _opts: Config): Promise<void> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   //
@@ -54,8 +54,8 @@ export const reply = async (activityPubOpts: ActivityPubCreateOpts, opts: Config
  * @param activityPubOpts  Any options for the activity pub event to create
  * @param opts             Optional. Configuration overrides, such as from address, if any
  */
-export const react = async (activityPubOpts: ActivityPubCreateOpts, opts: Config) => {
-  throw NotImplementedError();
+export const react = async (_activityPubOpts: ActivityPubCreateOpts, _opts: Config): Promise<void> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   //

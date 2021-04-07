@@ -3,16 +3,16 @@
 import { Config } from "../config/config";
 // import * as announcement from "../contracts/announcement";
 // import * as storage from "../storage/storage";
-import { DSNPMessage } from "../types/DSNP";
+import { MessageType } from "../types/DSNP";
 import { NotImplementedError } from "../utilities/errors";
 import { KeccakHash } from "../utilities/hash";
 
-type QueueId = KeccakHash;
+export type QueueId = KeccakHash;
 
 export interface QueueInterface {
-  enqueue(dsnpEvent: DSNPMessage): Promise<QueueId>;
-  dequeue(id: QueueId): Promise<DSNPMessage>;
-  getAll(): Promise<DSNPMessage[]>;
+  enqueue(dsnpEvent: MessageType): Promise<QueueId>;
+  dequeue(id: QueueId): Promise<MessageType>;
+  getAll(): Promise<MessageType[]>;
 }
 
 /**
@@ -22,8 +22,8 @@ export interface QueueInterface {
  * @param   dsnpEvent  The DSNP event to queue up for batching
  * @returns            An ID for the queued event
  */
-export const enqueue = async (event: DSNPMessage, opts?: Config): Promise<QueueId> => {
-  throw NotImplementedError();
+export const enqueue = async (_event: MessageType, _opts?: Config): Promise<QueueId> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   // return await config.queue.enqueue(event);
@@ -36,8 +36,8 @@ export const enqueue = async (event: DSNPMessage, opts?: Config): Promise<QueueI
  * @param   id  The ID of the event to remove from the queue
  * @returns     The DSNP event event removed from the queue
  */
-export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> => {
-  throw NotImplementedError();
+export const dequeue = async (_id: QueueId, _opts?: Config): Promise<MessageType> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   // return await config.queue.dequeue(id);
@@ -47,8 +47,8 @@ export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> 
  * commit() creates a batch file from the current activity pub events in the
  * queue then clears the queue. This method is not yet implemented.
  */
-export const commit = async (opts?: Config) => {
-  throw NotImplementedError();
+export const commit = async (_opts?: Config): Promise<void> => {
+  throw NotImplementedError;
 
   // const config = config.getConfig(opts);
   // const events = await config.queue.getAll();
