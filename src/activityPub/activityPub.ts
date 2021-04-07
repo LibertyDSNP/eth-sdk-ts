@@ -36,7 +36,7 @@ export const hash = (data: ActivityPub): KeccakHash => {
   return keccak256(jsonString);
 };
 
-interface ActivityPubCreateOpts {}
+export interface ActivityPubCreateOpts {}
 
 /**
  * create() provides a simple factory for generating activityPub objects. This
