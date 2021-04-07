@@ -75,7 +75,12 @@ const getGasLimit = async (contract: Contract, uri: string, hash: KeccakHash, fr
  * @param hash      A hash of the batch contents for use in verification
  * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (provider: Web3, accountAddress: string, uri: string, hash: KeccakHash): Promise<TransactionReceipt> => {
+export const batch = async (
+  provider: Web3,
+  accountAddress: string,
+  uri: string,
+  hash: KeccakHash
+): Promise<TransactionReceipt> => {
   const contract = await getContract(provider);
   const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
 
