@@ -1,22 +1,25 @@
-import { SocialIdentityAddress } from "../types/Strings";
-
-interface FollowOpts {}
+import { Handle } from "./handles";
+import { Config } from "../config/config";
 
 /**
- * follow() creates a follow activity pub event and enqueues it for the next
- * batch. This method is not yet implemented.
+ * follow() creates a follow event and enqueues it for the next batch. This
+ * method is not yet implemented.
+ *
+ * @param handle  The handle of the user to follow
+ * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const follow = (id: DSNPHandle) => {
+export const follow = async (handle: Handle, opts?: Config) => {
   throw NotImplementedError();
 };
 
-interface UnfollowOpts {}
-
 /**
- * unfollow() creates an unfollow activity pub event and enqueues it for the
- * next batch. This method is not yet implemented.
+ * unfollow() creates an unfollow event and enqueues it for the next batch.
+ * This method is not yet implemented.
+ *
+ * @param handle  The handle of the user to unfollow
+ * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const unfollow = (id: DSNPHandle) => {
+export const unfollow = async (handle: Handle, opts?: Config) => {
   throw NotImplementedError();
 };
 
@@ -24,35 +27,38 @@ export const unfollow = (id: DSNPHandle) => {
  * isFollowing() scans the current state of the network and returns a boolean
  * representing whether or not a given user is following another given user.
  * This method is not yet implemented.
+ *
+ * @param follower The handle of the user to unfollow
+ * @param followee Optional. The following user. Defaults to current user.
+ * @param opts     Optional. Configuration overrides, such as from address, if any
+ * @returns        A boolean representing whether or not the follower is following the followee
  */
-export const isFollowing = (followerId: DSNPHandle, followeeId: DSNPHandle): bool => {
-  throw NotImplementedError();
-};
-
-interface User {}
-
-/**
- * getUser() fetches information regarding the current published state of a
- * given user. This method is not yet implemented.
- */
-export const getUser = (id: DSNPHandle): User => {
+export const isFollowing = (follower: Handle, followee?: Handle, opts?: Config): bool => {
   throw NotImplementedError();
 };
 
 /**
- * handleToAddress() takes a DSNP handle and returns the associated DSNP
- * identity address. This method is not yet implemented.
+ * getFollowers() scans the current state of the network and returns an array of
+ * all user handles following the given followee handle. This method is not yet
+ * implemented.
  *
- * @param handle  The DSNP handle for which to fetch the address
- * @returns       The DSNP address associated with the given handle
+ * @param followee Optional. The followee handle to fetch followers for. Defaults to the current user.
+ * @param opts     Optional. Configuration overrides, such as from address, if any
+ * @returns        An array of all users following the followee
  */
-export const handleToAddress = () => {};
+export const getFollowers = (followee?: Handle, opts?: Config): Handle[] => {
+  throw NotImplementedError();
+};
 
 /**
- * addressToHandles() takes a DSNP identity address and returns an array of all
- * associated DSNP handles. This method is not yet implemented.
+ * getFollowees() scans the current state of the network and returns an array of
+ * all user handles being followed by the given follower handle. This method is
+ * not yet implemented.
  *
- * @param address  The DSNP identity address for which to fetch handles
- * @returns        An array of DSNP handles associated with the address
+ * @param follower Optional. The follower handle to fetch followees for. Defaults to the current user.
+ * @param opts     Optional. Configuration overrides, such as from address, if any
+ * @returns        An array of all users followed by the follower user
  */
-export const addressToHandles = (): DSNPHandle[] => {};
+export const getFollowees = (follower?: Handle, opts?: Config): Handle[] => {
+  throw NotImplementedError();
+};
