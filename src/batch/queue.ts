@@ -4,10 +4,10 @@ import { Config } from "../config/config";
 // import * as announcement from "../contracts/announcement";
 // import * as storage from "../storage/storage";
 import { MessageType } from "../types/DSNP";
+import { HexString } from "../types/String";
 import { NotImplementedError } from "../utilities/errors";
-import { KeccakHash } from "../utilities/hash";
 
-export type QueueId = KeccakHash;
+export type QueueId = HexString;
 
 export interface QueueInterface {
   enqueue(dsnpEvent: MessageType): Promise<QueueId>;

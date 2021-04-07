@@ -1,5 +1,5 @@
 import { keccak256 } from "js-sha3";
-import { KeccakHash } from "../utilities/hash";
+import { HexString } from "../types/String";
 import { NotImplementedError } from "../utilities/errors";
 
 const sortJSON = (obj: Record<string, unknown>): Record<string, unknown> => {
@@ -30,7 +30,7 @@ export interface ActivityPub {
  * @param   data  The activity pub object to hash
  * @returns       A hexadecimal string containing the Keccak hash
  */
-export const hash = (data: ActivityPub): KeccakHash => {
+export const hash = (data: ActivityPub): HexString => {
   const sortedData = (sortJSON((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
   const jsonString = JSON.stringify(sortedData);
   return keccak256(jsonString);

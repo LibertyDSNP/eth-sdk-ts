@@ -1,5 +1,5 @@
 import { Config } from "../config/config";
-import { KeccakHash } from "../utilities/hash";
+import { HexString } from "../types/String";
 import { NotImplementedError } from "../utilities/errors";
 
 export interface User {
@@ -61,7 +61,7 @@ export const updateUser = async (_id: Handle, _user: User, _opts?: Config): Prom
  * @param opts   Optional. Configuration overrides, such as from address, if any
  * @returns      The DSNP address associated with the given handle
  */
-export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<KeccakHash> => {
+export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<HexString> => {
   throw NotImplementedError;
 };
 
@@ -73,6 +73,6 @@ export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       An array of DSNP handles associated with the address
  */
-export const addressToHandles = async (_address: KeccakHash, _opts?: Config): Promise<Handle[]> => {
+export const addressToHandles = async (_address: HexString, _opts?: Config): Promise<Handle[]> => {
   throw NotImplementedError;
 };

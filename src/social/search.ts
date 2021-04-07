@@ -1,6 +1,6 @@
 import { Handle } from "./handles";
 import { MessageType } from "../types/DSNP";
-import { KeccakHash } from "../utilities/hash";
+import { HexString } from "../types/String";
 import { NotImplementedError } from "../utilities/errors";
 
 type BlockNumber = number;
@@ -10,13 +10,13 @@ type BlockNumber = number;
  * @property {string[]} types          The type of events to fetch, i.e. "notes", "follows" etc.
  * @property {Handle[]} includeHandles List of user handles to fetch events from. If not present, all users not listed in excludeHandles will be included.
  * @property {Handle[]} excludeHandles List of user handles to exclude from results, such as a blocklist.
- * @property {KeccakHash[]} inReplyTo  List of hashes to seek replies to. For use in fetching comments and reactions.
+ * @property {HexString[]} inReplyTo  List of hashes to seek replies to. For use in fetching comments and reactions.
  */
 export interface BaseFilters {
   types: string[];
   includeHandles?: Handle[];
   excludeHandles?: Handle[];
-  inReplyTo?: KeccakHash[];
+  inReplyTo?: HexString[];
 }
 
 /**
