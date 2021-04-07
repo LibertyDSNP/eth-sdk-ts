@@ -5,7 +5,7 @@ import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
 import { HexString } from "../types/String";
-import { hashPrefix } from "../utilities/hashPrefix";
+import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
 
 const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);

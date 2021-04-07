@@ -4,7 +4,7 @@ import { Config } from "../config/config";
 // import * as announcement from "../contracts/announcement";
 // import * as storage from "../storage/storage";
 import { MessageType } from "../types/DSNP";
-import { HexString } from "../types/String";
+import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 
 export type QueueId = HexString;

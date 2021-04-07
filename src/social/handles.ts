@@ -1,5 +1,5 @@
 import { Config } from "../config/config";
-import { HexString } from "../types/String";
+import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 
 export interface User {

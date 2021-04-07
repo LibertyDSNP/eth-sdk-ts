@@ -1,22 +1,7 @@
 import { keccak256 } from "js-sha3";
-import { HexString } from "../types/String";
+import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
-
-const sortJSON = (obj: Record<string, unknown>): Record<string, unknown> => {
-  const result: Record<string, unknown> = {};
-
-  Object.keys(obj)
-    .sort()
-    .forEach((key) => {
-      if (typeof obj[key] == "object") {
-        result[key] = sortJSON(obj[key] as Record<string, unknown>);
-      } else {
-        result[key] = obj[key];
-      }
-    });
-
-  return result;
-};
+import { sortObject } from "../utilities/json";
 
 export interface ActivityPub {
   "@context": string;
@@ -31,7 +16,7 @@ export interface ActivityPub {
  * @returns       A hexadecimal string containing the Keccak hash
  */
 export const hash = (data: ActivityPub): HexString => {
-  const sortedData = (sortJSON((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
+  const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
   const jsonString = JSON.stringify(sortedData);
   return keccak256(jsonString);
 };
