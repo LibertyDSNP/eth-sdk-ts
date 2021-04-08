@@ -49,7 +49,6 @@ const BATCH_CONTRACT_ABI: AbiItem[] = [
   },
 ];
 
-
 const GAS_LIMIT_BUFFER = 1000;
 const contract: Contract | null = null;
 
