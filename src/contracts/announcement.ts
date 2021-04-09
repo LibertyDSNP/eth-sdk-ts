@@ -4,7 +4,7 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
-import { HexString } from "../types/String";
+import { HexString } from "../types/Strings";
 import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
 
@@ -79,7 +79,7 @@ export const batch = async (
   provider: Web3,
   accountAddress: string,
   uri: string,
-  hash: KeccakHash
+  hash: HexString
 ): Promise<TransactionReceipt> => {
   const contract = await getContract(provider);
   const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
