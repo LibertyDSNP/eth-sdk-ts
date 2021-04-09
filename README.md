@@ -20,6 +20,14 @@ Run `npm run build`
 - Run `npm run doc:json` for JSON documentation
 - Run `npm run doc:markdown` for markdown documentation intended to be committed with the update
 
+## Environment Variables
+
+| Name  | Description |
+| --- | ------- | 
+| RPC_URL | url of node to make calls to | 
+| BATCH_CONTRACT_ADDRESS | Address of contract on chain you are calling to | 
+| TESTING_PRIVATE_KEY| **Only used in testing** - private key of account you are sending transactions from  | 
+
 ## How to Test
 
 Run `npm run test`

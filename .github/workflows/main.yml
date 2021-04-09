@@ -32,11 +32,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+#      - name: Test
+#        run: npm run test
 
-      - name: Report Test
-        uses: IgnusG/jest-report-action@v2.3.3
-        if: always()
-        with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Report Test
+#        uses: IgnusG/jest-report-action@v2.3.3
+#        if: always()
+#        with:
+#          access-token: ${{ secrets.GITHUB_TOKEN }}
