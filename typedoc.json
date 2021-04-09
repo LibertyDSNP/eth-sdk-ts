@@ -1,0 +1,2762 @@
+{
+	"id": 0,
+	"name": "@liberty-dsnp/sdk",
+	"kind": 0,
+	"flags": {},
+	"originalName": "",
+	"children": [
+		{
+			"id": 1,
+			"name": "DSNP",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 2,
+					"name": "ActionType",
+					"kind": 4,
+					"kindString": "Enumeration",
+					"flags": {},
+					"children": [
+						{
+							"id": 16,
+							"name": "Batch",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "13"
+						},
+						{
+							"id": 5,
+							"name": "Broadcast",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "2"
+						},
+						{
+							"id": 12,
+							"name": "Drop",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "9"
+						},
+						{
+							"id": 13,
+							"name": "EncryptedInbox",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "10"
+						},
+						{
+							"id": 9,
+							"name": "EncryptionKeyList",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "6"
+						},
+						{
+							"id": 4,
+							"name": "GraphChange",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "1"
+						},
+						{
+							"id": 7,
+							"name": "KeyList",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "4"
+						},
+						{
+							"id": 3,
+							"name": "Private",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "0"
+						},
+						{
+							"id": 14,
+							"name": "PrivateBroadcast",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "11"
+						},
+						{
+							"id": 11,
+							"name": "PrivateGraphChange",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "8"
+						},
+						{
+							"id": 8,
+							"name": "PrivateGraphKeyList",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "5"
+						},
+						{
+							"id": 6,
+							"name": "Profile",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "3"
+						},
+						{
+							"id": 10,
+							"name": "Reaction",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "7"
+						},
+						{
+							"id": 15,
+							"name": "Reply",
+							"kind": 16,
+							"kindString": "Enumeration member",
+							"flags": {},
+							"defaultValue": "12"
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration members",
+							"kind": 16,
+							"children": [
+								16,
+								5,
+								12,
+								13,
+								9,
+								4,
+								7,
+								3,
+								14,
+								11,
+								8,
+								6,
+								10,
+								15
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"kind": 4,
+					"children": [
+						2
+					]
+				}
+			]
+		},
+		{
+			"id": 17,
+			"name": "announcement/announcement",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 18,
+					"name": "batch",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 19,
+							"name": "batch",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "batch() allows users call the batch smart contract and post the URI and hash\nof a generated batch to the blockchain.",
+								"returns": "A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)\n"
+							},
+							"parameters": [
+								{
+									"id": 20,
+									"name": "provider",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The web3 instance used for calling the smart contract"
+									},
+									"type": {
+										"type": "reference",
+										"name": "default"
+									}
+								},
+								{
+									"id": 21,
+									"name": "accountAddress",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The address from which to post the batch"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 22,
+									"name": "uri",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The URI of the hosted batch to post"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 23,
+									"name": "hash",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "A hash of the batch contents for use in verification"
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"name": "TransactionReceipt"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						18
+					]
+				}
+			]
+		},
+		{
+			"id": 24,
+			"name": "types/DSNP",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 29,
+					"name": "Broadcast",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Broadcast: a public post"
+					},
+					"children": [
+						{
+							"id": 33,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 32,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 30,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "messageID keccak-256 hash of content stored at URI bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 31,
+							"name": "uri",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "uri content URI string"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								33,
+								32,
+								30,
+								31
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 40,
+					"name": "Drop",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Drop: a dead drop message"
+					},
+					"children": [
+						{
+							"id": 45,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 41,
+							"name": "deadDropID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "deadDropID The Dead Drop ID (See DeadDrops bytes32)"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 44,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 42,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "messageID keccak-256 hash of content bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 43,
+							"name": "uri",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "uri content uri string"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								45,
+								41,
+								44,
+								42,
+								43
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 67,
+					"name": "EncryptedInbox",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Encrypted Inbox: an encrypted direct message:"
+					},
+					"children": [
+						{
+							"id": 72,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 71,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 69,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "messageID keccak-256 hash of content bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 68,
+							"name": "toAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "toAddress ID of the recipient bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 70,
+							"name": "uri",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "uri content uri string"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								72,
+								71,
+								69,
+								68,
+								70
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 58,
+					"name": "EncryptionKeyList",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 61,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 60,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 59,
+							"name": "keyList",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								61,
+								60,
+								59
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 46,
+					"name": "GraphChange",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "GraphChange: a public follow/unfollow"
+					},
+					"children": [
+						{
+							"id": 49,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 47,
+							"name": "followType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "followType follow/unfollow number/enum"
+							},
+							"type": {
+								"type": "union",
+								"types": [
+									{
+										"type": "literal",
+										"value": 0
+									},
+									{
+										"type": "literal",
+										"value": 1
+									}
+								]
+							}
+						},
+						{
+							"id": 48,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								49,
+								47,
+								48
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 50,
+					"name": "KeyList",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "KeyList, PrivateGraphKeyList, EncryptionKeyList"
+					},
+					"children": [
+						{
+							"id": 53,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 52,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 51,
+							"name": "keyList",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								53,
+								52,
+								51
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 26,
+					"name": "Message",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 28,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							}
+						},
+						{
+							"id": 27,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								28,
+								27
+							]
+						}
+					],
+					"extendedBy": [
+						{
+							"type": "reference",
+							"id": 29,
+							"name": "Broadcast"
+						},
+						{
+							"type": "reference",
+							"id": 34,
+							"name": "Reply"
+						},
+						{
+							"type": "reference",
+							"id": 40,
+							"name": "Drop"
+						},
+						{
+							"type": "reference",
+							"id": 46,
+							"name": "GraphChange"
+						},
+						{
+							"type": "reference",
+							"id": 50,
+							"name": "KeyList"
+						},
+						{
+							"type": "reference",
+							"id": 54,
+							"name": "PrivateGraphKeyList"
+						},
+						{
+							"type": "reference",
+							"id": 58,
+							"name": "EncryptionKeyList"
+						},
+						{
+							"type": "reference",
+							"id": 62,
+							"name": "Profile"
+						},
+						{
+							"type": "reference",
+							"id": 67,
+							"name": "EncryptedInbox"
+						},
+						{
+							"type": "reference",
+							"id": 73,
+							"name": "Reaction"
+						},
+						{
+							"type": "reference",
+							"id": 78,
+							"name": "Private"
+						}
+					]
+				},
+				{
+					"id": 78,
+					"name": "Private",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Private: an encrypted message of unknown type"
+					},
+					"children": [
+						{
+							"id": 82,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 79,
+							"name": "data",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "encrypted graph change data"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 81,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 80,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "keccak-256 hash of unencrypted content"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								82,
+								79,
+								81,
+								80
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 54,
+					"name": "PrivateGraphKeyList",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 57,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 56,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 55,
+							"name": "keyList",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								57,
+								56,
+								55
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 62,
+					"name": "Profile",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Profile - a profile change message"
+					},
+					"children": [
+						{
+							"id": 66,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 65,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 63,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "messageID keccak-256 hash of content bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 64,
+							"name": "uri",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "uri content uri string"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								66,
+								65,
+								63,
+								64
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 73,
+					"name": "Reaction",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Reaction: a visual reply to a Broadcast message (aka post)"
+					},
+					"children": [
+						{
+							"id": 77,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 74,
+							"name": "emoji",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "emoji the encoded reaction number / UTF-8 bytes[]"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 76,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 75,
+							"name": "inReplyTo",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "inReplyTo ID of the message the reaction references bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								77,
+								74,
+								76,
+								75
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 34,
+					"name": "Reply",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Reply: a public reply post"
+					},
+					"children": [
+						{
+							"id": 39,
+							"name": "actionType",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 2,
+								"name": "ActionType"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 28,
+								"name": "Message.actionType"
+							}
+						},
+						{
+							"id": 38,
+							"name": "fromAddress",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "fromAddress ID of the sender bytes20"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 27,
+								"name": "Message.fromAddress"
+							}
+						},
+						{
+							"id": 36,
+							"name": "inReplyTo",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "inReplyTo ID of the message the reply references bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 35,
+							"name": "messageID",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "messageID keccak-256 hash of content stored at uri bytes32"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 37,
+							"name": "uri",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "uri content uri string"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								39,
+								38,
+								36,
+								35,
+								37
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 26,
+							"name": "Message"
+						}
+					]
+				},
+				{
+					"id": 25,
+					"name": "MessageType",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 78,
+								"name": "Private"
+							},
+							{
+								"type": "reference",
+								"id": 46,
+								"name": "GraphChange"
+							},
+							{
+								"type": "reference",
+								"id": 29,
+								"name": "Broadcast"
+							},
+							{
+								"type": "reference",
+								"id": 62,
+								"name": "Profile"
+							},
+							{
+								"type": "reference",
+								"id": 50,
+								"name": "KeyList"
+							},
+							{
+								"type": "reference",
+								"id": 54,
+								"name": "PrivateGraphKeyList"
+							},
+							{
+								"type": "reference",
+								"id": 58,
+								"name": "EncryptionKeyList"
+							},
+							{
+								"type": "reference",
+								"id": 73,
+								"name": "Reaction"
+							},
+							{
+								"type": "reference",
+								"id": 40,
+								"name": "Drop"
+							},
+							{
+								"type": "reference",
+								"id": 34,
+								"name": "Reply"
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						29,
+						40,
+						67,
+						58,
+						46,
+						50,
+						26,
+						78,
+						54,
+						62,
+						73,
+						34
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						25
+					]
+				}
+			]
+		},
+		{
+			"id": 83,
+			"name": "types/SimpleEncryptedFormat",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"comment": {
+				"shortText": "Simple Encryption Formats"
+			},
+			"children": [
+				{
+					"id": 86,
+					"name": "SEMx25519",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Simple Encrypted Message x25519-xsalsa20-poly1305"
+					},
+					"children": [
+						{
+							"id": 87,
+							"name": "c",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Ciphertext"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 88,
+							"name": "e",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Ephemeral Public Key"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 89,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 90,
+							"name": "n",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Nonce"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 91,
+							"name": "v",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Algorithm Version = x25519-xsalsa20-poly1305"
+							},
+							"type": {
+								"type": "literal",
+								"value": "x25519-xsalsa20-poly1305"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								87,
+								88,
+								89,
+								90,
+								91
+							]
+						}
+					]
+				},
+				{
+					"id": 92,
+					"name": "SEMxSalsa20",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Simple Encrypted Message xsalsa20-poly1305"
+					},
+					"children": [
+						{
+							"id": 93,
+							"name": "c",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Ciphertext"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 94,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 95,
+							"name": "n",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Nonce"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 96,
+							"name": "v",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Algorithm Version = xsalsa20-poly1305"
+							},
+							"type": {
+								"type": "literal",
+								"value": "xsalsa20-poly1305"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								93,
+								94,
+								95,
+								96
+							]
+						}
+					]
+				},
+				{
+					"id": 98,
+					"name": "SKFx25519Base",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Simple Key Format for the x25519 Curve"
+					},
+					"children": [
+						{
+							"id": 100,
+							"name": "d",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Private Key (Optional)"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 102,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 101,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Type = x25519"
+							},
+							"type": {
+								"type": "literal",
+								"value": "x25519"
+							}
+						},
+						{
+							"id": 99,
+							"name": "x",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Public Key (Optional)"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								100,
+								102,
+								101,
+								99
+							]
+						}
+					],
+					"extendedBy": [
+						{
+							"type": "reference",
+							"id": 104,
+							"name": "SKFx25519WithPrivate"
+						},
+						{
+							"type": "reference",
+							"id": 109,
+							"name": "SKFx25519WithPublic"
+						}
+					]
+				},
+				{
+					"id": 104,
+					"name": "SKFx25519WithPrivate",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 105,
+							"name": "d",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Private Key"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"overwrites": {
+								"type": "reference",
+								"id": 100,
+								"name": "SKFx25519Base.d"
+							}
+						},
+						{
+							"id": 108,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 102,
+								"name": "SKFx25519Base.k"
+							}
+						},
+						{
+							"id": 107,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Type = x25519"
+							},
+							"type": {
+								"type": "literal",
+								"value": "x25519"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 101,
+								"name": "SKFx25519Base.t"
+							}
+						},
+						{
+							"id": 106,
+							"name": "x",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Public Key (Optional)"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 99,
+								"name": "SKFx25519Base.x"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								105,
+								108,
+								107,
+								106
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 98,
+							"name": "SKFx25519Base"
+						}
+					]
+				},
+				{
+					"id": 109,
+					"name": "SKFx25519WithPublic",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 111,
+							"name": "d",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Private Key (Optional)"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 100,
+								"name": "SKFx25519Base.d"
+							}
+						},
+						{
+							"id": 113,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 102,
+								"name": "SKFx25519Base.k"
+							}
+						},
+						{
+							"id": 112,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Type = x25519"
+							},
+							"type": {
+								"type": "literal",
+								"value": "x25519"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 101,
+								"name": "SKFx25519Base.t"
+							}
+						},
+						{
+							"id": 110,
+							"name": "x",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Public Key"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"overwrites": {
+								"type": "reference",
+								"id": 99,
+								"name": "SKFx25519Base.x"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								111,
+								113,
+								112,
+								110
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 98,
+							"name": "SKFx25519Base"
+						}
+					]
+				},
+				{
+					"id": 126,
+					"name": "SKFxSalsa20",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Simple Key Format for Symmetric xsalsa20"
+					},
+					"children": [
+						{
+							"id": 129,
+							"name": "k",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Key Identifier"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 128,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Type = xsalsa20"
+							},
+							"type": {
+								"type": "literal",
+								"value": "xsalsa20"
+							}
+						},
+						{
+							"id": 127,
+							"name": "x",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "The Symmetric Key"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								129,
+								128,
+								127
+							]
+						}
+					]
+				},
+				{
+					"id": 114,
+					"name": "WrappedSEM",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"shortText": "Wrapped Simple Encrypted Message"
+					},
+					"children": [
+						{
+							"id": 115,
+							"name": "c",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Ciphertext"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 116,
+							"name": "n",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"comment": {
+								"shortText": "Nonce"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 119,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Wrapped Key Type"
+							},
+							"type": {
+								"type": "reference",
+								"id": 84,
+								"name": "KeyTypes"
+							}
+						},
+						{
+							"id": 117,
+							"name": "v",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Algorithm Version"
+							},
+							"type": {
+								"type": "reference",
+								"id": 85,
+								"name": "Algorithms"
+							}
+						},
+						{
+							"id": 118,
+							"name": "w",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Wrapping Array"
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"id": 97,
+									"name": "SimpleEncryptedMessage"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								115,
+								116,
+								119,
+								117,
+								118
+							]
+						}
+					],
+					"extendedBy": [
+						{
+							"type": "reference",
+							"id": 120,
+							"name": "WrappedSEMxSalsa20"
+						}
+					]
+				},
+				{
+					"id": 120,
+					"name": "WrappedSEMxSalsa20",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 124,
+							"name": "c",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Ciphertext"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 115,
+								"name": "WrappedSEM.c"
+							}
+						},
+						{
+							"id": 121,
+							"name": "n",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Nonce"
+							},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							},
+							"overwrites": {
+								"type": "reference",
+								"id": 116,
+								"name": "WrappedSEM.n"
+							}
+						},
+						{
+							"id": 122,
+							"name": "t",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Wrapped Key Type = xsalsa20"
+							},
+							"type": {
+								"type": "literal",
+								"value": "xsalsa20"
+							},
+							"overwrites": {
+								"type": "reference",
+								"id": 119,
+								"name": "WrappedSEM.t"
+							}
+						},
+						{
+							"id": 123,
+							"name": "v",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Algorithm Version = xsalsa20-poly1305"
+							},
+							"type": {
+								"type": "literal",
+								"value": "xsalsa20-poly1305"
+							},
+							"overwrites": {
+								"type": "reference",
+								"id": 117,
+								"name": "WrappedSEM.v"
+							}
+						},
+						{
+							"id": 125,
+							"name": "w",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"comment": {
+								"shortText": "Key Wrapping Array"
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"id": 97,
+									"name": "SimpleEncryptedMessage"
+								}
+							},
+							"inheritedFrom": {
+								"type": "reference",
+								"id": 118,
+								"name": "WrappedSEM.w"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								124,
+								121,
+								122,
+								123,
+								125
+							]
+						}
+					],
+					"extendedTypes": [
+						{
+							"type": "reference",
+							"id": 114,
+							"name": "WrappedSEM"
+						}
+					]
+				},
+				{
+					"id": 85,
+					"name": "Algorithms",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "x25519-xsalsa20-poly1305"
+							},
+							{
+								"type": "literal",
+								"value": "xsalsa20-poly1305"
+							}
+						]
+					}
+				},
+				{
+					"id": 131,
+					"name": "CompressedSEM",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Compressed SEM is a Inflate Raw compressed hex string that inflates into a JSON stringified [[SimpleEncryptedMessage]]"
+					},
+					"type": {
+						"type": "reference",
+						"id": 134,
+						"name": "HexString"
+					}
+				},
+				{
+					"id": 84,
+					"name": "KeyTypes",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": "xsalsa20"
+							},
+							{
+								"type": "literal",
+								"value": "x25519"
+							}
+						]
+					}
+				},
+				{
+					"id": 132,
+					"name": "PublicKey",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Public Keys can come in various formats and still be valid"
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 103,
+								"name": "SKFx25519"
+							},
+							{
+								"type": "reference",
+								"id": 134,
+								"name": "HexString"
+							},
+							{
+								"type": "reference",
+								"id": 137,
+								"name": "Base64UrlString"
+							}
+						]
+					}
+				},
+				{
+					"id": 103,
+					"name": "SKFx25519",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 104,
+								"name": "SKFx25519WithPrivate"
+							},
+							{
+								"type": "reference",
+								"id": 109,
+								"name": "SKFx25519WithPublic"
+							}
+						]
+					}
+				},
+				{
+					"id": 97,
+					"name": "SimpleEncryptedMessage",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 86,
+								"name": "SEMx25519"
+							},
+							{
+								"type": "reference",
+								"id": 92,
+								"name": "SEMxSalsa20"
+							}
+						]
+					}
+				},
+				{
+					"id": 130,
+					"name": "SimpleKeyFormat",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 103,
+								"name": "SKFx25519"
+							},
+							{
+								"type": "reference",
+								"id": 104,
+								"name": "SKFx25519WithPrivate"
+							},
+							{
+								"type": "reference",
+								"id": 109,
+								"name": "SKFx25519WithPublic"
+							},
+							{
+								"type": "reference",
+								"id": 126,
+								"name": "SKFxSalsa20"
+							}
+						]
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						86,
+						92,
+						98,
+						104,
+						109,
+						126,
+						114,
+						120
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						85,
+						131,
+						84,
+						132,
+						103,
+						97,
+						130
+					]
+				}
+			]
+		},
+		{
+			"id": 133,
+			"name": "types/Strings",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"comment": {
+				"shortText": "Special String Types"
+			},
+			"children": [
+				{
+					"id": 137,
+					"name": "Base64UrlString",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Base64URL encoded String RFC 4648 §5"
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 135,
+					"name": "EthereumAddress",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "prefixed Hexadecimal representation of an Ethereum Address"
+					},
+					"type": {
+						"type": "reference",
+						"id": 134,
+						"name": "HexString"
+					}
+				},
+				{
+					"id": 134,
+					"name": "HexString",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "Hexadecimal String"
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 136,
+					"name": "SocialIdentityAddress",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "prefixed Hexadecimal representation of an Ethereum Contract that implements the Social Identity Interface"
+					},
+					"type": {
+						"type": "reference",
+						"id": 135,
+						"name": "EthereumAddress"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						137,
+						135,
+						134,
+						136
+					]
+				}
+			]
+		},
+		{
+			"id": 138,
+			"name": "types/hash",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 139,
+					"name": "KeccakHash",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"comment": {
+						"shortText": "KeccakHash is a 256 bit hash string encoded as hex with a '0x' at the start"
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						139
+					]
+				}
+			]
+		},
+		{
+			"id": 140,
+			"name": "utilities/activityPubHash",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 141,
+					"name": "activityPubHash",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 142,
+							"name": "activityPubHash",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "activityPubHash() provides a simple way to hash activityPub objects while\nguaranteeing that identical objects with different key orders still return\nthe same hash. The underlying hash method used is\n[Keccak256](https://en.wikipedia.org/wiki/SHA-3).",
+								"returns": "A hexadecimal string containing the Keccak hash\n"
+							},
+							"parameters": [
+								{
+									"id": 143,
+									"name": "data",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The activityPub object to hashes"
+									},
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						141
+					]
+				}
+			]
+		},
+		{
+			"id": 144,
+			"name": "utilities/hashPrefix",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 145,
+					"name": "hashPrefix",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 146,
+							"name": "hashPrefix",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"parameters": [
+								{
+									"id": 147,
+									"name": "hash",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						145
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Modules",
+			"kind": 1,
+			"children": [
+				1,
+				17,
+				24,
+				83,
+				133,
+				138,
+				140,
+				144
+			]
+		}
+	]
+}
