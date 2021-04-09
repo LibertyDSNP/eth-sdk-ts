@@ -14,7 +14,7 @@
     "build:module": "tsc -p tsconfig.module.json",
     "build:multimodules": "node scripts/multimodules.js",
     "coverage": "jest test --coverage --collectCoverageFrom='src/**/*.ts'",
-    "clean": "rm -Rf dist ./*.d.ts ./*.js",
+    "clean": "rm -Rf dist docs ./*.d.ts ./*.js",
     "doc": "rm -Rf dist/docs && run-s doc:html",
     "doc:html": "typedoc src/ --plugin none --theme default --out dist/docs",
     "doc:json": "typedoc src/ --json dist/docs/typedoc.json",
