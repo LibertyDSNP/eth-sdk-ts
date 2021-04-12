@@ -1,7 +1,7 @@
 name: Build and Deploy Docs
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: [ released ]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04
@@ -20,7 +20,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install 💾
-        run: npm install
+        run: npm ci
 
       - name: Build HTML Docs 🔨
         run: npm run doc:html
