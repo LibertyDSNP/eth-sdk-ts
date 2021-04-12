@@ -4,7 +4,7 @@ Easy to use SDK for the DSNP
 
 ## Documentation
 
-See [Documentation](docs/README.md) or generate html documentation via `npm run doc`.
+See [Documentation](https://libertydsnp.github.io/sdk-ts/) or generate documentation locally via `npm run doc`.
 
 ## How to Install
 
@@ -16,9 +16,11 @@ Run `npm run build`
 
 ## How to Compile Documentation
 
+Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.github.io/sdk-ts/
+
 - Run `npm run doc` for HTML documentation
 - Run `npm run doc:json` for JSON documentation
-- Run `npm run doc:markdown` for markdown documentation intended to be committed with the update
+- Run `npm run doc:markdown` for markdown documentation (published with the npm package)
 
 ## Environment Variables
 

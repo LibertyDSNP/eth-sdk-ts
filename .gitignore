@@ -12,6 +12,7 @@ dist
 /*.d.ts
 /**/*.map
 /**/*.js
+docs
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij+all,vim,emacs,vscode,git,node
