@@ -3,12 +3,13 @@
  * Well TypeScript doesn't yet have easy support for multiple modules:
  * https://github.com/microsoft/TypeScript/issues/8305
  * and eventually https://github.com/microsoft/TypeScript/issues/33079
+ * Expected to release with TypeScript 4.3 May 2021
  *
  * In the end this allows us to support:
- * `import { getBar } from "@LibertyDSNP/sdk/Foo";`
+ * `import { getBar } from "@unfinishedlabs/sdk/Foo";`
  * in addition to the other way:
  * ```
- * import { Foo } from "@LibertyDSNP/sdk";
+ * import { Foo } from "@unfinishedlabs/sdk";
  * const { getBar } = Foo;
  * ```
  *

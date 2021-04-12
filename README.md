@@ -8,7 +8,7 @@ See [Documentation](https://libertydsnp.github.io/sdk-ts/) or generate documenta
 
 ## How to Install
 
-Run `npm install @LibertyDSNP/sdk`
+Run `npm install @unfinishedlabs/sdk`
 
 ## How to Build
 
