@@ -28,8 +28,10 @@
   },
   "files": [
     "dist/**/*",
+    "docs/**/*",
     "*.d.ts",
-    "*.js"
+    "*.js",
+    "CONTRIBUTING.md"
   ],
   "engines": {
     "node": ">=14.15.5"
