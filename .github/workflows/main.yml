@@ -35,6 +35,9 @@ jobs:
       - name: Build Docs
         run: npm run doc
 
+      - name: Publish Dry Run
+        run: npm publish --dry-run
+
 #      - name: Test
 #        run: npm run test
 
