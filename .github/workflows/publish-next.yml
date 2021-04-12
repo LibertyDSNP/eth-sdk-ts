@@ -1,7 +1,7 @@
 name: Publish NPM @next
 on:
   push:
-    branches: [ features/npm-package-177120105 ]
+    branches: [ main ]
 jobs:
   test:
     runs-on: ubuntu-20.04
