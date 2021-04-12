@@ -30,7 +30,7 @@ jobs:
         run: npm version --new-version ${{ github.event.release.tag_name }} --no-git-tag-version
 
       - name: Publish 🚂
-        run: npm publish --tag latest --debug --dry-run
+        run: npm publish --tag latest
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
 
