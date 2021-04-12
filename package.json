@@ -21,7 +21,7 @@
     "doc:markdown": "rm -Rf docs && typedoc src/ --theme markdown --out docs",
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm run doc:markdown",
     "postpublish": "npm run clean",
     "test": "jest",
     "watch": "run-s build && run-p \"build:main -- -w\" \"build:module -- -w\" \"test -- --watch\""
