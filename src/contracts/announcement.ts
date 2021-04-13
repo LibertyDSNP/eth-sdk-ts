@@ -4,8 +4,8 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
-import { KeccakHash } from "../types/hash";
-import { hashPrefix } from "../utilities/hashPrefix";
+import { HexString } from "../types/Strings";
+import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
 
 const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
@@ -57,7 +57,7 @@ const getContract = (web3Instance: Web3): Contract => {
   return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
 };
 
-const getGasLimit = async (contract: Contract, uri: string, hash: KeccakHash, fromAddress: string): Promise<number> => {
+const getGasLimit = async (contract: Contract, uri: string, hash: HexString, fromAddress: string): Promise<number> => {
   const gasEstimate = await contract.methods.batch(hashPrefix(hash), uri).estimateGas({
     from: fromAddress,
   });
@@ -79,7 +79,7 @@ export const batch = async (
   provider: Web3,
   accountAddress: string,
   uri: string,
-  hash: KeccakHash
+  hash: HexString
 ): Promise<TransactionReceipt> => {
   const contract = await getContract(provider);
   const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
