@@ -3,4 +3,3 @@
 // export const Foo = FooImport;
 // Note: Importing a file here will also trigger scripts/multimodules.js
 
-export * from "./types";
