@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DSNP | @liberty-dsnp/sdk</title>
+	<title>storage/memoryStorage | @liberty-dsnp/sdk</title>
 	<meta name="description" content="Documentation for @liberty-dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@liberty-dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="dsnp.html">DSNP</a>
+					<a href="storage_memorystorage.html">storage/memoryStorage</a>
 				</li>
 			</ul>
-			<h1>Module DSNP</h1>
+			<h1>Module storage/memoryStorage</h1>
 		</div>
 	</div>
 </header>
@@ -70,12 +70,87 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumerations</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/dsnp.actiontype.html" class="tsd-kind-icon">Action<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="storage_memorystorage.html#default" class="tsd-kind-icon">default</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="storage_memorystorage.html#fetch" class="tsd-kind-icon">fetch</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="storage_memorystorage.html#store" class="tsd-kind-icon">store</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="default" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> default</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/storage_storage.storageinterface.html" class="tsd-signature-type" data-tsd-kind="Interface">StorageInterface</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/storage_storage.storageinterface.html" class="tsd-signature-type" data-tsd-kind="Interface">StorageInterface</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="fetch" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> fetch</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">(</span>_uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>fetch() implements the fetch function of the StorageInterface. It takes the
+										URI of a file to fetch and returns the file. This method is not yet
+									implemented.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_uri: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>The fetched file</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="store" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> store</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">store<span class="tsd-signature-symbol">(</span>_file<span class="tsd-signature-symbol">: </span><a href="storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>store() implements the store function of the StorageInterface. It takes a
+										file object to store and returns a URI for the stored data. This method is
+									not yet implemented.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_file: <a href="storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>The URI of the stored file</p>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -85,7 +160,7 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="dsnp.html">DSNP</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -118,7 +193,7 @@
 					<li class=" tsd-kind-module">
 						<a href="social_search.html">social/search</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="storage_memorystorage.html">storage/memory<wbr>Storage</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -146,8 +221,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/dsnp.actiontype.html" class="tsd-kind-icon">Action<wbr>Type</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="storage_memorystorage.html#default" class="tsd-kind-icon">default</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="storage_memorystorage.html#fetch" class="tsd-kind-icon">fetch</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="storage_memorystorage.html#store" class="tsd-kind-icon">store</a>
 					</li>
 				</ul>
 			</nav>

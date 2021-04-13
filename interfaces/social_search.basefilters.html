@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WrappedSEM | @liberty-dsnp/sdk</title>
+	<title>BaseFilters | @liberty-dsnp/sdk</title>
 	<meta name="description" content="Documentation for @liberty-dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">@liberty-dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/types_simpleencryptedformat.html">types/SimpleEncryptedFormat</a>
+					<a href="../modules/social_search.html">social/search</a>
 				</li>
 				<li>
-					<a href="types_simpleencryptedformat.wrappedsem.html">WrappedSEM</a>
+					<a href="social_search.basefilters.html">BaseFilters</a>
 				</li>
 			</ul>
-			<h1>Interface WrappedSEM</h1>
+			<h1>Interface BaseFilters</h1>
 		</div>
 	</div>
 </header>
@@ -70,21 +70,27 @@
 		<div class="col-8 col-content">
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Wrapped Simple Encrypted Message</p>
-					</div>
+					<dl class="tsd-comment-tags">
+						<dt>property</dt>
+						<dd><p>{string[]} types          The type of events to fetch, i.e. &quot;notes&quot;, &quot;follows&quot; etc.</p>
+						</dd>
+						<dt>property</dt>
+						<dd><p>{Handle[]} includeHandles List of user handles to fetch events from. If not present, all users not listed in excludeHandles will be included.</p>
+						</dd>
+						<dt>property</dt>
+						<dd><p>{Handle[]} excludeHandles List of user handles to exclude from results, such as a blocklist.</p>
+						</dd>
+						<dt>property</dt>
+						<dd><p>{HexString[]} inReplyTo  List of hashes to seek replies to. For use in fetching comments and reactions.</p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">WrappedSEM</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="types_simpleencryptedformat.wrappedsemxsalsa20.html" class="tsd-signature-type" data-tsd-kind="Interface">WrappedSEMxSalsa20</a>
-							</li>
-						</ul>
+						<span class="target">BaseFilters</span>
 					</li>
 				</ul>
 			</section>
@@ -95,11 +101,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_simpleencryptedformat.wrappedsem.html#c" class="tsd-kind-icon">c</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_simpleencryptedformat.wrappedsem.html#n" class="tsd-kind-icon">n</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_simpleencryptedformat.wrappedsem.html#t" class="tsd-kind-icon">t</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_simpleencryptedformat.wrappedsem.html#v" class="tsd-kind-icon">v</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_simpleencryptedformat.wrappedsem.html#w" class="tsd-kind-icon">w</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="social_search.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="social_search.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="social_search.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="social_search.basefilters.html#types" class="tsd-kind-icon">types</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,64 +113,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="c" class="tsd-anchor"></a>
-					<h3>c</h3>
-					<div class="tsd-signature tsd-kind-icon">c<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="excludehandles" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> exclude<wbr>Handles</h3>
+					<div class="tsd-signature tsd-kind-icon">exclude<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Ciphertext</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="n" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> n</h3>
-					<div class="tsd-signature tsd-kind-icon">n<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="inreplyto" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> in<wbr>Reply<wbr>To</h3>
+					<div class="tsd-signature tsd-kind-icon">in<wbr>Reply<wbr>To<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Nonce</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="t" class="tsd-anchor"></a>
-					<h3>t</h3>
-					<div class="tsd-signature tsd-kind-icon">t<span class="tsd-signature-symbol">:</span> <a href="../modules/types_simpleencryptedformat.html#keytypes" class="tsd-signature-type" data-tsd-kind="Type alias">KeyTypes</a></div>
+					<a name="includehandles" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> include<wbr>Handles</h3>
+					<div class="tsd-signature tsd-kind-icon">include<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Wrapped Key Type</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="v" class="tsd-anchor"></a>
-					<h3>v</h3>
-					<div class="tsd-signature tsd-kind-icon">v<span class="tsd-signature-symbol">:</span> <a href="../modules/types_simpleencryptedformat.html#algorithms" class="tsd-signature-type" data-tsd-kind="Type alias">Algorithms</a></div>
+					<a name="types" class="tsd-anchor"></a>
+					<h3>types</h3>
+					<div class="tsd-signature tsd-kind-icon">types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Algorithm Version</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="w" class="tsd-anchor"></a>
-					<h3>w</h3>
-					<div class="tsd-signature tsd-kind-icon">w<span class="tsd-signature-symbol">:</span> <a href="../modules/types_simpleencryptedformat.html#simpleencryptedmessage" class="tsd-signature-type" data-tsd-kind="Type alias">SimpleEncryptedMessage</a><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Key Wrapping Array</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -205,7 +178,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/social_network.html">social/network</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/social_search.html">social/search</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -217,7 +190,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/types_dsnp.html">types/DSNP</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/types_simpleencryptedformat.html">types/<wbr>Simple<wbr>Encrypted<wbr>Format</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -236,71 +209,35 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.semx25519.html" class="tsd-kind-icon">SEMx25519</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.semxsalsa20.html" class="tsd-kind-icon">SEMx<wbr>Salsa20</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.skfx25519base.html" class="tsd-kind-icon">SKFx25519<wbr>Base</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.skfx25519withprivate.html" class="tsd-kind-icon">SKFx25519<wbr>With<wbr>Private</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.skfx25519withpublic.html" class="tsd-kind-icon">SKFx25519<wbr>With<wbr>Public</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.skfxsalsa20.html" class="tsd-kind-icon">SKFx<wbr>Salsa20</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.wrappedsem.html" class="tsd-kind-icon">WrappedSEM</a>
+						<a href="social_search.basefilters.html" class="tsd-kind-icon">Base<wbr>Filters</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_simpleencryptedformat.wrappedsem.html#c" class="tsd-kind-icon">c</a>
+								<a href="social_search.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_simpleencryptedformat.wrappedsem.html#n" class="tsd-kind-icon">n</a>
+								<a href="social_search.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_simpleencryptedformat.wrappedsem.html#t" class="tsd-kind-icon">t</a>
+								<a href="social_search.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_simpleencryptedformat.wrappedsem.html#v" class="tsd-kind-icon">v</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_simpleencryptedformat.wrappedsem.html#w" class="tsd-kind-icon">w</a>
+								<a href="social_search.basefilters.html#types" class="tsd-kind-icon">types</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_simpleencryptedformat.wrappedsemxsalsa20.html" class="tsd-kind-icon">WrappedSEMx<wbr>Salsa20</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/social_search.html#fetchevents" class="tsd-kind-icon">fetch<wbr>Events</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#algorithms" class="tsd-kind-icon">Algorithms</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/social_search.html#subscribe" class="tsd-kind-icon">subscribe</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#compressedsem" class="tsd-kind-icon">CompressedSEM</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#keytypes" class="tsd-kind-icon">Key<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#publickey" class="tsd-kind-icon">Public<wbr>Key</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#skfx25519" class="tsd-kind-icon">SKFx25519</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#simpleencryptedmessage" class="tsd-kind-icon">Simple<wbr>Encrypted<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_simpleencryptedformat.html#simplekeyformat" class="tsd-kind-icon">Simple<wbr>Key<wbr>Format</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/social_search.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
 					</li>
 				</ul>
 			</nav>

@@ -168,13 +168,1041 @@
 		},
 		{
 			"id": 17,
-			"name": "announcement/announcement",
+			"name": "activityPub/activityPub",
 			"kind": 1,
 			"kindString": "Module",
 			"flags": {},
 			"children": [
 				{
 					"id": 18,
+					"name": "ActivityPub",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 19,
+							"name": "@context",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								19
+							]
+						}
+					]
+				},
+				{
+					"id": 23,
+					"name": "ActivityPubCreateOpts",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 25,
+							"name": "description",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 24,
+							"name": "title",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								25,
+								24
+							]
+						}
+					]
+				},
+				{
+					"id": 26,
+					"name": "create",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 27,
+							"name": "create",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "create() provides a simple factory for generating activityPub objects. This\nmethod is not yet implemented.",
+								"returns": "An activity pub object\n"
+							},
+							"parameters": [
+								{
+									"id": 28,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 23,
+										"name": "ActivityPubCreateOpts"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"id": 18,
+								"name": "ActivityPub"
+							}
+						}
+					]
+				},
+				{
+					"id": 20,
+					"name": "hash",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 21,
+							"name": "hash",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "hash() provides a simple way to hash activityPub objects while guaranteeing\nthat identical objects with different key orders still return the same hash.\nThe underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).",
+								"returns": "A hexadecimal string containing the Keccak hash\n"
+							},
+							"parameters": [
+								{
+									"id": 22,
+									"name": "data",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The activity pub object to hash"
+									},
+									"type": {
+										"type": "reference",
+										"id": 18,
+										"name": "ActivityPub"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				},
+				{
+					"id": 29,
+					"name": "validate",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 30,
+							"name": "validate",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "validate() returns true if the object provided is a valid activityPub.\nOtherwise, it returns false. This method is not yet implemented.",
+								"returns": "True or false depending on whether the given object is a valid\n"
+							},
+							"parameters": [
+								{
+									"id": 31,
+									"name": "_obj",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "boolean"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						18,
+						23
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						26,
+						20,
+						29
+					]
+				}
+			]
+		},
+		{
+			"id": 32,
+			"name": "batch/batch",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 33,
+					"name": "BatchFileObject",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 34,
+					"name": "createFile",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 35,
+							"name": "createFile",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "createFile() takes a series of activity pub objects and returns a Batch file\nobject for publishing. This method is not yet implemented.",
+								"returns": "A batch file object\n",
+								"tags": [
+									{
+										"tag": "params",
+										"text": "events  An array of DSNPEvents to include in the batch file"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 36,
+									"name": "_events",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"id": 196,
+											"name": "MessageType"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				},
+				{
+					"id": 37,
+					"name": "openFile",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 38,
+							"name": "openFile",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "openFile() takes a Batch file object . This method is not yet implemented.",
+								"returns": "An array of DSNPEvents from the batch file\n",
+								"tags": [
+									{
+										"tag": "params",
+										"text": "file  A batch file object to open"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 39,
+									"name": "_file",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"id": 196,
+									"name": "MessageType"
+								}
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						33
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						34,
+						37
+					]
+				}
+			]
+		},
+		{
+			"id": 40,
+			"name": "batch/memoryQueue",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 49,
+					"name": "default",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 50,
+							"name": "default",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 53,
+								"name": "QueueInterface"
+							}
+						}
+					]
+				},
+				{
+					"id": 44,
+					"name": "dequeue",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 45,
+							"name": "dequeue",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "dequeue() implements the dequeue function of the QueueInterface. It takes an\nid, removes any events in the queue with matching ids and returns the removed\nevent. This method is not yet implemented.",
+								"returns": "The removed event\n"
+							},
+							"parameters": [
+								{
+									"id": 46,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 196,
+										"name": "MessageType"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 41,
+					"name": "enqueue",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 42,
+							"name": "enqueue",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "enqueue() implements the enqueue function of the QueueInterface. It takes a\nDSNP event, adds it to an in-memory store and returns an id which can be used\nto reverse this action, if needed. This method is not yet implemented.",
+								"returns": "A queue id to be used to remove the event if needed\n"
+							},
+							"parameters": [
+								{
+									"id": 43,
+									"name": "_event",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 196,
+										"name": "MessageType"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 47,
+					"name": "getAll",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 48,
+							"name": "getAll",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "getAll() implements the getAll function of the QueueInterface. It returns an\narray of all items currently in the queue and clears the queue. This method\nis not yet implemented.",
+								"returns": "An array of all events currently in the queue\n"
+							},
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"id": 196,
+											"name": "MessageType"
+										}
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						49,
+						44,
+						41,
+						47
+					]
+				}
+			]
+		},
+		{
+			"id": 51,
+			"name": "batch/queue",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 53,
+					"name": "QueueInterface",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 57,
+							"name": "dequeue",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 58,
+									"name": "dequeue",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 59,
+											"name": "id",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "reference",
+												"id": 196,
+												"name": "MessageType"
+											}
+										],
+										"name": "Promise"
+									}
+								}
+							]
+						},
+						{
+							"id": 54,
+							"name": "enqueue",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 55,
+									"name": "enqueue",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 56,
+											"name": "dsnpEvent",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"id": 196,
+												"name": "MessageType"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Promise"
+									}
+								}
+							]
+						},
+						{
+							"id": 60,
+							"name": "getAll",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 61,
+									"name": "getAll",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"id": 196,
+													"name": "MessageType"
+												}
+											}
+										],
+										"name": "Promise"
+									}
+								}
+							]
+						}
+					],
+					"groups": [
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								57,
+								54,
+								60
+							]
+						}
+					]
+				},
+				{
+					"id": 52,
+					"name": "QueueId",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"id": 305,
+						"name": "HexString"
+					}
+				},
+				{
+					"id": 70,
+					"name": "commit",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 71,
+							"name": "commit",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "commit() creates a batch file from the current activity pub events in the\nqueue then clears the queue. This method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 72,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 66,
+					"name": "dequeue",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 67,
+							"name": "dequeue",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "dequeue() removes an activity pub event from the queue for later publishing\nto the blockchain. This method is not yet implemented.",
+								"returns": "The DSNP event event removed from the queue\n"
+							},
+							"parameters": [
+								{
+									"id": 68,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 69,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 196,
+										"name": "MessageType"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 62,
+					"name": "enqueue",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 63,
+							"name": "enqueue",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "enqueue() adds an activity pub event to the queue for later publishing to the\nblockchain as a batch file. This method is not yet implemented.",
+								"returns": "An ID for the queued event\n"
+							},
+							"parameters": [
+								{
+									"id": 64,
+									"name": "_event",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 196,
+										"name": "MessageType"
+									}
+								},
+								{
+									"id": 65,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						53
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						52
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						70,
+						66,
+						62
+					]
+				}
+			]
+		},
+		{
+			"id": 73,
+			"name": "config/config",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 74,
+					"name": "Config",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 76,
+							"name": "queue",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 53,
+								"name": "QueueInterface"
+							}
+						},
+						{
+							"id": 75,
+							"name": "store",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 180,
+								"name": "StorageInterface"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								76,
+								75
+							]
+						}
+					]
+				},
+				{
+					"id": 77,
+					"name": "getConfig",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 78,
+							"name": "getConfig",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "getConfig() fetches the current configuration settings and returns them. This\nmethod is not yet implemented.",
+								"returns": "The current configuration settings\n"
+							},
+							"parameters": [
+								{
+									"id": 79,
+									"name": "_overrides",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"id": 74,
+								"name": "Config"
+							}
+						}
+					]
+				},
+				{
+					"id": 80,
+					"name": "setConfig",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 81,
+							"name": "setConfig",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "setConfig() sets the current configuration with the given object. This method\nis not yet implemented.",
+								"tags": [
+									{
+										"tag": "params",
+										"text": "obj  The configuration settings to set with\n"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 82,
+									"name": "_obj",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						74
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						77,
+						80
+					]
+				}
+			]
+		},
+		{
+			"id": 83,
+			"name": "contracts/announcement",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 84,
 					"name": "batch",
 					"kind": 64,
 					"kindString": "Function",
@@ -183,7 +1211,7 @@
 					},
 					"signatures": [
 						{
-							"id": 19,
+							"id": 85,
 							"name": "batch",
 							"kind": 4096,
 							"kindString": "Call signature",
@@ -194,7 +1222,7 @@
 							},
 							"parameters": [
 								{
-									"id": 20,
+									"id": 86,
 									"name": "provider",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -208,7 +1236,7 @@
 									}
 								},
 								{
-									"id": 21,
+									"id": 87,
 									"name": "accountAddress",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -222,7 +1250,7 @@
 									}
 								},
 								{
-									"id": 22,
+									"id": 88,
 									"name": "uri",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -236,7 +1264,7 @@
 									}
 								},
 								{
-									"id": 23,
+									"id": 89,
 									"name": "hash",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -269,20 +1297,1657 @@
 					"title": "Functions",
 					"kind": 64,
 					"children": [
-						18
+						84
 					]
 				}
 			]
 		},
 		{
-			"id": 24,
+			"id": 90,
+			"name": "social/content",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 91,
+					"name": "broadcast",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 92,
+							"name": "broadcast",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "broadcast() creates a broadcast DSNP event and enqueues it for the next\nbatch. This method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 93,
+									"name": "_activityPubOpts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 23,
+										"name": "ActivityPubCreateOpts"
+									}
+								},
+								{
+									"id": 94,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 99,
+					"name": "react",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 100,
+							"name": "react",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "react() creates a reaction activity pub event and enqueues it for the next\nbatch. This method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 101,
+									"name": "_activityPubOpts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 23,
+										"name": "ActivityPubCreateOpts"
+									}
+								},
+								{
+									"id": 102,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 95,
+					"name": "reply",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 96,
+							"name": "reply",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "reply() creates a reply activity pub event and enqueues it for the next\nbatch. This method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 97,
+									"name": "_activityPubOpts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 23,
+										"name": "ActivityPubCreateOpts"
+									}
+								},
+								{
+									"id": 98,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						91,
+						99,
+						95
+					]
+				}
+			]
+		},
+		{
+			"id": 103,
+			"name": "social/handles",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 104,
+					"name": "User",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 107,
+							"name": "dateOfBirth",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"name": "Date"
+							}
+						},
+						{
+							"id": 105,
+							"name": "handle",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 106,
+							"name": "sign",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						},
+						{
+							"id": 108,
+							"name": "social",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "number"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								107,
+								105,
+								106,
+								108
+							]
+						}
+					]
+				},
+				{
+					"id": 109,
+					"name": "Handle",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 127,
+					"name": "addressToHandles",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 128,
+							"name": "addressToHandles",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "addressToHandles() takes a DSNP identity address and returns an array of all\nassociated DSNP handles. This method is not yet implemented.",
+								"returns": "An array of DSNP handles associated with the address\n"
+							},
+							"parameters": [
+								{
+									"id": 129,
+									"name": "_address",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 130,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 110,
+					"name": "authenticateHandle",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 111,
+							"name": "authenticateHandle",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "authenticateHandle() claims a registry handle to the current user. If the\ngiven handle has not yet been claimed, the handle will be claimed by the\ncurrent configured DSNP address. If the handle has been previously claimed by\nthe current address, the handle will be set to the active handle and used for\nall events created on chain. If the handle has been previously claimed by an\naddress other than the current DSNP address, an error will be thrown. This\nmethod is very much not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 112,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 113,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 114,
+					"name": "getUser",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 115,
+							"name": "getUser",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "getUser() fetches information regarding the current published state of a\ngiven user by handle. This method is not yet implemented.",
+								"returns": "The User object associated with the given Handle\n"
+							},
+							"parameters": [
+								{
+									"id": 116,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 117,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 104,
+										"name": "User"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 123,
+					"name": "handleToAddress",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 124,
+							"name": "handleToAddress",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "handleToAddress() takes a DSNP handle and returns the associated DSNP\nidentity address. This method is not yet implemented.",
+								"returns": "The DSNP address associated with the given handle\n"
+							},
+							"parameters": [
+								{
+									"id": 125,
+									"name": "_handle",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 126,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 118,
+					"name": "updateUser",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 119,
+							"name": "updateUser",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "updateUser() updates profile data for the user given by handle. This method\nwill only work if the given handle has already been authenticated. This\nmethod is not yet implemented.",
+								"returns": "The User object associated with the given Handle\n"
+							},
+							"parameters": [
+								{
+									"id": 120,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 121,
+									"name": "_user",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 104,
+										"name": "User"
+									}
+								},
+								{
+									"id": 122,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 104,
+										"name": "User"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						104
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						109
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						127,
+						110,
+						114,
+						123,
+						118
+					]
+				}
+			]
+		},
+		{
+			"id": 131,
+			"name": "social/network",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 132,
+					"name": "follow",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 133,
+							"name": "follow",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "follow() creates a follow event and enqueues it for the next batch. This\nmethod is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 134,
+									"name": "_handle",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 135,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 149,
+					"name": "getFollowees",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 150,
+							"name": "getFollowees",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "getFollowees() scans the current state of the network and returns an array of\nall user handles being followed by the given follower handle. This method is\nnot yet implemented.",
+								"returns": "An array of all users followed by the follower user\n"
+							},
+							"parameters": [
+								{
+									"id": 151,
+									"name": "_follower",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 152,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 145,
+					"name": "getFollowers",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 146,
+							"name": "getFollowers",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "getFollowers() scans the current state of the network and returns an array of\nall user handles following the given followee handle. This method is not yet\nimplemented.",
+								"returns": "An array of all users following the followee\n"
+							},
+							"parameters": [
+								{
+									"id": 147,
+									"name": "_followee",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 148,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 140,
+					"name": "isFollowing",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 141,
+							"name": "isFollowing",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "isFollowing() scans the current state of the network and returns a boolean\nrepresenting whether or not a given user is following another given user.\nThis method is not yet implemented.",
+								"returns": "A boolean representing whether or not the follower is following the followee\n"
+							},
+							"parameters": [
+								{
+									"id": 142,
+									"name": "_follower",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 143,
+									"name": "_followee",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 144,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "boolean"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 136,
+					"name": "unfollow",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 137,
+							"name": "unfollow",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "unfollow() creates an unfollow event and enqueues it for the next batch.\nThis method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 138,
+									"name": "_handle",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 139,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						132,
+						149,
+						145,
+						140,
+						136
+					]
+				}
+			]
+		},
+		{
+			"id": 153,
+			"name": "social/search",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 154,
+					"name": "BaseFilters",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"comment": {
+						"tags": [
+							{
+								"tag": "property",
+								"text": "{string[]} types          The type of events to fetch, i.e. \"notes\", \"follows\" etc."
+							},
+							{
+								"tag": "property",
+								"text": "{Handle[]} includeHandles List of user handles to fetch events from. If not present, all users not listed in excludeHandles will be included."
+							},
+							{
+								"tag": "property",
+								"text": "{Handle[]} excludeHandles List of user handles to exclude from results, such as a blocklist."
+							},
+							{
+								"tag": "property",
+								"text": "{HexString[]} inReplyTo  List of hashes to seek replies to. For use in fetching comments and reactions.\n"
+							}
+						]
+					},
+					"children": [
+						{
+							"id": 157,
+							"name": "excludeHandles",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						},
+						{
+							"id": 158,
+							"name": "inReplyTo",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						},
+						{
+							"id": 156,
+							"name": "includeHandles",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {
+								"isOptional": true
+							},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						},
+						{
+							"id": 155,
+							"name": "types",
+							"kind": 1024,
+							"kindString": "Property",
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "intrinsic",
+									"name": "string"
+								}
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Properties",
+							"kind": 1024,
+							"children": [
+								157,
+								158,
+								156,
+								155
+							]
+						}
+					]
+				},
+				{
+					"id": 166,
+					"name": "fetchEvents",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 167,
+							"name": "fetchEvents",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "fetchEvents() fetches the most recent activity pub events matching the given\nsearch criteria. This method is not yet implemented.",
+								"returns": "An array of events\n"
+							},
+							"parameters": [
+								{
+									"id": 168,
+									"name": "_filters",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "FetchFilters"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"id": 196,
+											"name": "MessageType"
+										}
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 159,
+					"name": "subscribe",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 160,
+							"name": "subscribe",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "subscribe() takes a callback to invoke upon receiving new activity pub events\nmatching the given criteria. This method only works if the web3 provider set\nin the configuration is a websocket provider. This method is not yet\nimplemented.",
+								"returns": "A subscription id to unsubscribe later if needed\n"
+							},
+							"parameters": [
+								{
+									"id": 161,
+									"name": "_filters",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 154,
+										"name": "BaseFilters"
+									}
+								},
+								{
+									"id": 162,
+									"name": "_callback",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"name": "SubscriptionCallbackFn"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				},
+				{
+					"id": 163,
+					"name": "unsubscribe",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 164,
+							"name": "unsubscribe",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "unsubscribe() removes a subscription callback created with the subscribe\nmethod. This method only works if the web3 provider set in the configuration\nis a websocket provider. This method is not yet implemented."
+							},
+							"parameters": [
+								{
+									"id": 165,
+									"name": "_id",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						154
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						166,
+						159,
+						163
+					]
+				}
+			]
+		},
+		{
+			"id": 169,
+			"name": "storage/memoryStorage",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 176,
+					"name": "default",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 177,
+							"name": "default",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"id": 180,
+								"name": "StorageInterface"
+							}
+						}
+					]
+				},
+				{
+					"id": 173,
+					"name": "fetch",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 174,
+							"name": "fetch",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "fetch() implements the fetch function of the StorageInterface. It takes the\nURI of a file to fetch and returns the file. This method is not yet\nimplemented.",
+								"returns": "The fetched file\n"
+							},
+							"parameters": [
+								{
+									"id": 175,
+									"name": "_uri",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 179,
+										"name": "File"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 170,
+					"name": "store",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 171,
+							"name": "store",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "store() implements the store function of the StorageInterface. It takes a\nfile object to store and returns a URI for the stored data. This method is\nnot yet implemented.",
+								"returns": "The URI of the stored file\n"
+							},
+							"parameters": [
+								{
+									"id": 172,
+									"name": "_file",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 179,
+										"name": "File"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						176,
+						173,
+						170
+					]
+				}
+			]
+		},
+		{
+			"id": 178,
+			"name": "storage/storage",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 180,
+					"name": "StorageInterface",
+					"kind": 256,
+					"kindString": "Interface",
+					"flags": {},
+					"children": [
+						{
+							"id": 184,
+							"name": "fetch",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 185,
+									"name": "fetch",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 186,
+											"name": "uri",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "reference",
+												"id": 179,
+												"name": "File"
+											}
+										],
+										"name": "Promise"
+									}
+								}
+							]
+						},
+						{
+							"id": 181,
+							"name": "store",
+							"kind": 2048,
+							"kindString": "Method",
+							"flags": {},
+							"signatures": [
+								{
+									"id": 182,
+									"name": "store",
+									"kind": 4096,
+									"kindString": "Call signature",
+									"flags": {},
+									"parameters": [
+										{
+											"id": 183,
+											"name": "file",
+											"kind": 32768,
+											"kindString": "Parameter",
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"id": 179,
+												"name": "File"
+											}
+										}
+									],
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										],
+										"name": "Promise"
+									}
+								}
+							]
+						}
+					],
+					"groups": [
+						{
+							"title": "Methods",
+							"kind": 2048,
+							"children": [
+								184,
+								181
+							]
+						}
+					]
+				},
+				{
+					"id": 179,
+					"name": "File",
+					"kind": 4194304,
+					"kindString": "Type alias",
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "reference",
+								"id": 33,
+								"name": "BatchFileObject"
+							},
+							{
+								"type": "reference",
+								"id": 18,
+								"name": "ActivityPub"
+							}
+						]
+					}
+				},
+				{
+					"id": 191,
+					"name": "fetch",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 192,
+							"name": "fetch",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "fetch() takes a URI and fetches a batch file from the given address. This\nmethod is not yet implemented.",
+								"returns": "The batch file fetched from the given URI\n",
+								"tags": [
+									{
+										"tag": "throws",
+										"text": "HTTPError\nIndicates an error was thrown at the HTTP layer. This may indicate that the\nhost has censored the content for legal reasons if the error code is 451.\n"
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 193,
+									"name": "_uri",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 194,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "reference",
+										"id": 179,
+										"name": "File"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				},
+				{
+					"id": 187,
+					"name": "store",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 188,
+							"name": "store",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "store() takes a batch file to store with the chosen hosting solution and\nreturns the URI of the file once stored. This method is not yet implemented.",
+								"returns": "The URI of the hosted file\n"
+							},
+							"parameters": [
+								{
+									"id": 189,
+									"name": "_file",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"id": 179,
+										"name": "File"
+									}
+								},
+								{
+									"id": 190,
+									"name": "_opts",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reference",
+										"id": 74,
+										"name": "Config"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Interfaces",
+					"kind": 256,
+					"children": [
+						180
+					]
+				},
+				{
+					"title": "Type aliases",
+					"kind": 4194304,
+					"children": [
+						179
+					]
+				},
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						191,
+						187
+					]
+				}
+			]
+		},
+		{
+			"id": 195,
 			"name": "types/DSNP",
 			"kind": 1,
 			"kindString": "Module",
 			"flags": {},
 			"children": [
 				{
-					"id": 29,
+					"id": 200,
 					"name": "Broadcast",
 					"kind": 256,
 					"kindString": "Interface",
@@ -292,7 +2957,7 @@
 					},
 					"children": [
 						{
-							"id": 33,
+							"id": 204,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -304,12 +2969,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 32,
+							"id": 203,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -323,12 +2988,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 30,
+							"id": 201,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -342,7 +3007,7 @@
 							}
 						},
 						{
-							"id": 31,
+							"id": 202,
 							"name": "uri",
 							"kind": 1024,
 							"kindString": "Property",
@@ -361,23 +3026,23 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								33,
-								32,
-								30,
-								31
+								204,
+								203,
+								201,
+								202
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 40,
+					"id": 211,
 					"name": "Drop",
 					"kind": 256,
 					"kindString": "Interface",
@@ -387,7 +3052,7 @@
 					},
 					"children": [
 						{
-							"id": 45,
+							"id": 216,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -399,12 +3064,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 41,
+							"id": 212,
 							"name": "deadDropID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -418,7 +3083,7 @@
 							}
 						},
 						{
-							"id": 44,
+							"id": 215,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -432,12 +3097,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 42,
+							"id": 213,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -451,7 +3116,7 @@
 							}
 						},
 						{
-							"id": 43,
+							"id": 214,
 							"name": "uri",
 							"kind": 1024,
 							"kindString": "Property",
@@ -470,24 +3135,24 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								45,
-								41,
-								44,
-								42,
-								43
+								216,
+								212,
+								215,
+								213,
+								214
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 67,
+					"id": 238,
 					"name": "EncryptedInbox",
 					"kind": 256,
 					"kindString": "Interface",
@@ -497,7 +3162,7 @@
 					},
 					"children": [
 						{
-							"id": 72,
+							"id": 243,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -509,12 +3174,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 71,
+							"id": 242,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -528,12 +3193,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 69,
+							"id": 240,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -547,7 +3212,7 @@
 							}
 						},
 						{
-							"id": 68,
+							"id": 239,
 							"name": "toAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -561,7 +3226,7 @@
 							}
 						},
 						{
-							"id": 70,
+							"id": 241,
 							"name": "uri",
 							"kind": 1024,
 							"kindString": "Property",
@@ -580,31 +3245,31 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								72,
-								71,
-								69,
-								68,
-								70
+								243,
+								242,
+								240,
+								239,
+								241
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 58,
+					"id": 229,
 					"name": "EncryptionKeyList",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 61,
+							"id": 232,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -616,12 +3281,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 60,
+							"id": 231,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -635,12 +3300,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 59,
+							"id": 230,
 							"name": "keyList",
 							"kind": 1024,
 							"kindString": "Property",
@@ -659,22 +3324,22 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								61,
-								60,
-								59
+								232,
+								231,
+								230
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 46,
+					"id": 217,
 					"name": "GraphChange",
 					"kind": 256,
 					"kindString": "Interface",
@@ -684,7 +3349,7 @@
 					},
 					"children": [
 						{
-							"id": 49,
+							"id": 220,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -696,12 +3361,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 47,
+							"id": 218,
 							"name": "followType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -724,7 +3389,7 @@
 							}
 						},
 						{
-							"id": 48,
+							"id": 219,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -738,7 +3403,7 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						}
@@ -748,22 +3413,22 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								49,
-								47,
-								48
+								220,
+								218,
+								219
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 50,
+					"id": 221,
 					"name": "KeyList",
 					"kind": 256,
 					"kindString": "Interface",
@@ -773,7 +3438,7 @@
 					},
 					"children": [
 						{
-							"id": 53,
+							"id": 224,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -785,12 +3450,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 52,
+							"id": 223,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -804,12 +3469,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 51,
+							"id": 222,
 							"name": "keyList",
 							"kind": 1024,
 							"kindString": "Property",
@@ -828,29 +3493,29 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								53,
-								52,
-								51
+								224,
+								223,
+								222
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 26,
+					"id": 197,
 					"name": "Message",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 28,
+							"id": 199,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -862,7 +3527,7 @@
 							}
 						},
 						{
-							"id": 27,
+							"id": 198,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -881,71 +3546,71 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								28,
-								27
+								199,
+								198
 							]
 						}
 					],
 					"extendedBy": [
 						{
 							"type": "reference",
-							"id": 29,
+							"id": 200,
 							"name": "Broadcast"
 						},
 						{
 							"type": "reference",
-							"id": 34,
+							"id": 205,
 							"name": "Reply"
 						},
 						{
 							"type": "reference",
-							"id": 40,
+							"id": 211,
 							"name": "Drop"
 						},
 						{
 							"type": "reference",
-							"id": 46,
+							"id": 217,
 							"name": "GraphChange"
 						},
 						{
 							"type": "reference",
-							"id": 50,
+							"id": 221,
 							"name": "KeyList"
 						},
 						{
 							"type": "reference",
-							"id": 54,
+							"id": 225,
 							"name": "PrivateGraphKeyList"
 						},
 						{
 							"type": "reference",
-							"id": 58,
+							"id": 229,
 							"name": "EncryptionKeyList"
 						},
 						{
 							"type": "reference",
-							"id": 62,
+							"id": 233,
 							"name": "Profile"
 						},
 						{
 							"type": "reference",
-							"id": 67,
+							"id": 238,
 							"name": "EncryptedInbox"
 						},
 						{
 							"type": "reference",
-							"id": 73,
+							"id": 244,
 							"name": "Reaction"
 						},
 						{
 							"type": "reference",
-							"id": 78,
+							"id": 249,
 							"name": "Private"
 						}
 					]
 				},
 				{
-					"id": 78,
+					"id": 249,
 					"name": "Private",
 					"kind": 256,
 					"kindString": "Interface",
@@ -955,7 +3620,7 @@
 					},
 					"children": [
 						{
-							"id": 82,
+							"id": 253,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -967,12 +3632,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 79,
+							"id": 250,
 							"name": "data",
 							"kind": 1024,
 							"kindString": "Property",
@@ -986,7 +3651,7 @@
 							}
 						},
 						{
-							"id": 81,
+							"id": 252,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1000,12 +3665,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 80,
+							"id": 251,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1024,30 +3689,30 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								82,
-								79,
-								81,
-								80
+								253,
+								250,
+								252,
+								251
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 54,
+					"id": 225,
 					"name": "PrivateGraphKeyList",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 57,
+							"id": 228,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1059,12 +3724,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 56,
+							"id": 227,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1078,12 +3743,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 55,
+							"id": 226,
 							"name": "keyList",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1102,22 +3767,22 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								57,
-								56,
-								55
+								228,
+								227,
+								226
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 62,
+					"id": 233,
 					"name": "Profile",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1127,7 +3792,7 @@
 					},
 					"children": [
 						{
-							"id": 66,
+							"id": 237,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1139,12 +3804,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 65,
+							"id": 236,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1158,12 +3823,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 63,
+							"id": 234,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1177,7 +3842,7 @@
 							}
 						},
 						{
-							"id": 64,
+							"id": 235,
 							"name": "uri",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1196,23 +3861,23 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								66,
-								65,
-								63,
-								64
+								237,
+								236,
+								234,
+								235
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 73,
+					"id": 244,
 					"name": "Reaction",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1222,7 +3887,7 @@
 					},
 					"children": [
 						{
-							"id": 77,
+							"id": 248,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1234,12 +3899,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 74,
+							"id": 245,
 							"name": "emoji",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1253,7 +3918,7 @@
 							}
 						},
 						{
-							"id": 76,
+							"id": 247,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1267,12 +3932,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 75,
+							"id": 246,
 							"name": "inReplyTo",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1291,23 +3956,23 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								77,
-								74,
-								76,
-								75
+								248,
+								245,
+								247,
+								246
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 34,
+					"id": 205,
 					"name": "Reply",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1317,7 +3982,7 @@
 					},
 					"children": [
 						{
-							"id": 39,
+							"id": 210,
 							"name": "actionType",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1329,12 +3994,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 28,
+								"id": 199,
 								"name": "Message.actionType"
 							}
 						},
 						{
-							"id": 38,
+							"id": 209,
 							"name": "fromAddress",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1348,12 +4013,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 27,
+								"id": 198,
 								"name": "Message.fromAddress"
 							}
 						},
 						{
-							"id": 36,
+							"id": 207,
 							"name": "inReplyTo",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1367,7 +4032,7 @@
 							}
 						},
 						{
-							"id": 35,
+							"id": 206,
 							"name": "messageID",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1381,7 +4046,7 @@
 							}
 						},
 						{
-							"id": 37,
+							"id": 208,
 							"name": "uri",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1400,24 +4065,24 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								39,
-								38,
-								36,
-								35,
-								37
+								210,
+								209,
+								207,
+								206,
+								208
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 26,
+							"id": 197,
 							"name": "Message"
 						}
 					]
 				},
 				{
-					"id": 25,
+					"id": 196,
 					"name": "MessageType",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -1427,52 +4092,52 @@
 						"types": [
 							{
 								"type": "reference",
-								"id": 78,
+								"id": 249,
 								"name": "Private"
 							},
 							{
 								"type": "reference",
-								"id": 46,
+								"id": 217,
 								"name": "GraphChange"
 							},
 							{
 								"type": "reference",
-								"id": 29,
+								"id": 200,
 								"name": "Broadcast"
 							},
 							{
 								"type": "reference",
-								"id": 62,
+								"id": 233,
 								"name": "Profile"
 							},
 							{
 								"type": "reference",
-								"id": 50,
+								"id": 221,
 								"name": "KeyList"
 							},
 							{
 								"type": "reference",
-								"id": 54,
+								"id": 225,
 								"name": "PrivateGraphKeyList"
 							},
 							{
 								"type": "reference",
-								"id": 58,
+								"id": 229,
 								"name": "EncryptionKeyList"
 							},
 							{
 								"type": "reference",
-								"id": 73,
+								"id": 244,
 								"name": "Reaction"
 							},
 							{
 								"type": "reference",
-								"id": 40,
+								"id": 211,
 								"name": "Drop"
 							},
 							{
 								"type": "reference",
-								"id": 34,
+								"id": 205,
 								"name": "Reply"
 							}
 						]
@@ -1484,31 +4149,31 @@
 					"title": "Interfaces",
 					"kind": 256,
 					"children": [
-						29,
-						40,
-						67,
-						58,
-						46,
-						50,
-						26,
-						78,
-						54,
-						62,
-						73,
-						34
+						200,
+						211,
+						238,
+						229,
+						217,
+						221,
+						197,
+						249,
+						225,
+						233,
+						244,
+						205
 					]
 				},
 				{
 					"title": "Type aliases",
 					"kind": 4194304,
 					"children": [
-						25
+						196
 					]
 				}
 			]
 		},
 		{
-			"id": 83,
+			"id": 254,
 			"name": "types/SimpleEncryptedFormat",
 			"kind": 1,
 			"kindString": "Module",
@@ -1518,7 +4183,7 @@
 			},
 			"children": [
 				{
-					"id": 86,
+					"id": 257,
 					"name": "SEMx25519",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1528,7 +4193,7 @@
 					},
 					"children": [
 						{
-							"id": 87,
+							"id": 258,
 							"name": "c",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1542,7 +4207,7 @@
 							}
 						},
 						{
-							"id": 88,
+							"id": 259,
 							"name": "e",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1556,7 +4221,7 @@
 							}
 						},
 						{
-							"id": 89,
+							"id": 260,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1570,7 +4235,7 @@
 							}
 						},
 						{
-							"id": 90,
+							"id": 261,
 							"name": "n",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1584,7 +4249,7 @@
 							}
 						},
 						{
-							"id": 91,
+							"id": 262,
 							"name": "v",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1603,17 +4268,17 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								87,
-								88,
-								89,
-								90,
-								91
+								258,
+								259,
+								260,
+								261,
+								262
 							]
 						}
 					]
 				},
 				{
-					"id": 92,
+					"id": 263,
 					"name": "SEMxSalsa20",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1623,7 +4288,7 @@
 					},
 					"children": [
 						{
-							"id": 93,
+							"id": 264,
 							"name": "c",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1637,7 +4302,7 @@
 							}
 						},
 						{
-							"id": 94,
+							"id": 265,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1653,7 +4318,7 @@
 							}
 						},
 						{
-							"id": 95,
+							"id": 266,
 							"name": "n",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1667,7 +4332,7 @@
 							}
 						},
 						{
-							"id": 96,
+							"id": 267,
 							"name": "v",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1686,16 +4351,16 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								93,
-								94,
-								95,
-								96
+								264,
+								265,
+								266,
+								267
 							]
 						}
 					]
 				},
 				{
-					"id": 98,
+					"id": 269,
 					"name": "SKFx25519Base",
 					"kind": 256,
 					"kindString": "Interface",
@@ -1705,7 +4370,7 @@
 					},
 					"children": [
 						{
-							"id": 100,
+							"id": 271,
 							"name": "d",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1721,7 +4386,7 @@
 							}
 						},
 						{
-							"id": 102,
+							"id": 273,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1737,7 +4402,7 @@
 							}
 						},
 						{
-							"id": 101,
+							"id": 272,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1751,7 +4416,7 @@
 							}
 						},
 						{
-							"id": 99,
+							"id": 270,
 							"name": "x",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1772,35 +4437,35 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								100,
-								102,
-								101,
-								99
+								271,
+								273,
+								272,
+								270
 							]
 						}
 					],
 					"extendedBy": [
 						{
 							"type": "reference",
-							"id": 104,
+							"id": 275,
 							"name": "SKFx25519WithPrivate"
 						},
 						{
 							"type": "reference",
-							"id": 109,
+							"id": 280,
 							"name": "SKFx25519WithPublic"
 						}
 					]
 				},
 				{
-					"id": 104,
+					"id": 275,
 					"name": "SKFx25519WithPrivate",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 105,
+							"id": 276,
 							"name": "d",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1814,12 +4479,12 @@
 							},
 							"overwrites": {
 								"type": "reference",
-								"id": 100,
+								"id": 271,
 								"name": "SKFx25519Base.d"
 							}
 						},
 						{
-							"id": 108,
+							"id": 279,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1835,12 +4500,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 102,
+								"id": 273,
 								"name": "SKFx25519Base.k"
 							}
 						},
 						{
-							"id": 107,
+							"id": 278,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1854,12 +4519,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 101,
+								"id": 272,
 								"name": "SKFx25519Base.t"
 							}
 						},
 						{
-							"id": 106,
+							"id": 277,
 							"name": "x",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1875,7 +4540,7 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 99,
+								"id": 270,
 								"name": "SKFx25519Base.x"
 							}
 						}
@@ -1885,30 +4550,30 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								105,
-								108,
-								107,
-								106
+								276,
+								279,
+								278,
+								277
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 98,
+							"id": 269,
 							"name": "SKFx25519Base"
 						}
 					]
 				},
 				{
-					"id": 109,
+					"id": 280,
 					"name": "SKFx25519WithPublic",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 111,
+							"id": 282,
 							"name": "d",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1924,12 +4589,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 100,
+								"id": 271,
 								"name": "SKFx25519Base.d"
 							}
 						},
 						{
-							"id": 113,
+							"id": 284,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1945,12 +4610,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 102,
+								"id": 273,
 								"name": "SKFx25519Base.k"
 							}
 						},
 						{
-							"id": 112,
+							"id": 283,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1964,12 +4629,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 101,
+								"id": 272,
 								"name": "SKFx25519Base.t"
 							}
 						},
 						{
-							"id": 110,
+							"id": 281,
 							"name": "x",
 							"kind": 1024,
 							"kindString": "Property",
@@ -1983,7 +4648,7 @@
 							},
 							"overwrites": {
 								"type": "reference",
-								"id": 99,
+								"id": 270,
 								"name": "SKFx25519Base.x"
 							}
 						}
@@ -1993,23 +4658,23 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								111,
-								113,
-								112,
-								110
+								282,
+								284,
+								283,
+								281
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 98,
+							"id": 269,
 							"name": "SKFx25519Base"
 						}
 					]
 				},
 				{
-					"id": 126,
+					"id": 297,
 					"name": "SKFxSalsa20",
 					"kind": 256,
 					"kindString": "Interface",
@@ -2019,7 +4684,7 @@
 					},
 					"children": [
 						{
-							"id": 129,
+							"id": 300,
 							"name": "k",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2035,7 +4700,7 @@
 							}
 						},
 						{
-							"id": 128,
+							"id": 299,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2049,7 +4714,7 @@
 							}
 						},
 						{
-							"id": 127,
+							"id": 298,
 							"name": "x",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2068,15 +4733,15 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								129,
-								128,
-								127
+								300,
+								299,
+								298
 							]
 						}
 					]
 				},
 				{
-					"id": 114,
+					"id": 285,
 					"name": "WrappedSEM",
 					"kind": 256,
 					"kindString": "Interface",
@@ -2086,7 +4751,7 @@
 					},
 					"children": [
 						{
-							"id": 115,
+							"id": 286,
 							"name": "c",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2100,7 +4765,7 @@
 							}
 						},
 						{
-							"id": 116,
+							"id": 287,
 							"name": "n",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2116,7 +4781,7 @@
 							}
 						},
 						{
-							"id": 119,
+							"id": 290,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2126,12 +4791,12 @@
 							},
 							"type": {
 								"type": "reference",
-								"id": 84,
+								"id": 255,
 								"name": "KeyTypes"
 							}
 						},
 						{
-							"id": 117,
+							"id": 288,
 							"name": "v",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2141,12 +4806,12 @@
 							},
 							"type": {
 								"type": "reference",
-								"id": 85,
+								"id": 256,
 								"name": "Algorithms"
 							}
 						},
 						{
-							"id": 118,
+							"id": 289,
 							"name": "w",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2158,7 +4823,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"id": 97,
+									"id": 268,
 									"name": "SimpleEncryptedMessage"
 								}
 							}
@@ -2169,31 +4834,31 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								115,
-								116,
-								119,
-								117,
-								118
+								286,
+								287,
+								290,
+								288,
+								289
 							]
 						}
 					],
 					"extendedBy": [
 						{
 							"type": "reference",
-							"id": 120,
+							"id": 291,
 							"name": "WrappedSEMxSalsa20"
 						}
 					]
 				},
 				{
-					"id": 120,
+					"id": 291,
 					"name": "WrappedSEMxSalsa20",
 					"kind": 256,
 					"kindString": "Interface",
 					"flags": {},
 					"children": [
 						{
-							"id": 124,
+							"id": 295,
 							"name": "c",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2207,12 +4872,12 @@
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 115,
+								"id": 286,
 								"name": "WrappedSEM.c"
 							}
 						},
 						{
-							"id": 121,
+							"id": 292,
 							"name": "n",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2226,12 +4891,12 @@
 							},
 							"overwrites": {
 								"type": "reference",
-								"id": 116,
+								"id": 287,
 								"name": "WrappedSEM.n"
 							}
 						},
 						{
-							"id": 122,
+							"id": 293,
 							"name": "t",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2245,12 +4910,12 @@
 							},
 							"overwrites": {
 								"type": "reference",
-								"id": 119,
+								"id": 290,
 								"name": "WrappedSEM.t"
 							}
 						},
 						{
-							"id": 123,
+							"id": 294,
 							"name": "v",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2264,12 +4929,12 @@
 							},
 							"overwrites": {
 								"type": "reference",
-								"id": 117,
+								"id": 288,
 								"name": "WrappedSEM.v"
 							}
 						},
 						{
-							"id": 125,
+							"id": 296,
 							"name": "w",
 							"kind": 1024,
 							"kindString": "Property",
@@ -2281,13 +4946,13 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"id": 97,
+									"id": 268,
 									"name": "SimpleEncryptedMessage"
 								}
 							},
 							"inheritedFrom": {
 								"type": "reference",
-								"id": 118,
+								"id": 289,
 								"name": "WrappedSEM.w"
 							}
 						}
@@ -2297,24 +4962,24 @@
 							"title": "Properties",
 							"kind": 1024,
 							"children": [
-								124,
-								121,
-								122,
-								123,
-								125
+								295,
+								292,
+								293,
+								294,
+								296
 							]
 						}
 					],
 					"extendedTypes": [
 						{
 							"type": "reference",
-							"id": 114,
+							"id": 285,
 							"name": "WrappedSEM"
 						}
 					]
 				},
 				{
-					"id": 85,
+					"id": 256,
 					"name": "Algorithms",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2334,7 +4999,7 @@
 					}
 				},
 				{
-					"id": 131,
+					"id": 302,
 					"name": "CompressedSEM",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2344,12 +5009,12 @@
 					},
 					"type": {
 						"type": "reference",
-						"id": 134,
+						"id": 305,
 						"name": "HexString"
 					}
 				},
 				{
-					"id": 84,
+					"id": 255,
 					"name": "KeyTypes",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2369,7 +5034,7 @@
 					}
 				},
 				{
-					"id": 132,
+					"id": 303,
 					"name": "PublicKey",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2382,24 +5047,24 @@
 						"types": [
 							{
 								"type": "reference",
-								"id": 103,
+								"id": 274,
 								"name": "SKFx25519"
 							},
 							{
 								"type": "reference",
-								"id": 134,
+								"id": 305,
 								"name": "HexString"
 							},
 							{
 								"type": "reference",
-								"id": 137,
+								"id": 308,
 								"name": "Base64UrlString"
 							}
 						]
 					}
 				},
 				{
-					"id": 103,
+					"id": 274,
 					"name": "SKFx25519",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2409,19 +5074,19 @@
 						"types": [
 							{
 								"type": "reference",
-								"id": 104,
+								"id": 275,
 								"name": "SKFx25519WithPrivate"
 							},
 							{
 								"type": "reference",
-								"id": 109,
+								"id": 280,
 								"name": "SKFx25519WithPublic"
 							}
 						]
 					}
 				},
 				{
-					"id": 97,
+					"id": 268,
 					"name": "SimpleEncryptedMessage",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2431,19 +5096,19 @@
 						"types": [
 							{
 								"type": "reference",
-								"id": 86,
+								"id": 257,
 								"name": "SEMx25519"
 							},
 							{
 								"type": "reference",
-								"id": 92,
+								"id": 263,
 								"name": "SEMxSalsa20"
 							}
 						]
 					}
 				},
 				{
-					"id": 130,
+					"id": 301,
 					"name": "SimpleKeyFormat",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2453,22 +5118,22 @@
 						"types": [
 							{
 								"type": "reference",
-								"id": 103,
+								"id": 274,
 								"name": "SKFx25519"
 							},
 							{
 								"type": "reference",
-								"id": 104,
+								"id": 275,
 								"name": "SKFx25519WithPrivate"
 							},
 							{
 								"type": "reference",
-								"id": 109,
+								"id": 280,
 								"name": "SKFx25519WithPublic"
 							},
 							{
 								"type": "reference",
-								"id": 126,
+								"id": 297,
 								"name": "SKFxSalsa20"
 							}
 						]
@@ -2480,33 +5145,33 @@
 					"title": "Interfaces",
 					"kind": 256,
 					"children": [
-						86,
-						92,
-						98,
-						104,
-						109,
-						126,
-						114,
-						120
+						257,
+						263,
+						269,
+						275,
+						280,
+						297,
+						285,
+						291
 					]
 				},
 				{
 					"title": "Type aliases",
 					"kind": 4194304,
 					"children": [
-						85,
-						131,
-						84,
-						132,
-						103,
-						97,
-						130
+						256,
+						302,
+						255,
+						303,
+						274,
+						268,
+						301
 					]
 				}
 			]
 		},
 		{
-			"id": 133,
+			"id": 304,
 			"name": "types/Strings",
 			"kind": 1,
 			"kindString": "Module",
@@ -2516,7 +5181,7 @@
 			},
 			"children": [
 				{
-					"id": 137,
+					"id": 308,
 					"name": "Base64UrlString",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2530,7 +5195,7 @@
 					}
 				},
 				{
-					"id": 135,
+					"id": 306,
 					"name": "EthereumAddress",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2540,12 +5205,12 @@
 					},
 					"type": {
 						"type": "reference",
-						"id": 134,
+						"id": 305,
 						"name": "HexString"
 					}
 				},
 				{
-					"id": 134,
+					"id": 305,
 					"name": "HexString",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2559,7 +5224,7 @@
 					}
 				},
 				{
-					"id": 136,
+					"id": 307,
 					"name": "SocialIdentityAddress",
 					"kind": 4194304,
 					"kindString": "Type alias",
@@ -2569,7 +5234,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"id": 135,
+						"id": 306,
 						"name": "EthereumAddress"
 					}
 				}
@@ -2579,125 +5244,55 @@
 					"title": "Type aliases",
 					"kind": 4194304,
 					"children": [
-						137,
-						135,
-						134,
-						136
+						308,
+						306,
+						305,
+						307
 					]
 				}
 			]
 		},
 		{
-			"id": 138,
-			"name": "types/hash",
+			"id": 309,
+			"name": "utilities/errors",
 			"kind": 1,
 			"kindString": "Module",
 			"flags": {},
 			"children": [
 				{
-					"id": 139,
-					"name": "KeccakHash",
-					"kind": 4194304,
-					"kindString": "Type alias",
-					"flags": {},
-					"comment": {
-						"shortText": "KeccakHash is a 256 bit hash string encoded as hex with a '0x' at the start"
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Type aliases",
-					"kind": 4194304,
-					"children": [
-						139
-					]
-				}
-			]
-		},
-		{
-			"id": 140,
-			"name": "utilities/activityPubHash",
-			"kind": 1,
-			"kindString": "Module",
-			"flags": {},
-			"children": [
-				{
-					"id": 141,
-					"name": "activityPubHash",
-					"kind": 64,
-					"kindString": "Function",
+					"id": 310,
+					"name": "NotImplementedError",
+					"kind": 32,
+					"kindString": "Variable",
 					"flags": {
 						"isConst": true
 					},
-					"signatures": [
-						{
-							"id": 142,
-							"name": "activityPubHash",
-							"kind": 4096,
-							"kindString": "Call signature",
-							"flags": {},
-							"comment": {
-								"shortText": "activityPubHash() provides a simple way to hash activityPub objects while\nguaranteeing that identical objects with different key orders still return\nthe same hash. The underlying hash method used is\n[Keccak256](https://en.wikipedia.org/wiki/SHA-3).",
-								"returns": "A hexadecimal string containing the Keccak hash\n"
-							},
-							"parameters": [
-								{
-									"id": 143,
-									"name": "data",
-									"kind": 32768,
-									"kindString": "Parameter",
-									"flags": {},
-									"comment": {
-										"text": "The activityPub object to hashes"
-									},
-									"type": {
-										"type": "reference",
-										"typeArguments": [
-											{
-												"type": "intrinsic",
-												"name": "string"
-											},
-											{
-												"type": "intrinsic",
-												"name": "unknown"
-											}
-										],
-										"name": "Record"
-									}
-								}
-							],
-							"type": {
-								"type": "intrinsic",
-								"name": "string"
-							}
-						}
-					]
+					"type": {
+						"type": "reference",
+						"name": "Error"
+					},
+					"defaultValue": "..."
 				}
 			],
 			"groups": [
 				{
-					"title": "Functions",
-					"kind": 64,
+					"title": "Variables",
+					"kind": 32,
 					"children": [
-						141
+						310
 					]
 				}
 			]
 		},
 		{
-			"id": 144,
-			"name": "utilities/hashPrefix",
+			"id": 311,
+			"name": "utilities/hash",
 			"kind": 1,
 			"kindString": "Module",
 			"flags": {},
 			"children": [
 				{
-					"id": 145,
+					"id": 312,
 					"name": "hashPrefix",
 					"kind": 64,
 					"kindString": "Function",
@@ -2706,14 +5301,14 @@
 					},
 					"signatures": [
 						{
-							"id": 146,
+							"id": 313,
 							"name": "hashPrefix",
 							"kind": 4096,
 							"kindString": "Call signature",
 							"flags": {},
 							"parameters": [
 								{
-									"id": 147,
+									"id": 314,
 									"name": "hash",
 									"kind": 32768,
 									"kindString": "Parameter",
@@ -2737,7 +5332,87 @@
 					"title": "Functions",
 					"kind": 64,
 					"children": [
-						145
+						312
+					]
+				}
+			]
+		},
+		{
+			"id": 315,
+			"name": "utilities/json",
+			"kind": 1,
+			"kindString": "Module",
+			"flags": {},
+			"children": [
+				{
+					"id": 316,
+					"name": "sortObject",
+					"kind": 64,
+					"kindString": "Function",
+					"flags": {
+						"isConst": true
+					},
+					"signatures": [
+						{
+							"id": 317,
+							"name": "sortObject",
+							"kind": 4096,
+							"kindString": "Call signature",
+							"flags": {},
+							"comment": {
+								"shortText": "sortObject() takes a javascript object and returns a copy of the object with\nall keys sorted recursively. This method is intended to be used to guarantee\nthat objects intended be JSON stringified always produce a consistent JSON\nstring, since implementations of [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#issue_with_plain_json.stringify_for_use_as_javascript)\ndo not necessarily guarantee key order.",
+								"returns": "A sorted copy of the given object\n"
+							},
+							"parameters": [
+								{
+									"id": 318,
+									"name": "obj",
+									"kind": 32768,
+									"kindString": "Parameter",
+									"flags": {},
+									"comment": {
+										"text": "The object to recursively sort"
+									},
+									"type": {
+										"type": "reference",
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Functions",
+					"kind": 64,
+					"children": [
+						316
 					]
 				}
 			]
@@ -2750,12 +5425,23 @@
 			"children": [
 				1,
 				17,
-				24,
+				32,
+				40,
+				51,
+				73,
 				83,
-				133,
-				138,
-				140,
-				144
+				90,
+				103,
+				131,
+				153,
+				169,
+				178,
+				195,
+				254,
+				304,
+				309,
+				311,
+				315
 			]
 		}
 	]

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Broadcast | @liberty-dsnp/sdk</title>
+	<title>StorageInterface | @liberty-dsnp/sdk</title>
 	<meta name="description" content="Documentation for @liberty-dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,36 +55,24 @@
 					<a href="../modules.html">@liberty-dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/types_dsnp.html">types/DSNP</a>
+					<a href="../modules/storage_storage.html">storage/storage</a>
 				</li>
 				<li>
-					<a href="types_dsnp.broadcast.html">Broadcast</a>
+					<a href="storage_storage.storageinterface.html">StorageInterface</a>
 				</li>
 			</ul>
-			<h1>Interface Broadcast</h1>
+			<h1>Interface StorageInterface</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Broadcast: a public post</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="types_dsnp.message.html" class="tsd-signature-type" data-tsd-kind="Interface">Message</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">Broadcast</span>
-							</li>
-						</ul>
+						<span class="target">StorageInterface</span>
 					</li>
 				</ul>
 			</section>
@@ -93,63 +81,56 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="types_dsnp.broadcast.html#actiontype" class="tsd-kind-icon">action<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="types_dsnp.broadcast.html#fromaddress" class="tsd-kind-icon">from<wbr>Address</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_dsnp.broadcast.html#messageid" class="tsd-kind-icon">messageID</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="types_dsnp.broadcast.html#uri" class="tsd-kind-icon">uri</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage_storage.storageinterface.html#fetch" class="tsd-kind-icon">fetch</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storage_storage.storageinterface.html#store" class="tsd-kind-icon">store</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="actiontype" class="tsd-anchor"></a>
-					<h3>action<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">action<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../enums/dsnp.actiontype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">ActionType</a></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="types_dsnp.message.html">Message</a>.<a href="types_dsnp.message.html#actiontype">actionType</a></p>
-					</aside>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="fetch" class="tsd-anchor"></a>
+					<h3>fetch</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">(</span>uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>uri: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="fromaddress" class="tsd-anchor"></a>
-					<h3>from<wbr>Address</h3>
-					<div class="tsd-signature tsd-kind-icon">from<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="types_dsnp.message.html">Message</a>.<a href="types_dsnp.message.html#fromaddress">fromAddress</a></p>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>fromAddress ID of the sender bytes20</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="messageid" class="tsd-anchor"></a>
-					<h3>messageID</h3>
-					<div class="tsd-signature tsd-kind-icon">messageID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>messageID keccak-256 hash of content stored at URI bytes32</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="uri" class="tsd-anchor"></a>
-					<h3>uri</h3>
-					<div class="tsd-signature tsd-kind-icon">uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>uri content URI string</p>
-						</div>
-					</div>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="store" class="tsd-anchor"></a>
+					<h3>store</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">store<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><a href="../modules/storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>file: <a href="../modules/storage_storage.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -195,10 +176,10 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/storage_memorystorage.html">storage/memory<wbr>Storage</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/storage_storage.html">storage/storage</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/types_dsnp.html">types/DSNP</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -223,59 +204,26 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.broadcast.html" class="tsd-kind-icon">Broadcast</a>
+						<a href="storage_storage.storageinterface.html" class="tsd-kind-icon">Storage<wbr>Interface</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="types_dsnp.broadcast.html#actiontype" class="tsd-kind-icon">action<wbr>Type</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage_storage.storageinterface.html#fetch" class="tsd-kind-icon">fetch</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="types_dsnp.broadcast.html#fromaddress" class="tsd-kind-icon">from<wbr>Address</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_dsnp.broadcast.html#messageid" class="tsd-kind-icon">messageID</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="types_dsnp.broadcast.html#uri" class="tsd-kind-icon">uri</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="storage_storage.storageinterface.html#store" class="tsd-kind-icon">store</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.drop.html" class="tsd-kind-icon">Drop</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.encryptedinbox.html" class="tsd-kind-icon">Encrypted<wbr>Inbox</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.encryptionkeylist.html" class="tsd-kind-icon">Encryption<wbr>Key<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.graphchange.html" class="tsd-kind-icon">Graph<wbr>Change</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.keylist.html" class="tsd-kind-icon">Key<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.message.html" class="tsd-kind-icon">Message</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.private.html" class="tsd-kind-icon">Private</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.privategraphkeylist.html" class="tsd-kind-icon">Private<wbr>Graph<wbr>Key<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.profile.html" class="tsd-kind-icon">Profile</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.reaction.html" class="tsd-kind-icon">Reaction</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="types_dsnp.reply.html" class="tsd-kind-icon">Reply</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/types_dsnp.html#messagetype" class="tsd-kind-icon">Message<wbr>Type</a>
+						<a href="../modules/storage_storage.html#file" class="tsd-kind-icon">File</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/storage_storage.html#fetch" class="tsd-kind-icon">fetch</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/storage_storage.html#store" class="tsd-kind-icon">store</a>
 					</li>
 				</ul>
 			</nav>
@@ -293,7 +241,7 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

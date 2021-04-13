@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DSNP | @liberty-dsnp/sdk</title>
+	<title>batch/batch | @liberty-dsnp/sdk</title>
 	<meta name="description" content="Documentation for @liberty-dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@liberty-dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="dsnp.html">DSNP</a>
+					<a href="batch_batch.html">batch/batch</a>
 				</li>
 			</ul>
-			<h1>Module DSNP</h1>
+			<h1>Module batch/batch</h1>
 		</div>
 	</div>
 </header>
@@ -70,12 +70,95 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumerations</h3>
+							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/dsnp.actiontype.html" class="tsd-kind-icon">Action<wbr>Type</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="batch_batch.html#batchfileobject" class="tsd-kind-icon">Batch<wbr>File<wbr>Object</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="batch_batch.html#createfile" class="tsd-kind-icon">create<wbr>File</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="batch_batch.html#openfile" class="tsd-kind-icon">open<wbr>File</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="batchfileobject" class="tsd-anchor"></a>
+					<h3>Batch<wbr>File<wbr>Object</h3>
+					<div class="tsd-signature tsd-kind-icon">Batch<wbr>File<wbr>Object<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="createfile" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>File</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>File<span class="tsd-signature-symbol">(</span>_events<span class="tsd-signature-symbol">: </span><a href="types_dsnp.html#messagetype" class="tsd-signature-type" data-tsd-kind="Type alias">MessageType</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>createFile() takes a series of activity pub objects and returns a Batch file
+									object for publishing. This method is not yet implemented.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>params</dt>
+									<dd><p>events  An array of DSNPEvents to include in the batch file</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_events: <a href="types_dsnp.html#messagetype" class="tsd-signature-type" data-tsd-kind="Type alias">MessageType</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>A batch file object</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="openfile" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> open<wbr>File</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">open<wbr>File<span class="tsd-signature-symbol">(</span>_file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="types_dsnp.html#messagetype" class="tsd-signature-type" data-tsd-kind="Type alias">MessageType</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>openFile() takes a Batch file object . This method is not yet implemented.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>params</dt>
+									<dd><p>file  A batch file object to open</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>_file: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="types_dsnp.html#messagetype" class="tsd-signature-type" data-tsd-kind="Type alias">MessageType</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>An array of DSNPEvents from the batch file</p>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -85,13 +168,13 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="dsnp.html">DSNP</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="activitypub_activitypub.html">activity<wbr>Pub/activity<wbr>Pub</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="batch_batch.html">batch/batch</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -146,8 +229,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/dsnp.actiontype.html" class="tsd-kind-icon">Action<wbr>Type</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="batch_batch.html#batchfileobject" class="tsd-kind-icon">Batch<wbr>File<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="batch_batch.html#createfile" class="tsd-kind-icon">create<wbr>File</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="batch_batch.html#openfile" class="tsd-kind-icon">open<wbr>File</a>
 					</li>
 				</ul>
 			</nav>

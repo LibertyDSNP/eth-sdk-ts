@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>announcement/announcement | @liberty-dsnp/sdk</title>
+	<title>utilities/json | @liberty-dsnp/sdk</title>
 	<meta name="description" content="Documentation for @liberty-dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@liberty-dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="announcement_announcement.html">announcement/announcement</a>
+					<a href="utilities_json.html">utilities/json</a>
 				</li>
 			</ul>
-			<h1>Module announcement/announcement</h1>
+			<h1>Module utilities/json</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="announcement_announcement.html#batch" class="tsd-kind-icon">batch</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="utilities_json.html#sortobject" class="tsd-kind-icon">sort<wbr>Object</a></li>
 							</ul>
 						</section>
 					</div>
@@ -81,10 +81,10 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="batch" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> batch</h3>
+					<a name="sortobject" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> sort<wbr>Object</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">batch<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">default</span>, accountAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, uri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TransactionReceipt</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">sort<wbr>Object<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -92,39 +92,24 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>batch() allows users call the batch smart contract and post the URI and hash
-									of a generated batch to the blockchain.</p>
+									<p>sortObject() takes a javascript object and returns a copy of the object with
+										all keys sorted recursively. This method is intended to be used to guarantee
+										that objects intended be JSON stringified always produce a consistent JSON
+										string, since implementations of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#issue_with_plain_json.stringify_for_use_as_javascript">JSON.stringify</a>
+									do not necessarily guarantee key order.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>provider: <span class="tsd-signature-type">default</span></h5>
+									<h5>obj: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The web3 instance used for calling the smart contract</p>
-									</div>
-								</li>
-								<li>
-									<h5>accountAddress: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The address from which to post the batch</p>
-									</div>
-								</li>
-								<li>
-									<h5>uri: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The URI of the hosted batch to post</p>
-									</div>
-								</li>
-								<li>
-									<h5>hash: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A hash of the batch contents for use in verification</p>
+										<p>The object to recursively sort</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TransactionReceipt</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A <a href="https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36">web3 contract receipt promise</a></p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A sorted copy of the given object</p>
 						</li>
 					</ul>
 				</section>
@@ -139,8 +124,41 @@
 					<li class=" tsd-kind-module">
 						<a href="dsnp.html">DSNP</a>
 					</li>
-					<li class="current tsd-kind-module">
-						<a href="announcement_announcement.html">announcement/announcement</a>
+					<li class=" tsd-kind-module">
+						<a href="activitypub_activitypub.html">activity<wbr>Pub/activity<wbr>Pub</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="batch_batch.html">batch/batch</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="batch_memoryqueue.html">batch/memory<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="batch_queue.html">batch/queue</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="config_config.html">config/config</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="contracts_announcement.html">contracts/announcement</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="social_content.html">social/content</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="social_handles.html">social/handles</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="social_network.html">social/network</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="social_search.html">social/search</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="storage_memorystorage.html">storage/memory<wbr>Storage</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="storage_storage.html">storage/storage</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="types_dsnp.html">types/DSNP</a>
@@ -152,20 +170,20 @@
 						<a href="types_strings.html">types/<wbr>Strings</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="types_hash.html">types/hash</a>
+						<a href="utilities_errors.html">utilities/errors</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="utilities_activitypubhash.html">utilities/activity<wbr>Pub<wbr>Hash</a>
+						<a href="utilities_hash.html">utilities/hash</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="utilities_hashprefix.html">utilities/hash<wbr>Prefix</a>
+					<li class="current tsd-kind-module">
+						<a href="utilities_json.html">utilities/json</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="announcement_announcement.html#batch" class="tsd-kind-icon">batch</a>
+						<a href="utilities_json.html#sortobject" class="tsd-kind-icon">sort<wbr>Object</a>
 					</li>
 				</ul>
 			</nav>
@@ -177,6 +195,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 			</ul>
