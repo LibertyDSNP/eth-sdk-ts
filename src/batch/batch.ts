@@ -1,5 +1,5 @@
 import { MessageType } from "../types/DSNP";
-import { NotImplementedError } from "../utilities/errors";
+import { NotImplementedError } from "../utilities";
 
 export type BatchFileObject = string;
 

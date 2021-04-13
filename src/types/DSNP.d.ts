@@ -1,5 +1,5 @@
 import { EthereumAddress } from "./Strings";
-import { ActionType } from "../DSNP";
+import { ActionType } from "../batch/actionType";
 declare type MessageType =
   | Private
   | GraphChange

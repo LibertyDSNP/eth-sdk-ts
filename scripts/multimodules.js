@@ -41,10 +41,10 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 exports.__esModule = true;
-__exportStar(require("./dist/main/${name}"), exports);
+__exportStar(require("./dist/cjs/${name}"), exports);
 `;
 
-const dtsTemplate = (name) => `export * from "./dist/main/${name}";`;
+const typesTemplate = (name) => `export * from "./dist/types/${name}";`;
 
 const createMultiModule = (name) => {
   if (/.*\/.*/.test(name)) {
@@ -54,7 +54,9 @@ const createMultiModule = (name) => {
 
   console.log(`Processing Multimodule support for ${name}...`);
 
-  fs.writeFileSync(`${path.join(__dirname, "..", name + ".d.ts")}`, dtsTemplate(name), throwOnError);
+  // Types
+  fs.writeFileSync(`${path.join(__dirname, "..", name + ".d.ts")}`, typesTemplate(name), throwOnError);
+  // commonjs
   fs.writeFileSync(`${path.join(__dirname, "..", name + ".js")}`, jsTemplate(name), throwOnError);
 };
 
