@@ -46,22 +46,30 @@ __exportStar(require("./dist/cjs/${name}"), exports);
 
 const typesTemplate = (name) => `export * from "./dist/types/${name}";`;
 
-const createMultiModule = (name) => {
-  if (/.*\/.*/.test(name)) {
-    throw new Error(`${name} appears to be in a subdirectory.
-    FIX: Either move ${name} to the root of src or update scrips/multimodules.js to support this.`);
+const createMultiModule = ([moduleName, modulePath]) => {
+  if (!moduleName || !modulePath) {
+    throw new Error(`${moduleName} from ${modulePath} is broken somehow...`);
   }
 
-  console.log(`Processing Multimodule support for ${name}...`);
+  console.log(`Processing Multimodule support for ${moduleName}...`);
 
   // Types
-  fs.writeFileSync(`${path.join(__dirname, "..", name + ".d.ts")}`, typesTemplate(name), throwOnError);
+  fs.writeFileSync(`${path.join(__dirname, "..", moduleName + ".d.ts")}`, typesTemplate(modulePath), throwOnError);
   // commonjs
-  fs.writeFileSync(`${path.join(__dirname, "..", name + ".js")}`, jsTemplate(name), throwOnError);
+  fs.writeFileSync(`${path.join(__dirname, "..", moduleName + ".js")}`, jsTemplate(modulePath), throwOnError);
 };
 
-fs.readFileSync(`${path.join(__dirname, "../src/index.ts")}`, "UTF-8")
-  .split(/\r?\n/)
-  .flatMap((x) => x.match(/^import.*from.*"\.\/(.*?)"/))
-  .filter((x) => !!x && !/^import/.test(x))
+const fileLines = fs.readFileSync(`${path.join(__dirname, "../src/index.ts")}`, "UTF-8").split(/\r?\n/);
+
+const importAsToExport = Object.fromEntries(
+  fileLines
+    .map((x) => x.match(/^export const (.*?) = (.*?);/))
+    .filter((x) => !!x)
+    .map((x) => [x[2], x[1]])
+);
+
+fileLines
+  .map((x) => x.match(/^import.* as (.*?) from.*"\.\/(.*?)"/))
+  .filter((x) => !!x)
+  .map((x) => [importAsToExport[x[1]], x[2]])
   .map(createMultiModule);

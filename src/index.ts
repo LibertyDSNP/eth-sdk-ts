@@ -15,5 +15,14 @@ export const contracts = contractsImport;
 import * as utilitiesImport from "./utilities";
 export const utilities = utilitiesImport;
 
-import * as socialContent from "./social/content";
-export const content = socialContent;
+import * as socialContentImport from "./social/content";
+export const socialContent = socialContentImport;
+
+import * as socialHandlesImport from "./social/handles";
+export const socialHandles = socialHandlesImport;
+
+import * as socialNetworkImport from "./social/network";
+export const socialNetwork = socialNetworkImport;
+
+import * as socialSearchImport from "./social/search";
+export const socialSearch = socialSearchImport;
