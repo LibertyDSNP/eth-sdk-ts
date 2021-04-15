@@ -1,6 +1,28 @@
-// Here we import as [name]Import then re-export as the module name
-// import * as FooImport from "./Foo";
-// export const Foo = FooImport;
-// Note: Importing a file here will also trigger scripts/multimodules.js
+/**
+ * To export a new sub-module:
+ * ```
+ * import * as fooImport from "./foo";
+ * export const foo = fooImport;
+ * ```
+ * Leads to use like:
+ *   - `import { foo } from "@unfinishedlabs/sdk";`
+ *   - `import foo from "@unfinishedlabs/sdk/foo";`
+ */
 
-export * from "./types/index";
+import * as contractsImport from "./contracts";
+export const contracts = contractsImport;
+
+import * as utilitiesImport from "./utilities";
+export const utilities = utilitiesImport;
+
+import * as socialContentImport from "./social/content";
+export const socialContent = socialContentImport;
+
+import * as socialHandlesImport from "./social/handles";
+export const socialHandles = socialHandlesImport;
+
+import * as socialNetworkImport from "./social/network";
+export const socialNetwork = socialNetworkImport;
+
+import * as socialSearchImport from "./social/search";
+export const socialSearch = socialSearchImport;

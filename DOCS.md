@@ -4,6 +4,15 @@
 
 See [README](https://github.com/LibertyDSNP/sdk-ts/)
 
-## How to Use
+## Quick Start
 
-TODO
+- `npm install @unfinishedlabs/sdk`
+- Import:
+  - `import * as dsnp from "@unfinishedlabs/sdk";`
+  - `import { Announcement } from "@unfinishedlabs/sdk";`
+  - `import { batch } from "@unfinishedlabs/sdk/Announcement";`
+- Require:
+  - `const dsnp = require("@unfinishedlabs/sdk");`
+  - `const { Announcement } = require("@unfinishedlabs/sdk");`
+  - `const { batch } = require("@unfinishedlabs/sdk/Announcement");`
+

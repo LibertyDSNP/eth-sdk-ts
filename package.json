@@ -1,17 +1,19 @@
 {
-  "name": "@liberty-dsnp/sdk",
+  "name": "@unfinishedlabs/sdk",
   "version": "0.0.0",
   "description": "SDK Library for the DSNP",
-  "main": "dist/main/index.js",
-  "types": "dist/main/index.d.ts",
-  "module": "dist/module/index.js",
+  "type": "commonjs",
+  "main": "dist/cjs/index.js",
+  "types": "dist/types/index.d.ts",
+  "module": "dist/esm/index.js",
   "repository": "https://github.com/LibertyDSNP/sdk-ts",
   "license": "CC-BY-SA-4.0",
   "keywords": [],
   "scripts": {
     "build": "npm run clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
+    "build:cjs": "tsc -p tsconfig.json",
+    "build:types": "tsc -p tsconfig.types.json && mkdir -p ./dist/types/types && cp ./src/types/*.d.ts ./dist/types/types",
+    "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\": \"module\"}'> dist/esm/package.json",
     "build:multimodules": "node scripts/multimodules.js",
     "coverage": "jest test --coverage --collectCoverageFrom='src/**/*.ts'",
     "clean": "rm -Rf dist docs ./*.d.ts ./*.js",
@@ -21,15 +23,15 @@
     "doc:markdown": "rm -Rf docs && typedoc src/ --theme markdown --out docs",
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run build && npm run doc:markdown",
     "postpublish": "npm run clean",
     "test": "jest",
-    "watch": "run-s build && run-p \"build:main -- -w\" \"build:module -- -w\" \"test -- --watch\""
+    "watch": "run-s build && run-p \"build:cjs -- -w\" \"build:esm -- -w\" \"build:types -- -w\" \"test -- --watch\""
   },
   "files": [
     "dist/**/*",
-    "*.d.ts",
-    "*.js"
+    "docs/**/*",
+    "CONTRIBUTING.md"
   ],
   "engines": {
     "node": ">=14.15.5"

@@ -3,12 +3,13 @@
  * Well TypeScript doesn't yet have easy support for multiple modules:
  * https://github.com/microsoft/TypeScript/issues/8305
  * and eventually https://github.com/microsoft/TypeScript/issues/33079
+ * Expected to release with TypeScript 4.3 May 2021
  *
  * In the end this allows us to support:
- * `import { getBar } from "@LibertyDSNP/sdk/Foo";`
+ * `import { getBar } from "@unfinishedlabs/sdk/Foo";`
  * in addition to the other way:
  * ```
- * import { Foo } from "@LibertyDSNP/sdk";
+ * import { Foo } from "@unfinishedlabs/sdk";
  * const { getBar } = Foo;
  * ```
  *
@@ -40,25 +41,35 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 exports.__esModule = true;
-__exportStar(require("./dist/main/${name}"), exports);
+__exportStar(require("./dist/cjs/${name}"), exports);
 `;
 
-const dtsTemplate = (name) => `export * from "./dist/main/${name}";`;
+const typesTemplate = (name) => `export * from "./dist/types/${name}";`;
 
-const createMultiModule = (name) => {
-  if (/.*\/.*/.test(name)) {
-    throw new Error(`${name} appears to be in a subdirectory.
-    FIX: Either move ${name} to the root of src or update scrips/multimodules.js to support this.`);
+const createMultiModule = ([moduleName, modulePath]) => {
+  if (!moduleName || !modulePath) {
+    throw new Error(`${moduleName} from ${modulePath} is broken somehow...`);
   }
 
-  console.log(`Processing Multimodule support for ${name}...`);
+  console.log(`Processing Multimodule support for ${moduleName}...`);
 
-  fs.writeFileSync(`${path.join(__dirname, "..", name + ".d.ts")}`, dtsTemplate(name), throwOnError);
-  fs.writeFileSync(`${path.join(__dirname, "..", name + ".js")}`, jsTemplate(name), throwOnError);
+  // Types
+  fs.writeFileSync(`${path.join(__dirname, "..", moduleName + ".d.ts")}`, typesTemplate(modulePath), throwOnError);
+  // commonjs
+  fs.writeFileSync(`${path.join(__dirname, "..", moduleName + ".js")}`, jsTemplate(modulePath), throwOnError);
 };
 
-fs.readFileSync(`${path.join(__dirname, "../src/index.ts")}`, "UTF-8")
-  .split(/\r?\n/)
-  .flatMap((x) => x.match(/^import.*from.*"\.\/(.*?)"/))
-  .filter((x) => !!x && !/^import/.test(x))
+const fileLines = fs.readFileSync(`${path.join(__dirname, "../src/index.ts")}`, "UTF-8").split(/\r?\n/);
+
+const importAsToExport = Object.fromEntries(
+  fileLines
+    .map((x) => x.match(/^export const (.*?) = (.*?);/))
+    .filter((x) => !!x)
+    .map((x) => [x[2], x[1]])
+);
+
+fileLines
+  .map((x) => x.match(/^import.* as (.*?) from.*"\.\/(.*?)"/))
+  .filter((x) => !!x)
+  .map((x) => [importAsToExport[x[1]], x[2]])
   .map(createMultiModule);
