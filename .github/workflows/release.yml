@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [14.6.0]
+        node-version: [14.15.5]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [ 14.6.0 ]
+        node-version: [ 14.15.5 ]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
