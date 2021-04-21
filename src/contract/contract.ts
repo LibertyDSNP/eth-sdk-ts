@@ -17,12 +17,6 @@ interface ContractResult {
 export const DSNPMigrationABI: AbiInput[] = [
   {
     indexed: false,
-    internalType: "uint256",
-    name: "lastCompleted",
-    type: "uint256",
-  },
-  {
-    indexed: false,
     internalType: "address",
     name: "contractAddr",
     type: "address",
@@ -31,12 +25,6 @@ export const DSNPMigrationABI: AbiInput[] = [
     indexed: false,
     internalType: "string",
     name: "contractName",
-    type: "string",
-  },
-  {
-    indexed: false,
-    internalType: "string",
-    name: "abi",
     type: "string",
   },
 ];
@@ -54,20 +42,21 @@ const decodeReturnValues = (web3: Web3, inputs: AbiInput[], topic: string, logs:
 };
 
 const filterValues = (values: ContractResult[], contractName: string): ContractResult[] => {
-  return values
-    .filter((result: ContractResult) => {
-      return result.contractName == contractName;
-    })
-    .sort((a: ContractResult, b: ContractResult) => {
-      return b.blockNumber - a.blockNumber;
-    });
+  return values.filter((result: ContractResult) => {
+    return result.contractName == contractName;
+  });
 };
 
-export const getContractAddress = async (web3: Web3, contractName: string): Promise<ContractResult> => {
-  const topic = keccakTopic("DSNPMigration(uint256,address,string,string)");
+export const getContractAddress = async (
+  web3: Web3,
+  contractName: string
+): Promise<ContractResult | Record<string, string>> => {
+  const topic = keccakTopic("DSNPMigration(address,string)");
 
   const logs: Log[] = await web3.eth.getPastLogs({ topics: [topic], fromBlock: 0 });
   const decodedValues = decodeReturnValues(web3, DSNPMigrationABI, topic, logs);
   const filteredResults: ContractResult[] = filterValues(decodedValues, contractName);
-  return filteredResults[0];
+  return filteredResults.length > 0
+    ? filteredResults[filteredResults.length - 1]
+    : { error: `No longs found for contract name: ${contractName}` };
 };
