@@ -6,13 +6,21 @@ describe("Contracts", () => {
   describe("getContractAddress", () => {
     it("returns latest address for contract", async () => {
       const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
-      const address = await getContractAddress(web3, "Announcer");
-      expect(address).toEqual({
-        contractAddress: "0xe7a6467113c2B7f09Aad3b99C30811718A114013",
-        contractName: "Announcer",
-        blockNumber: 9,
-        blockHash: "0x8382d03c95fe0e124c0379bd8622da6f9b36847b9aee4c872bf4fbf03200f1d3",
-      });
+      const contractResults = await getContractAddress(web3, "Announcer");
+      expect(contractResults.contractName).toEqual("Announcer");
+      expect(contractResults).toEqual(
+        expect.objectContaining({
+          contractAddress: expect.any(String),
+          contractName: expect.any(String),
+          blockNumber: expect.any(Number),
+          blockHash: expect.any(String),
+        })
+      );
+    });
+    it("returns empty array if no values found", async () => {
+      const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
+      const contractResults = await getContractAddress(web3, "Test");
+      expect(contractResults).toEqual({"error": "No longs found for contract name: Test"});
     });
   });
 });
