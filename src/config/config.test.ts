@@ -4,45 +4,45 @@ import { getConfig, setConfig, Config } from "./config";
 
 describe("config", () => {
   describe("#getConfig", () => {
-    it("returns the default settings when the config hasn't been set yet", () => {
-      expect(getConfig()).toMatchObject({
+    it("returns the default settings when the config hasn't been set yet", async () => {
+      expect(await getConfig()).toMatchObject({
         store: MemoryStore(),
         queue: MemoryQueue(),
       });
     });
 
-    it("fetches the current config settings", () => {
+    it("fetches the current config settings", async () => {
       const testConfig = ({
         test: "object",
       } as unknown) as Config;
 
-      setConfig(testConfig);
+      await setConfig(testConfig);
 
-      expect(getConfig()).toMatchObject({ test: "object" });
+      expect(await getConfig()).toMatchObject({ test: "object" });
     });
 
-    it("overrides the returned settings with any provided parameters", () => {
+    it("overrides the returned settings with any provided parameters", async () => {
       const testConfig = ({
         test: "object",
       } as unknown) as Config;
 
-      setConfig(testConfig);
+      await setConfig(testConfig);
 
-      expect(getConfig(({ test: "differentObject" } as unknown) as Config)).toMatchObject({
+      expect(await getConfig(({ test: "differentObject" } as unknown) as Config)).toMatchObject({
         test: "differentObject",
       });
     });
   });
 
   describe("#setConfig", () => {
-    it("updates the config settings", () => {
+    it("updates the config settings", async () => {
       const testConfig = ({
         test: "object",
       } as unknown) as Config;
 
-      setConfig(testConfig);
+      await setConfig(testConfig);
 
-      expect(getConfig()).toMatchObject({ test: "object" });
+      expect(await getConfig()).toMatchObject({ test: "object" });
     });
   });
 });
