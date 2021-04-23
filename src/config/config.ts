@@ -1,10 +1,9 @@
 // import Web3 from "web3";
-// import MemoryStore from "../storage/memoryStorage";
-// import MemoryQueue from "../batch/memoryQueue";
+import MemoryStore from "../storage/memoryStorage";
+import MemoryQueue from "../batch/memoryQueue";
 
 import { StorageInterface } from "../storage/storage";
 import { QueueInterface } from "../batch/queue";
-import { NotImplementedError } from "../utilities/errors";
 
 export interface Config {
   // blockchain: ChainInterface;
@@ -12,11 +11,11 @@ export interface Config {
   queue: QueueInterface;
 }
 
-// let config = {
-//   blockchain: new Web3.providers.HttpProvider(RPC_URL),
-//   storage: new MemoryStore(),
-//   queue: new MemoryQueue(),
-// };
+let config = {
+  // blockchain: new Web3.providers.HttpProvider(RPC_URL),
+  store: MemoryStore(),
+  queue: MemoryQueue(),
+};
 
 /**
  * getConfig() fetches the current configuration settings and returns them. This
@@ -24,11 +23,9 @@ export interface Config {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (_overrides?: Config): Config => {
-  throw NotImplementedError;
-
-  // if (!overrides) return config;
-  // return { ...overrides, ...config };
+export const getConfig = (overrides?: Config): Config => {
+  if (!overrides) return config;
+  return { ...config, ...overrides };
 };
 
 /**
@@ -37,8 +34,6 @@ export const getConfig = (_overrides?: Config): Config => {
  *
  * @params obj  The configuration settings to set with
  */
-export const setConfig = (_obj: Config): void => {
-  throw NotImplementedError;
-
-  // config = obj;
+export const setConfig = (obj: Config): void => {
+  config = obj;
 };
