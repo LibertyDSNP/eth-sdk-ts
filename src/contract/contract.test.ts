@@ -1,6 +1,15 @@
 require("dotenv").config();
 import Web3 from "web3";
 import { getContractAddress } from "./contract";
+import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
+
+beforeEach(async () => {
+  await snapshotHardhat();
+})
+
+afterEach(async () => {
+  await revertHardhat();
+})
 
 describe("Contracts", () => {
   describe("getContractAddress", () => {
@@ -11,8 +20,8 @@ describe("Contracts", () => {
       expect(contractResults).toEqual(
         expect.objectContaining({
           contractAddress: expect.any(String),
-          contractName: expect.any(String),
-          blockNumber: expect.any(Number),
+          contractName: 'Announcer',
+          blockNumber: 3,
           blockHash: expect.any(String),
         })
       );
