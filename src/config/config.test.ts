@@ -53,8 +53,8 @@ describe("config", () => {
 
         // We have to test keys here because #toMatchObject doesn't work with
         // object instances
-        expect(results["store"]).toBeInstanceOf(Object);
         expect(results["queue"]).toBeInstanceOf(Object);
+        expect(results["store"]).toBeInstanceOf(Object);
       });
 
       it("fetches the current config settings", async () => {

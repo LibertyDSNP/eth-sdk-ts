@@ -4,7 +4,9 @@ import Web3 from "web3";
 import { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
+import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
+import { MissingAccountAddress, MissingProvider } from "../utilities/errors";
 import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
 
@@ -69,18 +71,17 @@ const getGasLimit = async (contract: Contract, uri: string, hash: HexString, fro
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param provider  The web3 instance used for calling the smart contract
- * @param accountAddress   The address from which to post the batch
- * @param uri       The URI of the hosted batch to post
- * @param hash      A hash of the batch contents for use in verification
- * @returns         A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
+ * @param uri  The URI of the hosted batch to post
+ * @param hash A hash of the batch contents for use in verification
+ * @param opts Optional. Configuration overrides, such as from address, if any
+ * @returns    A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (
-  provider: Web3,
-  accountAddress: string,
-  uri: string,
-  hash: HexString
-): Promise<TransactionReceipt> => {
+export const batch = async (uri: string, hash: HexString, opts?: Config): Promise<TransactionReceipt> => {
+  const { accountAddress, provider } = await getConfig(opts);
+
+  if (!accountAddress) throw MissingAccountAddress;
+  if (!provider) throw MissingProvider;
+
   const contract = await getContract(provider);
   const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
 

@@ -1,25 +1,25 @@
 import * as fs from "fs";
 import * as path from "path";
+import Web3 from "web3";
 
-// import Web3 from "web3";
-import MemoryStore from "../storage/memoryStorage";
 import MemoryQueue from "../batch/memoryQueue";
-
-import { StorageInterface } from "../storage/storage";
 import { QueueInterface } from "../batch/queue";
+import MemoryStore from "../storage/memoryStorage";
+import { StorageInterface } from "../storage/storage";
+import { EthereumAddress } from "../types/Strings";
 
 const CONFIG_FILE_PATH = "./dsnp.config.js";
 
 export interface Config {
-  // blockchain: ChainInterface;
-  store: StorageInterface;
+  accountAddress?: EthereumAddress;
+  provider?: Web3;
   queue: QueueInterface;
+  store: StorageInterface;
 }
 
-let config = {
-  // blockchain: new Web3.providers.HttpProvider(RPC_URL),
-  store: MemoryStore(),
+let config: Config = {
   queue: MemoryQueue(),
+  store: MemoryStore(),
 };
 
 let isConfigLoaded = false;
