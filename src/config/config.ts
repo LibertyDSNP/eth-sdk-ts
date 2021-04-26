@@ -24,14 +24,12 @@ let config: Config = {
 
 let isConfigLoaded = false;
 const loadConfigFile = async (): Promise<void> => {
-  // If the config file has already been loaded, do nothing
   if (isConfigLoaded) return;
 
-  // If no config file exists, do nothing
   const filePath = path.resolve(CONFIG_FILE_PATH);
   if (!fs.existsSync(filePath) || fs.lstatSync(filePath).isDirectory()) return;
 
-  // Otherwise, load the config file from disk
+  // Load the config file from disk
   config = await import(filePath);
 
   // And set the flag to skip loading in the future
