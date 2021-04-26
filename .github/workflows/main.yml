@@ -7,27 +7,49 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-20.04
+#    defaults:
+#      run:
+#        working-directory: ./contracts
+    services:
+      ganache:
+        image: trufflesuite/ganache-cli
+        ports:
+          - 8545:8545
+        options: >-
+          --entrypoint "/bin/sh -c /usr/bin/node /app/ganache-core.docker.cli.js --mnemonic 'test test test test test test test test test test test junk' --chainId 31337"
     steps:
-      - name: Clone Contracts
-        uses: actions/checkout@main
+      - name: Checkout Contracts
+        uses: actions/checkout@v2
         with:
-          name: LibertyDSNP/contracts
-          ref: refs/heads/main
+          repository: LibertyDSNP/contracts
+          path: contracts
+
       - name: Install
-        run: npm ci
+        run: npm install
+        working-directory: ./contracts
+
+      - name: Install Hardhat
+        run: npm install hardhat
+        working-directory: ./contracts
+
       - name: Build
         run: npm run build
-      - name: Lint
-        run: npm run lint
-      - name: Compile
-        run: npm run compile
-      - name: Setup node
-        run: npx hardhat compile
+        working-directory: ./contracts
+
+      - name: deploy contracts
+        run: npm run deploy:localhost
+        working-directory: ./contracts
+        env:
+          LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+          STAGENET_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
   test:
+    needs: setup
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout
+      - name: Checkout SDK
         uses: actions/checkout@v2
+        with:
+          path: main
 
       - uses: actions/cache@v2
         with:
