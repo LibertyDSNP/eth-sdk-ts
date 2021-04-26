@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { keccak256 } from "js-sha3";
 
 import { batch } from "./announcement";
+import { setConfig, Config } from "../config/config";
 import { EthereumAddress } from "../types/Strings";
 
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
@@ -18,9 +19,17 @@ describe("#batch", () => {
 
   it("successfully posts a batch to the chain", async () => {
     jest.setTimeout(12000);
+
     const testUri = "http://www.testconst.com";
     const hash = keccak256("test");
-    const receipt = await batch(web3, account.address as EthereumAddress, testUri, hash);
+
+    await setConfig({
+      accountAddress: account.address as EthereumAddress,
+      provider: web3,
+    } as Config);
+
+    const receipt = await batch(testUri, hash);
+
     expect(receipt).toEqual(
       expect.objectContaining({
         events: expect.objectContaining({
