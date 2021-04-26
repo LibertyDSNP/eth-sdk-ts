@@ -4,15 +4,62 @@ Easy to use SDK for the DSNP
 
 ## Quick Start
 
-- `npm install @unfinishedlabs/sdk`
-- Import:
-  - `import * as dsnp from "@unfinishedlabs/sdk";`
-  - `import { Announcement } from "@unfinishedlabs/sdk";`
-  - `import { batch } from "@unfinishedlabs/sdk/Announcement";`
-- Require:
-  - `const dsnp = require("@unfinishedlabs/sdk");`
-  - `const { Announcement } = require("@unfinishedlabs/sdk");`
-  - `const { batch } = require("@unfinishedlabs/sdk/Announcement");`
+### Install the package
+
+First, install the SDK package with the following command:
+
+```bash
+npm install @unfinishedlabs/sdk
+```
+
+### Configure the SDK
+
+#### Configuration File
+
+Next, add a `.dsnp.config.js` file to your project's root directory. For web3, the following contents will work:
+
+```js
+var Web3 = require("web3");
+var web3 = new Web3();
+
+var provider = new Web3.providers.HttpProvider("<ETH NODE HTTP ADDRESS>");
+web3.setProvider(provider);
+
+var account = web3.eth.accounts.privateKeyToAccount("<ETH PRIVATE KEY>");
+web3.eth.accounts.wallet.add(account);
+
+module.exports = {
+  accountAddress: account.address,
+  provider: web3
+};
+```
+
+#### Runtime Configuration
+
+Alternatively, the configuration can be set at runtime with the following:
+
+```js
+var config = require("@unfinishedlabs/sdk/Config");
+
+config
+  .setConfig({
+    accountAddress: "<ACCOUNT ADDRESS HERE>",
+    provider: web3
+  })
+  .then(function () {
+    // Do something with the SDK
+  });
+```
+
+## Usage
+
+Once the SDK is installed and configured, the following code can be used to post a batch on the chain:
+
+```js
+var announcement = require("@unfinishedlabs/sdk/Announcement");
+
+announcement.batch("<URI of batch file>", "<Hash of batch file>");
+```
 
 ## Documentation
 
@@ -36,11 +83,11 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 
 ## Environment Variables
 
-| Name  | Description |
-| --- | ------- | 
-| RPC_URL | url of node to make calls to | 
-| BATCH_CONTRACT_ADDRESS | Address of contract on chain you are calling to | 
-| TESTING_PRIVATE_KEY| **Only used in testing** - private key of account you are sending transactions from  | 
+| Name                   | Description                                                                         |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| RPC_URL                | url of node to make calls to                                                        |
+| BATCH_CONTRACT_ADDRESS | Address of contract on chain you are calling to                                     |
+| TESTING_PRIVATE_KEY    | **Only used in testing** - private key of account you are sending transactions from |
 
 ## How to Test
 
