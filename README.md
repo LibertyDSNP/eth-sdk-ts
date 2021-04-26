@@ -16,7 +16,7 @@ npm install @unfinishedlabs/sdk
 
 #### Configuration File
 
-Next, add a `.dsnp.config.js` file to your project's root directory. For web3, the following contents will work:
+Next, add a `dsnp.config.js` file to your project's root directory. For web3, the following contents will work:
 
 ```js
 var Web3 = require("web3");

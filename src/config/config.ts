@@ -59,11 +59,11 @@ export const getConfig = async (overrides?: Config): Promise<Config> => {
  * setConfig() sets the current configuration with the given object. This method
  * is not yet implemented.
  *
- * @params obj  The configuration settings to set with
+ * @params newConfig The configuration settings to set with
  */
-export const setConfig = async (obj: Config): Promise<void> => {
+export const setConfig = async (newConfig: Config): Promise<void> => {
   // Set the config settings
-  config = obj;
+  config = newConfig;
 
   // Don't bother loading the config file in the future
   isConfigLoaded = true;

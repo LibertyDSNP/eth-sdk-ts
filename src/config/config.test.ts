@@ -39,10 +39,11 @@ describe("config", () => {
       it("overrides the returned settings with any provided parameters", async () => {
         expect(
           await config.getConfig(({
-            test: "differentObject",
+            otherTest: "differentObject",
           } as unknown) as Config)
         ).toMatchObject({
-          test: "differentObject",
+          test: "object",
+          otherTest: "differentObject",
         });
       });
     });
@@ -76,10 +77,11 @@ describe("config", () => {
 
         expect(
           await config.getConfig(({
-            test: "differentObject",
+            otherTest: "differentObject",
           } as unknown) as Config)
         ).toMatchObject({
-          test: "differentObject",
+          test: "object",
+          otherTest: "differentObject",
         });
       });
     });
