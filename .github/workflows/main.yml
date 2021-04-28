@@ -7,16 +7,14 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-20.04
-#    defaults:
-#      run:
-#        working-directory: ./contracts
     services:
       ganache:
-        image: trufflesuite/ganache-cli
+        image: unfinishedlabs/ganache-truffle-node:latest
         ports:
           - 8545:8545
         options: >-
-          --entrypoint "/bin/sh -c /usr/bin/node /app/ganache-core.docker.cli.js --mnemonic 'test test test test test test test test test test test junk' --chainId 31337"
+          -e MNEMONIC="test test test test test test test test test test test junk"
+          -e CHAINID=31337
     steps:
       - name: Checkout Contracts
         uses: actions/checkout@v2
@@ -28,20 +26,17 @@ jobs:
         run: npm install
         working-directory: ./contracts
 
-      - name: Install Hardhat
-        run: npm install hardhat
-        working-directory: ./contracts
-
-      - name: Build
-        run: npm run build
-        working-directory: ./contracts
+#      - name: Install Hardhat
+#        run: npm install hardhat
+#        working-directory: ./contracts
 
       - name: deploy contracts
-        run: npm run deploy:localhost
+        run:  npm install hardhat && npm run build && npm run deploy:localhost
         working-directory: ./contracts
         env:
           LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
           STAGENET_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
   test:
     needs: setup
     runs-on: ubuntu-20.04

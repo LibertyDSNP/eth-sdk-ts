@@ -70,7 +70,7 @@ describe("Contracts", () => {
         expect.objectContaining({
           contractAddress: expect.any(String),
           contractName: "Announcer",
-          blockNumber: 3,
+          blockNumber: expect.any(Number),
           blockHash: expect.any(String),
         })
       );
