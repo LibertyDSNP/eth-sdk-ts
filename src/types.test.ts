@@ -1,6 +1,6 @@
 import * as DSNP from "./types/DSNP";
 import { SEMx25519, WrappedSEM, WrappedSEMxSalsa20 } from "./types/SimpleEncryptedFormat";
-import { ActionType } from "./DSNP";
+import { ActionType } from "./batch/actionType";
 
 describe("tests are enabled and types can be used", () => {
   it("enables testing", () => {
