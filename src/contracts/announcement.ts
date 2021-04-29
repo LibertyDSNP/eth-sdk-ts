@@ -7,54 +7,57 @@ import { HexString } from "../types/Strings";
 import { MissingAccountAddress, MissingProvider } from "../utilities/errors";
 import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
-
-const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
-const BATCH_CONTRACT_ABI: AbiItem[] = [
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "hash",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "dsnpUri",
-        type: "string",
-      },
-    ],
-    name: "DSNPBatch",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "hash",
-        type: "bytes32",
-      },
-      {
-        internalType: "string",
-        name: "dsnpUri",
-        type: "string",
-      },
-    ],
-    name: "batch",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
+import { getContractAddress } from "../contract/contract";
+import { ContractResult } from "../contract/contract";
+import { abi as announcerABI } from "@unfinishedlabs/contracts/abi/Announcer.json";
+// const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
+// const BATCH_CONTRACT_ABI: AbiItem[] = [
+//   {
+//     anonymous: false,
+//     inputs: [
+//       {
+//         indexed: false,
+//         internalType: "bytes32",
+//         name: "hash",
+//         type: "bytes32",
+//       },
+//       {
+//         indexed: false,
+//         internalType: "string",
+//         name: "dsnpUri",
+//         type: "string",
+//       },
+//     ],
+//     name: "DSNPBatch",
+//     type: "event",
+//   },
+//   {
+//     inputs: [
+//       {
+//         internalType: "bytes32",
+//         name: "hash",
+//         type: "bytes32",
+//       },
+//       {
+//         internalType: "string",
+//         name: "dsnpUri",
+//         type: "string",
+//       },
+//     ],
+//     name: "batch",
+//     outputs: [],
+//     stateMutability: "nonpayable",
+//     type: "function",
+//   },
+// ];
 
 const GAS_LIMIT_BUFFER = 1000;
 const contract: Contract | null = null;
 
-const getContract = (web3Instance: Web3): Contract => {
+const getContract = async (web3Instance: Web3): Promise<any> => {
   if (contract) return contract;
-  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
+  const contractInfo = (await getContractAddress(web3Instance, "Announcer")) as ContractResult;
+  return new web3Instance.eth.Contract(announcerABI as AbiItem[], contractInfo.contractAddress);
 };
 
 const getGasLimit = async (contract: Contract, uri: string, hash: HexString, fromAddress: string): Promise<number> => {

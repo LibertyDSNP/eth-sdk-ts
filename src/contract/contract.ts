@@ -7,7 +7,7 @@ import { Log } from "web3-core";
 
 export const keccakTopic = (topic: string) => "0x" + keccak256(topic);
 
-interface ContractResult {
+export interface ContractResult {
   contractAddress: string;
   contractName: string;
   blockNumber: number;

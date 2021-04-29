@@ -4,6 +4,7 @@
     "outDir": "dist/cjs",
     "rootDir": "src",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "inlineSourceMap": true,
 
     "module": "commonjs",

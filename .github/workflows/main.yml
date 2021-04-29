@@ -60,6 +60,13 @@ jobs:
         run: npm run lint
         working-directory: ./main
 
+      - name: Test
+        run: npm run test
+        working-directory: ./main
+        env:
+          RPC_URL: http://localhost:8545
+          TESTING_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+
       - name: Build Docs
         run: npm run doc
         working-directory: ./main
@@ -67,13 +74,6 @@ jobs:
       - name: Build & Publish Dry Run
         run: npm publish --dry-run
         working-directory: ./main
-
-      - name: Test
-        run: npm run test
-        working-directory: ./main
-        env:
-          RPC_URL: http://localhost:8545
-          TESTING_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
       - name: Report Test
         uses: IgnusG/jest-report-action@v2.3.3
