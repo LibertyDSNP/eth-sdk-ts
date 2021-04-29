@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ '**' ]
 jobs:
-  setup:
+  test:
     runs-on: ubuntu-20.04
     services:
       ganache:
@@ -31,10 +31,7 @@ jobs:
         working-directory: ./contracts
         env:
           LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-  test:
-    needs: setup
-    runs-on: ubuntu-20.04
-    steps:
+
       - name: Checkout SDK
         uses: actions/checkout@v2
         with:

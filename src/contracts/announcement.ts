@@ -10,46 +10,6 @@ import { TransactionReceipt } from "web3-core/types";
 import { getContractAddress } from "../contract/contract";
 import { ContractResult } from "../contract/contract";
 import { abi as announcerABI } from "@unfinishedlabs/contracts/abi/Announcer.json";
-// const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
-// const BATCH_CONTRACT_ABI: AbiItem[] = [
-//   {
-//     anonymous: false,
-//     inputs: [
-//       {
-//         indexed: false,
-//         internalType: "bytes32",
-//         name: "hash",
-//         type: "bytes32",
-//       },
-//       {
-//         indexed: false,
-//         internalType: "string",
-//         name: "dsnpUri",
-//         type: "string",
-//       },
-//     ],
-//     name: "DSNPBatch",
-//     type: "event",
-//   },
-//   {
-//     inputs: [
-//       {
-//         internalType: "bytes32",
-//         name: "hash",
-//         type: "bytes32",
-//       },
-//       {
-//         internalType: "string",
-//         name: "dsnpUri",
-//         type: "string",
-//       },
-//     ],
-//     name: "batch",
-//     outputs: [],
-//     stateMutability: "nonpayable",
-//     type: "function",
-//   },
-// ];
 
 const GAS_LIMIT_BUFFER = 1000;
 const contract: Contract | null = null;
