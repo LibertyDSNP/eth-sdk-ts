@@ -87,13 +87,10 @@ describe("Contracts", () => {
       it("only call the function once", async () => {
         const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
         const contractResults = await getContractAddress(web3, "Announcer");
-        console.log("results", contractResults);
         const announcerContract = new Contract(announcerABI, contractResults.contractAddress);
-        console.log("announcer contract", announcerContract);
-        const receipt = await announcerContract.methods
+        await announcerContract.methods
           .batch("0x0", "http://test.com")
           .send({ from: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266" });
-        console.log("receipt", receipt);
         const announcerTopic = keccakTopic("DSNPBatch(bytes32,string)");
         const logs: Log[] = await web3.eth.getPastLogs({ topics: [announcerTopic], fromBlock: 0 });
         expect(logs.length).toEqual(1);
