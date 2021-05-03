@@ -16,22 +16,6 @@ jobs:
           -e MNEMONIC="test test test test test test test test test test test junk"
           -e CHAINID=31337
     steps:
-      - name: Checkout Contracts
-        uses: actions/checkout@v2
-        with:
-          repository: LibertyDSNP/contracts
-          path: contracts
-
-      - name: Install
-        run: npm install
-        working-directory: ./contracts
-
-      - name: deploy contracts
-        run:  npm install hardhat && npm run build && npm run deploy:localhost
-        working-directory: ./contracts
-        env:
-          LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
-
       - name: Checkout SDK
         uses: actions/checkout@v2
         with:
@@ -50,9 +34,24 @@ jobs:
           node-version: '14.15.5'
 
       - name: Install
-        run: npm install
+        run: npm ci
         working-directory: ./main
 
+      - name: Checkout Contracts
+        uses: actions/checkout@v2
+        with:
+          repository: LibertyDSNP/contracts
+          path: contracts
+
+      - name: Install
+        run: npm ci
+        working-directory: ./contracts
+
+      - name: deploy contracts
+        run:  npm install hardhat && npm run build && npm run deploy:localhost
+        working-directory: ./contracts
+        env:
+          LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
       - name: Lint
         run: npm run lint
         working-directory: ./main
