@@ -37,11 +37,20 @@ jobs:
         run: npm ci
         working-directory: ./main
 
+      - name: Find contracts package in SDK
+        run: |
+          export RESULT=result=`npm ls @unfinishedlabs/contracts | sed -En 's/.*contracts@(.*)$/\1/p'`
+          echo "::set-ouput name=RESULT::$RESULT"
+          echo $RESULT
+        shell: bash
+        working-directory: ./main
+
       - name: Checkout Contracts
         uses: actions/checkout@v2
         with:
           repository: LibertyDSNP/contracts
           path: contracts
+          ref: "d53e6c1c7858f84ff7223ad42310364715d96964"
 
       - name: Install
         run: npm ci
