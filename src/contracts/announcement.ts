@@ -7,7 +7,7 @@ import { HexString } from "../types/Strings";
 import { MissingAccountAddress, MissingProvider } from "../utilities/errors";
 import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
-import { getContractAddress } from "../contract/contract";
+import { getContractAddress } from "./contract";
 import { abi as announcerABI } from "@unfinishedlabs/contracts/abi/Announcer.json";
 import { Announcer } from "../types/typechain/Announcer";
 
