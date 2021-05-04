@@ -1,10 +1,19 @@
 import { keccak256 } from "js-sha3";
 import { HexString } from "../types/Strings";
-import { NotImplementedError } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
+
+const ISO8601_REGEX = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?/;
 
 export interface ActivityPub {
   "@context": string;
+  type: string;
+  name?: string;
+  content?: string;
+  url?: string;
+  published?: string;
+  inReplyTo?: string;
+  attributedTo?: string;
+  attachments?: string;
 }
 
 /**
@@ -21,29 +30,63 @@ export const hash = (data: ActivityPub): HexString => {
   return keccak256(jsonString);
 };
 
-export interface ActivityPubCreateOpts {
-  title: string;
-  description: string;
+export interface BroadcastOptions {
+  attachments?: string[];
+  author?: string;
+  body?: string;
+  title?: string;
+  url?: string;
 }
 
+export interface ReplyOptions {
+  attachments?: string[];
+  author?: string;
+  body: string;
+  inReplyTo: string;
+}
+
+export interface ReactionOptions {
+  author?: string;
+  body: string;
+  inReplyTo: string;
+}
+
+export type ActivityPubOptions = BroadcastOptions | ReplyOptions | ReactionOptions;
+
 /**
- * create() provides a simple factory for generating activityPub objects. This
- * method is not yet implemented.
+ * create() provides a simple factory for generating activityPub notes.
  *
- * @param   opts  Options for the created activity pub object
- * @returns       An activity pub object
+ * @param   options Options for the activity pub object to create
+ * @returns         An activity pub object
  */
-export const create = (_opts: ActivityPubCreateOpts): ActivityPub => {
-  throw NotImplementedError;
+export const create = (options: ActivityPubOptions): ActivityPub => {
+  const activityPub: Record<string, unknown> = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Note",
+    published: new Date().toISOString(),
+  };
+
+  if ((options as BroadcastOptions).title) activityPub["name"] = (options as BroadcastOptions).title;
+  if (options.body) activityPub["content"] = (options as BroadcastOptions).body;
+  if (options.author) activityPub["attributedTo"] = options.author;
+  if ((options as ReplyOptions).inReplyTo) activityPub["inReplyTo"] = (options as ReplyOptions).inReplyTo;
+  if ((options as BroadcastOptions).url) activityPub["url"] = (options as BroadcastOptions).url;
+  if ((options as BroadcastOptions).attachments) activityPub["attachments"] = (options as BroadcastOptions).attachments;
+
+  return (activityPub as unknown) as ActivityPub;
 };
 
 /**
  * validate() returns true if the object provided is a valid activityPub.
- * Otherwise, it returns false. This method is not yet implemented.
+ * Otherwise, it returns false.
  *
- * @param   obj  An object to be validated against the activity pub standard
- * @returns      True or false depending on whether the given object is a valid
+ * @param   activityPub  An object to be validated against the activity pub standard
+ * @returns              True or false depending on whether the given object is a valid
  */
-export const validate = (_obj: unknown): boolean => {
-  throw NotImplementedError;
+export const validate = (activityPub: ActivityPub): boolean => {
+  if (activityPub["@context"] !== "https://www.w3.org/ns/activitystreams") return false;
+  if (!activityPub.type || typeof activityPub.type !== "string") return false;
+  if (activityPub.published && !activityPub.published.match(ISO8601_REGEX)) return false;
+
+  return true;
 };
