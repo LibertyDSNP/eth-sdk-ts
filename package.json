@@ -24,6 +24,7 @@
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
     "prepublishOnly": "npm run build && npm run doc:markdown",
+    "postinstall": "typechain --target=web3-v1 ./node_modules/@unfinishedlabs/contracts/abi/**/*.json --outDir ./src/types/typechain",
     "postpublish": "npm run clean",
     "test": "jest",
     "watch": "run-s build && run-p \"build:cjs -- -w\" \"build:esm -- -w\" \"build:types -- -w\" \"test -- --watch\""
@@ -37,9 +38,11 @@
     "node": ">=14.15.5"
   },
   "devDependencies": {
+    "@typechain/web3-v1": "^2.2.0",
     "@types/jest": "26.0.22",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
+    "@unfinishedlabs/contracts": "next",
     "babel-jest": "^26.6.3",
     "dotenv": "^8.2.0",
     "eslint": "^7.23.0",
@@ -52,6 +55,7 @@
     "prettier": "2.2.1",
     "ts-jest": "26.5.4",
     "ts-node": "9.1.1",
+    "typechain": "^4.0.3",
     "typedoc": "0.20.35",
     "typedoc-plugin-markdown": "3.6.1",
     "typescript": "4.2.3"
@@ -90,6 +94,8 @@
   },
   "dependencies": {
     "js-sha3": "^0.8.0",
-    "web3": "^1.3.5"
+    "typescript": "^4.1.5",
+    "web3": "^1.3.5 ",
+    "web3-eth-contract": "^1.3.5"
   }
 }

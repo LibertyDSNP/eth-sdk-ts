@@ -36,17 +36,15 @@ describe("#batch", () => {
           DSNPBatch: expect.objectContaining({
             event: "DSNPBatch",
             raw: expect.objectContaining({
-              data:
-                "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000018687474703a2f2f7777772e74657374636f6e73742e636f6d0000000000000000",
+              data: expect.any(String),
               topics: ["0x05b15401a1cdc64b82f68754db0847c6b6ab8900804fe703c6d30a73e9f00e7b"],
             }),
             returnValues: expect.objectContaining({
-              "0": "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658",
+              "0": expect.any(String),
               "1": "http://www.testconst.com",
               dsnpUri: "http://www.testconst.com",
               hash: "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb658",
             }),
-            type: "mined",
           }),
         }),
       })

@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { Contract } from "web3-eth-contract";
+import { MissingContract } from "../utilities/errors";
 import { AbiItem } from "web3-utils";
 
 import { getConfig, Config } from "../config/config";
@@ -7,57 +7,22 @@ import { HexString } from "../types/Strings";
 import { MissingAccountAddress, MissingProvider } from "../utilities/errors";
 import { hashPrefix } from "../utilities/hash";
 import { TransactionReceipt } from "web3-core/types";
-
-const BATCH_CONTRACT_ADDRESS = String(process.env.BATCH_CONTRACT_ADDRESS);
-const BATCH_CONTRACT_ABI: AbiItem[] = [
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "bytes32",
-        name: "hash",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "dsnpUri",
-        type: "string",
-      },
-    ],
-    name: "DSNPBatch",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "hash",
-        type: "bytes32",
-      },
-      {
-        internalType: "string",
-        name: "dsnpUri",
-        type: "string",
-      },
-    ],
-    name: "batch",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
+import { getContractAddress } from "./contract";
+import { abi as announcerABI } from "@unfinishedlabs/contracts/abi/Announcer.json";
+import { Announcer } from "../types/typechain/Announcer";
 
 const GAS_LIMIT_BUFFER = 1000;
-const contract: Contract | null = null;
+const contract: Announcer | null = null;
+const CONTRACT_NAME = "Announcer";
 
-const getContract = (web3Instance: Web3): Contract => {
+const getContract = async (web3Instance: Web3): Promise<Announcer | null> => {
   if (contract) return contract;
-  return new web3Instance.eth.Contract(BATCH_CONTRACT_ABI, BATCH_CONTRACT_ADDRESS);
+  const contractAddr = await getContractAddress(web3Instance, CONTRACT_NAME);
+  if (!contractAddr) return null;
+  return (new web3Instance.eth.Contract(announcerABI as AbiItem[], contractAddr) as unknown) as Announcer;
 };
 
-const getGasLimit = async (contract: Contract, uri: string, hash: HexString, fromAddress: string): Promise<number> => {
+const getGasLimit = async (contract: Announcer, uri: string, hash: HexString, fromAddress: string): Promise<number> => {
   const gasEstimate = await contract.methods.batch(hashPrefix(hash), uri).estimateGas({
     from: fromAddress,
   });
@@ -81,8 +46,9 @@ export const batch = async (uri: string, hash: HexString, opts?: Config): Promis
   if (!provider) throw MissingProvider;
 
   const contract = await getContract(provider);
-  const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
+  if (!contract) throw MissingContract;
 
+  const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
   return contract.methods.batch(hashPrefix(hash), uri).send({
     from: accountAddress,
     gas: gasEstimate,

@@ -7,9 +7,19 @@ on:
 jobs:
   test:
     runs-on: ubuntu-20.04
+    services:
+      ganache:
+        image: unfinishedlabs/ganache-truffle-node:latest
+        ports:
+          - 8545:8545
+        options: >-
+          -e MNEMONIC="test test test test test test test test test test test junk"
+          -e CHAINID=31337
     steps:
-      - name: Checkout
+      - name: Checkout SDK
         uses: actions/checkout@v2
+        with:
+          path: main
 
       - uses: actions/cache@v2
         with:
@@ -25,19 +35,54 @@ jobs:
 
       - name: Install
         run: npm ci
+        working-directory: ./main
+
+      - name: Find contracts package in SDK
+        id: contracts_version
+        run: |
+          echo `npm list @unfinishedlabs/contracts --verbose`
+          export version=`npm list @unfinishedlabs/contracts --silent | sed -En 's/.*contracts@0.0.0-(\w+)\s.*$/\1/p'`
+          export result=`git ls-remote https://github.com/LibertyDSNP/contracts.git | grep -m 1 $version | cut -c 1-40`
+          echo "contract_version=$result" >> $GITHUB_ENV
+        shell: bash
+        working-directory: ./main
+
+      - name: Checkout Contracts
+        uses: actions/checkout@v2
+        with:
+          repository: LibertyDSNP/contracts
+          path: contracts
+          ref: ${{ env.contract_version }}
+
+      - name: Install
+        run: npm ci
+        working-directory: ./contracts
+
+      - name: deploy contracts
+        run:  npm install hardhat && npm run build && npm run deploy:localhost
+        working-directory: ./contracts
+        env:
+          LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
       - name: Lint
         run: npm run lint
+        working-directory: ./main
+
+      - name: Test
+        run: npm run test
+        working-directory: ./main
+        env:
+          RPC_URL: http://localhost:8545
+          TESTING_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
       - name: Build Docs
         run: npm run doc
+        working-directory: ./main
 
       - name: Build & Publish Dry Run
         run: npm publish --dry-run
-
-#      - name: Test
-#        run: npm run test
-
+        working-directory: ./main
+#
 #      - name: Report Test
 #        uses: IgnusG/jest-report-action@v2.3.3
 #        if: always()
