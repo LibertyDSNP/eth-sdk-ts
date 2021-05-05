@@ -31,8 +31,8 @@ describe("Contracts", () => {
 
     it("returns null if no values found", async () => {
       const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
-      const contractResults = await getContractAddress(web3, "Test");
-      expect(contractResults).toBeNull();
+      const contractAddress = await getContractAddress(web3, "Test");
+      expect(contractAddress).toBeNull();
     });
   });
 

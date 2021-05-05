@@ -47,9 +47,6 @@ jobs:
         shell: bash
         working-directory: ./main
 
-      - name: Check result
-        run:  echo "${{ env.contract_version }}"
-
       - name: Checkout Contracts
         uses: actions/checkout@v2
         with:

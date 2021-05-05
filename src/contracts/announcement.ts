@@ -19,7 +19,7 @@ const getContract = async (web3Instance: Web3): Promise<Announcer | null> => {
   if (contract) return contract;
   const contractAddr = await getContractAddress(web3Instance, CONTRACT_NAME);
   if (!contractAddr) return null;
-  return (new web3Instance.eth.Contract(announcerABI as AbiItem[], contractAddr) as any) as Announcer;
+  return (new web3Instance.eth.Contract(announcerABI as AbiItem[], contractAddr) as unknown) as Announcer;
 };
 
 const getGasLimit = async (contract: Announcer, uri: string, hash: HexString, fromAddress: string): Promise<number> => {

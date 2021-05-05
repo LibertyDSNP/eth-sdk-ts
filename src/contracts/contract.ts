@@ -5,7 +5,7 @@ import { keccak256 } from "js-sha3";
 import { AbiInput } from "web3-utils";
 import { Log } from "web3-core";
 
-export const keccakTopic = (topic: string) => "0x" + keccak256(topic);
+export const keccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 
 interface ContractResult {
   contractAddr: string;
