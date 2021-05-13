@@ -1,4 +1,7 @@
+import { keccak256 } from "js-sha3";
+
 import { HexString } from "../types/Strings";
+import { sortObject } from "../utilities/json";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages
@@ -99,3 +102,22 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   fromId,
   inReplyTo,
 });
+
+/**
+ * hash() takes a DSNPMessage and returns a standard hash for use in signatures
+ * as defined in the [Message Signatures](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Signatures.md)
+ * specification.
+ *
+ * @param   message The message to hash
+ * @returns         A hex string of the resulting hash
+ */
+export const hash = (message: DSNPMessage): HexString => {
+  const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
+  let serialization = "";
+
+  for (const key in sortedMessage) {
+    serialization = `${serialization}${key}${sortedMessage[key]}`;
+  }
+
+  return keccak256(serialization);
+};
