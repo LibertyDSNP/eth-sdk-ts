@@ -15,6 +15,15 @@ const GAS_LIMIT_BUFFER = 1000;
 const contract: Announcer | null = null;
 const CONTRACT_NAME = "Announcer";
 
+export interface Announcement {
+  dsnpType: number;
+  uri: string;
+  hash: HexString;
+}
+
+const annoucementsAsArrays = (announcements: Announcement[]): Array<[number, string, HexString]> =>
+  announcements.map(({ dsnpType, uri, hash }) => [dsnpType, uri, hashPrefix(hash)]);
+
 const getContract = async (web3Instance: Web3): Promise<Announcer | null> => {
   if (contract) return contract;
   const contractAddr = await getContractAddress(web3Instance, CONTRACT_NAME);
@@ -22,8 +31,12 @@ const getContract = async (web3Instance: Web3): Promise<Announcer | null> => {
   return (new web3Instance.eth.Contract(announcerABI as AbiItem[], contractAddr) as unknown) as Announcer;
 };
 
-const getGasLimit = async (contract: Announcer, uri: string, hash: HexString, fromAddress: string): Promise<number> => {
-  const gasEstimate = await contract.methods.batch(hashPrefix(hash), uri).estimateGas({
+const getGasLimit = async (
+  contract: Announcer,
+  announcements: Announcement[],
+  fromAddress: string
+): Promise<number> => {
+  const gasEstimate = await contract.methods.batch(annoucementsAsArrays(announcements)).estimateGas({
     from: fromAddress,
   });
 
@@ -34,12 +47,11 @@ const getGasLimit = async (contract: Announcer, uri: string, hash: HexString, fr
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param uri  The URI of the hosted batch to post
- * @param hash A hash of the batch contents for use in verification
+ * @param announcement[] a list of announcements
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
  */
-export const batch = async (uri: string, hash: HexString, opts?: Config): Promise<TransactionReceipt> => {
+export const batch = async (announcements: Announcement[], opts?: Config): Promise<TransactionReceipt> => {
   const { accountAddress, provider } = await getConfig(opts);
 
   if (!accountAddress) throw MissingAccountAddress;
@@ -48,8 +60,8 @@ export const batch = async (uri: string, hash: HexString, opts?: Config): Promis
   const contract = await getContract(provider);
   if (!contract) throw MissingContract;
 
-  const gasEstimate = await getGasLimit(contract, uri, hash, accountAddress);
-  return contract.methods.batch(hashPrefix(hash), uri).send({
+  const gasEstimate = await getGasLimit(contract, announcements, accountAddress);
+  return contract.methods.batch(annoucementsAsArrays(announcements)).send({
     from: accountAddress,
     gas: gasEstimate,
   });

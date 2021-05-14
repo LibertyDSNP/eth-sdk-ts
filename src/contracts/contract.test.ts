@@ -43,9 +43,9 @@ describe("Contracts", () => {
         const contractAddress = await getContractAddress(web3, "Announcer");
         const announcerContract = new Contract(announcerABI, contractAddress);
         await announcerContract.methods
-          .batch("0x0", "http://test.com")
+          .batch([[0, "http://test.com", "0x0000000000000000000000000000000000000000000000000000000000000000"]])
           .send({ from: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266" });
-        const announcerTopic = keccakTopic("DSNPBatch(bytes32,string)");
+        const announcerTopic = keccakTopic("DSNPBatch(int16,bytes32,string)");
         const logs: Log[] = await web3.eth.getPastLogs({ topics: [announcerTopic], fromBlock: 0 });
         expect(logs.length).toEqual(1);
       });
