@@ -133,3 +133,15 @@ export const hash = (message: DSNPMessage): Uint8Array => {
  */
 export const sign = (privateKey: Uint8Array, message: DSNPMessage): Uint8Array =>
   secp256k1.ecdsaSign(hash(message), privateKey).signature;
+
+/**
+ * verify() takes a public key, DSNP message and a message signature and returns
+ * whether the signature is valid for the given key and message.
+ *
+ * @param publicKey The public key of the message signer
+ * @param message   The DSNP message to sign
+ * @param signature The message signature to validate
+ * @returns         A boolean indicating if the signature is valid
+ */
+export const verify = (publicKey: Uint8Array, message: DSNPMessage, signature: Uint8Array): boolean =>
+  secp256k1.ecdsaVerify(signature, hash(message), publicKey);
