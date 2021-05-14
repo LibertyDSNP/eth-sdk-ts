@@ -110,9 +110,9 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
  * specification.
  *
  * @param   message The message to hash
- * @returns         A hex string of the resulting hash
+ * @returns         A Uint8Array of the resulting hash
  */
-export const hash = (message: DSNPMessage): HexString => {
+export const hash = (message: DSNPMessage): Uint8Array => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 
@@ -120,13 +120,7 @@ export const hash = (message: DSNPMessage): HexString => {
     serialization = `${serialization}${key}${sortedMessage[key]}`;
   }
 
-  return keccak256(serialization);
-};
-
-const hashToUint8Array = (hash: HexString): Uint8Array => {
-  const hexPairs = hash.match(/[\dA-F]{2}/gi);
-  if (!hexPairs) throw new Error("Invalid hexidecimal string provided.");
-  return new Uint8Array(hexPairs.map((chars) => parseInt(chars, 16)));
+  return new Uint8Array(keccak256.digest(serialization));
 };
 
 /**
@@ -138,4 +132,4 @@ const hashToUint8Array = (hash: HexString): Uint8Array => {
  * @returns          The message signature as a Uint8Array
  */
 export const sign = (privateKey: Uint8Array, message: DSNPMessage): Uint8Array =>
-  secp256k1.ecdsaSign(hashToUint8Array(hash(message)), privateKey).signature;
+  secp256k1.ecdsaSign(hash(message), privateKey).signature;
