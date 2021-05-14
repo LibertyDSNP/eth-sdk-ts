@@ -130,7 +130,12 @@ const hashToUint8Array = (hash: HexString): Uint8Array => {
 };
 
 /**
- * sign()
+ * sign() takes a private key and DSNP message and returns a Uint8Array
+ * signature for the message.
+ *
+ * @param privateKey The private key to use for signing
+ * @param message    The DSNP message to sign
+ * @returns          The message signature as a Uint8Array
  */
 export const sign = (privateKey: Uint8Array, message: DSNPMessage): Uint8Array =>
   secp256k1.ecdsaSign(hashToUint8Array(hash(message)), privateKey).signature;
