@@ -1,4 +1,5 @@
 import { keccak256 } from "js-sha3";
+import secp256k1 from "secp256k1";
 
 import { HexString } from "../types/Strings";
 import { sortObject } from "../utilities/json";
@@ -121,3 +122,15 @@ export const hash = (message: DSNPMessage): HexString => {
 
   return keccak256(serialization);
 };
+
+const hashToUint8Array = (hash: HexString): Uint8Array => {
+  const hexPairs = hash.match(/[\dA-F]{2}/gi);
+  if (!hexPairs) throw new Error("Invalid hexidecimal string provided.");
+  return new Uint8Array(hexPairs.map((chars) => parseInt(chars, 16)));
+};
+
+/**
+ * sign()
+ */
+export const sign = (privateKey: Uint8Array, message: DSNPMessage): Uint8Array =>
+  secp256k1.ecdsaSign(hashToUint8Array(hash(message)), privateKey).signature;
