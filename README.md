@@ -90,5 +90,11 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 | TESTING_PRIVATE_KEY    | **Only used in testing** - private key of account you are sending transactions from |
 
 ## How to Test
-
-Run `npm run test`
+1. Check out the [contracts repo](https://github.com/LibertyDSNP/contracts) and follow the instructions to start a hardhat test node and load the contracts.
+1. Create a .env file with the following content.
+    ```shell
+    RPC_URL=http://localhost:8545
+    TESTING_PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+    ```
+1.  Replace the value of TESTING_PRIVATE_KEY with the value of `LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY` in the .env from the contracts repo, or use what is in .github/workflows/main.yml. It may be same as above.   
+1. `npm run test`
