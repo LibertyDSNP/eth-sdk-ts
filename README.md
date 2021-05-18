@@ -58,7 +58,7 @@ Once the SDK is installed and configured, the following code can be used to post
 ```js
 var announcement = require("@dsnp/sdk/Announcement");
 
-announcement.batch("<URI of batch file>", "<Hash of batch file>");
+announcement.batch([{ hash, uri, dsnpType }]);
 ```
 
 ## Documentation
