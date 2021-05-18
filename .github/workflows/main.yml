@@ -33,6 +33,9 @@ jobs:
         with:
           node-version: '14.15.5'
 
+      - name: Update npm to v7
+        run: npm i -g npm
+
       - name: Install
         run: npm ci
         working-directory: ./main
@@ -40,9 +43,11 @@ jobs:
       - name: Find contracts package in SDK
         id: contracts_version
         run: |
-          echo `npm list @dsnp/contracts --verbose`
-          export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(\w+)\s.*$/\1/p'`
+          npm list @dsnp/contracts
+          export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(.{6}).*$/\1/p'`
+          echo "Found version ${version}"
           export result=`git ls-remote https://github.com/LibertyDSNP/contracts.git | grep -m 1 $version | cut -c 1-40`
+          echo "Using SHA ${result}"
           echo "contract_version=$result" >> $GITHUB_ENV
         shell: bash
         working-directory: ./main
