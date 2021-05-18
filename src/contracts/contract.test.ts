@@ -1,54 +1,29 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
 require("dotenv").config();
-import { Log } from "web3-core";
-import Web3 from "web3";
+import { ethers } from "ethers";
 import { getContractAddress } from "./contract";
 import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
-import { keccakTopic } from "./contract";
-import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 
-const Contract = require("web3-eth-contract");
-
-beforeAll(() => {
-  Contract.setProvider(process.env.RPC_URL as string);
-});
+const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
 
 beforeEach(async () => {
-  await snapshotHardhat();
+  await snapshotHardhat(provider);
 });
 
 afterEach(async () => {
-  await revertHardhat();
+  await revertHardhat(provider);
 });
 
 describe("Contracts", () => {
   describe("getContractAddress", () => {
     it("returns latest address for contract", async () => {
-      const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
-      const contractAddress = await getContractAddress(web3, "Announcer");
+      const contractAddress = await getContractAddress(provider, "Announcer");
       expect(contractAddress).not.toBeNull();
     });
 
     it("returns null if no values found", async () => {
-      const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
-      const contractAddress = await getContractAddress(web3, "Test");
+      const contractAddress = await getContractAddress(provider, "Test");
       expect(contractAddress).toBeNull();
-    });
-  });
-
-  describe("Call batch on Announcer Contract", () => {
-    describe("Using snapshot", () => {
-      it("only call the function once", async () => {
-        const web3 = new Web3(new Web3.providers.HttpProvider(process.env.RPC_URL as string));
-        const contractAddress = await getContractAddress(web3, "Announcer");
-        const announcerContract = new Contract(announcerABI, contractAddress);
-        await announcerContract.methods
-          .batch([[0, "http://test.com", "0x0000000000000000000000000000000000000000000000000000000000000000"]])
-          .send({ from: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266" });
-        const announcerTopic = keccakTopic("DSNPBatch(int16,bytes32,string)");
-        const logs: Log[] = await web3.eth.getPastLogs({ topics: [announcerTopic], fromBlock: 0 });
-        expect(logs.length).toEqual(1);
-      });
     });
   });
 });

@@ -1,18 +1,13 @@
-import Web3 from "web3";
-import { MissingContract } from "../utilities/errors";
-import { AbiItem } from "web3-utils";
-
+import { Contract, ContractTransaction, ethers, EventFilter } from "ethers";
 import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
-import { MissingAccountAddress, MissingProvider } from "../utilities/errors";
-import { hashPrefix } from "../utilities/hash";
-import { TransactionReceipt } from "web3-core/types";
+import { MissingContract } from "../utilities/errors";
 import { getContractAddress } from "./contract";
+import { MissingProvider, MissingSigner } from "../utilities/errors";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer } from "../types/typechain/Announcer";
 
 const GAS_LIMIT_BUFFER = 1000;
-const contract: Announcer | null = null;
 const CONTRACT_NAME = "Announcer";
 
 export interface Announcement {
@@ -21,48 +16,58 @@ export interface Announcement {
   hash: HexString;
 }
 
-const annoucementsAsArrays = (announcements: Announcement[]): Array<[number, string, HexString]> =>
-  announcements.map(({ dsnpType, uri, hash }) => [dsnpType, uri, hashPrefix(hash)]);
-
-const getContract = async (web3Instance: Web3): Promise<Announcer | null> => {
-  if (contract) return contract;
-  const contractAddr = await getContractAddress(web3Instance, CONTRACT_NAME);
-  if (!contractAddr) return null;
-  return (new web3Instance.eth.Contract(announcerABI as AbiItem[], contractAddr) as unknown) as Announcer;
-};
-
-const getGasLimit = async (
-  contract: Announcer,
-  announcements: Announcement[],
-  fromAddress: string
-): Promise<number> => {
-  const gasEstimate = await contract.methods.batch(annoucementsAsArrays(announcements)).estimateGas({
-    from: fromAddress,
-  });
-
-  return gasEstimate + GAS_LIMIT_BUFFER;
-};
-
 /**
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param announcement[] a list of announcements
+ * @param announcements array of announcments to batch.
  * @param opts Optional. Configuration overrides, such as from address, if any
- * @returns    A [web3 contract receipt promise](https://web3js.readthedocs.io/en/v1.3.4/web3-eth-contract.html#id36)
+ * @returns    A contract receipt promise
  */
-export const batch = async (announcements: Announcement[], opts?: Config): Promise<TransactionReceipt> => {
-  const { accountAddress, provider } = await getConfig(opts);
+export const batch = async (announcements: Announcement[], opts?: Config): Promise<ContractTransaction> => {
+  const { provider, signer } = await getConfig(opts);
 
-  if (!accountAddress) throw MissingAccountAddress;
+  if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
   const contract = await getContract(provider);
   if (!contract) throw MissingContract;
 
-  const gasEstimate = await getGasLimit(contract, announcements, accountAddress);
-  return contract.methods.batch(annoucementsAsArrays(announcements)).send({
-    from: accountAddress,
-    gas: gasEstimate,
-  });
+  const gasEstimate = await getGasLimit(contract, announcements);
+  return contract.connect(signer).batch(announcements, { gasLimit: gasEstimate });
+};
+
+export const dsnpBatchFilter = async (provider: ethers.providers.Provider): Promise<EventFilter> => {
+  const contract = await getContract(provider);
+  return contract.filters.DSNPBatch();
+};
+
+/**
+ * Goes through logs finding all DNSPBatch events
+ * @param provider provider from which to retrieve events
+ * @returns All announcements recorded as DSNPBatch events
+ */
+ export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider): Promise<Announcement[]> => {
+  const filter = await dsnpBatchFilter(provider);
+  const logs: ethers.providers.Log[] = await provider.getLogs(filter);
+  const decoder = new ethers.utils.Interface(announcerABI);
+  return logs
+    .map((log: ethers.providers.Log) => decoder.parseLog(log))
+    .filter((desc) => desc.name === "DSNPBatch")
+    .map((desc) => {
+      const { dsnpType, dsnpHash, dsnpUri } = desc.args;
+      return { dsnpType, hash: dsnpHash, uri: dsnpUri };
+    });
+};
+
+const getContract = async (provider: ethers.providers.Provider): Promise<Announcer> => {
+  const address = await getContractAddress(provider, CONTRACT_NAME);
+  if (!address) throw MissingContract;
+  return new Contract(address, announcerABI, provider) as Announcer;
+};
+
+const getGasLimit = async (contract: Announcer, announcements: Announcement[]): Promise<number> => {
+  const gasEstimate = await contract.estimateGas.batch(announcements);
+
+  return gasEstimate.toNumber() + GAS_LIMIT_BUFFER;
 };
