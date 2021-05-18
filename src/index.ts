@@ -5,8 +5,8 @@
  * export const foo = fooImport;
  * ```
  * Leads to use like:
- *   - `import { foo } from "@unfinishedlabs/sdk";`
- *   - `import foo from "@unfinishedlabs/sdk/foo";`
+ *   - `import { foo } from "@dsnp/sdk";`
+ *   - `import foo from "@dsnp/sdk/foo";`
  */
 
 import * as contractsImport from "./contracts";

@@ -40,8 +40,8 @@ jobs:
       - name: Find contracts package in SDK
         id: contracts_version
         run: |
-          echo `npm list @unfinishedlabs/contracts --verbose`
-          export version=`npm list @unfinishedlabs/contracts --silent | sed -En 's/.*contracts@0.0.0-(\w+)\s.*$/\1/p'`
+          echo `npm list @dsnp/contracts --verbose`
+          export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(\w+)\s.*$/\1/p'`
           export result=`git ls-remote https://github.com/LibertyDSNP/contracts.git | grep -m 1 $version | cut -c 1-40`
           echo "contract_version=$result" >> $GITHUB_ENV
         shell: bash

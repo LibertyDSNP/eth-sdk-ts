@@ -9,7 +9,7 @@ Easy to use SDK for the DSNP
 First, install the SDK package with the following command:
 
 ```bash
-npm install @unfinishedlabs/sdk
+npm install @dsnp/sdk
 ```
 
 ### Configure the SDK
@@ -39,7 +39,7 @@ module.exports = {
 Alternatively, the configuration can be set at runtime with the following:
 
 ```js
-var config = require("@unfinishedlabs/sdk/Config");
+var config = require("@dsnp/sdk/Config");
 
 config
   .setConfig({
@@ -56,7 +56,7 @@ config
 Once the SDK is installed and configured, the following code can be used to post a batch on the chain:
 
 ```js
-var announcement = require("@unfinishedlabs/sdk/Announcement");
+var announcement = require("@dsnp/sdk/Announcement");
 
 announcement.batch("<URI of batch file>", "<Hash of batch file>");
 ```
@@ -67,7 +67,7 @@ See [Documentation](https://libertydsnp.github.io/sdk-ts/) or generate documenta
 
 ## How to Install
 
-Run `npm install @unfinishedlabs/sdk`
+Run `npm install @dsnp/sdk`
 
 ## How to Build
 
