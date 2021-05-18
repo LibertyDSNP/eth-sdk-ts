@@ -37,7 +37,6 @@ export interface BroadcastMessage extends DSNPMessage {
  * @param   fromId The id of the user from whom the message is posted
  * @param   uri    The URI of the activity pub content to reference
  * @param   hash   The hash of the content at the URI
- * @param   opts   Optional. Configuration overrides, such as from address, if any
  * @returns        A BroadcastMessage
  */
 export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
@@ -66,7 +65,6 @@ export interface ReplyMessage extends DSNPMessage {
  * @param   uri       The URI of the activity pub content to reference
  * @param   hash      The hash of the content at the URI
  * @param   inReplyTo The message id of the parent message
- * @param   opts      Optional. Configuration overrides, such as from address, if any
  * @returns           A ReplyMessage
  */
 export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
@@ -94,7 +92,6 @@ export interface ReactionMessage extends DSNPMessage {
  * @param   fromId    The id of the user from whom the message is posted
  * @param   emoji     The emoji to respond with
  * @param   inReplyTo The message id of the parent message
- * @param   opts      Optional. Configuration overrides, such as from address, if any
  * @returns           A ReactionMessage
  */
 export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: string): ReactionMessage => ({
