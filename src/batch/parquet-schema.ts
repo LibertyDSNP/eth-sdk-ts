@@ -8,24 +8,29 @@
  */
 export const BroadcastSchema = {
   actionType: { type: "INT32" },
+  contentHash: { type: "BYTE_ARRAY" },
   fromAddress: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
 };
 
+/**
+ * Reply: A public reply post
+ */
 export const ReplySchema = {
   actionType: { type: "INT32" },
   fromAddress: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
 };
 
+/**
+ * Drop: a dead drop message
+ */
 export const DropSchema = {
   actionType: { type: "INT32" },
-  fromAddress: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY" },
   deadDropID: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
 };
 
@@ -36,7 +41,7 @@ export const DropSchema = {
 export const GraphChangeSchema = {
   actionType: { type: "INT32" },
   fromAddress: { type: "BYTE_ARRAY" },
-  followType: { type: "INT32" },
+  changeType: { type: "INT32" },
 };
 
 /**
@@ -68,7 +73,8 @@ export const ProfileSchema = {
 export const EncryptedInboxSchema = {
   actionType: { type: "INT32" },
   fromAddress: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
+  toAddress: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
 };
 
@@ -78,7 +84,7 @@ export const EncryptedInboxSchema = {
 export const ReactionSchema = {
   actionType: { type: "INT32" },
   fromAddress: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
 };
 
@@ -89,5 +95,5 @@ export const PrivateSchema = {
   actionType: { type: "INT32" },
   fromAddress: { type: "BYTE_ARRAY" },
   data: { type: "BYTE_ARRAY" },
-  messageID: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY" },
 };
