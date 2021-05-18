@@ -6,10 +6,10 @@
  * Expected to release with TypeScript 4.3 May 2021
  *
  * In the end this allows us to support:
- * `import { getBar } from "@unfinishedlabs/sdk/Foo";`
+ * `import { getBar } from "@dsnp/sdk/Foo";`
  * in addition to the other way:
  * ```
- * import { Foo } from "@unfinishedlabs/sdk";
+ * import { Foo } from "@dsnp/sdk";
  * const { getBar } = Foo;
  * ```
  *

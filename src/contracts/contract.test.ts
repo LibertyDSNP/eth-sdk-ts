@@ -5,7 +5,7 @@ import Web3 from "web3";
 import { getContractAddress } from "./contract";
 import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
 import { keccakTopic } from "./contract";
-import { abi as announcerABI } from "@unfinishedlabs/contracts/abi/Announcer.json";
+import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 
 const Contract = require("web3-eth-contract");
 

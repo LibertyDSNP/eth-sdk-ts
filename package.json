@@ -1,5 +1,5 @@
 {
-  "name": "@unfinishedlabs/sdk",
+  "name": "@dsnp/sdk",
   "version": "0.0.0",
   "description": "SDK Library for the DSNP",
   "type": "commonjs",
@@ -24,7 +24,7 @@
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
     "prepublishOnly": "npm run build && npm run doc:markdown",
-    "postinstall": "typechain --target=web3-v1 ./node_modules/@unfinishedlabs/contracts/abi/**/*.json --outDir ./src/types/typechain",
+    "postinstall": "typechain --target=web3-v1 ./node_modules/@dsnp/contracts/abi/**/*.json --outDir ./src/types/typechain",
     "postpublish": "npm run clean",
     "test": "jest",
     "watch": "run-s build && run-p \"build:cjs -- -w\" \"build:esm -- -w\" \"build:types -- -w\" \"test -- --watch\""
@@ -38,11 +38,12 @@
     "node": ">=14.15.5"
   },
   "devDependencies": {
+    "@dsnp/contracts": "0.0.0-89312d",
+    "@dsnp/test-generators": "0.0.0-6a23bc",
     "@typechain/web3-v1": "^2.2.0",
     "@types/jest": "26.0.22",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
-    "@unfinishedlabs/contracts": "next",
     "babel-jest": "^26.6.3",
     "dotenv": "^8.2.0",
     "eslint": "^7.23.0",
