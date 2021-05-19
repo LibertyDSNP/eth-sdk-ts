@@ -40,7 +40,6 @@
   "devDependencies": {
     "@dsnp/contracts": "0.0.0-83c461",
     "@dsnp/test-generators": "0.0.0-6a23bc",
-    "@typechain/web3-v1": "^2.2.0",
     "@types/jest": "26.0.22",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
@@ -94,6 +93,7 @@
   },
   "dependencies": {
     "@dsnp/parquetjs": "^0.0.0-2ccc4e",
+    "@typechain/web3-v1": "^2.2.0",
     "js-sha3": "^0.8.0",
     "request": "^2.88.2",
     "typechain": "^4.0.3",
