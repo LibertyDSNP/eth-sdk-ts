@@ -1,14 +1,13 @@
-import Web3 from "web3";
+import { ethers } from "ethers";
 
 import MemoryQueue from "../batch/memoryQueue";
 import { QueueInterface } from "../batch/queue";
 import MemoryStore from "../storage/memoryStorage";
 import { StorageInterface } from "../storage/storage";
-import { EthereumAddress } from "../types/Strings";
 
 export interface Config {
-  accountAddress?: EthereumAddress;
-  provider?: Web3;
+  provider?: ethers.providers.Provider;
+  signer?: ethers.Signer;
   queue: QueueInterface;
   store: StorageInterface;
 }

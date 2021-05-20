@@ -16,21 +16,17 @@ npm install @dsnp/sdk
 
 #### Configuration File
 
-Next, add a `dsnp.config.js` file to your project's root directory. For web3, the following contents will work:
+Next, add a `dsnp.config.js` file to your project's root directory. For ethers, the following contents will work:
 
 ```js
-var Web3 = require("web3");
-var web3 = new Web3();
+var ethers = require("ethers");
 
-var provider = new Web3.providers.HttpProvider("<ETH NODE HTTP ADDRESS>");
-web3.setProvider(provider);
-
-var account = web3.eth.accounts.privateKeyToAccount("<ETH PRIVATE KEY>");
-web3.eth.accounts.wallet.add(account);
+var provider = new ethers.providers.JsonRpcProvider("<ETH NODE HTTP ADDRESS>");
+var signer = new ethers.Wallet("<ETH PRIVATE KEY>", provider);
 
 module.exports = {
-  accountAddress: account.address,
-  provider: web3
+  signer: signer,
+  provider: provider
 };
 ```
 
@@ -43,8 +39,8 @@ var config = require("@dsnp/sdk/Config");
 
 config
   .setConfig({
-    accountAddress: "<ACCOUNT ADDRESS HERE>",
-    provider: web3
+    signer: signer,
+    provider: provider
   })
   .then(function () {
     // Do something with the SDK
