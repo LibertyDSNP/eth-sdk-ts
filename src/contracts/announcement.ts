@@ -47,7 +47,7 @@ export const dsnpBatchFilter = async (provider: ethers.providers.Provider): Prom
  * @param provider provider from which to retrieve events
  * @returns All announcements recorded as DSNPBatch events
  */
- export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider): Promise<Announcement[]> => {
+export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider): Promise<Announcement[]> => {
   const filter = await dsnpBatchFilter(provider);
   const logs: ethers.providers.Log[] = await provider.getLogs(filter);
   const decoder = new ethers.utils.Interface(announcerABI);
