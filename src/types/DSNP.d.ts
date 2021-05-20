@@ -25,8 +25,8 @@ export interface Message {
  * Broadcast: a public post
  */
 export interface Broadcast extends Message {
-  /** messageID keccak-256 hash of content stored at URI bytes32 */
-  messageID: string;
+  /** contentHash keccak-256 hash of content stored at URI bytes32 */
+  contentHash: string;
   /** uri content URI string */
   uri: string;
 }
@@ -35,8 +35,8 @@ export interface Broadcast extends Message {
  * Reply: a public reply post
  */
 export interface Reply extends Message {
-  /** messageID keccak-256 hash of content stored at uri bytes32 */
-  messageID: string;
+  /** contentHash keccak-256 hash of content stored at uri bytes32 */
+  contentHash: string;
   /** inReplyTo ID of the message the reply references bytes32 */
   inReplyTo: string;
   /** uri content uri string */
@@ -49,8 +49,8 @@ export interface Reply extends Message {
 export interface Drop extends Message {
   /** deadDropID The Dead Drop ID (See DeadDrops bytes32) */
   deadDropID: string;
-  /** messageID keccak-256 hash of content bytes32 */
-  messageID: string;
+  /** contentHash keccak-256 hash of content bytes32 */
+  contentHash: string;
   /** uri content uri string */
   uri: string;
 }
@@ -83,8 +83,8 @@ export interface EncryptionKeyList extends Message {
  * Profile - a profile change message
  */
 export interface Profile extends Message {
-  /** messageID keccak-256 hash of content bytes32 */
-  messageID: string;
+  /** contentHash keccak-256 hash of content bytes32 */
+  contentHash: string;
   /** uri content uri string */
   uri: string;
 }
@@ -93,8 +93,8 @@ export interface Profile extends Message {
 export interface EncryptedInbox extends Message {
   /** toAddress ID of the recipient bytes20 */
   toAddress: EthereumAddress;
-  /** messageID keccak-256 hash of content bytes32 */
-  messageID: string;
+  /** contentHash keccak-256 hash of content bytes32 */
+  contentHash: string;
   /** uri content uri string */
   uri: string;
 }
@@ -116,5 +116,5 @@ export interface Private extends Message {
   /** encrypted graph change data */
   data: string;
   /** keccak-256 hash of unencrypted content */
-  messageID: string;
+  contentHash: string;
 }
