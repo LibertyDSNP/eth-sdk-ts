@@ -131,13 +131,13 @@ export const sign = async (message: DSNPMessage, opts?: Config): Promise<HexStri
 };
 
 /**
- * recoverPublcKey() takes a DSNP message and a message signature and returns
+ * recoverPublicKey() takes a DSNP message and a message signature and returns
  * the corresponding public key for validation.
  *
  * @param message   The DSNP message to sign
  * @param signature The message signature to validate
  * @returns         The address of the signer in hex
  */
-export const recoverPublcKey = (message: DSNPMessage, signature: HexString): HexString => {
+export const recoverPublicKey = (message: DSNPMessage, signature: HexString): HexString => {
   return ethers.utils.verifyMessage(serialize(message), signature);
 };

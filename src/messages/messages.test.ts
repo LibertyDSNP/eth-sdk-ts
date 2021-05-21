@@ -1,7 +1,8 @@
+import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
 import { getConfig, setConfig } from "../config/config";
-import { createBroadcastMessage, sign, recoverPublcKey } from "./messages";
+import { createBroadcastMessage, sign, recoverPublicKey } from "./messages";
 
 describe("messages", () => {
   describe("#sign", () => {
@@ -22,7 +23,7 @@ describe("messages", () => {
     });
   });
 
-  describe("#recoverPublcKey", () => {
+  describe("#recoverPublicKey", () => {
     const publicKey = "0x19Fd031833F9d8Bb745F5324d7535DE0FDD3e837";
 
     it("returns the correct public key for a valid signature", () => {
@@ -30,7 +31,7 @@ describe("messages", () => {
       const signature =
         "0x168aeea67ab8e6b60a8d004ab57e17bab16dac135bcc9d9c8b34058808befd371e4d34ee6b1dc18b3d86e63765352286ba949a39cd458138cad7895b7faca2cb1c";
 
-      expect(recoverPublcKey(message, signature)).toEqual(publicKey);
+      expect(recoverPublicKey(message, signature)).toEqual(publicKey);
     });
 
     it("returns a different public key for an invalid signature", () => {
@@ -38,7 +39,23 @@ describe("messages", () => {
       const signature =
         "0x168aeea67ab8e6b60a8d004ab57e17bab16dac135bcc9d9c8b34058808befd371e5d34ee6b1dc18b3d86e63765352286ba949a39cd458138cad7895b7faca2cb1c";
 
-      expect(recoverPublcKey(message, signature)).not.toEqual(publicKey);
+      expect(recoverPublicKey(message, signature)).not.toEqual(publicKey);
     });
+  });
+
+  it("round trip signs and verifies messages", async () => {
+    const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
+    const privateKey = `0x${Buffer.from(randomBytes(32)).toString("hex")}`;
+    const signer = new ethers.Wallet(privateKey);
+    const address = await signer.getAddress();
+
+    await setConfig({
+      ...(await getConfig()),
+      signer,
+    });
+
+    const signature = await sign(message);
+
+    expect(recoverPublicKey(message, signature)).toEqual(address);
   });
 });
