@@ -1,7 +1,9 @@
+import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import secp256k1 from "secp256k1";
 
+import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
+import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
 
 /**
@@ -109,7 +111,7 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
  * @param   message The message to hash
  * @returns         A Uint8Array of the resulting hash
  */
-export const hash = (message: DSNPMessage): Uint8Array => {
+export const hash = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 
@@ -117,28 +119,31 @@ export const hash = (message: DSNPMessage): Uint8Array => {
     serialization = `${serialization}${key}${sortedMessage[key]}`;
   }
 
-  return new Uint8Array(keccak256.digest(serialization));
+  return keccak256(serialization);
 };
 
 /**
  * sign() takes a private key and DSNP message and returns a Uint8Array
  * signature for the message.
  *
- * @param privateKey The private key to use for signing
- * @param message    The DSNP message to sign
- * @returns          The message signature as a Uint8Array
+ * @param message The DSNP message to sign
+ * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @returns       The message signature as a Uint8Array
  */
-export const sign = (privateKey: Uint8Array, message: DSNPMessage): Uint8Array =>
-  secp256k1.ecdsaSign(hash(message), privateKey).signature;
+export const sign = async (message: DSNPMessage, opts?: Config): Promise<string> => {
+  const { signer } = await getConfig(opts);
+  if (!signer) throw MissingSigner;
+  return signer.signMessage(hash(message));
+};
 
 /**
  * verify() takes a public key, DSNP message and a message signature and returns
  * whether the signature is valid for the given key and message.
  *
- * @param publicKey The public key of the message signer
  * @param message   The DSNP message to sign
  * @param signature The message signature to validate
- * @returns         A boolean indicating if the signature is valid
+ * @returns         The address of the signer
  */
-export const verify = (publicKey: Uint8Array, message: DSNPMessage, signature: Uint8Array): boolean =>
-  secp256k1.ecdsaVerify(signature, hash(message), publicKey);
+export const verify = (message: DSNPMessage, signature: string): string => {
+  return ethers.utils.verifyMessage(hash(message), signature);
+};
