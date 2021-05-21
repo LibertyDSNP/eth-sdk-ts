@@ -1,5 +1,4 @@
 import { ethers } from "ethers";
-import { keccak256 } from "js-sha3";
 
 import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
@@ -103,15 +102,7 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   inReplyTo,
 });
 
-/**
- * hash() takes a DSNPMessage and returns a standard hash for use in signatures
- * as defined in the [Message Signatures](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Signatures.md)
- * specification.
- *
- * @param   message The message to hash
- * @returns         A Uint8Array of the resulting hash
- */
-export const hash = (message: DSNPMessage): HexString => {
+const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 
@@ -119,31 +110,34 @@ export const hash = (message: DSNPMessage): HexString => {
     serialization = `${serialization}${key}${sortedMessage[key]}`;
   }
 
-  return keccak256(serialization);
+  return serialization;
 };
 
 /**
- * sign() takes a private key and DSNP message and returns a Uint8Array
- * signature for the message.
+ * sign() takes a DSNP message and returns a Uint8Array signature for the
+ * message using the Signer provided in the configuration options.
+ *
+ * @throws {@link MissingSigner}
+ * This error is thrown if no Signer is defined in the configuration options.
  *
  * @param message The DSNP message to sign
  * @param opts    Optional. Configuration overrides, such as from address, if any
- * @returns       The message signature as a Uint8Array
+ * @returns       The message signature in hex
  */
 export const sign = async (message: DSNPMessage, opts?: Config): Promise<HexString> => {
   const { signer } = await getConfig(opts);
   if (!signer) throw MissingSigner;
-  return signer.signMessage(hash(message));
+  return signer.signMessage(serialize(message));
 };
 
 /**
- * verify() takes a public key, DSNP message and a message signature and returns
- * whether the signature is valid for the given key and message.
+ * recoverPublcKey() takes a DSNP message and a message signature and returns
+ * the corresponding public key for validation.
  *
  * @param message   The DSNP message to sign
  * @param signature The message signature to validate
- * @returns         The address of the signer
+ * @returns         The address of the signer in hex
  */
-export const verify = (message: DSNPMessage, signature: HexString): HexString => {
-  return ethers.utils.verifyMessage(hash(message), signature);
+export const recoverPublcKey = (message: DSNPMessage, signature: HexString): HexString => {
+  return ethers.utils.verifyMessage(serialize(message), signature);
 };
