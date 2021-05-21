@@ -3,16 +3,16 @@
 import { Config } from "../config/config";
 // import * as announcement from "../contracts/announcement";
 // import * as storage from "../storage/storage";
-import { MessageType } from "../types/DSNP";
+import { DSNPType } from "../messages/messages";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 
 export type QueueId = HexString;
 
 export interface QueueInterface {
-  enqueue(dsnpEvent: MessageType): Promise<QueueId>;
-  dequeue(id: QueueId): Promise<MessageType>;
-  getAll(): Promise<MessageType[]>;
+  enqueue(dsnpEvent: DSNPType): Promise<QueueId>;
+  dequeue(id: QueueId): Promise<DSNPType>;
+  getAll(): Promise<DSNPType[]>;
 }
 
 /**
@@ -22,7 +22,7 @@ export interface QueueInterface {
  * @param   dsnpEvent  The DSNP event to queue up for batching
  * @returns            An ID for the queued event
  */
-export const enqueue = async (_event: MessageType, _opts?: Config): Promise<QueueId> => {
+export const enqueue = async (_event: DSNPType, _opts?: Config): Promise<QueueId> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -36,7 +36,7 @@ export const enqueue = async (_event: MessageType, _opts?: Config): Promise<Queu
  * @param   id  The ID of the event to remove from the queue
  * @returns     The DSNP event event removed from the queue
  */
-export const dequeue = async (_id: QueueId, _opts?: Config): Promise<MessageType> => {
+export const dequeue = async (_id: QueueId, _opts?: Config): Promise<DSNPType> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);

@@ -1,4 +1,4 @@
-import { MessageType } from "../types/DSNP";
+import { DSNPType } from "../messages/messages";
 import { NotImplementedError } from "../utilities";
 import request from "request";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -6,7 +6,7 @@ const parquet = require("@dsnp/parquetjs");
 const { ParquetReader } = parquet;
 
 type ReadRowFunction = {
-  (row: MessageType): void;
+  (row: DSNPType): void;
 };
 
 interface SplitBlockBloomFilter {
@@ -28,7 +28,7 @@ export type BatchFileObject = string;
  * @param events  An array of DSNPEvents to include in the batch file
  * @returns         A batch file object
  */
-export const createFile = (_events: MessageType[]): BatchFileObject => {
+export const createFile = (_events: DSNPType[]): BatchFileObject => {
   throw NotImplementedError;
 };
 
