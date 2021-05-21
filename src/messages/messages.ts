@@ -53,7 +53,7 @@ export const createBroadcastMessage = (fromId: string, uri: string, hash: HexStr
  */
 export interface ReplyMessage extends DSNPMessage {
   type: DSNPType.Reply;
-  contentHash: string;
+  contentHash: HexString;
   fromId: string;
   inReplyTo: string;
   uri: string;
@@ -111,7 +111,7 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
  * @param   message The message to hash
  * @returns         A Uint8Array of the resulting hash
  */
-export const hash = (message: DSNPMessage): string => {
+export const hash = (message: DSNPMessage): HexString => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 
@@ -130,7 +130,7 @@ export const hash = (message: DSNPMessage): string => {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       The message signature as a Uint8Array
  */
-export const sign = async (message: DSNPMessage, opts?: Config): Promise<string> => {
+export const sign = async (message: DSNPMessage, opts?: Config): Promise<HexString> => {
   const { signer } = await getConfig(opts);
   if (!signer) throw MissingSigner;
   return signer.signMessage(hash(message));
@@ -144,6 +144,6 @@ export const sign = async (message: DSNPMessage, opts?: Config): Promise<string>
  * @param signature The message signature to validate
  * @returns         The address of the signer
  */
-export const verify = (message: DSNPMessage, signature: string): string => {
+export const verify = (message: DSNPMessage, signature: HexString): HexString => {
   return ethers.utils.verifyMessage(hash(message), signature);
 };
