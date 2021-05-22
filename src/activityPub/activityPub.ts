@@ -16,6 +16,13 @@ export interface ActivityPub {
   attachments?: string;
 }
 
+type PubType = "Image" | "Video";
+export interface ActivityPubAttachment {
+  type: PubType;
+  mediaType: string;
+  url: string;
+}
+
 /**
  * hash() provides a simple way to hash activityPub objects while guaranteeing
  * that identical objects with different key orders still return the same hash.
