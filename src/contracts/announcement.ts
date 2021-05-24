@@ -1,13 +1,12 @@
 import { Contract, ContractTransaction, ethers, EventFilter } from "ethers";
 import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
-import { MissingContract } from "../utilities/errors";
 import { getContractAddress } from "./contract";
-import { MissingProvider, MissingSigner } from "../utilities/errors";
+import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer } from "../types/typechain/Announcer";
+import { GAS_LIMIT_BUFFER } from "./contract";
 
-const GAS_LIMIT_BUFFER = 1000;
 const CONTRACT_NAME = "Announcer";
 
 export interface Announcement {

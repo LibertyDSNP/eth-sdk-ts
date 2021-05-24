@@ -3,6 +3,7 @@ import { HexString } from "../types/Strings";
 import { keccak256 } from "js-sha3";
 import { ethers } from "ethers";
 
+export const GAS_LIMIT_BUFFER = 1000;
 export const keccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 
