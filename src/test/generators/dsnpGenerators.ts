@@ -3,7 +3,7 @@ import { times } from "lodash";
 
 import { DSNPType, DSNPMessage, BroadcastMessage, ReactionMessage, ReplyMessage } from "../../messages/messages";
 import { EthereumAddress } from "../../types/Strings";
-import { randInt, generateHexString, sample } from "@dsnp/test-generators/dist/types/index";
+import { randInt, generateHexString, sample } from "@dsnp/test-generators";
 import { generateEthereumAddress } from "@dsnp/test-generators/dist/types/addresses";
 import { prefabURLs } from "@dsnp/test-generators/dist/types/sampleText";
 
@@ -16,9 +16,10 @@ import { prefabURLs } from "@dsnp/test-generators/dist/types/sampleText";
 export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => {
   // A WAG of the ratios of message types
   const reactionReplyMax = 1000;
+  // TODO leave these here for when other types are implemented
   // const broadcastMax = Math.ceil(reactionReplyMax / 3);
-  // TODO const graphMax = Math.ceil(broadcastMax / 10);
-  // TODO const profileMax = Math.ceil(graphMax / 50);
+  // const graphMax = Math.ceil(broadcastMax / 10);
+  // const profileMax = Math.ceil(graphMax / 50);
 
   // this sets the frequency of generated types to approximately the ratios above
   const maxInt = reactionReplyMax * 10;
@@ -32,10 +33,6 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
       msg = value % 2 == 0 ? generateReaction() : generateReply();
     } else {
       msg = generateBroadcast();
-      // } else if (value > graphMax) {
-      //   msg = generateGraphChange();
-      // } else {
-      //   msg = generateKeyList(); // stands in for combined frequency of all types of KeyList changes
     }
     data.push(msg);
   });
@@ -93,24 +90,6 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
     uri: sample(prefabURLs),
   };
 };
-
-/**
- * TODO generateGraphChange
- * @param from - a desired fromID (optional)
- */
-// export const generateGraphChange = (from?: EthereumAddress): GraphChange => {
-//   const val: 0 | 1 = sample([0, 1]) === 0 ? 0 : 1;
-//   return {
-//     actionType: DSNPType.GraphChange,
-//     fromId: from ? from : generateEthereumAddress(),
-//     followType: val,
-//   };
-// };
-
-/**
- * generateProfile
- * @param from - a desired fromID (optional)
- */
 
 /**
  * generateReaction

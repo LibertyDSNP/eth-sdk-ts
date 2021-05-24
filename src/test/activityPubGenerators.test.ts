@@ -2,6 +2,7 @@ import * as apg from "./generators/activityPubGenerators";
 import { getNPrefabAddresses } from "@dsnp/test-generators/dist/types/addresses";
 import { HexString } from "../types/Strings";
 import { ActivityPub, ActivityPubAttachment } from "../activityPub/activityPub";
+
 describe("activityPubGenerators", () => {
   const addrs: Array<HexString> = getNPrefabAddresses(2);
   const from = addrs[0];

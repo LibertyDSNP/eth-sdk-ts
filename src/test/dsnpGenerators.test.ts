@@ -1,13 +1,6 @@
-import {
-  generateBroadcast,
-  generateGraphChange,
-  generateReply,
-  generateKeyList,
-  generateReaction,
-  generateDSNPStream,
-} from "./generators/dsnpGenerators";
-import { ActionType } from "../batch/actionType";
+import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./generators/dsnpGenerators";
 import { countBy } from "lodash";
+import { DSNPType } from "../messages/messages";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {
@@ -17,45 +10,32 @@ describe("dsnp functions", () => {
 
     expect(data.length).toEqual(numMsgs);
 
-    const bcasts = counts[ActionType.Broadcast.toString()];
-    const replies = counts[ActionType.Reply.toString()];
-    const graphChanges = counts[ActionType.GraphChange.toString()];
-    const reactions = counts[ActionType.Reaction.toString()];
-    const keylists = counts[ActionType.KeyList.toString()] || 0;
+    const bcasts = counts[DSNPType.Broadcast.toString()];
+    const replies = counts[DSNPType.Reply.toString()];
+    const reactions = counts[DSNPType.Reaction.toString()];
     expect(replies).toBeGreaterThan(bcasts);
     expect(reactions).toBeGreaterThan(bcasts);
-    expect(replies).toBeGreaterThan(graphChanges);
-    expect(bcasts).toBeGreaterThan(keylists);
   });
 
   it("generateBroadcast works", () => {
     const dsnpMsg = generateBroadcast();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.actionType).toEqual(ActionType.Broadcast);
-    expect(dsnpMsg.fromAddress.length).toBeGreaterThan(0);
+    expect(dsnpMsg.type).toEqual(DSNPType.Broadcast);
+    expect(dsnpMsg.fromId.length).toBeGreaterThan(0);
 
     // validates that it gets a parseable URL and not garbage.
     const url = new URL(dsnpMsg.uri);
     expect(url.protocol).toMatch(/^http/);
   });
-  it("generateGraphChange works", () => {
-    const dsnpMsg = generateGraphChange();
-    expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.actionType).toEqual(ActionType.GraphChange);
-  });
+
   it("generateReply works", () => {
     const dsnpMsg = generateReply();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.actionType).toEqual(ActionType.Reply);
+    expect(dsnpMsg.type).toEqual(DSNPType.Reply);
   });
   it("generateReaction works", () => {
     const dsnpMsg = generateReaction();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.actionType).toEqual(ActionType.Reaction);
-  });
-  it("generateKeyList works", () => {
-    const dsnpMsg = generateKeyList();
-    expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.actionType).toEqual(ActionType.KeyList);
+    expect(dsnpMsg.type).toEqual(DSNPType.Reaction);
   });
 });
