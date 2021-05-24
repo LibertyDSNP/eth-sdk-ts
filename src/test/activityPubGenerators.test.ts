@@ -1,5 +1,5 @@
 import * as apg from "./generators/activityPubGenerators";
-import { getNPrefabAddresses } from "@dsnp/test-generators/src/addresses";
+import { getNPrefabAddresses } from "@dsnp/test-generators/dist/types/addresses";
 import { HexString } from "../types/Strings";
 import { ActivityPub, ActivityPubAttachment } from "../activityPub/activityPub";
 describe("activityPubGenerators", () => {

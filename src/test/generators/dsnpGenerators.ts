@@ -1,42 +1,41 @@
 import * as fs from "fs";
 import { times } from "lodash";
 
-import { ActionType } from "../../batch/actionType";
-import { Broadcast, GraphChange, KeyList, Message, Reaction, Reply } from "../../types/DSNP";
+import { DSNPType, DSNPMessage, BroadcastMessage, ReactionMessage, ReplyMessage } from "../../messages/messages";
 import { EthereumAddress } from "../../types/Strings";
-import { randInt, generateHexString, sampleStr, sampleNum } from "@dsnp/test-generators/src/index";
-import { generateEthereumAddress } from "@dsnp/test-generators/src/addresses";
-import { prefabURLs } from "@dsnp/test-generators/src/sampleText";
+import { randInt, generateHexString, sample } from "@dsnp/test-generators/dist/types/index";
+import { generateEthereumAddress } from "@dsnp/test-generators/dist/types/addresses";
+import { prefabURLs } from "@dsnp/test-generators/dist/types/sampleText";
 
 /**
- * @function generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds
- * it generates a randomized list of DSNP messages at an estimated frequency for each type.
+ * @function generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds.
+ * It generates a randomized list of DSNP messages at an estimated frequency for each type.
  * @param messageCount
+ * @return an array of Messages.
  */
-export const generateDSNPStream = (messageCount: number): Array<Message> => {
+export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => {
   // A WAG of the ratios of message types
   const reactionReplyMax = 1000;
-  const broadcastMax = Math.ceil(reactionReplyMax / 3);
-  // const inboxMax = Math.ceil(broadcastMax / 5);
-  const graphMax = Math.ceil(broadcastMax / 10);
-  // const profileMax = Math.ceil(graphMax / 10);
-  // const keyMax = Math.ceil(profileMax / 2);
+  // const broadcastMax = Math.ceil(reactionReplyMax / 3);
+  // TODO const graphMax = Math.ceil(broadcastMax / 10);
+  // TODO const profileMax = Math.ceil(graphMax / 50);
 
   // this sets the frequency of generated types to approximately the ratios above
   const maxInt = reactionReplyMax * 10;
 
-  const data: Message[] = [];
+  const data: DSNPMessage[] = [];
   times(messageCount, () => {
     const value = randInt(maxInt);
-    let msg: Message;
+    let msg: DSNPMessage;
     if (value > reactionReplyMax) {
+      // estimate reactions and replies average about the same
       msg = value % 2 == 0 ? generateReaction() : generateReply();
-    } else if (value > broadcastMax) {
-      msg = generateBroadcast();
-    } else if (value > graphMax) {
-      msg = generateGraphChange();
     } else {
-      msg = generateKeyList(); // stands in for combined frequency of all types of KeyList changes
+      msg = generateBroadcast();
+      // } else if (value > graphMax) {
+      //   msg = generateGraphChange();
+      // } else {
+      //   msg = generateKeyList(); // stands in for combined frequency of all types of KeyList changes
     }
     data.push(msg);
   });
@@ -49,7 +48,7 @@ export const generateDSNPStream = (messageCount: number): Array<Message> => {
  * @param jsonFilePath where to write the output file
  * @return number of bytes written
  */
-export const writeFixture = (data: Array<Message>, jsonFilePath: string): number => {
+export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): number => {
   const ws = fs.createWriteStream(jsonFilePath).on("error", (e: Error) => {
     throw new Error("createWriteStream failed: \n" + e.toString());
   });
@@ -72,12 +71,12 @@ export const writeFixture = (data: Array<Message>, jsonFilePath: string): number
  * generateBroadcast
  * @param from - a desired fromID (optional)
  */
-export const generateBroadcast = (from?: EthereumAddress): Broadcast => {
+export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
   return {
-    actionType: ActionType.Broadcast,
-    fromAddress: from ? from : generateEthereumAddress(),
-    messageID: generateHexString(64),
-    uri: sampleStr(prefabURLs),
+    type: DSNPType.Broadcast,
+    fromId: from ? from : generateEthereumAddress(),
+    contentHash: generateHexString(64),
+    uri: sample(prefabURLs),
   };
 };
 
@@ -85,40 +84,28 @@ export const generateBroadcast = (from?: EthereumAddress): Broadcast => {
  * generateReply
  * @param from - a desired fromID (optional)
  */
-export const generateReply = (from?: EthereumAddress): Reply => {
+export const generateReply = (from?: EthereumAddress): ReplyMessage => {
   return {
-    actionType: ActionType.Reply,
-    fromAddress: from ? from : generateEthereumAddress(),
+    type: DSNPType.Reply,
+    fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
-    messageID: generateHexString(64),
-    uri: sampleStr(prefabURLs),
+    contentHash: generateHexString(64),
+    uri: sample(prefabURLs),
   };
 };
 
 /**
- * generateGraphChange
+ * TODO generateGraphChange
  * @param from - a desired fromID (optional)
  */
-export const generateGraphChange = (from?: EthereumAddress): GraphChange => {
-  const val: 0 | 1 = sampleNum([0, 1]) === 0 ? 0 : 1;
-  return {
-    actionType: ActionType.GraphChange,
-    fromAddress: from ? from : generateEthereumAddress(),
-    followType: val,
-  };
-};
-
-/**
- * generateKeyList
- * @param from - a desired fromID (optional)
- */
-export const generateKeyList = (from?: EthereumAddress): KeyList => {
-  return {
-    actionType: ActionType.KeyList,
-    fromAddress: from ? from : generateEthereumAddress(),
-    keyList: [generateHexString(64), generateHexString(64), generateHexString(64)],
-  };
-};
+// export const generateGraphChange = (from?: EthereumAddress): GraphChange => {
+//   const val: 0 | 1 = sample([0, 1]) === 0 ? 0 : 1;
+//   return {
+//     actionType: DSNPType.GraphChange,
+//     fromId: from ? from : generateEthereumAddress(),
+//     followType: val,
+//   };
+// };
 
 /**
  * generateProfile
@@ -129,10 +116,10 @@ export const generateKeyList = (from?: EthereumAddress): KeyList => {
  * generateReaction
  * @param from - a desired fromID (optional)
  */
-export const generateReaction = (from?: EthereumAddress): Reaction => {
+export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
   return {
-    actionType: ActionType.Reaction,
-    fromAddress: from ? from : generateEthereumAddress(),
+    type: DSNPType.Reaction,
+    fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     emoji: generateHexString(20),
   };

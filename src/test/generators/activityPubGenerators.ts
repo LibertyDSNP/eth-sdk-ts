@@ -5,8 +5,8 @@ import {
   prefabLastNames,
   prefabURLs,
   prefabVideos,
-} from "../../../../test-generators/src/sampleText";
-import { sampleStr } from "../../../../test-generators/src";
+} from "@dsnp/test-generators/dist/types/sampleText";
+import { sample } from "@dsnp/test-generators";
 
 /**
  * Generate a Note ActivityPub that is a reply to another Note
@@ -43,7 +43,7 @@ export const generateNote = (address: HexString, message: string, attachment?: b
  * @param username (optional) the new username of the profile update TODO
  */
 export const generatePerson = (address: HexString, name?: string): ActivityPub => {
-  const newName = name ? name : [sampleStr(prefabFirstNames), sampleStr(prefabLastNames)].join(" ");
+  const newName = name ? name : [sample(prefabFirstNames), sample(prefabLastNames)].join(" ");
   return {
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
@@ -59,7 +59,7 @@ export const generatePerson = (address: HexString, name?: string): ActivityPub =
  * @param url The url to generate the NoteAttachment around
  */
 export const generateImageAttachment = (url?: string): ActivityPubAttachment => {
-  const theURL = url ? url : sampleStr(prefabURLs);
+  const theURL = url ? url : sample(prefabURLs);
   return {
     mediaType: theURL.replace(/(^\w+:|^)\/\//, ""), // Regex to scrub protocol from string
     type: "Image",
@@ -72,7 +72,7 @@ export const generateImageAttachment = (url?: string): ActivityPubAttachment => 
  * @param url The url to generate the NoteAttachment around
  */
 export const generateVideoAttachment = (url?: string): ActivityPubAttachment => {
-  const theURL = url ? url : sampleStr(prefabVideos);
+  const theURL = url ? url : sample(prefabVideos);
   return {
     mediaType: theURL.replace(/(^\w+:|^)\/\//, ""), // Regex to scrub protocol from string
     type: "Video",
