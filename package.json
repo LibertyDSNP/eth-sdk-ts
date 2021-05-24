@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@dsnp/contracts": "0.0.0-9c117e",
-    "@dsnp/test-generators": "^0.0.0-984e60",
+    "@dsnp/test-generators": "0.0.0-6a23bc",
     "@typechain/ethers-v5": "^7.0.0",
     "@types/jest": "26.0.22",
     "@types/lodash": "^4.14.170",
