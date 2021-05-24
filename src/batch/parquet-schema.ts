@@ -25,16 +25,6 @@ export const ReplySchema = {
 };
 
 /**
- * Drop: a dead drop message
- */
-export const DropSchema = {
-  actionType: { type: "INT32" },
-  contentHash: { type: "BYTE_ARRAY" },
-  deadDropID: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
-};
-
-/**
  * GraphChange: a public follow/unfollow
  * Note followType will be only 0 or 1; other values are invalid
  */
@@ -43,20 +33,6 @@ export const GraphChangeSchema = {
   fromAddress: { type: "BYTE_ARRAY" },
   changeType: { type: "INT32" },
 };
-
-/**
- * KeyList, PrivateGraphKeyList, EncryptionKeyList
- * Note keyList field will need to have additional deserialization to convert to
- * a list of keys
- */
-export const KeyListSchema = {
-  actionType: { type: "INT32" },
-  fromAddress: { type: "BYTE_ARRAY" },
-  keyList: { type: "BYTE_ARRAY" },
-};
-
-export const PrivateKeyListSchema = KeyListSchema;
-export const EncryptionKeyListSchema = KeyListSchema;
 
 /**
  * Profile - a profile change message
@@ -68,17 +44,6 @@ export const ProfileSchema = {
 };
 
 /**
- * Encrypted Inbox: an encrypted direct message:
- */
-export const EncryptedInboxSchema = {
-  actionType: { type: "INT32" },
-  fromAddress: { type: "BYTE_ARRAY" },
-  toAddress: { type: "BYTE_ARRAY" },
-  contentHash: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
-};
-
-/**
  * Reaction: a visual reply to a Broadcast message (aka post)
  */
 export const ReactionSchema = {
@@ -86,14 +51,4 @@ export const ReactionSchema = {
   fromAddress: { type: "BYTE_ARRAY" },
   contentHash: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
-};
-
-/**
- * Private: an encrypted message of unknown type
- */
-export const PrivateSchema = {
-  actionType: { type: "INT32" },
-  fromAddress: { type: "BYTE_ARRAY" },
-  data: { type: "BYTE_ARRAY" },
-  contentHash: { type: "BYTE_ARRAY" },
 };
