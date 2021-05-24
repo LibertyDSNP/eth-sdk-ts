@@ -1,5 +1,5 @@
 import { Handle } from "./handles";
-import { MessageType } from "../types/DSNP";
+import { DSNPType } from "../messages/messages";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 
@@ -31,7 +31,7 @@ interface FetchFilters extends BaseFilters {
   from?: BlockNumber;
 }
 
-type SubscriptionCallbackFn = (event: MessageType) => void;
+type SubscriptionCallbackFn = (event: DSNPType) => void;
 type SubscriptionId = string;
 
 /**
@@ -67,6 +67,6 @@ export const unsubscribe = (_id: SubscriptionId): void => {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       An array of events
  */
-export const fetchEvents = async (_filters: FetchFilters): Promise<MessageType[]> => {
+export const fetchEvents = async (_filters: FetchFilters): Promise<DSNPType[]> => {
   throw NotImplementedError;
 };

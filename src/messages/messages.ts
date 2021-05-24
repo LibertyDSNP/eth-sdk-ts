@@ -1,4 +1,9 @@
+import { ethers } from "ethers";
+
+import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
+import { MissingSigner } from "../utilities/errors";
+import { sortObject } from "../utilities/json";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages
@@ -33,7 +38,6 @@ export interface BroadcastMessage extends DSNPMessage {
  * @param   fromId The id of the user from whom the message is posted
  * @param   uri    The URI of the activity pub content to reference
  * @param   hash   The hash of the content at the URI
- * @param   opts   Optional. Configuration overrides, such as from address, if any
  * @returns        A BroadcastMessage
  */
 export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
@@ -48,7 +52,7 @@ export const createBroadcastMessage = (fromId: string, uri: string, hash: HexStr
  */
 export interface ReplyMessage extends DSNPMessage {
   type: DSNPType.Reply;
-  contentHash: string;
+  contentHash: HexString;
   fromId: string;
   inReplyTo: string;
   uri: string;
@@ -62,7 +66,6 @@ export interface ReplyMessage extends DSNPMessage {
  * @param   uri       The URI of the activity pub content to reference
  * @param   hash      The hash of the content at the URI
  * @param   inReplyTo The message id of the parent message
- * @param   opts      Optional. Configuration overrides, such as from address, if any
  * @returns           A ReplyMessage
  */
 export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
@@ -90,7 +93,6 @@ export interface ReactionMessage extends DSNPMessage {
  * @param   fromId    The id of the user from whom the message is posted
  * @param   emoji     The emoji to respond with
  * @param   inReplyTo The message id of the parent message
- * @param   opts      Optional. Configuration overrides, such as from address, if any
  * @returns           A ReactionMessage
  */
 export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: string): ReactionMessage => ({
@@ -99,3 +101,43 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   fromId,
   inReplyTo,
 });
+
+const serialize = (message: DSNPMessage): string => {
+  const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
+  let serialization = "";
+
+  for (const key in sortedMessage) {
+    serialization = `${serialization}${key}${sortedMessage[key]}`;
+  }
+
+  return serialization;
+};
+
+/**
+ * sign() takes a DSNP message and returns a Uint8Array signature for the
+ * message using the Signer provided in the configuration options.
+ *
+ * @throws {@link MissingSigner}
+ * This error is thrown if no Signer is defined in the configuration options.
+ *
+ * @param message The DSNP message to sign
+ * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @returns       The message signature in hex
+ */
+export const sign = async (message: DSNPMessage, opts?: Config): Promise<HexString> => {
+  const { signer } = await getConfig(opts);
+  if (!signer) throw MissingSigner;
+  return signer.signMessage(serialize(message));
+};
+
+/**
+ * recoverPublicKey() takes a DSNP message and a message signature and returns
+ * the corresponding public key for validation.
+ *
+ * @param message   The DSNP message to sign
+ * @param signature The message signature to validate
+ * @returns         The address of the signer in hex
+ */
+export const recoverPublicKey = (message: DSNPMessage, signature: HexString): HexString => {
+  return ethers.utils.verifyMessage(serialize(message), signature);
+};
