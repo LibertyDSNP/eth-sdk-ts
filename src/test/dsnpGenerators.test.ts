@@ -4,15 +4,15 @@ import { DSNPType } from "../messages/messages";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {
-    const numMsgs = 500;
+    const numMsgs = 100;
     const data = generateDSNPStream(numMsgs);
-    const counts = countBy(data, "actionType");
+    const counts = countBy(data, "type");
 
     expect(data.length).toEqual(numMsgs);
 
-    const bcasts = counts[DSNPType.Broadcast.toString()];
-    const replies = counts[DSNPType.Reply.toString()];
-    const reactions = counts[DSNPType.Reaction.toString()];
+    const bcasts = counts[DSNPType.Broadcast];
+    const replies = counts[DSNPType.Reply];
+    const reactions = counts[DSNPType.Reaction];
     expect(replies).toBeGreaterThan(bcasts);
     expect(reactions).toBeGreaterThan(bcasts);
   });

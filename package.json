@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@dsnp/contracts": "0.0.0-83c461",
-    "@dsnp/test-generators": "file:../test-generators/dist",
+    "@dsnp/test-generators": "file:../../../.asdf/installs/nodejs/14.17.0/.npm/lib/node_modules/@dsnp/test-generators",
     "@typechain/ethers-v5": "^7.0.0",
     "@types/jest": "26.0.22",
     "@types/lodash": "^4.14.170",

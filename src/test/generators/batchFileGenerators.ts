@@ -19,13 +19,11 @@ export const generateBatchBroadcasts = async (rootDir: string, numMessages: numb
   }
   ensureDir(rootDir);
   const parquetFileName = ["broadcasts", numMessages, timestamp()].join("-") + ".parquet";
-  const fname = path.join([rootDir, parquetFileName]);
-  console.log(fname);
+  const fname = path.join(rootDir, parquetFileName);
   let itemsWritten = 0;
 
   try {
     const data = times(numMessages, () => generateBroadcast());
-    console.log("generated records: ", data.length);
 
     const pSchema = new parquet.ParquetSchema(BroadcastSchema);
 

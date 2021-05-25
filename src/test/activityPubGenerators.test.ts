@@ -1,4 +1,4 @@
-import { addresses } from "../../../test-generators";
+import { addresses } from "@dsnp/test-generators";
 const getNPrefabAddresses = addresses.getNPrefabAddresses;
 
 import * as apg from "./generators/activityPubGenerators";
@@ -6,7 +6,6 @@ import { HexString } from "../types/Strings";
 import { ActivityPub, ActivityPubAttachment } from "../activityPub/activityPub";
 
 describe("activityPubGenerators", () => {
-  console.log(getNPrefabAddresses);
   const addrs: Array<HexString> = getNPrefabAddresses(2);
   const from = addrs[0];
   const to = addrs[1];

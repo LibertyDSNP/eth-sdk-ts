@@ -1,9 +1,8 @@
 import { ActivityPub, ActivityPubAttachment } from "../../activityPub/activityPub";
 import { HexString } from "../../types/Strings";
 
-import { sample } from "../../../../test-generators";
+import { sample, sampleText } from "@dsnp/test-generators";
 
-import { sampleText } from "../../../../test-generators";
 const prefabFirstNames = sampleText.prefabFirstNames;
 const prefabLastNames = sampleText.prefabLastNames;
 const prefabURLs = sampleText.prefabURLs;
