@@ -16,7 +16,7 @@ const LOGIC_CONTRACT_NAME = "Identity";
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     A contract receipt promise
  */
-export const createCloneProxy = async (logic: EthereumAddress, opts?: Config): Promise<ContractTransaction> => {
+export const createCloneProxy = async (logic?: EthereumAddress, opts?: Config): Promise<ContractTransaction> => {
   const { provider, signer } = await getConfig(opts);
 
   if (!signer) throw MissingSigner;
@@ -37,8 +37,8 @@ export const createCloneProxy = async (logic: EthereumAddress, opts?: Config): P
  * @returns     A contract receipt promise
  */
 export const createCloneProxyWithOwner = async (
-  logic: EthereumAddress,
   owner: EthereumAddress,
+  logic?: EthereumAddress,
   opts?: Config
 ): Promise<ContractTransaction> => {
   const { provider, signer } = await getConfig(opts);
