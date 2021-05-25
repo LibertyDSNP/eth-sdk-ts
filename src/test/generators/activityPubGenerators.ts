@@ -1,13 +1,13 @@
 import { ActivityPub, ActivityPubAttachment } from "../../activityPub/activityPub";
 import { HexString } from "../../types/Strings";
-import {
-  prefabFirstNames,
-  prefabLastNames,
-  prefabURLs,
-  prefabVideos,
-} from "@dsnp/test-generators/dist/types/sampleText";
-import { sample } from "@dsnp/test-generators";
 
+import { sample } from "../../../../test-generators";
+
+import { sampleText } from "../../../../test-generators";
+const prefabFirstNames = sampleText.prefabFirstNames;
+const prefabLastNames = sampleText.prefabLastNames;
+const prefabURLs = sampleText.prefabURLs;
+const prefabVideos = sampleText.prefabVideos;
 /**
  * Generate a Note ActivityPub that is a reply to another Note
  * @param address the HexString socialAddress to associate with making this note

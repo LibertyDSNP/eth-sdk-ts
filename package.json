@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@dsnp/contracts": "0.0.0-83c461",
-    "@dsnp/test-generators": "next",
+    "@dsnp/test-generators": "file:../test-generators/dist",
     "@typechain/ethers-v5": "^7.0.0",
     "@types/jest": "26.0.22",
     "@types/lodash": "^4.14.170",
