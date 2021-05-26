@@ -5,7 +5,7 @@ const path = require("path");
 const parquet = require("@dsnp/parquetjs");
 import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
-import { BroadcastSchema, ReactionSchema, ReplySchema } from "../../batch/parquet-schema";
+import * as pq from "../../batch/parquet-schema";
 import { EthereumAddress } from "../../types/Strings";
 import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../../batch/batchMesssages";
 import { generateHexString } from "@dsnp/test-generators";
@@ -15,6 +15,9 @@ export type DSNPBatchWriteResult = {
   path: string | undefined;
   error: string;
 };
+
+export type BatchMessageType = BatchBroadcastMessage | BatchReactionMessage | BatchReplyMessage;
+type BatchGenerator = { (): BatchMessageType };
 
 /**
  * generateBatchBroadcast
@@ -36,75 +39,59 @@ export const generateBroadcastBatchFile = async (
   rootDir: string,
   numMessages: number
 ): Promise<DSNPBatchWriteResult> => {
-  if (rootDir === "") {
-    throw new Error("rootDir can't be blank");
-  }
-  ensureDir(rootDir);
-  const parquetFileName = ["broadcasts", numMessages, timestamp()].join("-") + ".parquet";
-  const fname = path.join(rootDir, parquetFileName);
-  let itemsWritten = 0;
-
-  try {
-    const data = times(numMessages, () => generateBatchBroadcast());
-
-    const pSchema = new parquet.ParquetSchema(BroadcastSchema);
-
-    const writer = await parquet.ParquetWriter.openFile(pSchema, fname);
-    for (let i = 0; i < data.length; i++) {
-      await writer.appendRow(data[i]);
-      itemsWritten++;
-    }
-    await writer.close();
-  } catch (e) {
-    return { records: -1, path: fname, error: e.toString() };
-  }
-
-  return { records: itemsWritten, path: fname, error: "" };
+  return await writeBatchFileWithOptions({
+    rootDir: rootDir,
+    numMessages: numMessages,
+    schema: pq.BroadcastSchema,
+    generator: generateBatchBroadcast,
+    bloomOptions: pq.BroadcastBloomFilterOptions,
+  });
 };
 
 export const generateReplyBatchFile = async (rootDir: string, numMessages: number): Promise<DSNPBatchWriteResult> => {
-  if (rootDir === "") {
-    throw new Error("rootDir can't be blank");
-  }
-  ensureDir(rootDir);
-  const parquetFileName = ["replies", numMessages, timestamp()].join("-") + ".parquet";
-  const fname = path.join(rootDir, parquetFileName);
-  let itemsWritten = 0;
-
-  try {
-    const data = times(numMessages, () => generateBatchReply());
-
-    const pSchema = new parquet.ParquetSchema(ReplySchema);
-
-    const writer = await parquet.ParquetWriter.openFile(pSchema, fname);
-    for (let i = 0; i < data.length; i++) {
-      await writer.appendRow(data[i]);
-      itemsWritten++;
-    }
-    await writer.close();
-  } catch (e) {
-    return { records: -1, path: fname, error: e.toString() };
-  }
-  return { records: itemsWritten, path: fname, error: "" };
+  return await writeBatchFileWithOptions({
+    rootDir: rootDir,
+    numMessages: numMessages,
+    schema: pq.ReplySchema,
+    generator: generateBatchReply,
+    bloomOptions: pq.ReplyBloomFilterOptions,
+  });
 };
+
 export const generateReactionBatchFile = async (
   rootDir: string,
   numMessages: number
 ): Promise<DSNPBatchWriteResult> => {
-  if (rootDir === "") {
+  return await writeBatchFileWithOptions({
+    rootDir: rootDir,
+    numMessages: numMessages,
+    schema: pq.ReactionSchema,
+    generator: generateBatchReaction,
+    bloomOptions: pq.ReactionBloomFilterOptions,
+  });
+};
+
+type writeBatchOptions = {
+  rootDir: string;
+  numMessages: number;
+  schema: pq.Schema;
+  generator: BatchGenerator;
+  bloomOptions?: pq.BloomFilterOptions;
+};
+
+const writeBatchFileWithOptions = async (opts: writeBatchOptions): Promise<DSNPBatchWriteResult> => {
+  if (opts.rootDir === "") {
     throw new Error("rootDir can't be blank");
   }
-  ensureDir(rootDir);
-  const parquetFileName = ["broadcasts", numMessages, timestamp()].join("-") + ".parquet";
-  const fname = path.join(rootDir, parquetFileName);
+  ensureDir(opts.rootDir);
+  const parquetFileName = ["replies", opts.numMessages, timestamp()].join("-") + ".parquet";
+  const fname = path.join(opts.rootDir, parquetFileName);
   let itemsWritten = 0;
 
   try {
-    const data = times(numMessages, () => generateBatchReaction());
-
-    const pSchema = new parquet.ParquetSchema(ReactionSchema);
-
-    const writer = await parquet.ParquetWriter.openFile(pSchema, fname);
+    const data = times(opts.numMessages, () => opts.generator());
+    const pSchema = new parquet.ParquetSchema(opts.schema);
+    const writer = await parquet.ParquetWriter.openFile(pSchema, fname, opts.bloomOptions);
     for (let i = 0; i < data.length; i++) {
       await writer.appendRow(data[i]);
       itemsWritten++;
