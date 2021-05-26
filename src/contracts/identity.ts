@@ -1,11 +1,11 @@
-import { Contract, ethers } from "ethers";
+import { ethers } from "ethers";
 import { abi as cloneFactoryABI } from "@dsnp/contracts/abi/IIdentityCloneFactory.json";
 import { ContractTransaction } from "ethers";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
 import { getConfig, Config } from "../config/config";
 import { EthereumAddress } from "../types/Strings";
 import { IdentityCloneFactory } from "../types/typechain/IdentityCloneFactory";
-import { GAS_LIMIT_BUFFER, getContractAddress } from "./contract";
+import { GAS_LIMIT_BUFFER, getContract, getContractAddress } from "./contract";
 
 const CONTRACT_NAME = "IdentityCloneFactory";
 const LOGIC_CONTRACT_NAME = "Identity";
@@ -22,7 +22,7 @@ export const createCloneProxy = async (logic?: EthereumAddress, opts?: Config): 
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
-  if (!logic) logic = await getDefaultLogicContract(provider);
+  if (!logic) logic = await getDefaultLogicContractAddress(provider);
   const contract = await getFactoryContract(provider);
   const gasEstimate = await getGasLimit(contract, logic);
   return contract.connect(signer).createCloneProxy(logic, { gasLimit: gasEstimate });
@@ -46,22 +46,20 @@ export const createCloneProxyWithOwner = async (
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
-  if (!logic) logic = await getDefaultLogicContract(provider);
+  if (!logic) logic = await getDefaultLogicContractAddress(provider);
   const contract = await getFactoryContract(provider);
   const gasEstimate = await getGasLimitWithOwner(contract, logic, owner);
   return contract.connect(signer).createCloneProxyWithOwner(logic, owner, { gasLimit: gasEstimate });
 };
 
-const getDefaultLogicContract = async (provider: ethers.providers.Provider): Promise<EthereumAddress> => {
+const getDefaultLogicContractAddress = async (provider: ethers.providers.Provider): Promise<EthereumAddress> => {
   const address = await getContractAddress(provider, LOGIC_CONTRACT_NAME);
   if (!address) throw MissingContract;
   return address;
 };
 
 const getFactoryContract = async (provider: ethers.providers.Provider): Promise<IdentityCloneFactory> => {
-  const address = await getContractAddress(provider, CONTRACT_NAME);
-  if (!address) throw MissingContract;
-  return new Contract(address, cloneFactoryABI, provider) as IdentityCloneFactory;
+  return (getContract(provider, CONTRACT_NAME, cloneFactoryABI) as unknown) as IdentityCloneFactory;
 };
 
 const getGasLimit = async (contract: IdentityCloneFactory, logic: EthereumAddress): Promise<number> => {

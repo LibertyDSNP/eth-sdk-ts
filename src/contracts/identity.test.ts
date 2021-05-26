@@ -32,7 +32,7 @@ describe("identity", () => {
       console.log("prooxyReceipt1", proxyReceipt);
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
-          ? proxyReceipt.events.filter((event) => {
+          ? proxyReceipt?.events?.filter((event) => {
               return event.event === "ProxyCreated";
             })
           : [];

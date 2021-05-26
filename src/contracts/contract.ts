@@ -1,7 +1,8 @@
 //eslint-disable-next-line
 import { HexString } from "../types/Strings";
 import { keccak256 } from "js-sha3";
-import { ethers } from "ethers";
+import { Contract, ContractInterface, ethers } from "ethers";
+import { MissingContract } from "../utilities";
 
 export const GAS_LIMIT_BUFFER = 1000;
 export const keccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
@@ -68,4 +69,14 @@ export const getContractAddress = async (
   const decodedValues = decodeReturnValues(DSNPMigrationABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
   return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
+};
+
+export const getContract = async (
+  provider: ethers.providers.Provider,
+  contractName: string,
+  abi: ContractInterface
+) => {
+  const address = (await getContractAddress(provider, contractName)) as string;
+  if (!address) throw MissingContract;
+  return new Contract(address, abi, provider) as Contract;
 };

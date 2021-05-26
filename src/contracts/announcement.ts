@@ -1,11 +1,10 @@
-import { Contract, ContractTransaction, ethers, EventFilter } from "ethers";
+import {  ContractTransaction, ethers, EventFilter } from "ethers";
 import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
-import { getContractAddress } from "./contract";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer } from "../types/typechain/Announcer";
-import { GAS_LIMIT_BUFFER } from "./contract";
+import { GAS_LIMIT_BUFFER, getContract } from "./contract";
 
 const CONTRACT_NAME = "Announcer";
 
@@ -29,7 +28,7 @@ export const batch = async (announcements: Announcement[], opts?: Config): Promi
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
-  const contract = await getContract(provider);
+  const contract = await getAnnouncerContract(provider);
   if (!contract) throw MissingContract;
 
   const gasEstimate = await getGasLimit(contract, announcements);
@@ -37,7 +36,7 @@ export const batch = async (announcements: Announcement[], opts?: Config): Promi
 };
 
 export const dsnpBatchFilter = async (provider: ethers.providers.Provider): Promise<EventFilter> => {
-  const contract = await getContract(provider);
+  const contract = await getAnnouncerContract(provider);
   return contract.filters.DSNPBatch();
 };
 
@@ -59,10 +58,8 @@ export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider)
     });
 };
 
-const getContract = async (provider: ethers.providers.Provider): Promise<Announcer> => {
-  const address = await getContractAddress(provider, CONTRACT_NAME);
-  if (!address) throw MissingContract;
-  return new Contract(address, announcerABI, provider) as Announcer;
+const getAnnouncerContract = async (provider: ethers.providers.Provider): Promise<Announcer> => {
+  return (getContract(provider, CONTRACT_NAME, announcerABI) as unknown) as Announcer;
 };
 
 const getGasLimit = async (contract: Announcer, announcements: Announcement[]): Promise<number> => {
