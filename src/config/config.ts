@@ -2,19 +2,17 @@ import { ethers } from "ethers";
 
 import MemoryQueue from "../batch/memoryQueue";
 import { QueueInterface } from "../batch/queue";
-import MemoryStore from "../storage/memoryStorage";
 import { StorageInterface } from "../storage/storage";
 
 export interface Config {
   provider?: ethers.providers.Provider;
   signer?: ethers.Signer;
   queue: QueueInterface;
-  store: StorageInterface;
+  store?: StorageInterface;
 }
 
 let config: Config = {
   queue: MemoryQueue(),
-  store: MemoryStore(),
 };
 
 /**
@@ -23,7 +21,7 @@ let config: Config = {
  *
  * @returns The current configuration settings
  */
-export const getConfig = async (overrides?: Config): Promise<Config> => {
+export const getConfig = (overrides?: Config): Config => {
   if (!overrides) return config;
 
   return { ...config, ...overrides };
@@ -35,6 +33,6 @@ export const getConfig = async (overrides?: Config): Promise<Config> => {
  *
  * @params newConfig The configuration settings to set with
  */
-export const setConfig = async (newConfig: Config): Promise<void> => {
+export const setConfig = (newConfig: Config): void => {
   config = newConfig;
 };
