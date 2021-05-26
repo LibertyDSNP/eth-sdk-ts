@@ -1,4 +1,4 @@
-import {  ContractTransaction, ethers, EventFilter } from "ethers";
+import { ContractTransaction, ethers, EventFilter } from "ethers";
 import { getConfig, Config } from "../config/config";
 import { HexString } from "../types/Strings";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
