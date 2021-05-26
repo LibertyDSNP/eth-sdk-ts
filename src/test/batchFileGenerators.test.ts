@@ -1,5 +1,7 @@
 import os from "os";
 import fs from "fs";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const parquet = require("@dsnp/parquetjs");
 
 import {
@@ -27,7 +29,7 @@ describe("batchFileGenerators", () => {
       const reader = await parquet.ParquetReader.openFile(res.path);
       expect(reader).not.toBeUndefined();
       const cursor = reader.getCursor();
-      let record: any = {};
+      let record: Record<string, unknown> = {};
       let numRecords = 0;
       while ((record = await cursor.next())) {
         numRecords++;
