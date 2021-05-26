@@ -3,9 +3,6 @@
     "target": "es6",
     "outDir": "dist/cjs",
     "rootDir": "src",
-    "paths": {
-      "@dsnp/test-generators": ["../node_modules/@dsnp/test-generators/dist/types/*", "../node_modules/@dsnp/test-generators/dist/types/types/*"]
-    },
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "inlineSourceMap": true,
