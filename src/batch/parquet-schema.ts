@@ -91,8 +91,7 @@ export const EncryptedInboxSchema = {
 export const ReactionSchema = {
   type: { type: "INT32" },
   fromId: { type: "BYTE_ARRAY" },
-  contentHash: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
+  emoji: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
 };
 

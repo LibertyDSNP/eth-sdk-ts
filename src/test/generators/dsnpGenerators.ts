@@ -1,16 +1,10 @@
 import * as fs from "fs";
 import { times } from "lodash";
 
-import { DSNPType } from "../../messages/messages";
+import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "../../messages/messages";
 import { EthereumAddress } from "../../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
-import {
-  DSNPBatchMessage,
-  BatchBroadcastMessage,
-  BatchReplyMessage,
-  BatchReactionMessage,
-} from "../../batch/batchMesssages";
 
 const prefabURLs = sampleText.prefabURLs;
 const generateEthereumAddress = addresses.generateEthereumAddress;
@@ -21,7 +15,7 @@ const generateEthereumAddress = addresses.generateEthereumAddress;
  * @param messageCount
  * @return an array of Messages.
  */
-export const generateDSNPStream = (messageCount: number): Array<DSNPBatchMessage> => {
+export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => {
   // A WAG of the ratios of message types
   const reactionReplyMax = 1000;
   // TODO leave these here for when other types are implemented
@@ -32,10 +26,10 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPBatchMessage
   // this sets the frequency of generated types to approximately the ratios above
   const maxInt = reactionReplyMax * 10;
 
-  const data: DSNPBatchMessage[] = [];
+  const data: Array<DSNPMessage> = [];
   times(messageCount, () => {
     const value = randInt(maxInt);
-    let msg: DSNPBatchMessage;
+    let msg: DSNPMessage;
     if (value > reactionReplyMax) {
       // estimate reactions and replies average about the same
       msg = value % 2 === 0 ? generateReaction() : generateReply();
@@ -53,7 +47,7 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPBatchMessage
  * @param jsonFilePath where to write the output file
  * @return number of bytes written
  */
-export const writeFixture = (data: Array<DSNPBatchMessage>, jsonFilePath: string): number => {
+export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): number => {
   const ws = fs.createWriteStream(jsonFilePath).on("error", (e: Error) => {
     throw new Error("createWriteStream failed: \n" + e.toString());
   });
@@ -72,16 +66,11 @@ export const writeFixture = (data: Array<DSNPBatchMessage>, jsonFilePath: string
   return ws.bytesWritten;
 };
 
-/**
- * generateBroadcast
- * @param from - a desired fromID (optional)
- */
-export const generateBroadcast = (from?: EthereumAddress): BatchBroadcastMessage => {
+export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
   return {
     type: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
-    signature: generateHexString(256),
     uri: sample(prefabURLs),
   };
 };
@@ -90,13 +79,12 @@ export const generateBroadcast = (from?: EthereumAddress): BatchBroadcastMessage
  * generateReply
  * @param from - a desired fromID (optional)
  */
-export const generateReply = (from?: EthereumAddress): BatchReplyMessage => {
+export const generateReply = (from?: EthereumAddress): ReplyMessage => {
   return {
     type: DSNPType.Reply,
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
-    signature: generateHexString(256),
     uri: sample(prefabURLs),
   };
 };
@@ -105,12 +93,11 @@ export const generateReply = (from?: EthereumAddress): BatchReplyMessage => {
  * generateReaction
  * @param from - a desired fromID (optional)
  */
-export const generateReaction = (from?: EthereumAddress): BatchReactionMessage => {
+export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
   return {
     type: DSNPType.Reaction,
     fromId: from ? from : generateEthereumAddress(),
     emoji: generateHexString(20),
     inReplyTo: generateHexString(64),
-    signature: generateHexString(256),
   };
 };

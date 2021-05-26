@@ -1,14 +1,21 @@
 import os from "os";
-import { DSNPBatchWriteResult, generateBatchBroadcasts } from "./generators/batchFileGenerators";
+import {
+  DSNPBatchWriteResult,
+  generateBroadcastBatchFile,
+  generateReactionBatchFile,
+  generateReplyBatchFile,
+} from "./generators/batchFileGenerators";
 
 describe("batchFileGenerators", () => {
-  it("generateBatchBroadcasts", async () => {
-    const dir = os.tmpdir();
-    const numMessages = 10;
+  [generateBroadcastBatchFile, generateReactionBatchFile, generateReplyBatchFile].forEach((f) => {
+    it(`${f.name} works as designed`, async () => {
+      const dir = os.tmpdir();
+      const numMessages = 10;
 
-    const res: DSNPBatchWriteResult = await generateBatchBroadcasts(dir, numMessages);
-    expect(res.error).toEqual("");
-    expect(res.path).toMatch(dir);
-    expect(res.records).toEqual(10);
+      const res: DSNPBatchWriteResult = await f(dir, numMessages);
+      expect(res.error).toEqual("");
+      expect(res.path).toMatch(dir);
+      expect(res.records).toEqual(10);
+    });
   });
 });
