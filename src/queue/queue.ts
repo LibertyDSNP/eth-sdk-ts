@@ -9,7 +9,7 @@ import { NotImplementedError } from "../utilities";
 export type QueueId = HexString;
 
 export interface QueueInterface {
-  enqueue(dsnpEvent: DSNPMessage): Promise<QueueId>;
+  enqueue(dsnpMessage: DSNPMessage): Promise<QueueId>;
   dequeue(id: QueueId): Promise<DSNPMessage>;
   getAll(): Promise<DSNPMessage[]>;
 }
@@ -18,8 +18,9 @@ export interface QueueInterface {
  * enqueue() adds an activity pub event to the queue for later publishing to the
  * blockchain as a batch file.
  *
- * @param   dsnpEvent  The DSNP event to queue up for batching
- * @returns            An ID for the queued event
+ * @param dsnpEvent The DSNP message to queue up for batching
+ * @param opts      Optional. Configuration overrides, such as from address, if any
+ * @returns         An ID for the queued message
  */
 export const enqueue = async (event: DSNPMessage, opts?: Config): Promise<QueueId> => {
   const config = getConfig(opts);
@@ -30,8 +31,9 @@ export const enqueue = async (event: DSNPMessage, opts?: Config): Promise<QueueI
  * dequeue() removes an activity pub event from the queue for later publishing
  * to the blockchain.
  *
- * @param   id  The ID of the event to remove from the queue
- * @returns     The DSNP event event removed from the queue
+ * @param id   The ID of the message to remove from the queue
+ * @param opts Optional. Configuration overrides, such as from address, if any
+ * @returns    The DSNP message removed from the queue
  */
 export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> => {
   const config = getConfig(opts);
@@ -39,7 +41,7 @@ export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> 
 };
 
 /**
- * commit() creates a batch file from the current activity pub events in the
+ * commit() creates a batch file from the current activity pub messages in the
  * queue then clears the queue.
  */
 export const commit = async (_opts?: Config): Promise<void> => {
