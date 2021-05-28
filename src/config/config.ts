@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
-import MemoryQueue from "../batch/memoryQueue";
-import { QueueInterface } from "../batch/queue";
+import MemoryQueue from "../queue/memoryQueue";
+import { QueueInterface } from "../queue/queue";
 import { StorageInterface } from "../storage/storage";
 import { HexString } from "../types/Strings";
 
