@@ -3,16 +3,21 @@ import { ethers } from "ethers";
 import MemoryQueue from "../batch/memoryQueue";
 import { QueueInterface } from "../batch/queue";
 import { StorageInterface } from "../storage/storage";
+import { HexString } from "../types/Strings";
 
 export interface Config {
   provider?: ethers.providers.Provider;
   signer?: ethers.Signer;
   queue: QueueInterface;
   store?: StorageInterface;
+  contracts: {
+    registry?: HexString;
+  };
 }
 
 let config: Config = {
   queue: MemoryQueue(),
+  contracts: {},
 };
 
 /**
