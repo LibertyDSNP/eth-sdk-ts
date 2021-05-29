@@ -1,11 +1,19 @@
 import { getContractAddress } from "./contract";
-import { HexString } from "../types/Strings";
+import {EthereumAddress, HexString} from "../types/Strings";
 import { getConfig } from "../config/config";
 import { ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../types/typechain";
 
 const CONTRACT_NAME = "Registry";
+
+export interface Registration {
+  contractAddr: EthereumAddress;
+  dsnpId: HexString;
+  handle: Handle;
+}
+
+export type Handle = string;
 
 /**
  * Get the JSON RPC error from the body, if one exists
@@ -28,7 +36,7 @@ const getVmError = (e: { body?: string }): string | undefined => {
  * @param handle String handle to resolve
  * @returns The Hex for the DSNP Id or null if not found
  */
-export const resolveHandleToId = async (handle: string): Promise<HexString | null> => {
+export const resolveHandleToId = async (handle: Handle): Promise<HexString | null> => {
   const contract = await getContract();
   try {
     return (await contract.resolveHandleToId(handle)).toHexString();
@@ -48,11 +56,27 @@ export const resolveHandleToId = async (handle: string): Promise<HexString | nul
  * @param handle The string handle to register
  * @returns The contract Transaction
  */
-export const register = async (identityContractAddress: HexString, handle: string): Promise<ContractTransaction> => {
+export const register = async (identityContractAddress: HexString, handle: Handle): Promise<ContractTransaction> => {
   const contract = await getContract();
   const { signer } = getConfig();
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).register(identityContractAddress, handle);
+};
+
+/**
+ *
+ * @param filter
+ */
+export const getDSNPUpdate = async (filter: any): Promise<Registration[]> => {
+  const contract = await getContract();
+
+  const logs = await contract.queryFilter(filter);
+
+  return logs
+    .map((desc) => {
+      const [id, addr, handle] = desc.args;
+      return { contractAddr: addr, dsnpId: id, handle: handle };
+    });
 };
 
 const getContract = async () => {
