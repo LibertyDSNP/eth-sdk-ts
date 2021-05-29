@@ -42,7 +42,7 @@ export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> 
 
 /**
  * commit() creates a batch file from the current activity pub messages in the
- * queue then clears the queue.
+ * queue then clears the queue. This method is not yet implemented.
  */
 export const commit = async (_opts?: Config): Promise<void> => {
   throw NotImplementedError;
