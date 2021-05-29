@@ -22,8 +22,8 @@ export interface Config {
 }
 
 let config: Config = {
-  queue: MemoryQueue(),
   contracts: {},
+  queue: new MemoryQueue(),
 };
 
 /**

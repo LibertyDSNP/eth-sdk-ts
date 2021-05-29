@@ -1,5 +1,5 @@
 import { BroadcastMessage, DSNPType } from "../messages/messages";
-import { enqueue, dequeue, getAll, IdDoesNotExist } from "./memoryQueue";
+import MemoryQueue, { IdDoesNotExist } from "./memoryQueue";
 
 describe("memoryQueue", () => {
   const testMsg: BroadcastMessage = {
@@ -11,60 +11,60 @@ describe("memoryQueue", () => {
 
   describe("#enqueue", () => {
     it("adds a message to the queue and returns a queue id", async () => {
-      const result = await enqueue(testMsg);
+      const queue = new MemoryQueue();
+      const result = await queue.enqueue(testMsg);
 
-      expect(await getAll()).toEqual([testMsg]);
+      expect(await queue.getAll()).toEqual([testMsg]);
       expect(result).toEqual("0");
     });
   });
 
   describe("#dequeue", () => {
     describe("with a valid queue id", () => {
-      let queueId = "";
-
-      beforeEach(async () => {
-        queueId = await enqueue(testMsg);
-      });
-
       it("removes a message from the queue and returns it", async () => {
-        const result = await dequeue(queueId);
+        const queue = new MemoryQueue();
+        const queueId = await queue.enqueue(testMsg);
 
-        expect(await getAll()).toEqual([]);
+        const result = await queue.dequeue(queueId);
+
+        expect(await queue.getAll()).toEqual([]);
         expect(result).toEqual(testMsg);
       });
     });
 
     describe("with an invalid queue id", () => {
       it("throws IdDoesNotExist", async () => {
-        await expect(dequeue("DEADCODE")).rejects.toThrow(IdDoesNotExist);
+        const queue = new MemoryQueue();
+        await expect(queue.dequeue("DEADCODE")).rejects.toThrow(IdDoesNotExist);
       });
     });
   });
 
   describe("#getAll", () => {
     it("returns the contents of the queue", async () => {
-      await enqueue({
+      const queue = new MemoryQueue();
+      await queue.enqueue({
         type: DSNPType.Broadcast,
         contentHash: "test",
         fromId: "test",
         uri: "test1",
       });
-      const idToRemove = await enqueue({
+      const idToRemove = await queue.enqueue({
         type: DSNPType.Broadcast,
         contentHash: "test",
         fromId: "test",
         uri: "test2",
       });
-      await enqueue({
+      await queue.enqueue({
         type: DSNPType.Broadcast,
         contentHash: "test",
         fromId: "test",
         uri: "test3",
       });
 
-      await dequeue(idToRemove);
+      await queue.dequeue(idToRemove);
 
-      expect(await getAll()).toEqual([
+      expect(await queue.getAll()).toEqual([
         {
           type: DSNPType.Broadcast,
           contentHash: "test",
