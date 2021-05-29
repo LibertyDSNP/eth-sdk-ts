@@ -14,17 +14,14 @@ export enum DSNPType {
   Reaction,
 }
 
-/**
- * DSNPMessage: a message intended for inclusion in a batch file
- */
-export interface DSNPMessage {
+interface BaseDSNPMessage {
   type: DSNPType;
 }
 
 /**
  * BroadcastMessage: a DSNP message of type Broadcast
  */
-export interface BroadcastMessage extends DSNPMessage {
+export interface BroadcastMessage extends BaseDSNPMessage {
   type: DSNPType.Broadcast;
   contentHash: string;
   fromId: string;
@@ -50,7 +47,7 @@ export const createBroadcastMessage = (fromId: string, uri: string, hash: HexStr
 /**
  * ReplyMessage: a DSNP message of type Reply
  */
-export interface ReplyMessage extends DSNPMessage {
+export interface ReplyMessage extends BaseDSNPMessage {
   type: DSNPType.Reply;
   contentHash: HexString;
   fromId: string;
@@ -79,7 +76,7 @@ export const createReplyMessage = (fromId: string, uri: string, hash: HexString,
 /**
  * ReactionMessage: a DSNP message of type Reaction
  */
-export interface ReactionMessage extends DSNPMessage {
+export interface ReactionMessage extends BaseDSNPMessage {
   type: DSNPType.Reaction;
   emoji: string;
   fromId: string;
@@ -101,6 +98,11 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   fromId,
   inReplyTo,
 });
+
+/**
+ * DSNPMessage: a message intended for inclusion in a batch file
+ */
+export type DSNPMessage = BroadcastMessage | ReplyMessage | ReactionMessage;
 
 const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);

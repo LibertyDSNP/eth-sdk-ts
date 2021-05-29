@@ -3,7 +3,7 @@ import { DSNPMessage } from "../messages/messages";
 
 let queue: (DSNPMessage | undefined)[] = [];
 
-const IdDoesNotExist = new Error("No message matching the given ID exists.");
+export const IdDoesNotExist = new Error("No message matching the given ID exists.");
 
 /**
  * enqueue() implements the enqueue function of the QueueInterface. It takes a
@@ -14,7 +14,7 @@ const IdDoesNotExist = new Error("No message matching the given ID exists.");
  * @returns       A queue id to be used to remove the message if needed
  */
 export const enqueue = async (message: DSNPMessage): Promise<QueueId> => {
-  const index = queue.push(message);
+  const index = queue.push(message) - 1;
   return index.toString(16);
 };
 

@@ -1,9 +1,9 @@
 import { setConfig } from "../config/config";
-import { DSNPType } from "../messages/messages";
+import { BroadcastMessage, DSNPType } from "../messages/messages";
 import { enqueue, dequeue } from "./queue";
 
 describe("queue", () => {
-  const testMsg = {
+  const testMsg: BroadcastMessage = {
     type: DSNPType.Broadcast,
     contentHash: "test",
     fromId: "test",
