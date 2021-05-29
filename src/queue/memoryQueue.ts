@@ -3,6 +3,11 @@ import { DSNPMessage } from "../messages/messages";
 
 export const IdDoesNotExist = new Error("No message matching the given ID exists.");
 
+/**
+ * MemoryQueue provides a simple, in-memory store for DSNP messages to be
+ * announced. This adapter is the default if no other is provided in
+ * configuration.
+ */
 export default class MemoryQueue implements QueueInterface {
   queue: (DSNPMessage | undefined)[];
 
