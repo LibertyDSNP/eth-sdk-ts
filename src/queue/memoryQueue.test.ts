@@ -48,19 +48,19 @@ describe("memoryQueue", () => {
         contentHash: "test",
         fromId: "test",
         uri: "test1",
-      });
+      } as BroadcastMessage);
       const idToRemove = await queue.enqueue({
         type: DSNPType.Broadcast,
         contentHash: "test",
         fromId: "test",
         uri: "test2",
-      });
+      } as BroadcastMessage);
       await queue.enqueue({
         type: DSNPType.Broadcast,
         contentHash: "test",
         fromId: "test",
         uri: "test3",
-      });
+      } as BroadcastMessage);
 
       await queue.dequeue(idToRemove);
 
