@@ -1,29 +1,54 @@
-// import * as config from "../config/config";
-// import * as store from "../store";
-import { ActivityPubOpts } from "./core/activityPub/activityPub";
-import { ConfigOpts } from "./config";
-import { NotImplementedError } from "./core/utilities/errors";
-import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "./core/batch/batchMesssages";
+import * as activityPub from "../activityPub/activityPub";
+import * as config from "../config/config";
+import * as handles from "./handles";
+import * as messages from "../messages/messages";
+import * as queue from "../queue/queue";
+import * as store from "../store/store";
+import { getRandomString, MissingSigner, NotImplementedError } from "../utilities";
 
 /**
- * broadcast() creates a broadcast DSNP event and enqueues it for the next
- * batch. This method is not yet implemented.
+ * broadcast() creates an activity pub file with the given content options,
+ * uploads it with a random filename using the configured storage adapter,
+ * creates a DSNP broadcast message for the hosted file and enqueues it in the
+ * current batch for later announcement.
  *
- * @param content The content for the note to broadcast
- * @param opts    Optional. Configuration overrides, such as from address, if any
- * @return The Batch Broadcast Message
+ * @throws {@link MissingSigner}
+ * Thrown if the signer is not configured.
+ *
+ * @param contentOptions Options for the activity pub content to generate
+ * @param opts           Optional. Configuration overrides, such as from address, if any
+ *
  */
-export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<BatchBroadcastMessage> => {
-  throw NotImplementedError;
+export const broadcast = async (
+  contentOptions: activityPub.ActivityPubOpts,
+  opts?: config.ConfigOpts
+): Promise<void> => {
+  // Create the activity pub file and upload it
+  const contentObj: activityPub.ActivityPub = activityPub.create(contentOptions);
+  const filename = getRandomString();
+  const content = JSON.stringify(contentObj);
+  const uri = await store.put(filename, content, opts);
 
-  // const config = config.getConfig(opts);
-  //
-  // const activityPubObject = activityPub.create(activityPubOpts);
-  // const activityPubHash = activityPub.hash(activityPubObject);
-  // const uri = store.put(activityPubObject, opts);
-  //
-  // return events.createBroadcastEvent(uri, activityPubHash);
-};
+  // Reupload the file with id, if one was not provided
+  if (contentObj.id === undefined) {
+    contentObj.id = uri.toString();
+    const contentWithId = JSON.stringify(contentObj);
+    store.put(filename, contentWithId, opts);
+  }
+
+  // Get current user id
+  const { signer } = await config.getConfig();
+  if (!signer) throw MissingSigner;
+  const fromAddress = await signer.getAddress();
+  const fromId = await handles.addressToId(fromAddress);
+
+  // Create the DSNP Broadcast message
+  const contentHash = activityPub.hash(contentObj);
+  const message = messages.createBroadcastMessage(fromId, uri.toString(), contentHash);
+
+  // Enqueue the message
+  queue.enqueue(message, opts);
+=};
 
 /**
  * reply() creates a reply activity pub event and enqueues it for the next
@@ -33,7 +58,7 @@ export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): 
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @return The Batch Broadcast Message
  */
-export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<BatchReplyMessage> => {
+export const reply = async (_content: activityPub.ActivityPubOpts, _opts: config.ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -55,7 +80,7 @@ export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Prom
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @return The Batch Broadcast Message
  */
-export const react = async (_emoji: string, _inReplyTo: string, _opts?: ConfigOpts): Promise<BatchReactionMessage> => {
+export const react = async (_content: activityPub.ActivityPubOpts, _opts: config.ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);

@@ -20,6 +20,7 @@ export interface ActivityPubAttachment {
  */
 export interface ActivityPub {
   "@context": string;
+  id?: string;
   type: string;
   name?: string;
   content?: string;
