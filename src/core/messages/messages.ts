@@ -104,7 +104,7 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   inReplyTo,
 });
 
-export const serialize = (message: DSNPMessage): string => {
+const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 
