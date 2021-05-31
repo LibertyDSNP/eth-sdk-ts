@@ -4,7 +4,7 @@ import * as handles from "./handles";
 import * as messages from "../messages/messages";
 import * as queue from "../queue/queue";
 import * as store from "../store/store";
-import { getRandomString, MissingSigner, NotImplementedError } from "../utilities";
+import { getRandomString, MissingSigner } from "../utilities";
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -37,7 +37,7 @@ export const broadcast = async (
   }
 
   // Get current user id
-  const { signer } = await config.getConfig();
+  const { signer } = await config.getConfig(opts);
   if (!signer) throw MissingSigner;
   const fromAddress = await signer.getAddress();
   const fromId = await handles.addressToId(fromAddress);
@@ -48,7 +48,7 @@ export const broadcast = async (
 
   // Enqueue the message
   queue.enqueue(message, opts);
-=};
+};
 
 /**
  * reply() creates an activity pub file with the given content options,
@@ -74,12 +74,12 @@ export const reply = async (contentOptions: activityPub.ActivityPubOpts, opts: c
   }
 
   // Get current user id
-  const { signer } = await config.getConfig();
+  const { signer } = await config.getConfig(opts);
   if (!signer) throw MissingSigner;
   const fromAddress = await signer.getAddress();
   const fromId = await handles.addressToId(fromAddress);
 
-  // Create the DSNP Broadcast message
+  // Create the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
   const message = messages.createReplyMessage(fromId, uri.toString(), contentHash, contentObj.inReplyTo as string);
 
@@ -88,23 +88,24 @@ export const reply = async (contentOptions: activityPub.ActivityPubOpts, opts: c
 };
 
 /**
- * react() creates a reaction activity pub event and enqueues it for the next
- * batch. This method is not yet implemented.
+ * react() creates a DSNP reaction message and enqueues it in the current batch
+ * for later announcement.
  *
  * @param emoji     The emoji with which to react
  * @param inReplyTo The DSNP Id of the message to which to react
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @return The Batch Broadcast Message
  */
-export const react = async (_content: activityPub.ActivityPubOpts, _opts: config.ConfigOpts): Promise<void> => {
-  throw NotImplementedError;
+export const react = async (emoji: string, inReplyTo: string, opts: config.ConfigOpts): Promise<void> => {
+  // Get current user id
+  const { signer } = await config.getConfig(opts);
+  if (!signer) throw MissingSigner;
+  const fromAddress = await signer.getAddress();
+  const fromId = await handles.addressToId(fromAddress);
 
-  // const config = config.getConfig(opts);
-  //
-  // const inReplyTo = activityPubOpts.inReplyTo;
-  // const activityPubObject = activityPub.create(activityPubOpts);
-  // const activityPubHash = activityPub.hash(activityPubObject);
-  // const uri = store.put(activityPubObject, opts);
-  //
-  // return events.createReactionEvent(uri, inReplyTo, activityPubHash);
+  // Create the DSNP Reaction message
+  const message = messages.createReactionMessage(fromId, emoji, inReplyTo);
+
+  // Enqueue the message
+  queue.enqueue(message, opts);
 };
