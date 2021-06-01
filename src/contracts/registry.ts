@@ -2,11 +2,25 @@ import { getContractAddress } from "./contract";
 import { HexString } from "../types/Strings";
 import { getConfig } from "../config/config";
 import { ContractTransaction } from "ethers";
-import {MissingContract, MissingProvider, MissingSigner} from "../utilities";
+import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../types/typechain";
-import {Logger} from "ethers/lib/utils";
 
 const CONTRACT_NAME = "Registry";
+
+/**
+ * Get the JSON RPC error from the body, if one exists
+ * @param e The error expected to have a vm Error
+ *
+ * @returns the error if any
+ */
+const getVmError = (e: { body?: string }): string | undefined => {
+  try {
+    const parsed = JSON.parse(e.body || "{}");
+    return parsed?.error?.message;
+  } catch (e) {
+    return undefined;
+  }
+};
 
 /**
  * resolveHandleToId() Try to resolve a handle into a DSNP Id
@@ -19,8 +33,8 @@ export const resolveHandleToId = async (handle: string): Promise<HexString | nul
   try {
     return (await contract.resolveHandleToId(handle)).toHexString();
   } catch (e) {
-    console.log({e})
-    if (e?.code === Logger.errors.CALL_EXCEPTION) {
+    const vmError = getVmError(e);
+    if (vmError === "Error: VM Exception while processing transaction: revert Handle does not exist") {
       return null;
     }
     throw e;
@@ -42,9 +56,12 @@ export const register = async (identityContractAddress: HexString, handle: HexSt
 };
 
 const getContract = async () => {
-  const { provider, contracts: { registry } } = getConfig();
+  const {
+    provider,
+    contracts: { registry },
+  } = getConfig();
   if (!provider) throw MissingProvider;
-  const address = registry || await getContractAddress(provider, CONTRACT_NAME);
+  const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
 
   if (!address) throw MissingContract;
   return Registry__factory.connect(address, provider);

@@ -19,3 +19,6 @@
 
 import * as announcementImport from "./announcement";
 export const announcement = announcementImport;
+
+import * as registryImport from "./registry";
+export const registry = registryImport;
