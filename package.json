@@ -100,7 +100,7 @@
   "dependencies": {
     "@dsnp/parquetjs": "^0.0.0-2ccc4e",
     "@ethersproject/abi": "^5.1.2",
-    "ethers": "^5.2.0",
+    "ethers": "^5.3.0",
     "js-sha3": "^0.8.0",
     "ws": "^7.4.5"
   }
