@@ -48,7 +48,7 @@ export const resolveHandleToId = async (handle: string): Promise<HexString | nul
  * @param handle The string handle to register
  * @returns The contract Transaction
  */
-export const register = async (identityContractAddress: HexString, handle: HexString): Promise<ContractTransaction> => {
+export const register = async (identityContractAddress: HexString, handle: string): Promise<ContractTransaction> => {
   const contract = await getContract();
   const { signer } = getConfig();
   if (!signer) throw MissingSigner;
