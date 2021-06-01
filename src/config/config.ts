@@ -26,10 +26,14 @@ let config: Config = {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (overrides?: Config): Config => {
+export const getConfig = (overrides?: Partial<Config>): Config => {
   if (!overrides) return config;
 
-  return { ...config, ...overrides };
+  return {
+    ...config,
+    ...overrides,
+    contracts: { ...config.contracts, ...overrides.contracts },
+  };
 };
 
 /**

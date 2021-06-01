@@ -17,6 +17,7 @@ beforeEach(async () => {
     signer: new ethers.Wallet(TESTING_PRIVATE_KEY, provider),
     store: oldConfig.store,
     queue: oldConfig.queue,
+    contracts: {},
   });
 });
 
