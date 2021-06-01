@@ -34,7 +34,7 @@ export const resolveHandleToId = async (handle: string): Promise<HexString | nul
     return (await contract.resolveHandleToId(handle)).toHexString();
   } catch (e) {
     const vmError = getVmError(e);
-    if (vmError === "Error: VM Exception while processing transaction: revert Handle does not exist") {
+    if (vmError?.includes("Handle does not exist")) {
       return null;
     }
     throw e;
