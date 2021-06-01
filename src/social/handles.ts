@@ -1,6 +1,7 @@
 import { Config } from "../config/config";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
+import { registry } from "../contracts";
 
 export interface User {
   handle: Handle;
@@ -75,4 +76,23 @@ export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<
  */
 export const addressToHandles = async (_address: HexString, _opts?: Config): Promise<Handle[]> => {
   throw NotImplementedError;
+};
+
+/**
+ * availabilityFilter() takes a list of handles returning a filtered list of just the ones that are available
+ * @param handles A list of handles to check for availability
+ * @returns       The filtered list of handles that are currently available
+ */
+export const availabilityFilter = async (handles: Handle[]): Promise<Handle[]> => {
+  const availability = await Promise.all(handles.map(isAvailable));
+  return handles.filter((_handle, index) => availability[index]);
+};
+
+/**
+ * isAvailable() checks to see if the given handle is available
+ * @param handle    The handle to test for availability
+ * @returns boolean If the handle is available
+ */
+export const isAvailable = async (handle: Handle): Promise<boolean> => {
+  return (await registry.resolveHandleToId(handle)) === null;
 };
