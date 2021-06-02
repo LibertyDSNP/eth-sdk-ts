@@ -14,34 +14,16 @@ npm install @dsnp/sdk
 
 ### Configure the SDK
 
-#### Configuration File
-
-Next, add a `dsnp.config.js` file to your project's root directory. For ethers, the following contents will work:
+The configuration can be set at runtime with the following:
 
 ```js
-var ethers = require("ethers");
+var config = require("@dsnp/sdk/config");
 
-var provider = new ethers.providers.JsonRpcProvider("<ETH NODE HTTP ADDRESS>");
-var signer = new ethers.Wallet("<ETH PRIVATE KEY>", provider);
-
-module.exports = {
-  signer: signer,
-  provider: provider
-};
-```
-
-#### Runtime Configuration
-
-Alternatively, the configuration can be set at runtime with the following:
-
-```js
-var config = require("@dsnp/sdk/Config");
-
-config
-  .setConfig({
+config.setConfig({
     signer: signer,
     provider: provider
   })
+// Do something with the SDK
 ```
 
 #### Storing Messages and Batches
@@ -75,6 +57,8 @@ config
     storage: new MyStorage()
    });
 ```
+
+See [Config Documentation](https://libertydsnp.github.io/sdk-ts/interfaces/config_config.config.html) for details on additional options.
 
 ## Usage
 
