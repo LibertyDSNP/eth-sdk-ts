@@ -118,8 +118,6 @@ describe("identity", () => {
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
 
-
-
       await expect((await createBeaconProxy(beacon)).wait()).resolves.not.toBeNull();
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
@@ -154,6 +152,7 @@ describe("identity", () => {
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
       const authorized = await isAuthorizedTo(nonOwner, contractAddress, Permission.ANNOUNCE, 0);
+
       expect(authorized).toBe(false);
     });
 
@@ -169,6 +168,7 @@ describe("identity", () => {
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
       const authorized = await isAuthorizedTo(owner, contractAddress, Permission.ANNOUNCE, 0);
+      
       expect(authorized).toBe(true);
     });
   });
