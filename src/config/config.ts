@@ -11,6 +11,7 @@ export interface Config {
   queue: QueueInterface;
   store?: StorageInterface;
   contracts: {
+    announcer?: HexString;
     beacon?: HexString;
     beaconFactory?: HexString;
     identity?: HexString;

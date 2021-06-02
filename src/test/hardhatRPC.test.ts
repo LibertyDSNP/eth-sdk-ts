@@ -37,14 +37,14 @@ describe("snapshot and revert", () => {
     await batch(announcements);
 
     // confirm batch event exists
-    const batchEvents1 = await decodeDSNPBatchEvents(provider);
+    const batchEvents1 = await decodeDSNPBatchEvents();
     expect(batchEvents1.length).toEqual(1);
 
     // revert
     await revertHardhat(provider);
 
     // confirm batch event has been reverted
-    const batchEvents2 = await decodeDSNPBatchEvents(provider);
+    const batchEvents2 = await decodeDSNPBatchEvents();
     expect(batchEvents2.length).toEqual(0);
   });
 });

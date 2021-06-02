@@ -1,10 +1,11 @@
 import { ContractTransaction, ethers, EventFilter } from "ethers";
-import { getConfig, Config } from "../config/config";
+import { getConfig } from "../config/config";
 import { HexString } from "../types/Strings";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer } from "../types/typechain/Announcer";
-import { GAS_LIMIT_BUFFER, getContract } from "./contract";
+import { getContractAddress } from "./contract";
+import { Announcer__factory } from "../types/typechain";
 
 const CONTRACT_NAME = "Announcer";
 
@@ -22,21 +23,13 @@ export interface Announcement {
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    A contract receipt promise
  */
-export const batch = async (announcements: Announcement[], opts?: Config): Promise<ContractTransaction> => {
-  const { provider, signer } = await getConfig(opts);
-
-  if (!signer) throw MissingSigner;
-  if (!provider) throw MissingProvider;
-
-  const contract = await getAnnouncerContract(provider);
-  if (!contract) throw MissingContract;
-
-  const gasEstimate = await getGasLimit(contract, announcements);
-  return contract.connect(signer).batch(announcements, { gasLimit: gasEstimate });
+export const batch = async (announcements: Announcement[]): Promise<ContractTransaction> => {
+  const contract = await getAnnouncerContract();
+  return contract.batch(announcements);
 };
 
-export const dsnpBatchFilter = async (provider: ethers.providers.Provider): Promise<EventFilter> => {
-  const contract = await getAnnouncerContract(provider);
+export const dsnpBatchFilter = async (): Promise<EventFilter> => {
+  const contract = await getAnnouncerContract();
   return contract.filters.DSNPBatch();
 };
 
@@ -45,8 +38,11 @@ export const dsnpBatchFilter = async (provider: ethers.providers.Provider): Prom
  * @param provider provider from which to retrieve events
  * @returns All announcements recorded as DSNPBatch events
  */
-export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider): Promise<Announcement[]> => {
-  const filter = await dsnpBatchFilter(provider);
+export const decodeDSNPBatchEvents = async (): Promise<Announcement[]> => {
+  const { provider } = getConfig();
+  if (!provider) throw MissingProvider;
+
+  const filter = await dsnpBatchFilter();
   const logs: ethers.providers.Log[] = await provider.getLogs(filter);
   const decoder = new ethers.utils.Interface(announcerABI);
   return logs
@@ -58,12 +54,17 @@ export const decodeDSNPBatchEvents = async (provider: ethers.providers.Provider)
     });
 };
 
-const getAnnouncerContract = async (provider: ethers.providers.Provider): Promise<Announcer> => {
-  return (getContract(provider, CONTRACT_NAME, announcerABI) as unknown) as Announcer;
-};
+const getAnnouncerContract = async (): Promise<Announcer> => {
+  const {
+    signer,
+    provider,
+    contracts: { announcer },
+  } = await getConfig();
+  if (!signer) throw MissingSigner;
+  if (!provider) throw MissingProvider;
 
-const getGasLimit = async (contract: Announcer, announcements: Announcement[]): Promise<number> => {
-  const gasEstimate = await contract.estimateGas.batch(announcements);
+  const address = announcer || (await getContractAddress(provider, CONTRACT_NAME));
 
-  return gasEstimate.toNumber() + GAS_LIMIT_BUFFER;
+  if (!address) throw MissingContract;
+  return Announcer__factory.connect(address, signer);
 };

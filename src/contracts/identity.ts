@@ -24,7 +24,7 @@ export enum Permission {
  */
 export const createCloneProxy = async (logic?: EthereumAddress): Promise<ContractTransaction> => {
   if (!logic) logic = await getIdentityContractAddress();
-  const contract = await getProxyFactoryContract();
+  const contract = await getIdentityCloneFactoryContract();
   return contract.createCloneProxy(logic);
 };
 
@@ -40,7 +40,7 @@ export const createCloneProxyWithOwner = async (
   logic?: EthereumAddress
 ): Promise<ContractTransaction> => {
   if (!logic) logic = await getIdentityContractAddress();
-  const contract = await getProxyFactoryContract();
+  const contract = await getIdentityCloneFactoryContract();
   return contract.createCloneProxyWithOwner(logic, owner);
 };
 
@@ -65,7 +65,6 @@ export const createBeaconProxyWithOwner = async (
   beacon: EthereumAddress
 ): Promise<ContractTransaction> => {
   const contract = await getBeaconFactoryContract();
-
   return contract.createBeaconProxyWithOwner(beacon, owner);
 };
 
@@ -81,7 +80,7 @@ const getIdentityContractAddress = async (): Promise<EthereumAddress> => {
   return address;
 };
 
-const getProxyFactoryContract = async (): Promise<IdentityCloneFactory> => {
+const getIdentityCloneFactoryContract = async (): Promise<IdentityCloneFactory> => {
   const {
     provider,
     signer,
