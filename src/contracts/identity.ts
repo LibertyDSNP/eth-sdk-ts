@@ -41,7 +41,7 @@ export const createCloneProxy = async (logic?: EthereumAddress, opts?: Config): 
 };
 
 /**
- * createCloneProxy() Creates a new identity with the ecrecover address as the owner
+ * createCloneProxyWithOwner() Creates a new identity with the ecrecover address as the owner
  *
  * @param logic The address to use for the logic contract
  * @param owner The initial owner's address of the new contract
@@ -65,7 +65,7 @@ export const createCloneProxyWithOwner = async (
 };
 
 /**
- * createBeaconProxy(beacon) Creates a new identity with the message sender as the owner
+ * createBeaconProxy(beacon?: EthereumAddress) Creates a new identity with the message sender as the owner
  * @param beacon The beacon address to use for identity creation
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     A contract receipt promise

@@ -75,7 +75,7 @@ export const getContract = async (
   provider: ethers.providers.Provider,
   contractName: string,
   abi: ContractInterface
-) => {
+): Promise<Contract> => {
   const address = (await getContractAddress(provider, contractName)) as string;
   if (!address) throw MissingContract;
   return new Contract(address, abi, provider) as Contract;
