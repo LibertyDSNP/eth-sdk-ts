@@ -91,7 +91,7 @@ describe("registry", () => {
       await register(idContractAddr, otherHandle);
 
       const pendingTx = changeHandle(handle, otherHandle);
-      await expect(pendingTx).rejects.transactionRejectsWith(/New handle already exists/);
+      await expect(pendingTx).transactionRejectsWith(/New handle already exists/);
     });
 
     it("returns a Contract Transaction that can be resolved into a DSNP Id", async () => {

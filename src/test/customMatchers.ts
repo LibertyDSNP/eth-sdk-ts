@@ -4,7 +4,7 @@ import { getVmError } from "../contracts/contract";
 declare global {
   namespace jest {
     interface Matchers<R> {
-      transactionRejectsWith(message: string | RegExp): CustomMatcherResult
+      transactionRejectsWith(message: string | RegExp): R
     }
   }
 }
