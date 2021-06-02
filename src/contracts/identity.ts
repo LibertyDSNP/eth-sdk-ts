@@ -87,8 +87,9 @@ export const createBeaconProxy = async (beacon?: EthereumAddress, opts?: Config)
 };
 
 /**
- * createBeaconProxyWithOwner(beacon?: Ethereum Address) @dev Creates a new identity with the ecrecover address as the owner
+ * createBeaconProxyWithOwner(beacon?: Ethereum Address) Creates a new identity with the ecrecover address as the owner
  * @param beacon The beacon address to use for identity creation
+ * @param owner The initial owner's address of the new contract
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     A contract receipt promise
  */

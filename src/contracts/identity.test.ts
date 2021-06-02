@@ -12,6 +12,7 @@ import {
   isAuthorizedTo,
   Permission,
 } from "./identity";
+
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
 const RPC_URL = String(process.env.RPC_URL);
 const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
@@ -65,7 +66,7 @@ describe("identity", () => {
       expect(contractAddress).toEqual("0x3B02fF1e626Ed7a8fd6eC5299e2C54e1421B626B");
     });
 
-    it("expect is authorized to to return true for owner", async () => {
+    it("expect isAuthorizedTo to return true for owner", async () => {
       const proxyReceipt: ContractReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
@@ -78,7 +79,7 @@ describe("identity", () => {
       expect(authorized).toBe(true);
     });
     //
-    it("expect is authorized to to return false for non owner", async () => {
+    it("expect isAuthorizedTo to return false for non owner", async () => {
       const proxyReceipt: ContractReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
@@ -93,7 +94,7 @@ describe("identity", () => {
   });
 
   describe("createBeaconProxy", () => {
-    it("creates a beacon proxy contract", async () => {
+    it("creates a beacon proxy contract using a default beacon", async () => {
       const proxyReceipt: ContractReceipt = (await (await createBeaconProxy()).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
@@ -107,7 +108,7 @@ describe("identity", () => {
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
 
-    it("creates a beacon proxy contract pointing to a beacon proxy contract", async () => {
+    it("creates a beacon proxy contract with specified beacon", async () => {
       const proxyReceipt: ContractReceipt = (await (await createBeaconProxy(beacon)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
@@ -116,6 +117,8 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
+
+
 
       await expect((await createBeaconProxy(beacon)).wait()).resolves.not.toBeNull();
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
@@ -129,7 +132,7 @@ describe("identity", () => {
       ).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
-          ? proxyReceipt?.events?.filter((event) => {
+          ? proxyReceipt.events.filter((event) => {
               return event.event === "ProxyCreated";
             })
           : [];
@@ -139,7 +142,7 @@ describe("identity", () => {
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
 
-    it("expect is authorized to to return false or nonOwner", async () => {
+    it("expect isAuthorized  to return false or nonOwner", async () => {
       const proxyReceipt: ContractReceipt = (await (
         await createBeaconProxyWithOwner(owner, beacon)
       ).wait()) as ContractReceipt;
@@ -154,12 +157,12 @@ describe("identity", () => {
       expect(authorized).toBe(false);
     });
 
-    it("expect is authorized to to return true for owner", async () => {
+    it("expect isAuthorizedTo to return true for owner", async () => {
       const proxyReceipt: ContractReceipt = (await (
         await createBeaconProxyWithOwner(owner, beacon)
       ).wait()) as ContractReceipt;
       const proxyContractEvents =
-        proxyReceipt && proxyReceipt.events && proxyReceipt
+        proxyReceipt && proxyReceipt.events
           ? proxyReceipt.events.filter((event) => {
               return event.event === "ProxyCreated";
             })
