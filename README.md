@@ -65,7 +65,7 @@ See [Config Documentation](https://libertydsnp.github.io/sdk-ts/interfaces/confi
 Once the SDK is installed and configured, the following code can be used to post a batch on the chain:
 
 ```js
-var announcement = require("@dsnp/sdk/Announcement");
+var announcement = require("@dsnp/sdk/contracts/announcement");
 
 announcement.batch([{ hash, uri, dsnpType }]);
 ```
