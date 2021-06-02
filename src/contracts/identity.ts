@@ -35,7 +35,7 @@ export const createCloneProxy = async (logic?: EthereumAddress, opts?: Config): 
   if (!provider) throw MissingProvider;
 
   if (!logic) logic = await getDefaultLogicContractAddress(provider);
-  const contract = await getFactoryContract(provider);
+  const contract = await getProxyFactoryContract(provider);
   const gasEstimate = await getGasLimitCloneProxy(contract, logic);
   return contract.connect(signer).createCloneProxy(logic, { gasLimit: gasEstimate });
 };
@@ -59,8 +59,8 @@ export const createCloneProxyWithOwner = async (
   if (!provider) throw MissingProvider;
 
   if (!logic) logic = await getDefaultLogicContractAddress(provider);
-  const contract = await getFactoryContract(provider);
-  const gasEstimate = await getGasLimitWithOwner(contract, logic, owner);
+  const contract = await getProxyFactoryContract(provider);
+  const gasEstimate = await getGasLimitCloneProxy(contract, logic, owner);
   return contract.connect(signer).createCloneProxyWithOwner(logic, owner, { gasLimit: gasEstimate });
 };
 
@@ -87,7 +87,7 @@ export const createBeaconProxy = async (beacon?: EthereumAddress, opts?: Config)
 };
 
 /**
- * createBeaconProxyWithOwner(beacon?: Ethereum Address) Creates a new identity with the message sender as the owner
+ * createBeaconProxyWithOwner(beacon?: Ethereum Address) @dev Creates a new identity with the ecrecover address as the owner
  * @param beacon The beacon address to use for identity creation
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     A contract receipt promise
@@ -113,7 +113,7 @@ const getDefaultLogicContractAddress = async (provider: ethers.providers.Provide
   return address;
 };
 
-const getFactoryContract = async (provider: ethers.providers.Provider): Promise<IdentityCloneFactory> => {
+const getProxyFactoryContract = async (provider: ethers.providers.Provider): Promise<IdentityCloneFactory> => {
   return (getContract(provider, CONTRACT_NAME, cloneFactoryABI) as unknown) as IdentityCloneFactory;
 };
 
@@ -121,16 +121,14 @@ const getBeaconFactoryContract = async (provider: ethers.providers.Provider): Pr
   return (getContract(provider, BEACON_CONTRACT_NAME, beaconFactoryABI) as unknown) as BeaconFactory;
 };
 
-const getIdentityContract = async (
-  provider: ethers.providers.Provider,
-  contractAddress: EthereumAddress
-): Promise<Identity> => {
-  return new Contract(contractAddress, identityABI, provider) as Identity;
-};
-
-const getGasLimitCloneProxy = async (contract: IdentityCloneFactory, logic: EthereumAddress): Promise<number> => {
-  const gasEstimate = await contract.estimateGas.createCloneProxy(logic);
-
+const getGasLimitCloneProxy = async (
+  contract: IdentityCloneFactory,
+  logic: EthereumAddress,
+  owner?: EthereumAddress
+): Promise<number> => {
+  const gasEstimate = owner
+    ? await contract.estimateGas.createCloneProxyWithOwner(logic, owner)
+    : await contract.estimateGas.createCloneProxy(logic);
   return gasEstimate.toNumber() + GAS_LIMIT_BUFFER;
 };
 
@@ -150,16 +148,6 @@ const getGasLimitBeaconProxyWithOwner = async (
   return gasEstimate.toNumber() + GAS_LIMIT_BUFFER;
 };
 
-const getGasLimitWithOwner = async (
-  contract: IdentityCloneFactory,
-  logic: EthereumAddress,
-  owner: EthereumAddress
-): Promise<number> => {
-  const gasEstimate = await contract.estimateGas.createCloneProxyWithOwner(logic, owner);
-
-  return gasEstimate.toNumber() + GAS_LIMIT_BUFFER;
-};
-
 export const isAuthorizedTo = async (
   address: EthereumAddress,
   contractAddress: EthereumAddress,
@@ -171,6 +159,6 @@ export const isAuthorizedTo = async (
 
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
-  const contract = await getIdentityContract(provider, contractAddress);
-  return contract.connect(signer).isAuthorizedTo(address, permission, blockNumber);
+  const identityContract = new Contract(contractAddress, identityABI, provider) as Identity;
+  return identityContract.connect(signer).isAuthorizedTo(address, permission, blockNumber);
 };
