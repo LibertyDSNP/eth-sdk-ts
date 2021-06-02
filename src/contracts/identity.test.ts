@@ -53,8 +53,13 @@ describe("identity", () => {
   });
 
   describe("createCloneProxy with owner", () => {
+    let proxyReceipt: ContractReceipt;
+
+    beforeEach(async () => {
+      proxyReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
+    });
+
     it("creates a proxy contract", async () => {
-      const proxyReceipt: ContractReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
           ? proxyReceipt.events.filter((event) => {
@@ -67,7 +72,6 @@ describe("identity", () => {
     });
 
     it("expect isAuthorizedTo to return true for owner", async () => {
-      const proxyReceipt: ContractReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
           ? proxyReceipt.events.filter((event) => {
@@ -80,7 +84,6 @@ describe("identity", () => {
     });
     //
     it("expect isAuthorizedTo to return false for non owner", async () => {
-      const proxyReceipt: ContractReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
           ? proxyReceipt.events.filter((event) => {
@@ -103,8 +106,6 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
-
-      await expect((await createBeaconProxy()).wait()).resolves.not.toBeNull();
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
 
@@ -117,17 +118,18 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
-
-      await expect((await createBeaconProxy(beacon)).wait()).resolves.not.toBeNull();
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
   });
 
   describe("createBeaconProxyWithOwner", () => {
-    it("creates a beacon proxy contract", async () => {
-      const proxyReceipt: ContractReceipt = (await (
+    let proxyReceipt: ContractReceipt;
+    beforeEach(async () => {
+      proxyReceipt = (await (
         await createBeaconProxyWithOwner(owner, beacon)
       ).wait()) as ContractReceipt;
+    });
+    it("creates a beacon proxy contract", async () => {
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
           ? proxyReceipt.events.filter((event) => {
@@ -135,15 +137,10 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
-
-      await expect((await createBeaconProxyWithOwner(owner, beacon)).wait()).resolves.not.toBeNull();
       expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
     });
 
     it("expect isAuthorized  to return false or nonOwner", async () => {
-      const proxyReceipt: ContractReceipt = (await (
-        await createBeaconProxyWithOwner(owner, beacon)
-      ).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
           ? proxyReceipt.events.filter((event) => {
@@ -157,9 +154,6 @@ describe("identity", () => {
     });
 
     it("expect isAuthorizedTo to return true for owner", async () => {
-      const proxyReceipt: ContractReceipt = (await (
-        await createBeaconProxyWithOwner(owner, beacon)
-      ).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
           ? proxyReceipt.events.filter((event) => {
@@ -168,7 +162,7 @@ describe("identity", () => {
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
       const authorized = await isAuthorizedTo(owner, contractAddress, Permission.ANNOUNCE, 0);
-      
+
       expect(authorized).toBe(true);
     });
   });
