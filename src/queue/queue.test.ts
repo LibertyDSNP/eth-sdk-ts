@@ -1,6 +1,6 @@
 import { setConfig } from "../config/config";
 import { BroadcastMessage, DSNPType } from "../messages/messages";
-import { enqueue, dequeue } from "./queue";
+import { enqueue, remove } from "./queue";
 
 describe("queue", () => {
   const testMsg: BroadcastMessage = {
@@ -19,6 +19,7 @@ describe("queue", () => {
   beforeAll(async () => {
     await setConfig({
       queue: fakeQueue,
+      contracts: {},
     });
   });
 
@@ -31,9 +32,9 @@ describe("queue", () => {
     });
   });
 
-  describe("#dequeue", () => {
+  describe("#remove", () => {
     it("calls the dequeue method of the configured queue adapter", async () => {
-      const result = await dequeue(testId);
+      const result = await remove(testId);
 
       expect(fakeQueue.dequeue).toHaveBeenCalledWith(testId);
       expect(result).toEqual(testMsg);

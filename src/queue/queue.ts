@@ -15,27 +15,27 @@ export interface QueueInterface {
 }
 
 /**
- * enqueue() adds an activity pub event to the queue for later publishing to the
+ * enqueue() adds a DSNP message to the queue for later publishing to the
  * blockchain as a batch file.
  *
- * @param dsnpEvent The DSNP message to queue up for batching
- * @param opts      Optional. Configuration overrides, such as from address, if any
- * @returns         An ID for the queued message
+ * @param message The DSNP message to queue up for batching
+ * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @returns       An ID for the queued message
  */
-export const enqueue = async (event: DSNPMessage, opts?: Config): Promise<QueueId> => {
+export const enqueue = async (message: DSNPMessage, opts?: Config): Promise<QueueId> => {
   const config = getConfig(opts);
-  return await config.queue.enqueue(event);
+  return await config.queue.enqueue(message);
 };
 
 /**
- * dequeue() removes an activity pub event from the queue for later publishing
+ * remove() removes a DSNP message from the queue for later publishing
  * to the blockchain.
  *
  * @param id   The ID of the message to remove from the queue
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The DSNP message removed from the queue
  */
-export const dequeue = async (id: QueueId, opts?: Config): Promise<DSNPMessage> => {
+export const remove = async (id: QueueId, opts?: Config): Promise<DSNPMessage> => {
   const config = getConfig(opts);
   return await config.queue.dequeue(id);
 };
