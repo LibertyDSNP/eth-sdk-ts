@@ -11,6 +11,11 @@ export interface Config {
   queue: QueueInterface;
   store?: StorageInterface;
   contracts: {
+    beacon?: HexString;
+    beaconFactory?: HexString;
+    identity?: HexString;
+    identityBeaconProxy?: HexString;
+    identityCloneFactory?: HexString;
     registry?: HexString;
   };
 }
