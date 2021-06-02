@@ -13,7 +13,7 @@ describe("queue", () => {
   const fakeQueue = {
     enqueue: jest.fn().mockResolvedValue(testId),
     dequeue: jest.fn().mockResolvedValue(testMsg),
-    getAll: jest.fn(),
+    remove: jest.fn().mockResolvedValue(testMsg),
   };
 
   beforeAll(async () => {
@@ -27,7 +27,7 @@ describe("queue", () => {
     it("calls the enqueue method of the configured queue adapter", async () => {
       const result = await enqueue(testMsg);
 
-      expect(fakeQueue.enqueue).toHaveBeenCalledWith(testMsg);
+      expect(fakeQueue.enqueue).toHaveBeenCalledWith(testMsg.type, testMsg);
       expect(result).toEqual(testId);
     });
   });
@@ -36,7 +36,7 @@ describe("queue", () => {
     it("calls the dequeue method of the configured queue adapter", async () => {
       const result = await remove(testId);
 
-      expect(fakeQueue.dequeue).toHaveBeenCalledWith(testId);
+      expect(fakeQueue.remove).toHaveBeenCalledWith(testId);
       expect(result).toEqual(testMsg);
     });
   });

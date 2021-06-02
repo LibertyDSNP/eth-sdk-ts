@@ -1,5 +1,5 @@
 import { BroadcastMessage, DSNPType } from "../messages/messages";
-import MemoryQueue, { IdDoesNotExist } from "./memoryQueue";
+import MemoryQueue from "./memoryQueue";
 
 describe("memoryQueue", () => {
   const testMsg: BroadcastMessage = {
@@ -12,72 +12,51 @@ describe("memoryQueue", () => {
   describe("#enqueue", () => {
     it("adds a message to the queue and returns a queue id", async () => {
       const queue = new MemoryQueue();
-      const result = await queue.enqueue(testMsg);
 
-      expect(await queue.getAll()).toEqual([testMsg]);
-      expect(result).toEqual("0");
+      expect(await queue.enqueue(DSNPType.Broadcast, testMsg)).toEqual("0:0");
     });
   });
 
   describe("#dequeue", () => {
+    it("adds a message to the queue and returns a queue id", async () => {
+      const queue = new MemoryQueue();
+      await queue.enqueue(DSNPType.Broadcast, testMsg);
+
+      expect(await queue.dequeue(DSNPType.Broadcast)).toEqual(testMsg);
+    });
+  });
+
+  describe("#remove", () => {
     describe("with a valid queue id", () => {
-      it("removes a message from the queue and returns it", async () => {
+      it("returns the message with the specified id", async () => {
         const queue = new MemoryQueue();
-        const queueId = await queue.enqueue(testMsg);
+        const queueId = await queue.enqueue(DSNPType.Broadcast, testMsg);
 
-        const result = await queue.dequeue(queueId);
+        expect(await queue.remove(queueId)).toEqual(testMsg);
+      });
 
-        expect(await queue.getAll()).toEqual([]);
-        expect(result).toEqual(testMsg);
+      it("removes the message with the specified id", async () => {
+        const queue = new MemoryQueue();
+        const queueId = await queue.enqueue(DSNPType.Broadcast, testMsg);
+
+        await queue.remove(queueId);
+
+        expect(await queue.dequeue(DSNPType.Broadcast)).toEqual(null);
+      });
+    });
+
+    describe("with an non-existent queue id", () => {
+      it("throws", async () => {
+        const queue = new MemoryQueue();
+        await expect(queue.remove("1:1")).rejects.toThrow();
       });
     });
 
     describe("with an invalid queue id", () => {
-      it("throws IdDoesNotExist", async () => {
+      it("throws", async () => {
         const queue = new MemoryQueue();
-        await expect(queue.dequeue("DEADCODE")).rejects.toThrow(IdDoesNotExist);
+        await expect(queue.remove("BAD_ID")).rejects.toThrow();
       });
-    });
-  });
-
-  describe("#getAll", () => {
-    it("returns the contents of the queue", async () => {
-      const queue = new MemoryQueue();
-      await queue.enqueue({
-        type: DSNPType.Broadcast,
-        contentHash: "test",
-        fromId: "test",
-        uri: "test1",
-      } as BroadcastMessage);
-      const idToRemove = await queue.enqueue({
-        type: DSNPType.Broadcast,
-        contentHash: "test",
-        fromId: "test",
-        uri: "test2",
-      } as BroadcastMessage);
-      await queue.enqueue({
-        type: DSNPType.Broadcast,
-        contentHash: "test",
-        fromId: "test",
-        uri: "test3",
-      } as BroadcastMessage);
-
-      await queue.dequeue(idToRemove);
-
-      expect(await queue.getAll()).toEqual([
-        {
-          type: DSNPType.Broadcast,
-          contentHash: "test",
-          fromId: "test",
-          uri: "test1",
-        },
-        {
-          type: DSNPType.Broadcast,
-          contentHash: "test",
-          fromId: "test",
-          uri: "test3",
-        },
-      ]);
     });
   });
 });

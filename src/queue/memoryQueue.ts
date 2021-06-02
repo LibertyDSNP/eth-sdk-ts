@@ -1,7 +1,13 @@
 import { QueueId, QueueInterface } from "./queue";
-import { DSNPMessage } from "../messages/messages";
+import { DSNPMessage, DSNPType } from "../messages/messages";
 
-export const IdDoesNotExist = new Error("No message matching the given ID exists.");
+const InvalidId = new Error("The Queue Id provided is malformed.");
+const IdDoesNotExist = new Error("No message matching the given ID exists.");
+
+interface QueueItem {
+  id: number;
+  message: DSNPMessage;
+}
 
 /**
  * MemoryQueue provides a simple, in-memory store for DSNP messages to be
@@ -9,10 +15,12 @@ export const IdDoesNotExist = new Error("No message matching the given ID exists
  * configuration.
  */
 export default class MemoryQueue implements QueueInterface {
-  queue: (DSNPMessage | undefined)[];
+  queues: Record<string, QueueItem[]>;
+  nextId: number;
 
   constructor() {
-    this.queue = [];
+    this.queues = {};
+    this.nextId = 0;
   }
 
   /**
@@ -23,15 +31,44 @@ export default class MemoryQueue implements QueueInterface {
    * @param message The DSNP message to queue up for the next batch
    * @returns       A queue id to be used to remove the message if needed
    */
-  async enqueue(message: DSNPMessage): Promise<QueueId> {
-    const index = this.queue.push(message) - 1;
-    return index.toString(16);
+  async enqueue(type: DSNPType, message: DSNPMessage): Promise<QueueId> {
+    const typeString = type.toString(16);
+    const queueItem = this._createQueueItem(message);
+    const queueId = `${typeString}:${queueItem.id.toString(16)}`;
+
+    if (this.queues[typeString] === undefined) this.queues[typeString] = [];
+    this.queues[typeString].push(queueItem);
+
+    return queueId;
   }
 
   /**
-   * dequeue() implements the dequeue function of the QueueInterface. It takes an
+   * dequeue() implements the dequeue function of the QueueInterface. It takes a
+   * DSNP type, then removes and returns the first DSNP message of the matching
+   * type added to the queue. If no messages of the type exist, null will be
+   * returned to indicate the end of the queue.
+   *
+   * @param type The DSNP message type to dequeue
+   * @returns    The dequeued DSNP message or null to indicate end of queue
+   */
+  async dequeue(type: DSNPType): Promise<DSNPMessage | null> {
+    const typeString = type.toString(16);
+
+    if (this.queues[typeString] === undefined) return null;
+
+    const queueItem = this.queues[typeString].shift();
+
+    if (queueItem === undefined) return null;
+    return queueItem.message;
+  }
+
+  /**
+   * remove() implements the remove function of the QueueInterface. It takes an
    * id, removes any message in the queue with matching ids and returns the
    * removed message.
+   *
+   * @throws {@link InvalidId}
+   * Thrown if called with an invalid Queue Id.
    *
    * @throws {@link IdDoesNotExist}
    * Thrown if called with a Queue Id that does not match any existing message.
@@ -39,27 +76,30 @@ export default class MemoryQueue implements QueueInterface {
    * @param id The id of the DSNP message to remove from the queue
    * @returns  The removed message
    */
-  async dequeue(id: QueueId): Promise<DSNPMessage> {
-    const index = parseInt(id, 16);
-    const msg = this.queue[index];
+  async remove(queueId: QueueId): Promise<DSNPMessage> {
+    const queueIdParts = queueId.split(":");
 
-    if (msg === undefined) throw IdDoesNotExist;
-    this.queue[index] = undefined;
+    if (queueIdParts.length != 2) throw InvalidId;
 
+    const typeString = queueIdParts[0];
+    const id = parseInt(queueIdParts[1], 16);
+
+    if (this.queues[typeString] === undefined) throw IdDoesNotExist;
+
+    const index = this.queues[typeString].findIndex((queueItem) => queueItem.id === id);
+    if (index === -1) throw IdDoesNotExist;
+
+    const msg = this.queues[typeString][index].message;
+    this.queues[typeString].splice(index, 1);
     return msg;
   }
 
-  /**
-   * getAll() implements the getAll function of the QueueInterface. It returns an
-   * array of all items currently in the queue and clears the queue.
-   *
-   * @returns An array of all messages currently in the queue
-   */
-  async getAll(): Promise<DSNPMessage[]> {
-    const messages = this.queue.filter((msg) => msg !== undefined) as DSNPMessage[];
-
-    this.queue = [];
-
-    return messages;
+  _createQueueItem(message: DSNPMessage): QueueItem {
+    const item: QueueItem = {
+      id: this.nextId,
+      message,
+    };
+    this.nextId += 1;
+    return item;
   }
 }
