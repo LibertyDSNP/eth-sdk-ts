@@ -30,7 +30,7 @@ export interface QueueInterface {
  */
 export const enqueue = async (message: DSNPBatchMessage, opts?: ConfigOpts): Promise<QueueId> => {
   const config = getConfig(opts);
-  return await config.queue.enqueue(message);
+  return await config.queue.enqueue(message.type, message);
 };
 
 /**

@@ -45,7 +45,7 @@ describe("memoryQueue", () => {
 
       it("removes the message with the specified id", async () => {
         const queue = new MemoryQueue();
-        const queueId = await queue.enqueue(testMsg);
+        const queueId = await queue.enqueue(DSNPType.Broadcast, testMsg);
 
         await queue.remove(queueId);
 
