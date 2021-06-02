@@ -1,9 +1,8 @@
 import { ConfigOpts } from "../config/config";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
-import { registry } from "../contracts";
-import {Registration, Handle, getRegistrations} from "../contracts/registry";
-import {ContractTransaction} from "ethers";
+import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveHandleToId } from "../contracts/registry";
+import { ContractTransaction } from "ethers";
 
 /**
  * authenticateHandle() claims a registry handle to the current user. If the
@@ -38,26 +37,32 @@ export const getRegistration = async (_id: Handle): Promise<Registration> => {
  * method is not yet implemented.
  *
  * @param id   The Handle of the user for which to fetch profile data
- * @param user Any updates to be merged into the current profile data
+ * @param registration Any updates to be merged into the current profile data
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The pending transaction
  */
-export const updateUser = async (_id: Handle, _registration: Registration, _opts?: ConfigOpts): Promise<ContractTransaction> => {
+export const updateUser = async (
+  _id: Handle,
+  _registration: Registration,
+  _opts?: ConfigOpts
+): Promise<ContractTransaction> => {
   throw NotImplementedError;
 };
 
-export const resolveHandle = async (handle: Handle): Promise<Registration> => {
-  const registrations = await registry.getRegistrations({
+export const resolveHandle = async (handle: Handle): Promise<Registration | null> => {
+  const registrations = await getDSNPRegistryUpdateEvents({
     handle,
-  })
-  if (registrations.length === 0) {
-    throw new Error("Handle not found");
-  }
+  });
+  if (registrations.length === 0) return null;
   return registrations[registrations.length - 1];
 };
 
-export const resolveId = async (_dsnpId: HexString): Promise<Registration> => {
-  throw NotImplementedError;
+export const resolveId = async (dsnpId: HexString): Promise<Registration | null> => {
+  const registrations = await getDSNPRegistryUpdateEvents({
+    dsnpId,
+  });
+  if (registrations.length === 0) return null;
+  return registrations[registrations.length - 1];
 };
 
 /**
@@ -76,5 +81,5 @@ export const availabilityFilter = async (handles: Handle[]): Promise<Handle[]> =
  * @returns boolean If the handle is available
  */
 export const isAvailable = async (handle: Handle): Promise<boolean> => {
-  return (await registry.resolveHandleToId(handle)) === null;
+  return (await resolveHandleToId(handle)) === null;
 };
