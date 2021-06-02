@@ -1,9 +1,5 @@
-// import * as batch from "../batch/batch";
 import { getConfig, Config } from "../config/config";
-// import * as announcement from "../contracts/announcement";
-// import * as storage from "../storage/storage";
 import { DSNPMessage, DSNPType } from "../messages/messages";
-import { NotImplementedError } from "../utilities";
 
 export type QueueId = string;
 
@@ -40,17 +36,24 @@ export const remove = async (id: QueueId, opts?: Config): Promise<DSNPMessage> =
 };
 
 /**
- * commit() creates a batch file from the current activity pub messages in the
- * queue then clears the queue. This method is not yet implemented.
+ * dequeueAll() takes a DSNP type and number of messages to dequeue and returns
+ * an array for inclusion in a batch file. If the number provided is zero, all
+ * messages in the queue with a matching type will be returned.
+ *
+ * @param type  The DSNP type of messages to dequeue
+ * @param count The number of messages to dequeue and return
+ * @param opts  Optional. Configuration overrides, such as from address, if any
+ * @returns     An array of DSNP messages removed from the queue
  */
-export const commit = async (_opts?: Config): Promise<void> => {
-  throw NotImplementedError;
+export const dequeueAll = async (dsnpType: DSNPType, count: number, opts?: Config): Promise<DSNPMessage[]> => {
+  const config = getConfig(opts);
+  const results: DSNPMessage[] = [];
 
-  // const config = getConfig(opts);
-  // const events = await config.queue.getAll();
-  // const batchFile = batch.createFile(events);
-  //
-  // const hash = batch.hash(batchFile);
-  // const uri = await storage.put(batchFile, opts);
-  // await announcement.batch(uri, hash);
+  for (let i = 0; i < count || count == 0; i++) {
+    const msg = await config.queue.dequeue(dsnpType);
+    if (msg === null) break;
+    results.push(msg);
+  }
+
+  return results;
 };
