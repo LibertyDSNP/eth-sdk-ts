@@ -1,5 +1,6 @@
 import { getContractAddress } from "./contract";
 import {EthereumAddress, HexString} from "../types/Strings";
+import { getContractAddress, getVmError } from "./contract";
 import { getConfig } from "../config/config";
 import { ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
@@ -14,21 +15,6 @@ export interface Registration {
 }
 
 export type Handle = string;
-
-/**
- * Get the JSON RPC error from the body, if one exists
- * @param e The error expected to have a vm Error
- *
- * @returns the error if any
- */
-const getVmError = (e: { body?: string }): string | undefined => {
-  try {
-    const parsed = JSON.parse(e.body || "{}");
-    return parsed?.error?.message;
-  } catch (e) {
-    return undefined;
-  }
-};
 
 /**
  * resolveHandleToId() Try to resolve a handle into a DSNP Id
