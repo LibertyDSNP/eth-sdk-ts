@@ -1,9 +1,10 @@
 import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { resolveHandle } from "../social/handles";
-import { resolveHandleToId, register } from "./registry";
+
+import { snapshotSetup } from "../test/hardhatRPC";
+import {resolveHandleToId, register, getDSNPRegistryUpdateEvents, changeHandle} from "./registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { setupConfig } from "../test/sdkTestConfig";
-import { snapshotSetup } from "../test/hardhatRPC";
 
 describe("registry", () => {
   let signer: Signer;
@@ -53,7 +54,7 @@ describe("registry", () => {
     it("Should throw for an already registered handle", async () => {
       // Second time for handle
       const pendingTx = register(idContractAddr, handle);
-      await expect(pendingTx).rejects.toBeTruthy();
+      await expect(pendingTx).transactionRejectsWith(/Handle already exists/);
     });
 
     it("returns a Contract Transaction that can be resolved into a DSNP Id", async () => {
@@ -63,15 +64,45 @@ describe("registry", () => {
     });
   });
 
-  describe("getRegistrations", () => {
-    function hex2a(hex: string) {
-      let str = "";
-      for (let i = 2; i < hex.length && hex.substr(i, 2) !== "00"; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-      return str;
-    }
+  describe("#changeHandle", () => {
+    const handle = "registered";
+    let idContractAddr = "";
 
-    it("works", async () => {
+    beforeEach(async () => {
+      const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
+      await identityContract.deployed();
+      idContractAddr = identityContract.address;
+      await register(identityContract.address, handle);
+    });
+
+    it("Should succeed with an unregistered handle", async () => {
+      const otherHandle = "completely new";
+      const pendingTx = changeHandle(handle, otherHandle);
+      await expect(pendingTx).resolves.toBeTruthy();
+    });
+
+    it("Should throw for the same handle", async () => {
+      const pendingTx = changeHandle(handle, handle);
+      await expect(pendingTx).transactionRejectsWith(/New handle already exists/);
+    });
+
+    it("Should throw for an already registered handle", async () => {
+      const otherHandle = "reg2";
+      await register(idContractAddr, otherHandle);
+
+      const pendingTx = changeHandle(handle, otherHandle);
+      await expect(pendingTx).rejects.transactionRejectsWith(/New handle already exists/);
+    });
+
+    it("returns a Contract Transaction that can be resolved into a DSNP Id", async () => {
+      const transaction = await register(idContractAddr, "new-handle");
+
+      expect((await getIdFromRegisterTransaction(transaction)).toHexString()).toEqual("0x03e9"); // 1001
+    });
+  });
+
+  describe("getDSNPRegistryUpdateEvents", () => {
+    it("can pull one event", async () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
@@ -79,13 +110,38 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
-      const ids = await resolveHandle(handle);
-      expect(ids).not.toBeUndefined();
-      expect(ids.contractAddr).toEqual(identityContractAddress);
+      const regs = await getDSNPRegistryUpdateEvents({ handle });
+      expect(regs[0].contractAddr).toEqual(identityContractAddress);
 
-      const regId = parseInt(ids.dsnpId);
-      expect(regId).toEqual(1000);
-      expect(hex2a(ids.handle)).toEqual(handle);
+      expect(regs[0].dsnpId).toEqual("0x0" + Number(1000).toString(16))
+      expect(regs[0].handle).toEqual(handle);
+    });
+
+    it("Does not pull other almost matching events", async () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+      const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
+      await identityContract.deployed();
+      const handle = "ZebraButtons";
+      const identityContractAddress = identityContract.address;
+      await register(identityContractAddress, handle);
+      await register(identityContractAddress, handle + "2");
+
+      const regs = await getDSNPRegistryUpdateEvents({ handle });
+      expect(regs).toHaveLength(1);
+      expect(regs[0].contractAddr).toEqual(identityContractAddress);
+    });
+
+    it("pulls all the related events", async () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+      const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
+      await identityContract.deployed();
+      const handle = "ZebraButtons";
+      const identityContractAddress = identityContract.address;
+      await register(identityContractAddress, handle);
+
+      const regs = await getDSNPRegistryUpdateEvents({ handle });
+      expect(regs).toHaveLength(1);
+      expect(regs[0].contractAddr).toEqual(identityContractAddress);
     });
   });
 });
