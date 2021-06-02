@@ -3,16 +3,21 @@ import { ethers } from "ethers";
 import MemoryQueue from "../batch/memoryQueue";
 import { QueueInterface } from "../batch/queue";
 import { StorageInterface } from "../storage/storage";
+import { HexString } from "../types/Strings";
 
 export interface Config {
   provider?: ethers.providers.Provider;
   signer?: ethers.Signer;
   queue: QueueInterface;
   store?: StorageInterface;
+  contracts: {
+    registry?: HexString;
+  };
 }
 
 let config: Config = {
   queue: MemoryQueue(),
+  contracts: {},
 };
 
 /**
@@ -21,10 +26,14 @@ let config: Config = {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (overrides?: Config): Config => {
+export const getConfig = (overrides?: Partial<Config>): Config => {
   if (!overrides) return config;
 
-  return { ...config, ...overrides };
+  return {
+    ...config,
+    ...overrides,
+    contracts: { ...config.contracts, ...overrides.contracts },
+  };
 };
 
 /**
