@@ -1,6 +1,6 @@
 import { ContractTransaction } from "ethers";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
-import { getConfig, Config } from "../config/config";
+import { getConfig } from "../config/config";
 import { EthereumAddress } from "../types/Strings";
 import { IdentityCloneFactory } from "../types/typechain/IdentityCloneFactory";
 import { BeaconFactory } from "../types/typechain/BeaconFactory";
@@ -23,7 +23,7 @@ export enum Permission {
  * @returns     A contract receipt promise
  */
 export const createCloneProxy = async (logic?: EthereumAddress): Promise<ContractTransaction> => {
-  if (!logic) logic = await getIdentityContractAddress();
+  if (!logic) logic = await getIdentityLogicContractAddress();
   const contract = await getIdentityCloneFactoryContract();
   return contract.createCloneProxy(logic);
 };
@@ -32,14 +32,13 @@ export const createCloneProxy = async (logic?: EthereumAddress): Promise<Contrac
  * createCloneProxyWithOwner() Creates a new identity with the ecrecover address as the owner
  * @param logic The address to use for the logic contract
  * @param owner The initial owner's address of the new contract
- * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     A contract receipt promise
  */
 export const createCloneProxyWithOwner = async (
   owner: EthereumAddress,
   logic?: EthereumAddress
 ): Promise<ContractTransaction> => {
-  if (!logic) logic = await getIdentityContractAddress();
+  if (!logic) logic = await getIdentityLogicContractAddress();
   const contract = await getIdentityCloneFactoryContract();
   return contract.createCloneProxyWithOwner(logic, owner);
 };
@@ -68,13 +67,13 @@ export const createBeaconProxyWithOwner = async (
   return contract.createBeaconProxyWithOwner(beacon, owner);
 };
 
-const getIdentityContractAddress = async (): Promise<EthereumAddress> => {
+const getIdentityLogicContractAddress = async (): Promise<EthereumAddress> => {
   const {
     provider,
-    contracts: { identity },
+    contracts: { identityLogic },
   } = getConfig();
   if (!provider) throw MissingProvider;
-  const address = identity || (await getContractAddress(provider, IDENTITY_CONTRACT));
+  const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
 
   if (!address) throw MissingContract;
   return address;
@@ -110,16 +109,23 @@ const getBeaconFactoryContract = async (): Promise<BeaconFactory> => {
   return BeaconFactory__factory.connect(address, signer);
 };
 
+/**
+ * Checks to see if address is authorized with the given permission
+ * @param addr Address that is used to test permission
+ * @param contractAddress Address of contract to check against
+ * @param permission Level of permission check. See Permission for details
+ * @param blockNumber Check for authorization at a particular block number, 0x0 reserved for endless permissions
+ * @return boolean
+ * @dev Return MAY change as deauthorization can revoke past messages
+ */
+
 export const isAuthorizedTo = async (
   address: EthereumAddress,
   contractAddress: EthereumAddress,
   permission: Permission,
-  blockNumber: number,
-  opts?: Config
+  blockNumber: number
 ): Promise<boolean> => {
-  const { provider, signer } = await getConfig(opts);
-
-  if (!signer) throw MissingSigner;
+  const { provider } = await getConfig();
   if (!provider) throw MissingProvider;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);

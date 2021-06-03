@@ -14,7 +14,7 @@ export interface Config {
     announcer?: HexString;
     beacon?: HexString;
     beaconFactory?: HexString;
-    identity?: HexString;
+    identityLogic?: HexString;
     identityBeaconProxy?: HexString;
     identityCloneFactory?: HexString;
     registry?: HexString;

@@ -28,6 +28,10 @@ export const batch = async (announcements: Announcement[]): Promise<ContractTran
   return contract.batch(announcements);
 };
 
+/**
+ * Retrieves event filter for DSNPBatch event
+ * @returns DSNPBatch event filter
+ */
 export const dsnpBatchFilter = async (): Promise<EventFilter> => {
   const contract = await getAnnouncerContract();
   return contract.filters.DSNPBatch();
