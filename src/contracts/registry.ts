@@ -51,13 +51,13 @@ export const register = async (identityContractAddress: HexString, handle: Handl
 /**
  * changeAddress() changes the identity contract address of a DSNP Id
  *
- * @param identityContractAddress Address of the new identity contract to use
  * @param handle The string handle to alter
+ * @param identityContractAddress Address of the new identity contract to use
  * @returns The contract Transaction
  */
 export const changeAddress = async (
-  identityContractAddress: HexString,
-  handle: Handle
+  handle: Handle,
+  identityContractAddress: HexString
 ): Promise<ContractTransaction> => {
   const contract = await getContract();
   const { signer } = getConfig();
