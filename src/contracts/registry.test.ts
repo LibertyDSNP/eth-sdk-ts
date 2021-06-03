@@ -1,6 +1,6 @@
 import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { snapshotSetup } from "../test/hardhatRPC";
-import { resolveHandleToId, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
+import { resolveRegistration, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { setupConfig } from "../test/sdkTestConfig";
 
@@ -13,7 +13,7 @@ describe("registry", () => {
     ({ signer } = setupConfig());
   });
 
-  describe("#resolveHandleToId", () => {
+  describe("#resolveRegistration", () => {
     const handle = "registered";
     let givenId: BigNumber;
     beforeEach(async () => {
@@ -26,13 +26,13 @@ describe("registry", () => {
 
     it("Returns the correct id", async () => {
       expect(givenId.toHexString()).toEqual("0x03e8");
-      const result = await resolveHandleToId(handle);
+      const result = await resolveRegistration(handle);
 
-      expect(result).toEqual(givenId.toHexString());
+      expect(result?.dsnpId).toEqual(givenId.toHexString());
     });
 
     it("Returns null for an unfound handle", async () => {
-      const result = await resolveHandleToId("not-registered");
+      const result = await resolveRegistration("not-registered");
       expect(result).toBeNull();
     });
   });
@@ -121,11 +121,6 @@ describe("registry", () => {
       await expect(pendingTx).resolves.toBeTruthy();
     });
 
-    it("Should throw something that doesn't implement IDelegation", async () => {
-      const pendingTx = changeAddress(handle, registryAddr);
-      await expect(pendingTx).transactionRejectsWith(/function selector was not recognized/);
-    });
-
     it("Should throw for a non-contract address", async () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const pendingTx = changeAddress(handle, fakeAddress);
@@ -211,5 +206,4 @@ const getIdFromRegisterTransaction = async (transaction: ContractTransaction) =>
   const reg = Registry__factory.createInterface();
   const event = reg.parseLog(receipt.logs[0]);
   return event.args[0];
-  return receipt?.events?.[0]?.args?.[0];
 };

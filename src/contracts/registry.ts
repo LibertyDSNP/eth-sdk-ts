@@ -16,7 +16,7 @@ export interface Registration {
 export type Handle = string;
 
 /**
- * resolveHandleToId() Try to resolve a handle into a DSNP Id
+ * resolveRegistration() Try to resolve a handle into a DSNP Id
  *
  * @param handle String handle to resolve
  * @returns The Hex for the DSNP Id or null if not found
