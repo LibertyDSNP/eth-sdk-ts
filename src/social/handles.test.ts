@@ -5,6 +5,7 @@ import { setupConfig } from "../test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "../test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "../test/matchers";
+import { createUser } from "./handles";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -95,6 +96,17 @@ describe("handles", () => {
       const result = await resolveId(1000);
 
       expect(result?.handle).toEqual("new-taken");
+    });
+  });
+
+  describe("#createUser", () => {
+    const handle = "flarp";
+    const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+
+    it("returns a DSNP Id", async () => {
+      const id = await createUser(fakeAddress, handle);
+
+      expect(id).toBeGreaterThan(999);
     });
   });
 });

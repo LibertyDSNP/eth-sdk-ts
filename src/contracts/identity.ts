@@ -12,7 +12,8 @@ import {
 import { getContractAddress } from "./contract";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
-const BEACON_CONTRACT = "BeaconFactory";
+const BEACON_FACTORY_CONTRACT = "BeaconFactory";
+const BEACON_CONTRACT = "Beacon";
 
 export enum Permission {
   NONE,
@@ -71,6 +72,25 @@ export const createBeaconProxyWithOwner = async (
   return contract.createBeaconProxyWithOwner(beacon, owner);
 };
 
+/**
+ * Create a new identity and register it to a handle to get a new DSNP Id.
+ * This will create and register a new beacon proxy identity.
+ *
+ * @param userAddress User's public key address
+ * @param handle The string handle to register
+ * @returns The contract Transaction
+ */
+export const createAndRegisterBeaconProxy = async (
+  userAddress: EthereumAddress,
+  handle: string
+): Promise<ContractTransaction> => {
+  const beaconFactory = await getBeaconFactoryContract();
+  const beaconAddr = await getBeaconAddress();
+  const { signer } = getConfig();
+  if (!signer) throw MissingSigner;
+  return await beaconFactory.connect(signer).createAndRegisterBeaconProxy(beaconAddr, userAddress, handle);
+};
+
 const getIdentityLogicContractAddress = async (): Promise<EthereumAddress> => {
   const {
     provider,
@@ -107,7 +127,7 @@ const getBeaconFactoryContract = async (): Promise<BeaconFactory> => {
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
-  const address = beaconFactory || (await getContractAddress(provider, BEACON_CONTRACT));
+  const address = beaconFactory || (await getContractAddress(provider, BEACON_FACTORY_CONTRACT));
   if (!address) throw MissingContract;
 
   return BeaconFactory__factory.connect(address, signer);
@@ -133,4 +153,16 @@ export const isAuthorizedTo = async (
   if (!provider) throw MissingProvider;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
+};
+
+const getBeaconAddress = async () => {
+  const {
+    provider,
+    contracts: { beacon },
+  } = getConfig();
+  if (!provider) throw MissingProvider;
+  const address = beacon || (await getContractAddress(provider, BEACON_CONTRACT));
+
+  if (!address) throw MissingContract;
+  return address;
 };
