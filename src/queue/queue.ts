@@ -36,16 +36,16 @@ export const remove = async (id: QueueId, opts?: Config): Promise<DSNPMessage> =
 };
 
 /**
- * dequeueAll() takes a DSNP type and number of messages to dequeue and returns
- * an array for inclusion in a batch file. If the number provided is zero, all
- * messages in the queue with a matching type will be returned.
+ * dequeueBatch() takes a DSNP type and number of messages to dequeue and
+ * returns an array for inclusion in a batch file. If the number provided is
+ * zero, all messages in the queue with a matching type will be returned.
  *
  * @param type  The DSNP type of messages to dequeue
  * @param count The number of messages to dequeue and return
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     An array of DSNP messages removed from the queue
  */
-export const dequeueAll = async (dsnpType: DSNPType, count: number, opts?: Config): Promise<DSNPMessage[]> => {
+export const dequeueBatch = async (dsnpType: DSNPType, count: number, opts?: Config): Promise<DSNPMessage[]> => {
   const config = getConfig(opts);
   const results: DSNPMessage[] = [];
 
