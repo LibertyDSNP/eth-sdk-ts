@@ -1,8 +1,18 @@
 import { getConfig, Config } from "../config/config";
 import { DSNPMessage, DSNPType } from "../messages/messages";
 
+/**
+ * QueueId is an representation of an identifier used by a queuing adapter for
+ * referencing specific items in the queue which may need to be removed in the
+ * future.
+ */
 export type QueueId = string;
 
+/**
+ * QueueInterface is the interface a queue adapter is expected to implement to
+ * be used with high-level methods in this SDK. The require methods consist of
+ * an enqueue function, a dequeue function and a remove function.
+ */
 export interface QueueInterface {
   enqueue(dsnpMessage: DSNPMessage): Promise<QueueId>;
   dequeue(dsnpType: DSNPType): Promise<DSNPMessage | null>;
