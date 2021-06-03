@@ -23,7 +23,7 @@ describe("registry", () => {
     config.signer = signer;
     const registry = await new Registry__factory(signer).deploy();
     await registry.deployed();
-    config.contracts.registry = registry.address;
+    config.contracts.registry = registry;
     await setConfig(config);
   });
 
