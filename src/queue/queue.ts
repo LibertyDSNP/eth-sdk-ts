@@ -4,7 +4,7 @@ import { DSNPMessage, DSNPType } from "../messages/messages";
 export type QueueId = string;
 
 export interface QueueInterface {
-  enqueue(dsnpType: DSNPType, dsnpMessage: DSNPMessage): Promise<QueueId>;
+  enqueue(dsnpMessage: DSNPMessage): Promise<QueueId>;
   dequeue(dsnpType: DSNPType): Promise<DSNPMessage | null>;
   remove(id: QueueId): Promise<DSNPMessage>;
 }
@@ -19,7 +19,7 @@ export interface QueueInterface {
  */
 export const enqueue = async (message: DSNPMessage, opts?: Config): Promise<QueueId> => {
   const config = getConfig(opts);
-  return await config.queue.enqueue(message.type, message);
+  return await config.queue.enqueue(message);
 };
 
 /**

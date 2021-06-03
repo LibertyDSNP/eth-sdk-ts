@@ -13,14 +13,14 @@ describe("memoryQueue", () => {
     it("adds a message to the queue and returns a queue id", async () => {
       const queue = new MemoryQueue();
 
-      expect(await queue.enqueue(DSNPType.Broadcast, testMsg)).toEqual("0:0");
+      expect(await queue.enqueue(testMsg)).toEqual("0:0");
     });
   });
 
   describe("#dequeue", () => {
     it("adds a message to the queue and returns a queue id", async () => {
       const queue = new MemoryQueue();
-      await queue.enqueue(DSNPType.Broadcast, testMsg);
+      await queue.enqueue(testMsg);
 
       expect(await queue.dequeue(DSNPType.Broadcast)).toEqual(testMsg);
     });
@@ -30,14 +30,14 @@ describe("memoryQueue", () => {
     describe("with a valid queue id", () => {
       it("returns the message with the specified id", async () => {
         const queue = new MemoryQueue();
-        const queueId = await queue.enqueue(DSNPType.Broadcast, testMsg);
+        const queueId = await queue.enqueue(testMsg);
 
         expect(await queue.remove(queueId)).toEqual(testMsg);
       });
 
       it("removes the message with the specified id", async () => {
         const queue = new MemoryQueue();
-        const queueId = await queue.enqueue(DSNPType.Broadcast, testMsg);
+        const queueId = await queue.enqueue(testMsg);
 
         await queue.remove(queueId);
 

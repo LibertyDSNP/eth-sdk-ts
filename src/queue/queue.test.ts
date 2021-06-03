@@ -42,7 +42,7 @@ describe("queue", () => {
     it("calls the enqueue method of the configured queue adapter", async () => {
       const result = await enqueue(testMsg);
 
-      expect(fakeQueue.enqueue).toHaveBeenCalledWith(testMsg.type, testMsg);
+      expect(fakeQueue.enqueue).toHaveBeenCalledWith(testMsg);
       expect(result).toEqual(testId);
     });
   });

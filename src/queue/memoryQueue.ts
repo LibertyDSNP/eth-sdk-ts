@@ -31,8 +31,8 @@ export default class MemoryQueue implements QueueInterface {
    * @param message The DSNP message to queue up for the next batch
    * @returns       A queue id to be used to remove the message if needed
    */
-  async enqueue(type: DSNPType, message: DSNPMessage): Promise<QueueId> {
-    const typeString = type.toString(16);
+  async enqueue(message: DSNPMessage): Promise<QueueId> {
+    const typeString = message.type.toString(16);
     const queueItem = this._createQueueItem(message);
     const queueId = `${typeString}:${queueItem.id.toString(16)}`;
 
