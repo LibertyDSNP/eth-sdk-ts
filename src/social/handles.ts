@@ -1,7 +1,7 @@
 import { ConfigOpts } from "../config/config";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
-import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveHandleToId } from "../contracts/registry";
+import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "../contracts/registry";
 import { ContractTransaction } from "ethers";
 
 /**
@@ -49,14 +49,18 @@ export const updateUser = async (
   throw NotImplementedError;
 };
 
-export const resolveHandle = async (handle: Handle): Promise<Registration | null> => {
-  const registrations = await getDSNPRegistryUpdateEvents({
-    handle,
-  });
-  if (registrations.length === 0) return null;
-  return registrations[registrations.length - 1];
-};
+/**
+ * Get the current registration from a handle
+ * @param handle The Registry Handle
+ * @returns The Registration object with Handle, DSNP Id, and Identity contract address
+ */
+export const resolveHandle = (handle: Handle): Promise<Registration | null> => resolveRegistration(handle);
 
+/**
+ * Get the current registration from a DSNP Id
+ * @param dsnpId
+ * @returns The Registration object with Handle, DSNP Id, and Identity contract address
+ */
 export const resolveId = async (dsnpId: HexString): Promise<Registration | null> => {
   const registrations = await getDSNPRegistryUpdateEvents({
     dsnpId,
@@ -81,5 +85,5 @@ export const availabilityFilter = async (handles: Handle[]): Promise<Handle[]> =
  * @returns boolean If the handle is available
  */
 export const isAvailable = async (handle: Handle): Promise<boolean> => {
-  return (await resolveHandleToId(handle)) === null;
+  return (await resolveRegistration(handle)) === null;
 };

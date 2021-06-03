@@ -150,7 +150,7 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
-      const regs = await getDSNPRegistryUpdateEvents({ handle });
+      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContractAddress });
       expect(regs[0].contractAddr).toEqual(identityContractAddress);
 
       expect(regs[0].dsnpId).toEqual("0x0" + Number(1000).toString(16));
@@ -161,27 +161,47 @@ describe("registry", () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
+      const identityContract2 = await new Identity__factory(signer).deploy(fakeAddress);
+      await identityContract2.deployed();
       const handle = "ZebraButtons";
-      const identityContractAddress = identityContract.address;
-      await register(identityContractAddress, handle);
-      await register(identityContractAddress, handle + "2");
+      await register(identityContract.address, handle);
+      await register(identityContract2.address, handle + "2");
 
-      const regs = await getDSNPRegistryUpdateEvents({ handle });
+      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContract.address });
       expect(regs).toHaveLength(1);
-      expect(regs[0].contractAddr).toEqual(identityContractAddress);
+      expect(regs[0].contractAddr).toEqual(identityContract.address);
+      expect(regs[0].handle).toEqual(handle);
     });
 
-    it("pulls all the related events", async () => {
+    it("pulls all the related events for identityContract", async () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
       const handle = "ZebraButtons";
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
+      await register(identityContractAddress, handle + "2");
 
-      const regs = await getDSNPRegistryUpdateEvents({ handle });
-      expect(regs).toHaveLength(1);
-      expect(regs[0].contractAddr).toEqual(identityContractAddress);
+      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContractAddress });
+      expect(regs).toHaveLength(2);
+      expect(regs[0].handle).toEqual(handle);
+      expect(regs[1].handle).toEqual(handle + "2");
+    });
+
+    it("pulls all the related events for matching ids in the correct order", async () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+      const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
+      await identityContract.deployed();
+      const handle = "ZebraButtons";
+      const identityContractAddress = identityContract.address;
+      const tx = await register(identityContractAddress, handle);
+      const id = await getIdFromRegisterTransaction(tx);
+      await changeHandle(handle, handle + "new");
+
+      const regs = await getDSNPRegistryUpdateEvents({ dsnpId: id });
+      expect(regs).toHaveLength(2);
+      expect(regs[0].handle).toEqual(handle);
+      expect(regs[1].handle).toEqual(handle + "new");
     });
   });
 });
