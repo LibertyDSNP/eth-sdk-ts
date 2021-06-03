@@ -36,7 +36,7 @@ describe("#batch", () => {
 
     await batch(announcements);
 
-    const batchEvents = await decodeDSNPBatchEvents(provider);
+    const batchEvents = await decodeDSNPBatchEvents();
 
     expect(batchEvents.length).toEqual(1);
     expect(batchEvents[0].uri).toEqual(testUri);
