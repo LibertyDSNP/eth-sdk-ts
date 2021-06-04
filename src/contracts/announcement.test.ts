@@ -1,29 +1,6 @@
-//eslint-disable-next-line
-require("dotenv").config();
-import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
 
-import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
 import { batch, decodeDSNPBatchEvents, Announcement } from "./announcement";
-import { setConfig, getConfig } from "../config/config";
-
-const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
-const RPC_URL = String(process.env.RPC_URL);
-const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-const signer = new ethers.Wallet(TESTING_PRIVATE_KEY, provider);
-
-beforeEach(async () => {
-  const config = await getConfig();
-  config.provider = provider;
-  config.signer = signer;
-  await setConfig(config);
-
-  await snapshotHardhat(provider);
-});
-
-afterEach(async () => {
-  await revertHardhat(provider);
-});
 
 describe("#batch", () => {
   it("successfully posts a batch to the chain", async () => {
