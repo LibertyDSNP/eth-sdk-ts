@@ -39,7 +39,7 @@
     "node": ">=14.15.5"
   },
   "devDependencies": {
-    "@dsnp/contracts": "0.0.0-9c117e",
+    "@dsnp/contracts": "0.0.0-54f452",
     "@dsnp/test-generators": "^0.0.0-984e60",
     "@typechain/ethers-v5": "^7.0.0",
     "@types/jest": "26.0.22",

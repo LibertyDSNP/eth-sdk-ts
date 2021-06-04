@@ -1,4 +1,4 @@
-import { Handle } from "./handles";
+import { Handle } from "../contracts/registry";
 import { DSNPType } from "../messages/messages";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";

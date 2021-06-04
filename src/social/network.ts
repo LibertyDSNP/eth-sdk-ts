@@ -1,4 +1,4 @@
-import { Handle } from "./handles";
+import { Handle } from "../contracts/registry";
 import { ConfigOpts } from "../config/config";
 import { NotImplementedError } from "../utilities/errors";
 

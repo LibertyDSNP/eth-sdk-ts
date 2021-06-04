@@ -5,7 +5,7 @@ const path = require("path");
 const parquet = require("@dsnp/parquetjs");
 import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
-import * as pq from "../../batch/parquet-schema";
+import * as pq from "../../batch/parquetSchema";
 import { EthereumAddress } from "../../types/Strings";
 import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../../batch/batchMesssages";
 import { generateHexString } from "@dsnp/test-generators";

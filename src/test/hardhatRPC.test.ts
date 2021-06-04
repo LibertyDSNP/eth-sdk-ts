@@ -13,11 +13,11 @@ const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 beforeEach(async () => {
   const oldConfig = await getConfig();
   await setConfig({
+    contracts: {},
     provider: provider,
     signer: new ethers.Wallet(TESTING_PRIVATE_KEY, provider),
     store: oldConfig.store,
     queue: oldConfig.queue,
-    contracts: {},
   });
 });
 

@@ -53,10 +53,9 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  * of a generated batch to the blockchain.
  *
  * @param provider initialized provider
- * @param string Name of contract to find address for
+ * @param contractName Name of contract to find address for
  * @returns HexString A hexidecimal string representing the contract address
  */
-
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
   contractName: string
@@ -67,4 +66,26 @@ export const getContractAddress = async (
   const decodedValues = decodeReturnValues(DSNPMigrationABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
   return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
+};
+
+/**
+ * Get the JSON RPC error from the body, if one exists
+ * @param e The error expected to have a vm Error
+ *
+ * @returns the error if any
+ */
+export const getVmError = (e: { body?: string; error?: { body?: string } }): string | undefined => {
+  try {
+    if (e.body) {
+      const parsed = JSON.parse(e.body);
+      return parsed?.error?.message;
+    }
+    if (e.error?.body) {
+      const parsed = JSON.parse(e.error.body);
+      return parsed?.error?.message;
+    }
+  } catch (e) {
+    return undefined;
+  }
+  return undefined;
 };

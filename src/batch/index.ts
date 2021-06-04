@@ -17,5 +17,11 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as messagesImport from "./messages";
-export const messages = messagesImport;
+import * as batchImport from "./batch";
+export const batch = batchImport;
+
+import * as batchMesssagesImport from "./batchMesssages";
+export const batchMesssages = batchMesssagesImport;
+
+import * as parquetSchemaImport from "./parquetSchema";
+export const parquetSchema = parquetSchemaImport;

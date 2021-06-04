@@ -1,16 +1,8 @@
 import { ConfigOpts } from "../config/config";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
-import { registry } from "../contracts";
-
-export interface User {
-  handle: Handle;
-  sign: string;
-  dateOfBirth: Date;
-  social: number;
-}
-
-export type Handle = string;
+import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "../contracts/registry";
+import { ContractTransaction } from "ethers";
 
 /**
  * authenticateHandle() claims a registry handle to the current user. If the
@@ -29,14 +21,13 @@ export const authenticateHandle = async (_id: Handle, _opts?: ConfigOpts): Promi
 };
 
 /**
- * getUser() fetches information regarding the current published state of a
- * given user by handle. This method is not yet implemented.
+ * getRegistration() fetches information regarding the current published state of a
+ * given registration by handle. This method is not yet implemented.
  *
- * @param id   The Handle of the user for which to fetch profile data
- * @param opts Optional. Configuration overrides, such as from address, if any
- * @returns    The User object associated with the given Handle
+ * @param id   The Handle of the registration for which to fetch profile data
+ * @returns    The Registration object associated with the given Handle
  */
-export const getUser = async (_id: Handle, _opts?: ConfigOpts): Promise<User> => {
+export const getRegistration = async (_id: Handle): Promise<Registration> => {
   throw NotImplementedError;
 };
 
@@ -46,36 +37,37 @@ export const getUser = async (_id: Handle, _opts?: ConfigOpts): Promise<User> =>
  * method is not yet implemented.
  *
  * @param id   The Handle of the user for which to fetch profile data
- * @param user Any updates to be merged into the current profile data
+ * @param registration Any updates to be merged into the current profile data
  * @param opts Optional. Configuration overrides, such as from address, if any
- * @returns    The User object associated with the given Handle
+ * @returns    The pending transaction
  */
-export const updateUser = async (_id: Handle, _user: User, _opts?: ConfigOpts): Promise<User> => {
+export const updateUser = async (
+  _id: Handle,
+  _registration: Registration,
+  _opts?: ConfigOpts
+): Promise<ContractTransaction> => {
   throw NotImplementedError;
 };
 
 /**
- * handleToAddress() takes a DSNP handle and returns the associated DSNP
- * identity address. This method is not yet implemented.
- *
- * @param handle The DSNP handle for which to fetch the address
- * @param opts   Optional. Configuration overrides, such as from address, if any
- * @returns      The DSNP address associated with the given handle
+ * Get the current registration from a handle
+ * @param handle The Registry Handle
+ * @returns The Registration object with Handle, DSNP Id, and Identity contract address
  */
-export const handleToAddress = async (_handle: Handle, _opts?: ConfigOpts): Promise<HexString> => {
-  throw NotImplementedError;
-};
+export const resolveHandle = (handle: Handle): Promise<Registration | null> => resolveRegistration(handle);
 
 /**
- * addressToHandles() takes a DSNP identity address and returns an array of all
- * associated DSNP handles. This method is not yet implemented.
- *
- * @param address The DSNP identity address for which to fetch handles
- * @param opts    Optional. Configuration overrides, such as from address, if any
- * @returns       An array of DSNP handles associated with the address
+ * Get the current registration from a DSNP Id
+ * @param id The Hex or decimal DSNP Id
+ * @returns The Registration object with Handle, DSNP Id, and Identity contract address
  */
-export const addressToHandles = async (_address: HexString, _opts?: ConfigOpts): Promise<Handle[]> => {
-  throw NotImplementedError;
+export const resolveId = async (id: HexString | number): Promise<Registration | null> => {
+  const dsnpId = typeof id === "string" ? id : "0x" + id.toString(16);
+  const registrations = await getDSNPRegistryUpdateEvents({
+    dsnpId,
+  });
+  if (registrations.length === 0) return null;
+  return registrations[registrations.length - 1];
 };
 
 /**
@@ -94,5 +86,5 @@ export const availabilityFilter = async (handles: Handle[]): Promise<Handle[]> =
  * @returns boolean If the handle is available
  */
 export const isAvailable = async (handle: Handle): Promise<boolean> => {
-  return (await registry.resolveHandleToId(handle)) === null;
+  return (await resolveRegistration(handle)) === null;
 };
