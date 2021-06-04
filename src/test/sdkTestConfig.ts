@@ -3,7 +3,9 @@ require("dotenv").config();
 import { setConfig } from "../config/config";
 import { ethers } from "ethers";
 
-export const setupConfig = () => {
+type SdkTestConfig = { provider: ethers.providers.Provider; signer: ethers.Signer };
+
+export const setupConfig = (): SdkTestConfig => {
   const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
   const RPC_URL = String(process.env.RPC_URL);
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);

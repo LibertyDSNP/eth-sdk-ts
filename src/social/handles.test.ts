@@ -2,8 +2,8 @@ import { isAvailable, availabilityFilter } from "./handles";
 import * as registry from "../contracts/registry";
 import { createCloneProxy } from "../contracts/identity";
 import { setupConfig } from "../test/sdkTestConfig";
-import {revertHardhat, snapshotHardhat} from "../test/hardhatRPC";
-import {JsonRpcProvider} from "@ethersproject/providers/src.ts/json-rpc-provider";
+import { revertHardhat, snapshotHardhat } from "../test/hardhatRPC";
+import { JsonRpcProvider } from "@ethersproject/providers/src.ts/json-rpc-provider";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();

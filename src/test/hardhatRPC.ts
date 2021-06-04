@@ -2,7 +2,7 @@
 require("dotenv").config();
 import { ethers } from "ethers";
 
-let latestSnapshot: string[] = [];
+const latestSnapshot: string[] = [];
 
 export const snapshotHardhat = async (provider: ethers.providers.JsonRpcProvider): Promise<void> => {
   latestSnapshot.push(await provider.send("evm_snapshot", []));
