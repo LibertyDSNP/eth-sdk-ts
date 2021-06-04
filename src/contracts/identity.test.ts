@@ -12,6 +12,7 @@ import {
   isAuthorizedTo,
   Permission,
 } from "./identity";
+import { EthAddressRegex } from "../test/matchers";
 
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
 const RPC_URL = String(process.env.RPC_URL);
@@ -46,7 +47,7 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
-      expect(contractAddress).toEqual("0x3B02fF1e626Ed7a8fd6eC5299e2C54e1421B626B");
+      expect(contractAddress).toMatch(EthAddressRegex);
     });
   });
 
@@ -67,7 +68,7 @@ describe("identity", () => {
     });
 
     it("creates a proxy contract", async () => {
-      expect(contractAddress).toEqual("0x3B02fF1e626Ed7a8fd6eC5299e2C54e1421B626B");
+      expect(contractAddress).toMatch(EthAddressRegex);
     });
 
     it("expect isAuthorizedTo to return true for owner", async () => {
@@ -91,7 +92,7 @@ describe("identity", () => {
             })
           : [];
       const contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
-      expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
+      expect(contractAddress).toMatch(EthAddressRegex);
     });
   });
 
@@ -111,7 +112,7 @@ describe("identity", () => {
       contractAddress = proxyContractEvents[0].args ? proxyContractEvents[0].args[0] : null;
     });
     it("creates a beacon proxy contract", async () => {
-      expect(contractAddress).toEqual("0x8aCd85898458400f7Db866d53FCFF6f0D49741FF");
+      expect(contractAddress).toMatch(EthAddressRegex);
     });
 
     it("expect isAuthorized  to return false or nonOwner", async () => {
