@@ -3,7 +3,7 @@ import * as registry from "../contracts/registry";
 import { createCloneProxy } from "../contracts/identity";
 import { setupConfig } from "../test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat } from "../test/hardhatRPC";
-import { JsonRpcProvider } from "@ethersproject/providers/src.ts/json-rpc-provider";
+import { ethers } from "ethers";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -15,7 +15,7 @@ describe("handles", () => {
   const notTakens = ["not-taken", "not-taken1", "not-taken2"];
   const takens = ["taken", "taken1", "taken2"];
 
-  let provider: JsonRpcProvider;
+  let provider: ethers.providers.JsonRpcProvider;
 
   beforeAll(async () => {
     ({ provider } = setupConfig());
