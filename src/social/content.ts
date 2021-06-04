@@ -2,7 +2,7 @@
 // import * as config from "../config/config";
 // import * as storage from "../storage/storage";
 import { BroadcastOptions, ReactionOptions, ReplyOptions } from "../activityPub/activityPub";
-import { Config } from "../config/config";
+import { ConfigOpts } from "../config/config";
 import { NotImplementedError } from "../utilities/errors";
 
 /**
@@ -13,7 +13,7 @@ import { NotImplementedError } from "../utilities/errors";
  * @param opts    Optional. Configuration overrides, such as from address, if any
  *
  */
-export const broadcast = async (_content: BroadcastOptions, _opts?: Config): Promise<void> => {
+export const broadcast = async (_content: BroadcastOptions, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -33,7 +33,7 @@ export const broadcast = async (_content: BroadcastOptions, _opts?: Config): Pro
  * @param content The content for the reply to broadcast
  * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const reply = async (_content: ReplyOptions, _opts: Config): Promise<void> => {
+export const reply = async (_content: ReplyOptions, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -54,7 +54,7 @@ export const reply = async (_content: ReplyOptions, _opts: Config): Promise<void
  * @param content The content for the reaction to broadcast
  * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const react = async (_content: ReactionOptions, _opts: Config): Promise<void> => {
+export const react = async (_content: ReactionOptions, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);

@@ -1,4 +1,4 @@
-import { getConfig, Config } from "../config/config";
+import { getConfig, ConfigOpts } from "../config/config";
 import { DSNPMessage, DSNPType } from "../messages/messages";
 
 /**
@@ -27,7 +27,7 @@ export interface QueueInterface {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       A Queue ID for the queued message
  */
-export const enqueue = async (message: DSNPMessage, opts?: Config): Promise<QueueId> => {
+export const enqueue = async (message: DSNPMessage, opts?: ConfigOpts): Promise<QueueId> => {
   const config = getConfig(opts);
   return await config.queue.enqueue(message);
 };
@@ -40,7 +40,7 @@ export const enqueue = async (message: DSNPMessage, opts?: Config): Promise<Queu
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The DSNP message removed from the queue
  */
-export const remove = async (id: QueueId, opts?: Config): Promise<DSNPMessage> => {
+export const remove = async (id: QueueId, opts?: ConfigOpts): Promise<DSNPMessage> => {
   const config = getConfig(opts);
   return await config.queue.remove(id);
 };
@@ -55,7 +55,7 @@ export const remove = async (id: QueueId, opts?: Config): Promise<DSNPMessage> =
  * @param opts  Optional. Configuration overrides, such as from address, if any
  * @returns     An array of DSNP messages removed from the queue
  */
-export const dequeueBatch = async (dsnpType: DSNPType, count: number, opts?: Config): Promise<DSNPMessage[]> => {
+export const dequeueBatch = async (dsnpType: DSNPType, count: number, opts?: ConfigOpts): Promise<DSNPMessage[]> => {
   const config = getConfig(opts);
   const results: DSNPMessage[] = [];
 

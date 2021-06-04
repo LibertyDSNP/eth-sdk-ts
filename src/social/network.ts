@@ -1,5 +1,5 @@
 import { Handle } from "./handles";
-import { Config } from "../config/config";
+import { ConfigOpts } from "../config/config";
 import { NotImplementedError } from "../utilities/errors";
 
 /**
@@ -9,7 +9,7 @@ import { NotImplementedError } from "../utilities/errors";
  * @param handle  The handle of the user to follow
  * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const follow = async (_handle: Handle, _opts?: Config): Promise<void> => {
+export const follow = async (_handle: Handle, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 };
 
@@ -20,7 +20,7 @@ export const follow = async (_handle: Handle, _opts?: Config): Promise<void> => 
  * @param handle  The handle of the user to unfollow
  * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const unfollow = async (_handle: Handle, _opts?: Config): Promise<void> => {
+export const unfollow = async (_handle: Handle, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 };
 
@@ -34,7 +34,7 @@ export const unfollow = async (_handle: Handle, _opts?: Config): Promise<void> =
  * @param opts     Optional. Configuration overrides, such as from address, if any
  * @returns        A boolean representing whether or not the follower is following the followee
  */
-export const isFollowing = async (_follower: Handle, _followee?: Handle, _opts?: Config): Promise<boolean> => {
+export const isFollowing = async (_follower: Handle, _followee?: Handle, _opts?: ConfigOpts): Promise<boolean> => {
   throw NotImplementedError;
 };
 
@@ -47,7 +47,7 @@ export const isFollowing = async (_follower: Handle, _followee?: Handle, _opts?:
  * @param opts     Optional. Configuration overrides, such as from address, if any
  * @returns        An array of all users following the followee
  */
-export const getFollowers = async (_followee?: Handle, _opts?: Config): Promise<Handle[]> => {
+export const getFollowers = async (_followee?: Handle, _opts?: ConfigOpts): Promise<Handle[]> => {
   throw NotImplementedError;
 };
 
@@ -60,6 +60,6 @@ export const getFollowers = async (_followee?: Handle, _opts?: Config): Promise<
  * @param opts     Optional. Configuration overrides, such as from address, if any
  * @returns        An array of all users followed by the follower user
  */
-export const getFollowees = (_follower?: Handle, _opts?: Config): Promise<Handle[]> => {
+export const getFollowees = (_follower?: Handle, _opts?: ConfigOpts): Promise<Handle[]> => {
   throw NotImplementedError;
 };
