@@ -2,13 +2,13 @@ import { ContractTransaction } from "ethers";
 import { getVmError } from "../contracts/contract";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
-      transactionRejectsWith(message: string | RegExp): R
+      transactionRejectsWith(message: string | RegExp): R;
     }
   }
 }
-
 
 expect.extend({
   async transactionRejectsWith(pendingTx: Promise<ContractTransaction>, message: string | RegExp) {

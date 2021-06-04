@@ -122,6 +122,8 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
     - Often can be as simple as `beforeAll(setupConfig);`
     - Returns an object with the provider and signer if those are needed.
 - test/matchers
-  - Helpful common Jest Matchers
+  - Helpful common Jest Matchers like `expect("0x0").toMatch(EthAddressRegex)`
+- test/customMatchers
+  - Custom Loaded Jest expect matchers like `expect(tx).transactionRejectsWith("message")`
 - test/generators
   - Test Data Generators and fixtures
