@@ -1,18 +1,33 @@
 import { isAvailable, availabilityFilter } from "./handles";
 import * as registry from "../contracts/registry";
-import Mock = jest.Mock;
+import { createCloneProxy } from "../contracts/identity";
+import { setupConfig } from "../test/sdkTestConfig";
+import {revertHardhat, snapshotHardhat} from "../test/hardhatRPC";
+import {JsonRpcProvider} from "@ethersproject/providers/src.ts/json-rpc-provider";
 
-jest.mock("../contracts/registry");
+const createIdentityContract = async () => {
+  const receipt = await (await createCloneProxy()).wait();
+  const proxyContractEvent = receipt.events?.find((event) => event.event === "ProxyCreated");
+  return proxyContractEvent?.args?.[0];
+};
 
 describe("handles", () => {
   const notTakens = ["not-taken", "not-taken1", "not-taken2"];
   const takens = ["taken", "taken1", "taken2"];
+
+  let provider: JsonRpcProvider;
+
   beforeAll(async () => {
-    // Do the work to setup the mock
-    (registry.resolveHandleToId as Mock).mockImplementation((handle: string) => {
-      if (takens.includes(handle)) return "0xffff";
-      return null;
-    });
+    ({ provider } = setupConfig());
+    await snapshotHardhat(provider);
+    const logicAddress = await createIdentityContract();
+    for (const handle of takens) {
+      await (await registry.register(logicAddress, handle)).wait();
+    }
+  });
+
+  afterAll(async () => {
+    await revertHardhat(provider);
   });
 
   describe("#isAvailable", () => {
