@@ -18,7 +18,7 @@ describe("memoryQueue", () => {
   });
 
   describe("#dequeue", () => {
-    it("adds a message to the queue and returns a queue id", async () => {
+    it("removes a message with the matching DSNP type and returns it", async () => {
       const queue = new MemoryQueue();
       await queue.enqueue(testMsg);
 
