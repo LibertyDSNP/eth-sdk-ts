@@ -1,20 +1,15 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
-require("dotenv").config();
-import { ethers } from "ethers";
 import { getContractAddress } from "./contract";
-import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
-
-const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-
-beforeEach(async () => {
-  await snapshotHardhat(provider);
-});
-
-afterEach(async () => {
-  await revertHardhat(provider);
-});
+import { ethers } from "ethers";
+import { setupConfig } from "../test/sdkTestConfig";
+import { snapshotSetup } from "../test/hardhatRPC";
 
 describe("Contracts", () => {
+  snapshotSetup();
+  let provider: ethers.providers.JsonRpcProvider;
+  beforeAll(async () => {
+    ({ provider } = setupConfig());
+  });
+
   describe("getContractAddress", () => {
     it("returns latest address for contract", async () => {
       const contractAddress = await getContractAddress(provider, "Announcer");

@@ -9,6 +9,9 @@
  *   - `import foo from "@dsnp/sdk/foo";`
  */
 
+import * as configImport from "./config/config";
+export const config = configImport;
+
 import * as contractsImport from "./contracts";
 export const contracts = contractsImport;
 

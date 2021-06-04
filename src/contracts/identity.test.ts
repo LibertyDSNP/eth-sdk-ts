@@ -1,9 +1,5 @@
-//eslint-disable-next-line
-require("dotenv").config();
 import { ContractReceipt, ethers } from "ethers";
 import { EthereumAddress } from "../types/Strings";
-import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
-import { setConfig, getConfig } from "../config/config";
 import {
   createCloneProxy,
   createCloneProxyWithOwner,
@@ -13,30 +9,17 @@ import {
   Permission,
 } from "./identity";
 import { EthAddressRegex } from "../test/matchers";
-
-const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
-const RPC_URL = String(process.env.RPC_URL);
-const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-const signer = new ethers.Wallet(TESTING_PRIVATE_KEY, provider);
+import { setupConfig } from "../test/sdkTestConfig";
+import { snapshotSetup } from "../test/hardhatRPC";
 
 const owner = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const nonOwner = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
 const beacon = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
 
-beforeEach(async () => {
-  const config = await getConfig();
-  config.provider = provider;
-  config.signer = signer;
-  await setConfig(config);
-
-  await snapshotHardhat(provider);
-});
-
-afterEach(async () => {
-  await revertHardhat(provider);
-});
-
 describe("identity", () => {
+  snapshotSetup();
+  beforeAll(setupConfig);
+
   describe("createCloneProxy", () => {
     it("creates a proxy contract", async () => {
       const proxyReceipt: ContractReceipt = (await (await createCloneProxy()).wait()) as ContractReceipt;

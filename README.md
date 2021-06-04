@@ -14,34 +14,16 @@ npm install @dsnp/sdk
 
 ### Configure the SDK
 
-#### Configuration File
-
-Next, add a `dsnp.config.js` file to your project's root directory. For ethers, the following contents will work:
+The configuration can be set at runtime with the following:
 
 ```js
-var ethers = require("ethers");
+var config = require("@dsnp/sdk/config");
 
-var provider = new ethers.providers.JsonRpcProvider("<ETH NODE HTTP ADDRESS>");
-var signer = new ethers.Wallet("<ETH PRIVATE KEY>", provider);
-
-module.exports = {
-  signer: signer,
-  provider: provider
-};
-```
-
-#### Runtime Configuration
-
-Alternatively, the configuration can be set at runtime with the following:
-
-```js
-var config = require("@dsnp/sdk/Config");
-
-config
-  .setConfig({
+config.setConfig({
     signer: signer,
     provider: provider
   })
+// Do something with the SDK
 ```
 
 #### Storing Messages and Batches
@@ -75,6 +57,8 @@ config
     storage: new MyStorage()
    });
 ```
+
+See [Config Documentation](https://libertydsnp.github.io/sdk-ts/interfaces/config_config.config.html) for details on additional options.
 
 ## Usage
 
@@ -114,8 +98,11 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 | BATCH_CONTRACT_ADDRESS | Address of contract on chain you are calling to                                     |
 | TESTING_PRIVATE_KEY    | **Only used in testing** - private key of account you are sending transactions from |
 
-## How to Test
+## Testing
+
+### How to Test
 1. Check out the [contracts repo](https://github.com/LibertyDSNP/contracts) and follow the instructions to start a hardhat test node and deploy the contracts.
+   - Match sure you match the version in ./package.json!
 1. In the SDK create a .env file with the following content.
     ```shell
     RPC_URL=http://localhost:8545
@@ -124,3 +111,17 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 1.  Replace the value of TESTING_PRIVATE_KEY with the value of `LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY` in the .env from the contracts repo, or use what is in .github/workflows/main.yml. It may be same as above. 
 1. Ensure that the contracts version you would like to use is the correct version. The version of the `@dsnp/contracts` package is specified in the `package.json` 
 1. Run `npm run test`
+
+### Test Writing Utilities
+
+- test/hardhatRPC
+  - `snapshotSetup`: Call this to use evm snapshots before each test to make sure the blockchain state is clean
+  - `snapshotHardhat`/`revertHardhat`: Make other snapshots, but remember to revert them for other tests
+- test/sdkTestConfig
+  - `setupConfig`: An easy way to setup the default config for the sdk for testing.
+    - Often can be as simple as `beforeAll(setupConfig);`
+    - Returns an object with the provider and signer if those are needed.
+- test/matchers
+  - Helpful common Jest Matchers
+- test/generators
+  - Test Data Generators and fixtures
