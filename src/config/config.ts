@@ -59,6 +59,11 @@ export const getConfig = (overrides?: Partial<Config>): Config => {
  *
  * @params newConfig The configuration settings to set with
  */
-export const setConfig = (newConfig: Config): void => {
-  config = { ...config, ...newConfig };
+export const setConfig = (newConfig: Partial<Config>): void => {
+  config = {
+    // Defaults
+    queue: new MemoryQueue(),
+    contracts: {},
+    ...newConfig,
+  };
 };
