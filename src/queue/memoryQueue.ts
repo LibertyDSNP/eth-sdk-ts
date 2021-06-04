@@ -33,7 +33,7 @@ export default class MemoryQueue implements QueueInterface {
    */
   async enqueue(message: DSNPMessage): Promise<QueueId> {
     const typeString = message.type.toString(16);
-    const queueItem = this._createQueueItem(message);
+    const queueItem = this.createQueueItem(message);
     const queueId = `${typeString}:${queueItem.id.toString(16)}`;
 
     if (this.queues[typeString] === undefined) this.queues[typeString] = [];
@@ -94,7 +94,7 @@ export default class MemoryQueue implements QueueInterface {
     return msg;
   }
 
-  _createQueueItem(message: DSNPMessage): QueueItem {
+  private createQueueItem(message: DSNPMessage): QueueItem {
     const item: QueueItem = {
       id: this.nextId,
       message,
