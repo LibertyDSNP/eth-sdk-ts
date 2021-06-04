@@ -1,27 +1,35 @@
 import { BigNumber, ContractTransaction, Signer } from "ethers";
-import { snapshotSetup } from "../test/hardhatRPC";
+import { revertHardhat, snapshotHardhat, snapshotSetup } from "../test/hardhatRPC";
 import { resolveRegistration, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { setupConfig } from "../test/sdkTestConfig";
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 describe("registry", () => {
   let signer: Signer;
+  let provider: JsonRpcProvider;
 
   snapshotSetup();
 
   beforeAll(() => {
-    ({ signer } = setupConfig());
+    ({ signer, provider } = setupConfig());
   });
 
   describe("#resolveRegistration", () => {
     const handle = "registered";
     let givenId: BigNumber;
-    beforeEach(async () => {
+
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
       const transaction = await register(identityContract.address, handle);
       givenId = await getIdFromRegisterTransaction(transaction);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
     });
 
     it("Returns the correct id", async () => {
@@ -42,11 +50,16 @@ describe("registry", () => {
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
     let idContractAddr = "";
 
-    beforeEach(async () => {
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
       idContractAddr = identityContract.address;
       await register(identityContract.address, handle);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
     });
 
     it("Should throw for an already registered handle", async () => {
@@ -66,11 +79,16 @@ describe("registry", () => {
     const handle = "registered";
     let idContractAddr = "";
 
-    beforeEach(async () => {
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
       const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
       await identityContract.deployed();
       idContractAddr = identityContract.address;
       await register(identityContract.address, handle);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
     });
 
     it("Should succeed with an unregistered handle", async () => {
@@ -106,7 +124,8 @@ describe("registry", () => {
     const handle = "registered";
     let newIdContractAddr = "";
 
-    beforeEach(async () => {
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
       const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
       await identityContract.deployed();
       await register(identityContract.address, handle);
@@ -114,6 +133,10 @@ describe("registry", () => {
       const newIdentityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
       await newIdentityContract.deployed();
       newIdContractAddr = newIdentityContract.address;
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
     });
 
     it("Should succeed", async () => {
