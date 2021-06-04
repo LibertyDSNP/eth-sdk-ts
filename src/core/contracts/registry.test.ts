@@ -221,6 +221,13 @@ describe("registry", () => {
       expect(regs[1].handle).toEqual(handle + "new");
     });
   });
+
+  describe("validateMessage", () => {
+    it("throws if not registered");
+    it("throws if can't get block height");
+    it("returns true if the signer is authorized to do the thing");
+    it("returns false if the signer is not authorized to do the thing");
+  });
 });
 
 const getIdFromRegisterTransaction = async (transaction: ContractTransaction) => {

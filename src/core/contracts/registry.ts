@@ -1,9 +1,13 @@
+import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { getConfig } from "../../config";
 import { BigNumber, ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
+import { Permission } from "./identity";
+import { resolveId} from "../../handles";
+import { isAuthorizedTo } from "./identity";
 
 const CONTRACT_NAME = "Registry";
 
@@ -100,6 +104,25 @@ export const getDSNPRegistryUpdateEvents = async (
     const [id, addr, handle] = desc.args;
     return { contractAddr: addr, dsnpId: id.toHexString(), handle };
   });
+};
+
+export const validateMessage = async (
+  signature: HexString,
+  message: string,
+  dsnpId: HexString,
+  permission: Permission
+): Promise<boolean> => {
+  const reg = await resolveId(dsnpId);
+  if (!reg) throw MissingContract;
+
+  const { provider } = getConfig();
+  if (!provider) throw MissingProvider;
+
+  const bh = (await provider?.getBlock("latest"))?.number;
+  if (!bh) throw MissingProvider;
+
+  const signerAddr = ethers.utils.verifyMessage(message, signature);
+  return isAuthorizedTo(signerAddr, reg.contractAddr, permission, bh);
 };
 
 const getContract = async () => {
