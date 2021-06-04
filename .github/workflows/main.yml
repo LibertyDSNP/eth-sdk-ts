@@ -46,8 +46,13 @@ jobs:
           npm list @dsnp/contracts
           export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(.{6}).*$/\1/p'`
           echo "Found version ${version}"
-          export result=`git ls-remote https://github.com/LibertyDSNP/contracts.git | grep -m 1 $version | cut -c 1-40`
+          git clone --bare https://github.com/LibertyDSNP/contracts.git contracts-temp
+          cd contracts-temp
+          export result=`git rev-parse $version`
+          [ "$result" ] || (echo "Unable to find the right git SHA for ${version}" && exit 1)
           echo "Using SHA ${result}"
+          cd ..
+          rm -Rf ./contracts-temp
           echo "contract_version=$result" >> $GITHUB_ENV
         shell: bash
         working-directory: ./main
