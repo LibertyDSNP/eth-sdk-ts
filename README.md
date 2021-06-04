@@ -42,9 +42,38 @@ config
     signer: signer,
     provider: provider
   })
-  .then(function () {
-    // Do something with the SDK
+```
+
+#### Storing Messages and Batches
+
+Amazon S3 is supported when adding the following configuration:
+```
+import { S3Node } from "./storage/s3Node";
+
+config
+  .setConfig({
+    ...,
+    store: S3Node({
+      key: "tomyheartisno",
+      secret: "itsa",
+      bucket: "ofchicken",
+      region: "us-east-la",
+    })
   });
+```
+Other storage solutions can be added so as long it contains the following interface.
+```
+interface StorageInterface {
+  put: (targetPath: string, content: Content) => Promise<URL>;
+  get?: (targetPath: string) => Promise<string>;
+}
+```
+
+```
+config
+  .setConfig({
+    storage: new MyStorage()
+   });
 ```
 
 ## Usage

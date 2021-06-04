@@ -49,5 +49,5 @@ export const getConfig = (overrides?: Partial<Config>): Config => {
  * @params newConfig The configuration settings to set with
  */
 export const setConfig = (newConfig: Config): void => {
-  config = newConfig;
+  config = { ...config, ...newConfig };
 };
