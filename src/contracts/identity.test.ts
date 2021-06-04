@@ -1,5 +1,6 @@
 import { ContractReceipt, ethers } from "ethers";
 import { EthereumAddress } from "../types/Strings";
+import { getContractAddress } from "./contract";
 import {
   createCloneProxy,
   createCloneProxyWithOwner,
@@ -11,14 +12,23 @@ import {
 import { EthAddressRegex } from "../test/matchers";
 import { setupConfig } from "../test/sdkTestConfig";
 import { snapshotSetup } from "../test/hardhatRPC";
+import { MissingContract } from "../utilities";
 
 const owner = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const nonOwner = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
-const beacon = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
 
 describe("identity", () => {
+  let provider: ethers.providers.JsonRpcProvider;
   snapshotSetup();
-  beforeAll(setupConfig);
+  beforeAll(() => {
+    ({ provider } = setupConfig());
+  });
+
+  const getBeacon = async (): Promise<string> => {
+    const addr = await getContractAddress(provider, "Beacon");
+    if (!addr) throw MissingContract;
+    return addr;
+  };
 
   describe("createCloneProxy", () => {
     it("creates a proxy contract", async () => {
@@ -67,6 +77,7 @@ describe("identity", () => {
 
   describe("createBeaconProxy", () => {
     it("creates a beacon proxy contract with specified beacon", async () => {
+      const beacon = await getBeacon();
       const proxyReceipt: ContractReceipt = (await (await createBeaconProxy(beacon)).wait()) as ContractReceipt;
       const proxyContractEvents =
         proxyReceipt && proxyReceipt.events
@@ -85,6 +96,7 @@ describe("identity", () => {
     let contractAddress: EthereumAddress;
 
     beforeEach(async () => {
+      const beacon = await getBeacon();
       proxyReceipt = (await (await createBeaconProxyWithOwner(owner, beacon)).wait()) as ContractReceipt;
       proxyContractEvents =
         proxyReceipt && proxyReceipt.events
