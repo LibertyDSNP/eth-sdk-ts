@@ -25,6 +25,3 @@ export const batchMesssages = batchMesssagesImport;
 
 import * as parquetSchemaImport from "./parquetSchema";
 export const parquetSchema = parquetSchemaImport;
-
-import * as queueImport from "./queue";
-export const queue = queueImport;
