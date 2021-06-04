@@ -121,10 +121,10 @@ describe("registry", () => {
       await expect(pendingTx).resolves.toBeTruthy();
     });
 
-    it("Should throw for a non-contract address", async () => {
+    it("Should reject for a non-contract address", async () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const pendingTx = changeAddress(handle, fakeAddress);
-      await expect(pendingTx).transactionRejectsWith(/function call to a non-contract account/);
+      await expect(pendingTx).rejects.toBeTruthy();
     });
 
     it("returns a Contract Transaction with the DSNPRegistryUpdate Event", async () => {
