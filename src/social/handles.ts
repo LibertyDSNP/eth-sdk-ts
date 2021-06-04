@@ -1,4 +1,4 @@
-import { Config } from "../config/config";
+import { ConfigOpts } from "../config/config";
 import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 import { registry } from "../contracts";
@@ -24,7 +24,7 @@ export type Handle = string;
  * @param id  The Handle of the user for which to fetch profile data
  * @param opts Optional. Configuration overrides, such as from address, if any
  */
-export const authenticateHandle = async (_id: Handle, _opts?: Config): Promise<void> => {
+export const authenticateHandle = async (_id: Handle, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 };
 
@@ -36,7 +36,7 @@ export const authenticateHandle = async (_id: Handle, _opts?: Config): Promise<v
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The User object associated with the given Handle
  */
-export const getUser = async (_id: Handle, _opts?: Config): Promise<User> => {
+export const getUser = async (_id: Handle, _opts?: ConfigOpts): Promise<User> => {
   throw NotImplementedError;
 };
 
@@ -50,7 +50,7 @@ export const getUser = async (_id: Handle, _opts?: Config): Promise<User> => {
  * @param opts Optional. Configuration overrides, such as from address, if any
  * @returns    The User object associated with the given Handle
  */
-export const updateUser = async (_id: Handle, _user: User, _opts?: Config): Promise<User> => {
+export const updateUser = async (_id: Handle, _user: User, _opts?: ConfigOpts): Promise<User> => {
   throw NotImplementedError;
 };
 
@@ -62,7 +62,7 @@ export const updateUser = async (_id: Handle, _user: User, _opts?: Config): Prom
  * @param opts   Optional. Configuration overrides, such as from address, if any
  * @returns      The DSNP address associated with the given handle
  */
-export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<HexString> => {
+export const handleToAddress = async (_handle: Handle, _opts?: ConfigOpts): Promise<HexString> => {
   throw NotImplementedError;
 };
 
@@ -74,7 +74,7 @@ export const handleToAddress = async (_handle: Handle, _opts?: Config): Promise<
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       An array of DSNP handles associated with the address
  */
-export const addressToHandles = async (_address: HexString, _opts?: Config): Promise<Handle[]> => {
+export const addressToHandles = async (_address: HexString, _opts?: ConfigOpts): Promise<Handle[]> => {
   throw NotImplementedError;
 };
 

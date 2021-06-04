@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import { getConfig, Config } from "../config/config";
+import { getConfig, ConfigOpts } from "../config/config";
 import { HexString } from "../types/Strings";
 import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
@@ -124,7 +124,7 @@ const serialize = (message: DSNPMessage): string => {
  * @param opts    Optional. Configuration overrides, such as from address, if any
  * @returns       The message signature in hex
  */
-export const sign = async (message: DSNPMessage, opts?: Config): Promise<HexString> => {
+export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<HexString> => {
   const { signer } = await getConfig(opts);
   if (!signer) throw MissingSigner;
   return signer.signMessage(serialize(message));
