@@ -34,6 +34,11 @@ export interface Config {
   };
 }
 
+/**
+ * ConfigOpts represents override options to be passed when fetching the config
+ */
+export type ConfigOpts = Partial<Config>;
+
 let config: Config = {
   contracts: {},
   queue: new MemoryQueue(),
@@ -44,7 +49,7 @@ let config: Config = {
  *
  * @returns The current configuration settings
  */
-export const getConfig = (overrides?: Partial<Config>): Config => {
+export const getConfig = (overrides?: ConfigOpts): Config => {
   if (!overrides) return config;
 
   return {
@@ -59,7 +64,7 @@ export const getConfig = (overrides?: Partial<Config>): Config => {
  *
  * @params newConfig The configuration settings to set with
  */
-export const setConfig = (newConfig: Partial<Config>): void => {
+export const setConfig = (newConfig: ConfigOpts): void => {
   config = {
     // Defaults
     queue: new MemoryQueue(),
