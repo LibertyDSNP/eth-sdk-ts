@@ -1,39 +1,13 @@
-//eslint-disable-next-line
-require("dotenv").config();
-import { BigNumber, ContractTransaction, ethers, Signer } from "ethers";
-
-import { snapshotHardhat, revertHardhat } from "../test/hardhatRPC";
+import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { resolveHandleToId, register } from "./registry";
-import { setConfig, getConfig } from "../config/config";
 import { Identity__factory, Registry__factory } from "../types/typechain";
-import { JsonRpcProvider } from "@ethersproject/providers/src.ts/json-rpc-provider";
-
-const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
-const RPC_URL = String(process.env.RPC_URL);
+import { setupConfig } from "../test/sdkTestConfig";
 
 describe("registry", () => {
   let signer: Signer;
-  let provider: JsonRpcProvider;
 
-  beforeAll(async () => {
-    provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-    signer = new ethers.Wallet(TESTING_PRIVATE_KEY, provider);
-    const config = await getConfig();
-    config.provider = provider;
-    config.signer = signer;
-    const registry = await new Registry__factory(signer).deploy();
-    await registry.deployed();
-    config.contracts.registry = registry;
-    await setConfig(config);
-  });
-
-  beforeEach(async () => {
-    // Remember snapshots are used up each time they are reverted to, so beforeEach.
-    await snapshotHardhat(provider);
-  });
-
-  afterEach(async () => {
-    await revertHardhat(provider);
+  beforeAll(() => {
+    ({ signer } = setupConfig());
   });
 
   describe("#resolveHandleToId", () => {
@@ -88,6 +62,7 @@ describe("registry", () => {
 
 const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<BigNumber> => {
   const receipt = await transaction.wait(1);
-  // @ts-expect-error should never be undefined for the test
-  return receipt?.events[0]?.args[0] as BigNumber;
+  const reg = Registry__factory.createInterface();
+  const event = reg.parseLog(receipt.logs[0]);
+  return event.args[0];
 };
