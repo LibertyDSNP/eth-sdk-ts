@@ -39,7 +39,6 @@ describe("snapshot and revert", () => {
     // confirm batch event exists
     const batchEvents1 = await decodeDSNPBatchEvents();
     expect(batchEvents1.length).toEqual(1);
-    console.log(batchEvents1[0].uri);
 
     // revert
     await revertHardhat(provider);
