@@ -58,10 +58,11 @@ export const resolveHandle = (handle: Handle): Promise<Registration | null> => r
 
 /**
  * Get the current registration from a DSNP Id
- * @param dsnpId
+ * @param id The Hex or decimal DSNP Id
  * @returns The Registration object with Handle, DSNP Id, and Identity contract address
  */
-export const resolveId = async (dsnpId: HexString): Promise<Registration | null> => {
+export const resolveId = async (id: HexString | number): Promise<Registration | null> => {
+  const dsnpId = typeof id === "string" ? id : "0x" + id.toString(16);
   const registrations = await getDSNPRegistryUpdateEvents({
     dsnpId,
   });

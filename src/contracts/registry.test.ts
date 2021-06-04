@@ -184,8 +184,7 @@ describe("registry", () => {
     });
 
     it("pulls all the related events for matching ids in the correct order", async () => {
-      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
-      const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
+      const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
       await identityContract.deployed();
       const handle = "ZebraButtons";
       const identityContractAddress = identityContract.address;

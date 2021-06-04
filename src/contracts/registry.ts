@@ -28,8 +28,8 @@ export const resolveRegistration = async (handle: Handle): Promise<Registration 
     return {
       handle,
       dsnpId: dsnpId.toHexString(),
-      contractAddr
-    }
+      contractAddr,
+    };
   } catch (e) {
     const vmError = getVmError(e);
     if (vmError?.includes("Handle does not exist")) {
