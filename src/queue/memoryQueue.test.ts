@@ -24,6 +24,12 @@ describe("memoryQueue", () => {
 
       expect(await queue.dequeue(DSNPType.Broadcast)).toEqual(testMsg);
     });
+
+    it("returns null when no more messages of DSNPType are present", async () => {
+      const queue = new MemoryQueue();
+
+      expect(await queue.dequeue(DSNPType.Broadcast)).toEqual(null);
+    });
   });
 
   describe("#remove", () => {
