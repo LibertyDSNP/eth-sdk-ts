@@ -16,7 +16,6 @@ module.exports = {
   testResultsProcessor: "jest-junit",
   transform: { "^.+\\.(ts|tsx)$": "ts-jest" },
   testMatch: ["**/*.test.(ts|js)"],
-  setupFilesAfterEnv: ["<rootDir>/src/test/chainSetup.ts"],
 };
 
 export default config;

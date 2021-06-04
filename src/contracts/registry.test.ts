@@ -2,9 +2,12 @@ import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { resolveHandleToId, register } from "./registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { setupConfig } from "../test/sdkTestConfig";
+import { snapshotSetup } from "../test/hardhatRPC";
 
 describe("registry", () => {
   let signer: Signer;
+
+  snapshotSetup();
 
   beforeAll(() => {
     ({ signer } = setupConfig());

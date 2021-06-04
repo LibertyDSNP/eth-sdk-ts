@@ -10,12 +10,14 @@ import {
 } from "./identity";
 import { EthAddressRegex } from "../test/matchers";
 import { setupConfig } from "../test/sdkTestConfig";
+import { snapshotSetup } from "../test/hardhatRPC";
 
 const owner = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const nonOwner = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
 const beacon = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
 
 describe("identity", () => {
+  snapshotSetup();
   beforeAll(setupConfig);
 
   describe("createCloneProxy", () => {
