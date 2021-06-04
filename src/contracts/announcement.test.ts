@@ -1,8 +1,11 @@
 import { keccak256 } from "js-sha3";
 
 import { batch, decodeDSNPBatchEvents, Announcement } from "./announcement";
+import { setupConfig } from "../test/sdkTestConfig";
 
 describe("#batch", () => {
+  beforeAll(setupConfig);
+
   it("successfully posts a batch to the chain", async () => {
     jest.setTimeout(12000);
 
