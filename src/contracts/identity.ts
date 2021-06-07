@@ -155,7 +155,7 @@ export const isAuthorizedTo = async (
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
 };
 
-const getBeaconAddress = async () => {
+const getBeaconAddress = async (): Promise<EthereumAddress> => {
   const {
     provider,
     contracts: { beacon },
