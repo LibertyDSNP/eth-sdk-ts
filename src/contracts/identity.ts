@@ -86,8 +86,6 @@ export const createAndRegisterBeaconProxy = async (
 ): Promise<ContractTransaction> => {
   const beaconFactory = await getBeaconFactoryContract();
   const beaconAddr = await getBeaconAddress();
-  const { signer } = getConfig();
-  if (!signer) throw MissingSigner;
   return await beaconFactory.createAndRegisterBeaconProxy(beaconAddr, userAddress, handle);
 };
 
