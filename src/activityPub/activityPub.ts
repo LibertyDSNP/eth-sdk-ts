@@ -65,6 +65,20 @@ export const validate = (activityPub: ActivityPub): boolean => {
 };
 
 /**
+ * validateReply() returns true if the object provided is a valid activityPub
+ * reply. Otherwise, it returns false.
+ *
+ * @param   activityPub  An object to be validated against the activity pub standard
+ * @returns              True or false depending on whether the given object is a valid
+ */
+export const validateReply = (activityPub: ActivityPub): boolean => {
+  if (!validate(activityPub)) return false;
+  if (!activityPub["inReplyTo"]) return false;
+
+  return true;
+};
+
+/**
  * serialize() converts an activityPub object to string for upload via the
  * storage adapter.
  *

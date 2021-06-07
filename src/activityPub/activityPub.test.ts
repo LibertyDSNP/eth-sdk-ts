@@ -85,6 +85,30 @@ describe("activityPub", () => {
     });
   });
 
+  describe("#validateReply", () => {
+    it("return true for valid activity pub objects with an inReplyTo field", () => {
+      const activityPub = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        url: "http://placekitten.com",
+        inReplyTo: "dsnp://12345/67890",
+      };
+
+      expect(validate(activityPub)).toBeTruthy();
+    });
+
+    it("return false for activity pubs without an inReplyTo field", () => {
+      const activityPub = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        url: "http://placekitten.com",
+        published: "Yesterday",
+      };
+
+      expect(validate(activityPub)).toBeFalsy();
+    });
+  });
+
   describe("#serialize", () => {
     it("returns a serialized version of the activity pub object", () => {
       const sampleActivityPub = {
