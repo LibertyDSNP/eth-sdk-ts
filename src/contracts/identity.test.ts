@@ -130,6 +130,7 @@ describe("identity", () => {
 
       const receipt = await transaction.wait(1);
 
+      // registration ids start at 1000
       expect(getIdFromReceipt(receipt).toNumber()).toBeGreaterThan(999);
 
       const address = getAddressFromReceipt(receipt);

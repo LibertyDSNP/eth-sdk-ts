@@ -88,7 +88,7 @@ export const createAndRegisterBeaconProxy = async (
   const beaconAddr = await getBeaconAddress();
   const { signer } = getConfig();
   if (!signer) throw MissingSigner;
-  return await beaconFactory.connect(signer).createAndRegisterBeaconProxy(beaconAddr, userAddress, handle);
+  return await beaconFactory.createAndRegisterBeaconProxy(beaconAddr, userAddress, handle);
 };
 
 const getIdentityLogicContractAddress = async (): Promise<EthereumAddress> => {
