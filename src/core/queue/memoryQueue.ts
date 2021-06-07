@@ -1,12 +1,13 @@
 import { QueueId, QueueInterface } from "./queue";
-import { DSNPMessage, DSNPType } from "../messages/messages";
+import { DSNPType } from "../messages/messages";
+import { DSNPBatchMessage } from "../batch/batchMesssages";
 
 const InvalidId = new Error("The Queue Id provided is malformed.");
 const IdDoesNotExist = new Error("No message matching the given ID exists.");
 
 interface QueueItem {
   id: number;
-  message: DSNPMessage;
+  message: DSNPBatchMessage;
 }
 
 /**
@@ -31,7 +32,7 @@ export default class MemoryQueue implements QueueInterface {
    * @param message The DSNP message to queue up for the next batch
    * @returns       A queue id to be used to remove the message if needed
    */
-  async enqueue(message: DSNPMessage): Promise<QueueId> {
+  async enqueue(message: DSNPBatchMessage): Promise<QueueId> {
     const typeString = message.type.toString(16);
     const queueItem = this.createQueueItem(message);
     const queueId = `${typeString}:${queueItem.id.toString(16)}`;
@@ -51,7 +52,7 @@ export default class MemoryQueue implements QueueInterface {
    * @param type The DSNP message type to dequeue
    * @returns    The dequeued DSNP message or null to indicate end of queue
    */
-  async dequeue(type: DSNPType): Promise<DSNPMessage | null> {
+  async dequeue(type: DSNPType): Promise<DSNPBatchMessage | null> {
     const typeString = type.toString(16);
 
     if (this.queues[typeString] === undefined) return null;
@@ -73,10 +74,10 @@ export default class MemoryQueue implements QueueInterface {
    * @throws {@link IdDoesNotExist}
    * Thrown if called with a Queue Id that does not match any existing message.
    *
-   * @param id The id of the DSNP message to remove from the queue
+   * @param queueId The id of the DSNP message to remove from the queue
    * @returns  The removed message
    */
-  async remove(queueId: QueueId): Promise<DSNPMessage> {
+  async remove(queueId: QueueId): Promise<DSNPBatchMessage> {
     const queueIdParts = queueId.split(":");
 
     if (queueIdParts.length != 2) throw InvalidId;
@@ -94,7 +95,7 @@ export default class MemoryQueue implements QueueInterface {
     return msg;
   }
 
-  private createQueueItem(message: DSNPMessage): QueueItem {
+  private createQueueItem(message: DSNPBatchMessage): QueueItem {
     const item: QueueItem = {
       id: this.nextId,
       message,

@@ -1,13 +1,15 @@
 import { setConfig } from "../../config";
-import { BroadcastMessage, DSNPType } from "../messages/messages";
+import { DSNPType } from "../messages/messages";
 import { dequeueBatch, enqueue, remove } from "./queue";
+import { BatchBroadcastMessage } from "../batch/batchMesssages";
 
 describe("queue", () => {
-  const testMsg: BroadcastMessage = {
+  const testMsg: BatchBroadcastMessage = {
     type: DSNPType.Broadcast,
     contentHash: "test",
     fromId: "test",
     uri: "test",
+    signature: "0x0badbadbadfa730316",
   };
   const testId = "12345";
   const fakeQueue = {

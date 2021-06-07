@@ -1,12 +1,14 @@
-import { BroadcastMessage, DSNPType } from "../messages/messages";
+import { DSNPType } from "../messages/messages";
 import MemoryQueue from "./memoryQueue";
+import { BatchBroadcastMessage } from "../batch/batchMesssages";
 
 describe("memoryQueue", () => {
-  const testMsg: BroadcastMessage = {
+  const testMsg: BatchBroadcastMessage = {
     type: DSNPType.Broadcast,
     contentHash: "test",
     fromId: "test",
     uri: "test",
+    signature: "0x0badbadbadfa730316",
   };
 
   describe("#enqueue", () => {
