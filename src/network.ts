@@ -1,6 +1,6 @@
-import { Handle } from "../contracts/registry";
-import { ConfigOpts } from "../config/config";
-import { NotImplementedError } from "../utilities/errors";
+import { Handle } from "./core/contracts/registry";
+import { ConfigOpts } from "./config";
+import { NotImplementedError } from "./core/utilities/errors";
 
 /**
  * follow() creates a follow event and enqueues it for the next batch. This

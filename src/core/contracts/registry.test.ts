@@ -1,8 +1,8 @@
 import { BigNumber, ContractTransaction, Signer } from "ethers";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "../test/hardhatRPC";
+import { revertHardhat, snapshotHardhat, snapshotSetup } from "test/hardhatRPC";
 import { resolveRegistration, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
-import { Identity__factory, Registry__factory } from "../types/typechain";
-import { setupConfig } from "../test/sdkTestConfig";
+import { Identity__factory, Registry__factory } from "types/typechain";
+import { setupConfig } from "test/sdkTestConfig";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 describe("registry", () => {

@@ -1,6 +1,6 @@
 import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./generators/dsnpGenerators";
 import { countBy } from "lodash";
-import { DSNPType } from "../messages/messages";
+import { DSNPType } from "core/messages/messages";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {

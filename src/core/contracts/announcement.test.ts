@@ -1,8 +1,8 @@
 import { keccak256 } from "js-sha3";
 
 import { batch, decodeDSNPBatchEvents, Announcement } from "./announcement";
-import { setupConfig } from "../test/sdkTestConfig";
-import { snapshotSetup } from "../test/hardhatRPC";
+import { setupConfig } from "test/sdkTestConfig";
+import { snapshotSetup } from "test/hardhatRPC";
 
 describe("#batch", () => {
   snapshotSetup();

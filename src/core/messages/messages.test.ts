@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
-import { getConfig, setConfig } from "../config/config";
+import { getConfig, setConfig } from "../../config";
 import { createBroadcastMessage, sign, recoverPublicKey } from "./messages";
 
 describe("messages", () => {

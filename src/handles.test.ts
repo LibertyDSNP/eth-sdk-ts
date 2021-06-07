@@ -1,10 +1,10 @@
 import { isAvailable, availabilityFilter, resolveHandle, resolveId } from "./handles";
-import * as registry from "../contracts/registry";
-import { createCloneProxy } from "../contracts/identity";
-import { setupConfig } from "../test/sdkTestConfig";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "../test/hardhatRPC";
+import * as registry from "./core/contracts/registry";
+import { createCloneProxy } from "./core/contracts/identity";
+import { setupConfig } from "./test/sdkTestConfig";
+import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
 import { ethers } from "ethers";
-import { EthAddressRegex } from "../test/matchers";
+import { EthAddressRegex } from "./test/matchers";
 import { createUser } from "./handles";
 
 const createIdentityContract = async () => {

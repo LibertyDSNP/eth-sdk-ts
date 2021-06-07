@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 
-import MemoryQueue from "../queue/memoryQueue";
-import { QueueInterface } from "../queue/queue";
-import { StorageInterface } from "../storage/storage";
-import { HexString } from "../types/Strings";
+import MemoryQueue from "./core/queue/memoryQueue";
+import { QueueInterface } from "./core/queue/queue";
+import { StorageInterface } from "./core/storage/storage";
+import { HexString } from "./types/Strings";
 
 /**
  * The Config Interface provides for various settings and plugable modules.

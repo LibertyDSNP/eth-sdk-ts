@@ -1,9 +1,9 @@
 // import * as activityPub from "../activityPub/activityPub";
 // import * as config from "../config/config";
 // import * as storage from "../storage/storage";
-import { ActivityPubOpts } from "../activityPub/activityPub";
-import { ConfigOpts } from "../config/config";
-import { NotImplementedError } from "../utilities/errors";
+import { ActivityPubOpts } from "core/activityPub/activityPub";
+import { ConfigOpts } from "config";
+import { NotImplementedError } from "core/utilities/errors";
 
 /**
  * broadcast() creates a broadcast DSNP event and enqueues it for the next

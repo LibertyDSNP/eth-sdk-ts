@@ -1,7 +1,7 @@
-import { Handle } from "../contracts/registry";
-import { DSNPType } from "../messages/messages";
-import { HexString } from "../types/Strings";
-import { NotImplementedError } from "../utilities/errors";
+import { Handle } from "./core/contracts/registry";
+import { DSNPType } from "./core/messages/messages";
+import { HexString } from "./types/Strings";
+import { NotImplementedError } from "./core/utilities/errors";
 
 type BlockNumber = number;
 

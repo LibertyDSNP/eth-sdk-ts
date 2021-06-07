@@ -1,4 +1,4 @@
-import { setConfig } from "../config/config";
+import { setConfig } from "../../config";
 import { BroadcastMessage, DSNPType } from "../messages/messages";
 import { dequeueBatch, enqueue, remove } from "./queue";
 

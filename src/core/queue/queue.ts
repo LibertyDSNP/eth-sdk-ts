@@ -1,4 +1,4 @@
-import { getConfig, ConfigOpts } from "../config/config";
+import { getConfig, ConfigOpts } from "../../config";
 import { DSNPMessage, DSNPType } from "../messages/messages";
 
 /**

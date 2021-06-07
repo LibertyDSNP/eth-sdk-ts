@@ -1,7 +1,7 @@
-import { ConfigOpts } from "../config/config";
-import { HexString } from "../types/Strings";
-import { NotImplementedError } from "../utilities/errors";
-import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "../contracts/registry";
+import { ConfigOpts } from "./config";
+import { HexString } from "./types/Strings";
+import { NotImplementedError } from "./core/utilities/errors";
+import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "../contracts/identity";
 import { findEvent } from "../contracts/contract";

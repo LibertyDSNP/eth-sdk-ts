@@ -1,6 +1,6 @@
 //eslint-disable-next-line
 require("dotenv").config();
-import { setConfig } from "../config/config";
+import { setConfig } from "../config";
 import { ethers } from "ethers";
 
 type SdkTestConfig = { provider: ethers.providers.JsonRpcProvider; signer: ethers.Signer };

@@ -1,4 +1,4 @@
-import { getConfig, Config } from "../config/config";
+import { getConfig, Config } from "../../config";
 import { MissingStoreError, NotImplementedError } from "../utilities/errors";
 
 export type File = Buffer | string;

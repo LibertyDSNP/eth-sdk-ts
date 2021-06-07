@@ -1,5 +1,5 @@
 import { ContractTransaction } from "ethers";
-import { getVmError } from "../contracts/contract";
+import { getVmError } from "core/contracts/contract";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

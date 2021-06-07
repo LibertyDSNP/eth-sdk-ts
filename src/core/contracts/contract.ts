@@ -1,5 +1,5 @@
 //eslint-disable-next-line
-import { HexString } from "../types/Strings";
+import { HexString } from "types/Strings";
 import { keccak256 } from "js-sha3";
 import * as types from "../types/typechain";
 import { ethers } from "ethers";

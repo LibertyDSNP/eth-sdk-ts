@@ -1,9 +1,9 @@
 import { getContractAddress, getVmError } from "./contract";
-import { EthereumAddress, HexString } from "../types/Strings";
-import { getConfig } from "../config/config";
+import { EthereumAddress, HexString } from "types/Strings";
+import { getConfig } from "../../config";
 import { BigNumber, ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
-import { Registry__factory } from "../types/typechain";
+import { Registry__factory } from "types/typechain";
 
 const CONTRACT_NAME = "Registry";
 
