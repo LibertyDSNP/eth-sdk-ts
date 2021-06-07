@@ -1,11 +1,10 @@
-import { isAvailable, availabilityFilter, resolveHandle, resolveId } from "./handles";
+import { isAvailable, availabilityFilter, resolveHandle, resolveId, createRegistration } from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "./test/matchers";
-import { createUser } from "./handles";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -99,12 +98,12 @@ describe("handles", () => {
     });
   });
 
-  describe("#createUser", () => {
+  describe("#createRegistration", () => {
     const handle = "flarp";
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
 
     it("returns a DSNP Id", async () => {
-      const id = await createUser(fakeAddress, handle);
+      const id = await createRegistration(fakeAddress, handle);
 
       expect(id).toBeGreaterThan(999);
     });

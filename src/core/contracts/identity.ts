@@ -1,5 +1,5 @@
 import { ContractTransaction } from "ethers";
-import { MissingProvider, MissingSigner, MissingContract } from "../utilities/errors";
+import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
 import { getConfig } from "../../config";
 import { EthereumAddress } from "types/Strings";
 import {
@@ -133,14 +133,13 @@ const getBeaconFactoryContract = async (): Promise<BeaconFactory> => {
 
 /**
  * Checks to see if address is authorized with the given permission
- * @param addr Address that is used to test permission
+ * @param address Address that is used to test permission
  * @param contractAddress Address of contract to check against
  * @param permission Level of permission check. See Permission for details
  * @param blockNumber Check for authorization at a particular block number, 0x0 reserved for endless permissions
  * @return boolean
  * @dev Return MAY change as deauthorization can revoke past messages
  */
-
 export const isAuthorizedTo = async (
   address: EthereumAddress,
   contractAddress: EthereumAddress,
