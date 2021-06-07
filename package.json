@@ -24,7 +24,7 @@
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
     "prepublishOnly": "npm run build && npm run doc:markdown",
-    "postinstall": "npm run typechain",
+    "prepare": "npm run typechain",
     "postpublish": "npm run clean",
     "test": "jest --runInBand",
     "typechain": "rm -Rf ./src/types/typechain && typechain --target=ethers-v5 ./node_modules/@dsnp/contracts/abi/**/*.json --out-dir ./src/types/typechain",
@@ -39,6 +39,7 @@
     "node": ">=14.15.5"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.17.0",
     "@dsnp/contracts": "0.0.0-54f452",
     "@dsnp/test-generators": "^0.0.0-984e60",
     "@typechain/ethers-v5": "^7.0.0",
