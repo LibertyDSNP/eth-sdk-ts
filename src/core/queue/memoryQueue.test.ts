@@ -4,7 +4,7 @@ import { BatchBroadcastMessage } from "../batch/batchMesssages";
 
 describe("memoryQueue", () => {
   const testMsg: BatchBroadcastMessage = {
-    type: DSNPType.Broadcast,
+    dsnpType: DSNPType.Broadcast,
     contentHash: "test",
     fromId: "test",
     uri: "test",

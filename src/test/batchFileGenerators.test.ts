@@ -33,7 +33,7 @@ describe("batchFileGenerators", () => {
       let numRecords = 0;
       while ((record = await cursor.next())) {
         numRecords++;
-        ["signature", "type", "fromId"].forEach((field) => {
+        ["signature", "dsnpType", "fromId"].forEach((field) => {
           expect(record).toHaveProperty(field);
         });
       }

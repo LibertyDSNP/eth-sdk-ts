@@ -18,7 +18,7 @@ describe("messages", () => {
       const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
 
       expect(await sign(message)).toEqual(
-        "0x168aeea67ab8e6b60a8d004ab57e17bab16dac135bcc9d9c8b34058808befd371e4d34ee6b1dc18b3d86e63765352286ba949a39cd458138cad7895b7faca2cb1c"
+        "0x441a8813b5b94ed715d7c6c3e6f9e9f7dda69f1bf3249cfb72db8bc7cb763586714b3be091e2416096286b394e01d9bf19f5fc7195562c9b5ef0930a1ed204d31c"
       );
     });
   });
@@ -29,7 +29,7 @@ describe("messages", () => {
     it("returns the correct public key for a valid signature", () => {
       const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
       const signature =
-        "0x168aeea67ab8e6b60a8d004ab57e17bab16dac135bcc9d9c8b34058808befd371e4d34ee6b1dc18b3d86e63765352286ba949a39cd458138cad7895b7faca2cb1c";
+        "0x441a8813b5b94ed715d7c6c3e6f9e9f7dda69f1bf3249cfb72db8bc7cb763586714b3be091e2416096286b394e01d9bf19f5fc7195562c9b5ef0930a1ed204d31c";
 
       expect(recoverPublicKey(message, signature)).toEqual(publicKey);
     });

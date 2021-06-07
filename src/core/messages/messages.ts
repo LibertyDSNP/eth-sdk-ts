@@ -18,14 +18,14 @@ export enum DSNPType {
  * DSNPMessage: a message intended for inclusion in a batch file
  */
 export interface DSNPMessage {
-  type: DSNPType;
+  dsnpType: DSNPType;
 }
 
 /**
  * BroadcastMessage: a DSNP message of type Broadcast
  */
 export interface BroadcastMessage extends DSNPMessage {
-  type: DSNPType.Broadcast;
+  dsnpType: DSNPType.Broadcast;
   contentHash: string;
   fromId: string;
   uri: string;
@@ -41,7 +41,7 @@ export interface BroadcastMessage extends DSNPMessage {
  * @returns        A BroadcastMessage
  */
 export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
-  type: DSNPType.Broadcast,
+  dsnpType: DSNPType.Broadcast,
   contentHash: hash,
   fromId,
   uri,
@@ -51,7 +51,7 @@ export const createBroadcastMessage = (fromId: string, uri: string, hash: HexStr
  * ReplyMessage: a DSNP message of type Reply
  */
 export interface ReplyMessage extends DSNPMessage {
-  type: DSNPType.Reply;
+  dsnpType: DSNPType.Reply;
   contentHash: HexString;
   fromId: string;
   inReplyTo: string;
@@ -69,7 +69,7 @@ export interface ReplyMessage extends DSNPMessage {
  * @returns           A ReplyMessage
  */
 export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
-  type: DSNPType.Reply,
+  dsnpType: DSNPType.Reply,
   contentHash: hash,
   fromId,
   inReplyTo,
@@ -80,7 +80,7 @@ export const createReplyMessage = (fromId: string, uri: string, hash: HexString,
  * ReactionMessage: a DSNP message of type Reaction
  */
 export interface ReactionMessage extends DSNPMessage {
-  type: DSNPType.Reaction;
+  dsnpType: DSNPType.Reaction;
   emoji: string;
   fromId: string;
   inReplyTo: string;
@@ -96,7 +96,7 @@ export interface ReactionMessage extends DSNPMessage {
  * @returns           A ReactionMessage
  */
 export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: string): ReactionMessage => ({
-  type: DSNPType.Reaction,
+  dsnpType: DSNPType.Reaction,
   emoji,
   fromId,
   inReplyTo,
