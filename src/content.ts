@@ -29,13 +29,6 @@ export const broadcast = async (
   const content = JSON.stringify(contentObj);
   const uri = await store.put(filename, content, opts);
 
-  // Reupload the file with id, if one was not provided
-  if (contentObj.id === undefined) {
-    contentObj.id = uri.toString();
-    const contentWithId = JSON.stringify(contentObj);
-    store.put(filename, contentWithId, opts);
-  }
-
   // Get current user id
   const { signer } = await config.getConfig(opts);
   if (!signer) throw MissingSigner;
@@ -65,13 +58,6 @@ export const reply = async (contentOptions: activityPub.ActivityPubOpts, opts: c
   const filename = getRandomString();
   const content = JSON.stringify(contentObj);
   const uri = await store.put(filename, content, opts);
-
-  // Reupload the file with id, if one was not provided
-  if (contentObj.id === undefined) {
-    contentObj.id = uri.toString();
-    const contentWithId = JSON.stringify(contentObj);
-    store.put(filename, contentWithId, opts);
-  }
 
   // Get current user id
   const { signer } = await config.getConfig(opts);
