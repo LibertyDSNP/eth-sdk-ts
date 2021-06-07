@@ -126,9 +126,9 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
  * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const findEvent = (name: string, logs: Array<RawLog>): ethers.utils.LogDescription => {
-  const matches = parseLogs(logs).filter((e) => e.name === name);
-  if (matches.length < 1) {
+  const event = parseLogs(logs).find((e) => e.name === name);
+  if (event === undefined) {
     throw `no ${name} logs found`;
   }
-  return matches[0];
+  return event;
 };
