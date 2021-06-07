@@ -4,25 +4,15 @@ describe("activityPub", () => {
   describe("#create", () => {
     it("returns an activity pub object with the given parameters", () => {
       const activityPub = create({
-        attachments: [
-          "http://placekitten.com/100/200",
-          "http://placekitten.com/300/400",
-          "http://placekitten.com/500/600",
-        ],
-        author: "0x0123456789ABCDEF",
-        body: "Look at these cats!",
-        title: "Some Cats",
+        attributedTo: "0x0123456789ABCDEF",
+        content: "Look at these cats!",
+        name: "Some Cats",
         url: "http://placekitten.com",
         inReplyTo: "0x0123456789ABCDEF",
       });
 
       expect(activityPub).toMatchObject({
         "@context": "https://www.w3.org/ns/activitystreams",
-        attachments: [
-          "http://placekitten.com/100/200",
-          "http://placekitten.com/300/400",
-          "http://placekitten.com/500/600",
-        ],
         attributedTo: "0x0123456789ABCDEF",
         content: "Look at these cats!",
         inReplyTo: "0x0123456789ABCDEF",
@@ -34,8 +24,8 @@ describe("activityPub", () => {
 
     it("returns an activity pub object with a valid published timestamp", () => {
       const activityPub = create({
-        body: "Look at the time!",
-        title: "Time",
+        content: "Look at the time!",
+        name: "Time",
       });
 
       expect(activityPub["published"]).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);

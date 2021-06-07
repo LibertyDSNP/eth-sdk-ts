@@ -30,7 +30,7 @@ export const generateNote = (address: HexString, message: string, attachment?: b
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
     content: message,
-    attachments: attachment ? JSON.stringify(generateImageAttachment()) : "",
+    attachments: attachment ? [generateImageAttachment()] : [],
     type: "Note",
   };
 };

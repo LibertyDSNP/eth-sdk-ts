@@ -4,6 +4,14 @@ import { sortObject } from "../utilities/json";
 
 const ISO8601_REGEX = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?/;
 
+type PubType = "Image" | "Video";
+
+export interface ActivityPubAttachment {
+  type: PubType;
+  mediaType: string;
+  url: string;
+}
+
 export interface ActivityPub {
   "@context": string;
   type: string;
@@ -13,32 +21,10 @@ export interface ActivityPub {
   published?: string;
   inReplyTo?: string;
   attributedTo?: string;
-  attachments?: string;
+  attachments?: ActivityPubAttachment[];
 }
 
-type PubType = "Image" | "Video";
-export interface ActivityPubAttachment {
-  type: PubType;
-  mediaType: string;
-  url: string;
-}
-
-export interface BroadcastOptions {
-  attachments?: string[];
-  author?: string;
-  body?: string;
-  title?: string;
-  url?: string;
-}
-
-export interface ReplyOptions {
-  attachments?: string[];
-  author?: string;
-  body: string;
-  inReplyTo: string;
-}
-
-export type ActivityPubOptions = BroadcastOptions | ReplyOptions;
+export type ActivityPubOpts = Partial<ActivityPub>;
 
 /**
  * create() provides a simple factory for generating activityPub notes.
@@ -46,22 +32,13 @@ export type ActivityPubOptions = BroadcastOptions | ReplyOptions;
  * @param   options Options for the activity pub object to create
  * @returns         An activity pub object
  */
-export const create = (options: ActivityPubOptions): ActivityPub => {
-  const activityPub: Record<string, unknown> = {
+export const create = (options: ActivityPubOpts): ActivityPub =>
+  ({
     "@context": "https://www.w3.org/ns/activitystreams",
     type: "Note",
     published: new Date().toISOString(),
-  };
-
-  if ((options as BroadcastOptions).title) activityPub["name"] = (options as BroadcastOptions).title;
-  if (options.body) activityPub["content"] = (options as BroadcastOptions).body;
-  if (options.author) activityPub["attributedTo"] = options.author;
-  if ((options as ReplyOptions).inReplyTo) activityPub["inReplyTo"] = (options as ReplyOptions).inReplyTo;
-  if ((options as BroadcastOptions).url) activityPub["url"] = (options as BroadcastOptions).url;
-  if ((options as BroadcastOptions).attachments) activityPub["attachments"] = (options as BroadcastOptions).attachments;
-
-  return (activityPub as unknown) as ActivityPub;
-};
+    ...options,
+  } as ActivityPub);
 
 /**
  * validate() returns true if the object provided is a valid activityPub.
