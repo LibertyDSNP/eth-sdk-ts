@@ -23,20 +23,6 @@ export interface ActivityPubAttachment {
   url: string;
 }
 
-/**
- * hash() provides a simple way to hash activityPub objects while guaranteeing
- * that identical objects with different key orders still return the same hash.
- * The underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).
- *
- * @param   data  The activity pub object to hash
- * @returns       A hexadecimal string containing the Keccak hash
- */
-export const hash = (data: ActivityPub): HexString => {
-  const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
-  const jsonString = JSON.stringify(sortedData);
-  return keccak256(jsonString);
-};
-
 export interface BroadcastOptions {
   attachments?: string[];
   author?: string;
@@ -90,4 +76,29 @@ export const validate = (activityPub: ActivityPub): boolean => {
   if (activityPub.published && !activityPub.published.match(ISO8601_REGEX)) return false;
 
   return true;
+};
+
+/**
+ * serialize() converts an activityPub object to string for upload via the
+ * storage adapter.
+ *
+ * @param   data  The activity pub object to hash
+ * @returns       A string representation of the activity pub object
+ */
+export const serialize = (data: ActivityPub): string => {
+  const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
+  return JSON.stringify(sortedData);
+};
+
+/**
+ * hash() provides a simple way to hash activityPub objects while guaranteeing
+ * that identical objects with different key orders still return the same hash.
+ * The underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).
+ *
+ * @param   data  The activity pub object to hash
+ * @returns       A hexadecimal string containing the Keccak hash
+ */
+export const hash = (data: ActivityPub): HexString => {
+  const jsonString = serialize(data);
+  return keccak256(jsonString);
 };
