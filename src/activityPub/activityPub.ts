@@ -6,12 +6,18 @@ const ISO8601_REGEX = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2
 
 type PubType = "Image" | "Video";
 
+/**
+ * ActivityPubAttachment represents an attachment to an activity pub object
+ */
 export interface ActivityPubAttachment {
   type: PubType;
   mediaType: string;
   url: string;
 }
 
+/**
+ * ActivityPub represents an activity pub object
+ */
 export interface ActivityPub {
   "@context": string;
   type: string;
@@ -24,6 +30,9 @@ export interface ActivityPub {
   attachments?: ActivityPubAttachment[];
 }
 
+/**
+ * ActivityPubOpts represents options to be passed to the create method.
+ */
 export type ActivityPubOpts = Partial<ActivityPub>;
 
 /**
