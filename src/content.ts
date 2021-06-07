@@ -1,9 +1,9 @@
-// import * as activityPub from "../activityPub/activityPub";
 // import * as config from "../config/config";
 // import * as storage from "../storage/storage";
-import { ActivityPubOpts } from "core/activityPub/activityPub";
-import { ConfigOpts } from "config";
-import { NotImplementedError } from "core/utilities/errors";
+import { ActivityPubOpts } from "./core/activityPub/activityPub";
+import { ConfigOpts } from "./config";
+import { NotImplementedError } from "./core/utilities/errors";
+import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "./core/batch/batchMesssages";
 
 /**
  * broadcast() creates a broadcast DSNP event and enqueues it for the next
@@ -11,9 +11,9 @@ import { NotImplementedError } from "core/utilities/errors";
  *
  * @param content The content for the note to broadcast
  * @param opts    Optional. Configuration overrides, such as from address, if any
- *
+ * @return The Batch Broadcast Message
  */
-export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<void> => {
+export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<BatchBroadcastMessage> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -22,8 +22,7 @@ export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): 
   // const activityPubHash = activityPub.hash(activityPubObject);
   // const uri = storage.store(activityPubObject, opts);
   //
-  // const event = events.createBroadcastEvent(uri, activityPubHash);
-  // config.batchEnqueueMethod(event, opts);
+  // return events.createBroadcastEvent(uri, activityPubHash);
 };
 
 /**
@@ -32,8 +31,9 @@ export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): 
  *
  * @param content The content for the reply to broadcast
  * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @return The Batch Broadcast Message
  */
-export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<void> => {
+export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<BatchReplyMessage> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -43,8 +43,7 @@ export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Prom
   // const activityPubHash = activityPub.hash(activityPubObject);
   // const uri = storage.store(activityPubObject, opts);
   //
-  // const event = events.createReplyEvent(uri, inReplyTo, activityPubHash);
-  // config.batchEnqueueMethod(event, opts);
+  // return events.createReplyEvent(uri, inReplyTo, activityPubHash);
 };
 
 /**
@@ -53,9 +52,10 @@ export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Prom
  *
  * @param emoji     The emoji with which to react
  * @param inReplyTo The DSNP Id of the message to which to react
- * @param opts      Optional. Configuration overrides, such as from address, if any
+ * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @return The Batch Broadcast Message
  */
-export const react = async (_emoji: string, _opts?: ConfigOpts): Promise<void> => {
+export const react = async (_emoji: string, _inReplyTo: string, _opts?: ConfigOpts): Promise<BatchReactionMessage> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -65,6 +65,5 @@ export const react = async (_emoji: string, _opts?: ConfigOpts): Promise<void> =
   // const activityPubHash = activityPub.hash(activityPubObject);
   // const uri = storage.store(activityPubObject, opts);
   //
-  // const event = events.createReactionEvent(uri, inReplyTo, activityPubHash);
-  // config.batchEnqueueMethod(event, opts);
+  // return events.createReactionEvent(uri, inReplyTo, activityPubHash);
 };
