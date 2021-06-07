@@ -103,7 +103,9 @@
     "@ethersproject/abi": "^5.3.0",
     "ethers": "^5.3.0",
     "js-sha3": "^0.8.0",
-    "ws": "^7.4.5",
+    "ws": "^7.4.5"
+  },
+  "peerDependencies": {
     "@aws-sdk/client-s3": "^3.17.0"
   }
 }
