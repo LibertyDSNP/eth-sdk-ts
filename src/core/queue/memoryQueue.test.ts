@@ -15,7 +15,7 @@ describe("memoryQueue", () => {
     it("adds a message to the queue and returns a queue id", async () => {
       const queue = new MemoryQueue();
 
-      expect(await queue.enqueue(testMsg)).toEqual("0:0");
+      expect(await queue.enqueue(testMsg)).toEqual("2:0");
     });
   });
 

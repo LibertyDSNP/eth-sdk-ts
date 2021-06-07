@@ -9,9 +9,11 @@ import { sortObject } from "../utilities/json";
  * DSNPType: an enum representing different types of DSNP messages
  */
 export enum DSNPType {
-  Broadcast,
-  Reply,
-  Reaction,
+  GraphChange = 1,
+  Broadcast = 2,
+  Reply = 3,
+  Reaction = 4,
+  Profile = 5,
 }
 
 /**
