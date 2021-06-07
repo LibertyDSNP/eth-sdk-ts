@@ -52,13 +52,7 @@ export interface ReplyOptions {
   inReplyTo: string;
 }
 
-export interface ReactionOptions {
-  author?: string;
-  body: string;
-  inReplyTo: string;
-}
-
-export type ActivityPubOptions = BroadcastOptions | ReplyOptions | ReactionOptions;
+export type ActivityPubOptions = BroadcastOptions | ReplyOptions;
 
 /**
  * create() provides a simple factory for generating activityPub notes.
