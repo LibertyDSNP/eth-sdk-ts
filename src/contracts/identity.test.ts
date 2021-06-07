@@ -1,11 +1,12 @@
-import { ContractReceipt, ethers } from "ethers";
+import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../types/Strings";
-import { getContractAddress } from "./contract";
+import { getContractAddress, findEvent } from "./contract";
 import {
   createCloneProxy,
   createCloneProxyWithOwner,
   createBeaconProxy,
   createBeaconProxyWithOwner,
+  createAndRegisterBeaconProxy,
   isAuthorizedTo,
   Permission,
 } from "./identity";
@@ -68,7 +69,6 @@ describe("identity", () => {
       const authorized = await isAuthorizedTo(owner, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(true);
     });
-    //
     it("expect isAuthorizedTo to return false for non owner", async () => {
       const authorized = await isAuthorizedTo(nonOwner, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(false);
@@ -120,4 +120,31 @@ describe("identity", () => {
       expect(authorized).toBe(true);
     });
   });
+
+  describe("#createAndRegisterBeaconProxy", () => {
+    const handle = "flarp";
+    const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+
+    it("returns a Contract Transaction that can be resolved into a DSNP Id", async () => {
+      const transaction = await createAndRegisterBeaconProxy(fakeAddress, handle);
+
+      const receipt = await transaction.wait(1);
+
+      // registration ids start at 1000
+      expect(getIdFromReceipt(receipt).toNumber()).toBeGreaterThan(999);
+
+      const address = getAddressFromReceipt(receipt);
+      expect(ethers.utils.isAddress(address)).toBeTruthy();
+    });
+  });
 });
+
+const getIdFromReceipt = (receipt: ContractReceipt): BigNumber => {
+  const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
+  return registerEvent.args[0];
+};
+
+const getAddressFromReceipt = (receipt: ContractReceipt): string => {
+  const proxyEvent = findEvent("ProxyCreated", receipt.logs);
+  return proxyEvent.args[0];
+};

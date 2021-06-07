@@ -3,6 +3,16 @@ import { HexString } from "../types/Strings";
 import { NotImplementedError } from "../utilities/errors";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "../contracts/registry";
 import { ContractTransaction } from "ethers";
+import { createAndRegisterBeaconProxy } from "../contracts/identity";
+import { findEvent } from "../contracts/contract";
+import { BigNumber } from "ethers";
+
+export interface User {
+  handle: Handle;
+  sign: string;
+  dateOfBirth: Date;
+  social: number;
+}
 
 /**
  * authenticateHandle() claims a registry handle to the current user. If the
@@ -29,6 +39,22 @@ export const authenticateHandle = async (_id: Handle, _opts?: ConfigOpts): Promi
  */
 export const getRegistration = async (_id: Handle): Promise<Registration> => {
   throw NotImplementedError;
+};
+
+/**
+ * createUser() creates a new identity for a public key and registers a handle to it.
+ * This function will wait for the identity to land on chain before resolving.
+ * @param addr public key address that will be used to control identity delegate
+ * @param handle name of identity (must be globaly unique)
+ * @param opts Optional. Configuration overrides, such as from address, if any
+ * @return id of identity created
+ */
+export const createUser = async (addr: HexString, handle: Handle): Promise<number> => {
+  const txn = await createAndRegisterBeaconProxy(addr, handle);
+  const receipt = await txn.wait(1);
+
+  const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
+  return (registerEvent.args[0] as BigNumber).toNumber();
 };
 
 /**
