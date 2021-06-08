@@ -121,7 +121,7 @@ describe("content", () => {
         );
       });
 
-      it("returns a broadcast DSNP message linking to the activity pub object", async () => {
+      it("returns a reply DSNP message linking to the activity pub object", async () => {
         const message = await content.reply(
           {
             attributedTo: "John Doe <johndoe@sample.org>",
@@ -177,6 +177,43 @@ describe("content", () => {
               content: "Lorem ipsum delor blah blah blah",
               name: "Lorem Ipsum",
             },
+            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+          )
+        ).rejects.toThrow(MissingUser);
+      });
+    });
+  });
+
+  describe("react", () => {
+    describe("with a valid user id", () => {
+      beforeEach(() => {
+        config.setConfig({
+          currentUserId: "dsnp://0123456789ABCDEF",
+        });
+      });
+
+      it("returns a reaction DSNP message linking to the activity pub object", async () => {
+        const message = await content.react(
+          "🏳️‍🌈",
+          "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+        );
+
+        expect(message).toMatchObject({
+          fromId: "dsnp://0123456789ABCDEF",
+          type: DSNPType.Reaction,
+          emoji: "🏳️‍🌈",
+          inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+        });
+      });
+    });
+
+    describe("without a user id", () => {
+      it("throws MissingUser", async () => {
+        config.setConfig({});
+
+        await expect(
+          content.react(
+            "🏴‍☠️",
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingUser);
