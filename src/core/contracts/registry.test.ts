@@ -19,6 +19,7 @@ import {
   newRegistrationForAccountIndex,
   RegistrationWithSigner,
 } from "../../test/testAccounts";
+import { generateHexString } from "@dsnp/test-generators";
 
 describe("registry", () => {
   let signer: Signer;
@@ -268,7 +269,15 @@ describe("registry", () => {
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
       const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(19, "Handel");
-      await expect(validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied)).toBeFalsy();
+      const res = await validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied);
+      expect(res).toBeFalsy();
+    });
+
+    it("returns false if signature is a real one but not for this message", async () => {
+      const otherMsg = generateBroadcast();
+      const badSig = await sign(otherMsg);
+      const res = await validateMessage(badSig, msg, dsnpId.toString(), permAllowed);
+      expect(res).toBeFalsy();
     });
 
     it("accepts a block number", async () => {
@@ -283,6 +292,12 @@ describe("registry", () => {
     it("throws if block number cannot be retrieved", async () => {
       await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed, 99999)).rejects.toThrow(
         "could not get block at height 99999"
+      );
+    });
+    it("throws if signature is garbage", async () => {
+      const badSig = generateHexString(65);
+      await expect(validateMessage(badSig, msg, dsnpId.toString(), permAllowed)).rejects.toThrow(
+        /signature missing v and recoveryParam/
       );
     });
   });
