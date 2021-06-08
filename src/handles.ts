@@ -1,4 +1,4 @@
-import { ConfigOpts } from "./config";
+import * as config from "./config";
 import { HexString } from "./types/Strings";
 import { NotImplementedError } from "./core/utilities";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
@@ -6,6 +6,29 @@ import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
 import { BigNumber } from "ethers";
+
+/**
+ * UserNotFound represents an error in finding the user to follow or unfollow.
+ */
+export const UserNotFound = new Error("User not found.");
+
+/**
+ * authenticateHandle() finds the DSNP user id associated with a given handle
+ * and sets the currentUserId in the config.
+ *
+ * @param handle The handle to authenticate
+ * @returns      A void promise which will either resolve or reject
+ */
+export const authenticateHandle = async (handle: Handle): Promise<void> => {
+  const registration = await resolveRegistration(handle);
+  if (!registration) throw UserNotFound;
+  const userId = registration.dsnpId;
+
+  config.setConfig({
+    ...config.getConfig(),
+    currentUserId: userId,
+  });
+};
 
 /**
  * createRegistration() creates a new identity for a public key and registers a handle to it.
@@ -35,7 +58,7 @@ export const createRegistration = async (addr: HexString, handle: Handle): Promi
 export const updateRegistration = async (
   _id: Handle,
   _registration: Registration,
-  _opts?: ConfigOpts
+  _opts?: config.ConfigOpts
 ): Promise<ContractTransaction> => {
   throw NotImplementedError;
 };

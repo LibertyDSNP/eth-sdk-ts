@@ -2,12 +2,8 @@ import { resolveRegistration, Handle } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
+import { UserNotFound } from "./handles";
 import { MissingUser, NotImplementedError } from "./core/utilities";
-
-/**
- * UserNotFound represents an error in finding the user to follow or unfollow.
- */
-export const UserNotFound = new Error("User not found.");
 
 /**
  * follow() creates a follow event and returns it.

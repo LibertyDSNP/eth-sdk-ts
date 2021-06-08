@@ -1,4 +1,14 @@
-import { isAvailable, availabilityFilter, resolveHandle, resolveId, createRegistration } from "./handles";
+import { Signer } from "ethers";
+import * as config from "./config";
+import {
+  authenticateHandle,
+  isAvailable,
+  availabilityFilter,
+  resolveHandle,
+  resolveId,
+  createRegistration,
+  UserNotFound,
+} from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
 import { setupConfig } from "./test/sdkTestConfig";
@@ -19,10 +29,12 @@ describe("handles", () => {
   const takens = ["taken", "taken1", "taken2"];
 
   let provider: ethers.providers.JsonRpcProvider;
+  let signer: Signer;
 
   beforeAll(async () => {
-    ({ provider } = setupConfig());
+    ({ provider, signer } = setupConfig());
     await snapshotHardhat(provider);
+    config.setConfig({ provider, signer });
     const logicAddress = await createIdentityContract();
     for (const handle of takens) {
       await (await registry.register(logicAddress, handle)).wait();
@@ -31,6 +43,17 @@ describe("handles", () => {
 
   afterAll(async () => {
     await revertHardhat(provider);
+  });
+
+  describe("#authenticateHandle", () => {
+    it("sets the currentUserId correctly when a handle exists", async () => {
+      await authenticateHandle("taken");
+      expect(config.getConfig().currentUserId).toEqual("0x03e8");
+    });
+
+    it("throws UserNotFound when the handle does not exist", async () => {
+      await expect(authenticateHandle("not-taken")).rejects.toThrow(UserNotFound);
+    });
   });
 
   describe("#isAvailable", () => {
