@@ -5,6 +5,12 @@ import * as store from "../store/store";
 import { getRandomString, MissingUser } from "../utilities";
 
 /**
+ * InvalidActivityPubOpts represents an error in the activity pub options
+ * provided to a method.
+ */
+export const InvalidActivityPubOpts = new Error("Invalid activity pub options.");
+
+/**
  * broadcast() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
  * creates a DSNP broadcast message for the hosted file for later announcement.
@@ -20,10 +26,13 @@ export const broadcast = async (
   contentOptions: activityPub.ActivityPubOpts,
   opts?: config.ConfigOpts
 ): Promise<messages.BroadcastMessage> => {
-  // Create the activity pub file and upload it
+  // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
-  const filename = getRandomString();
+  if (!activityPub.validate(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
+
+  // Upload the content file
+  const filename = getRandomString();
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
@@ -49,10 +58,13 @@ export const reply = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<messages.ReplyMessage> => {
-  // Create the activity pub file and upload it
+  // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
-  const filename = getRandomString();
+  if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
+
+  // Upload the content file
+  const filename = getRandomString();
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
