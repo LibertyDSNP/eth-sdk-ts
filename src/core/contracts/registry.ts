@@ -107,11 +107,21 @@ export const getDSNPRegistryUpdateEvents = async (
   });
 };
 
+/**
+ * validates a message against a signature and then checks that the signer has the permissions
+ * specified.
+ * @param signature the signature for the message
+ * @param message the DSNPMessage
+ * @param dsnpId the DSNP Id of the supposed signer
+ * @param permission the permissions to check for
+ * @param blockNumber (optional) the block number at which to perform this check.  Defaults to "latest"
+ */
 export const validateMessage = async (
   signature: HexString,
   message: DSNPMessage,
   dsnpId: HexString,
-  permission: Permission
+  permission: Permission,
+  blockNumber?: number
 ): Promise<boolean> => {
   const reg = await resolveId(dsnpId);
   if (!reg) throw MissingContract;
@@ -119,8 +129,9 @@ export const validateMessage = async (
   const { provider } = getConfig();
   if (!provider) throw MissingProvider;
 
-  const bh = (await provider?.getBlock("latest"))?.number;
-  if (!bh) throw MissingProvider;
+  const realBlockNumber = blockNumber ? blockNumber : "latest";
+  const bh = (await provider?.getBlock(realBlockNumber))?.number;
+  if (!bh) throw new Error("could not get block at height " + realBlockNumber);
 
   const signerAddr = ethers.utils.verifyMessage(serialize(message), signature);
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, bh);

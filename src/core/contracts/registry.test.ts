@@ -14,6 +14,11 @@ import { setupConfig, getSignerFromPrivateKey } from "../../test/sdkTestConfig";
 import { Permission } from "./identity";
 import { DSNPMessage, sign } from "../messages/messages";
 import { generateBroadcast} from "../../test/generators/dsnpGenerators";
+import {
+  getIdFromRegisterTransaction,
+  newRegistrationForAccountIndex,
+  RegistrationWithSigner,
+} from "../../test/testAccounts";
 
 describe("registry", () => {
   let signer: Signer;
@@ -235,9 +240,11 @@ describe("registry", () => {
   describe("validateMessage", () => {
     const msg: DSNPMessage = generateBroadcast();
 
-    let contractAddr = "";
     const permAllowed = Permission.ANNOUNCE;
     const permDenied = Permission.OWNERSHIP_TRANSFER;
+    let contractAddr = "";
+    let sig = "";
+    let dsnpId = "";
     let signerAddr = "";
 
     beforeAll(async () => {
@@ -246,56 +253,38 @@ describe("registry", () => {
       const identityContract = await new Identity__factory(signer).deploy(signerAddr);
       await identityContract.deployed();
       contractAddr = identityContract.address;
+      const tx = await register(contractAddr, "Animaniacs");
+      dsnpId = await getIdFromRegisterTransaction(tx);
+      sig = await sign(msg);
     });
 
     afterAll(async () => {
       await revertHardhat(provider);
     });
 
-    it("throws if id cannot be resolved", async () => {
-      let err: Error = new Error();
-      try {
-        await validateMessage("0xdeadbeef", msg, "0xabcd1234", permAllowed);
-      } catch (e) {
-        err = e;
-      }
-      expect(err.message).toEqual("Contract was not found");
+    it("returns true if the signer is authorized for the given permissions", async () => {
+      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed)).toBeTruthy();
     });
 
-    it("returns true if the signer is authorized to do the thing", async () => {
-      const tx = await register(contractAddr, "Foofy Fr");
-      const dsnpId = await getIdFromRegisterTransaction(tx);
-      const sig = await sign(msg);
-
-      const res = await validateMessage(sig, msg, dsnpId.toString(), permAllowed);
-      expect(res).toBeTruthy();
-    });
-
-    it("returns false if the signer is not authorized", async () => {
-      const tx = await register(contractAddr, "Handle");
-      const dsnpId = await getIdFromRegisterTransaction(tx);
-      const sig = await sign(msg);
-
-      // last key in the test setup
-      const otherSignerPrivateKey = "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e";
-      const newSigner = getSignerFromPrivateKey(otherSignerPrivateKey);
-      const newSignerAddr = await newSigner.getAddress();
-      const identityContract = await new Identity__factory(newSigner).deploy(newSignerAddr);
-      await identityContract.deployed();
-      const newContractAddr = identityContract.address;
-      const tx2 = await register(newContractAddr, "Handel");
-      const dsnpId2 = await getIdFromRegisterTransaction(tx2);
-      expect(dsnpId).not.toEqual(dsnpId2);
-
-      const res = await validateMessage(sig, msg, dsnpId2.toString(), permDenied);
+    it("returns false if the signer is not authorized for the given permissions", async () => {
+      const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(19, "Handel");
+      const res = await validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied);
       expect(res).toBeFalsy();
+    });
+
+    it("accepts a block number", async () => {
+      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed, 1)).toBeTruthy();
+    });
+
+    it("throws if id cannot be resolved", async () => {
+      await expect(validateMessage("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
+        "Contract was not found"
+      );
+    });
+    it("throws if block number cannot be retrieved", async () => {
+      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed, 99999)).rejects.toThrow(
+        "could not get block at height 99999"
+      );
     });
   });
 });
-
-const getIdFromRegisterTransaction = async (transaction: ContractTransaction) => {
-  const receipt = await transaction.wait(1);
-  const reg = Registry__factory.createInterface();
-  const event = reg.parseLog(receipt.logs[0]);
-  return event.args[0];
-};
