@@ -41,11 +41,13 @@ export const broadcast = async (
  * creates a DSNP reply message for the hosted file for later announcement.
  *
  * @param contentOptions Options for the activity pub content to generate
+ * @param inReplyTo      The DSNP Id of the message that this message is in reply to
  * @param opts           Optional. Configuration overrides, such as from address, if any
  */
 export const reply = async (
   contentOptions: activityPub.ActivityPubOpts,
-  opts: config.ConfigOpts
+  inReplyTo: string,
+  opts?: config.ConfigOpts
 ): Promise<messages.ReplyMessage> => {
   // Create the activity pub file and upload it
   const contentObj = activityPub.create(contentOptions);
@@ -59,7 +61,7 @@ export const reply = async (
 
   // Create and returns the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
-  return messages.createReplyMessage(currentUserId, uri.toString(), contentHash, contentObj.inReplyTo as string);
+  return messages.createReplyMessage(currentUserId, uri.toString(), contentHash, inReplyTo);
 };
 
 /**
@@ -73,7 +75,7 @@ export const reply = async (
 export const react = async (
   emoji: string,
   inReplyTo: string,
-  opts: config.ConfigOpts
+  opts?: config.ConfigOpts
 ): Promise<messages.ReactionMessage> => {
   // Get current user id
   const { currentUserId } = await config.getConfig(opts);
