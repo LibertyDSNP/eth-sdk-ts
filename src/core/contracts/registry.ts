@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { getConfig } from "../../config";
+import { getConfig, ConfigOpts } from "../../config";
 import { BigNumber, ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
@@ -26,8 +26,8 @@ export type Handle = string;
  * @param handle String handle to resolve
  * @returns The Hex for the DSNP Id or null if not found
  */
-export const resolveRegistration = async (handle: Handle): Promise<Registration | null> => {
-  const contract = await getContract();
+export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
+  const contract = await getContract(opts);
   try {
     const [dsnpId, contractAddr] = await contract.resolveRegistration(handle);
     return {
@@ -51,9 +51,13 @@ export const resolveRegistration = async (handle: Handle): Promise<Registration 
  * @param handle The string handle to register
  * @returns The contract Transaction
  */
-export const register = async (identityContractAddress: HexString, handle: Handle): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+export const register = async (
+  identityContractAddress: HexString,
+  handle: Handle,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).register(identityContractAddress, handle);
 };
@@ -67,10 +71,11 @@ export const register = async (identityContractAddress: HexString, handle: Handl
  */
 export const changeAddress = async (
   handle: Handle,
-  identityContractAddress: HexString
+  identityContractAddress: HexString,
+  opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).changeAddress(identityContractAddress, handle);
 };
@@ -82,9 +87,13 @@ export const changeAddress = async (
  * @param newHandle The new handle to use instead
  * @returns The contract Transaction
  */
-export const changeHandle = async (oldHandle: Handle, newHandle: Handle): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+export const changeHandle = async (
+  oldHandle: Handle,
+  newHandle: Handle,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).changeHandle(oldHandle, newHandle);
 };
@@ -95,9 +104,10 @@ export const changeHandle = async (oldHandle: Handle, newHandle: Handle): Promis
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
-  filter: Partial<Omit<Registration, "handle">>
+  filter: Partial<Omit<Registration, "handle">>,
+  opts?: ConfigOpts
 ): Promise<Registration[]> => {
-  const contract = await getContract();
+  const contract = await getContract(opts);
   const dsnpId = filter.dsnpId ? BigNumber.from(filter.dsnpId) : undefined;
   const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpId, filter.contractAddr));
 
@@ -143,11 +153,11 @@ export const isMessageSignatureAuthorizedTo = async (
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 
-const getContract = async () => {
+const getContract = async (opts?: ConfigOpts) => {
   const {
     provider,
     contracts: { registry },
-  } = getConfig();
+  } = getConfig(opts);
   if (!provider) throw MissingProvider;
   const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
 

@@ -9,7 +9,7 @@ describe("messages", () => {
     beforeAll(async () => {
       const privateKey = "0x6dcefd57d921dc570e198f6bd9dffc32954ab071184c780770cf4541dd23f68e";
       await setConfig({
-        ...(await getConfig()),
+        ...getConfig(),
         signer: new ethers.Wallet(privateKey),
       });
     });
@@ -51,7 +51,7 @@ describe("messages", () => {
     const address = await signer.getAddress();
 
     await setConfig({
-      ...(await getConfig()),
+      ...getConfig(),
       signer,
     });
 

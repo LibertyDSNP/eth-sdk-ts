@@ -1,5 +1,5 @@
 import { ContractTransaction, ethers, EventFilter } from "ethers";
-import { getConfig } from "../../config";
+import { getConfig, ConfigOpts } from "../../config";
 import { HexString } from "../../types/Strings";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
@@ -41,8 +41,8 @@ export const dsnpBatchFilter = async (): Promise<EventFilter> => {
  * @param provider provider from which to retrieve events
  * @returns All announcements recorded as DSNPBatch events
  */
-export const decodeDSNPBatchEvents = async (): Promise<Announcement[]> => {
-  const { provider } = getConfig();
+export const decodeDSNPBatchEvents = async (opts?: ConfigOpts): Promise<Announcement[]> => {
+  const { provider } = getConfig(opts);
   if (!provider) throw MissingProvider;
 
   const filter = await dsnpBatchFilter();
@@ -57,12 +57,12 @@ export const decodeDSNPBatchEvents = async (): Promise<Announcement[]> => {
     });
 };
 
-const getAnnouncerContract = async (): Promise<Announcer> => {
+const getAnnouncerContract = async (opts?: ConfigOpts): Promise<Announcer> => {
   const {
     signer,
     provider,
     contracts: { announcer },
-  } = await getConfig();
+  } = await getConfig(opts);
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
