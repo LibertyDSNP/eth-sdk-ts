@@ -17,5 +17,4 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as activityPubImport from "./activityPub";
-export const activityPub = activityPubImport;
+export * from "./activityPub";

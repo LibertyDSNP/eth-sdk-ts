@@ -17,5 +17,4 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as messagesImport from "./messages";
-export const messages = messagesImport;
+export * from "./messages";
