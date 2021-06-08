@@ -32,4 +32,4 @@ export default {
   ...network,
   ...search,
   core,
-}
+};
