@@ -41,7 +41,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 exports.__esModule = true;
-__exportStar(require("${target ? [...Array(target.split("/").length)].map(() => "../") : "./"}dist/cjs/${[target, name]
+__exportStar(require("${target ? [...Array(target.split("/").length)].map(() => "../").join("") : "./"}dist/cjs/${[target, name]
   .filter((x) => !!x)
   .join("/")}"), exports);
 `;
