@@ -1,7 +1,7 @@
 // import * as activityPub from "../activityPub/activityPub";
 // import * as config from "../config/config";
 // import * as storage from "../storage/storage";
-import { BroadcastOptions, ReactionOptions, ReplyOptions } from "../activityPub/activityPub";
+import { ActivityPubOpts } from "../activityPub/activityPub";
 import { ConfigOpts } from "../config/config";
 import { NotImplementedError } from "../utilities/errors";
 
@@ -13,7 +13,7 @@ import { NotImplementedError } from "../utilities/errors";
  * @param opts    Optional. Configuration overrides, such as from address, if any
  *
  */
-export const broadcast = async (_content: BroadcastOptions, _opts?: ConfigOpts): Promise<void> => {
+export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -33,7 +33,7 @@ export const broadcast = async (_content: BroadcastOptions, _opts?: ConfigOpts):
  * @param content The content for the reply to broadcast
  * @param opts    Optional. Configuration overrides, such as from address, if any
  */
-export const reply = async (_content: ReplyOptions, _opts?: ConfigOpts): Promise<void> => {
+export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);
@@ -51,10 +51,11 @@ export const reply = async (_content: ReplyOptions, _opts?: ConfigOpts): Promise
  * react() creates a reaction activity pub event and enqueues it for the next
  * batch. This method is not yet implemented.
  *
- * @param content The content for the reaction to broadcast
- * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @param emoji     The emoji with which to react
+ * @param inReplyTo The DSNP Id of the message to which to react
+ * @param opts      Optional. Configuration overrides, such as from address, if any
  */
-export const react = async (_content: ReactionOptions, _opts?: ConfigOpts): Promise<void> => {
+export const react = async (_emoji: string, _opts?: ConfigOpts): Promise<void> => {
   throw NotImplementedError;
 
   // const config = config.getConfig(opts);

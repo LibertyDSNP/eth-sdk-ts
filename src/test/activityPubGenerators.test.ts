@@ -19,9 +19,9 @@ describe("activityPubGenerators", () => {
     expect(res.type).toEqual("Note");
   });
 
-  it("generateNote does", () => {
+  it("activityPubGenerators does", () => {
     let res: ActivityPub = apg.generateNote(from, opText);
-    expect(res.attachments).toEqual("");
+    expect(res.attachments).toEqual([]);
     expect(res.type).toEqual("Note");
     expect(res.inReplyTo).toBeUndefined();
 
