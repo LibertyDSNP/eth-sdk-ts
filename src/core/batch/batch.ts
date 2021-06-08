@@ -1,9 +1,7 @@
 import { DSNPType } from "../messages/messages";
 import { NotImplementedError } from "../utilities";
 import request from "request";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const parquet = require("@dsnp/parquetjs");
-const { ParquetReader } = parquet;
+import { ParquetReader } from "@dsnp/parquetjs";
 
 type ReadRowFunction = {
   (row: DSNPType): void;

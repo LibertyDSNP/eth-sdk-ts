@@ -1,8 +1,5 @@
 import { batchIncludes } from "./batch";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const parquet = require("@dsnp/parquetjs");
-const { ParquetReader } = parquet;
+import { ParquetReader } from "@dsnp/parquetjs";
 
 describe("batchIncludes", () => {
   let reader: typeof ParquetReader;
@@ -12,7 +9,7 @@ describe("batchIncludes", () => {
       check: jest.fn(),
     };
 
-    const bloomFitlerData = {
+    const bloomFilterData = {
       name: [
         {
           sbbf: MockSplitBlockBloomFilter,
@@ -22,7 +19,7 @@ describe("batchIncludes", () => {
       ],
     };
 
-    reader = { getBloomFilters: jest.fn().mockResolvedValue(bloomFitlerData) };
+    reader = { getBloomFilters: jest.fn().mockResolvedValue(bloomFilterData) };
   });
 
   it("calls getBloomFilter", () => {

@@ -45,6 +45,7 @@
     "@types/jest": "26.0.22",
     "@types/lodash": "^4.14.170",
     "@types/mkdirp": "^1.0.1",
+    "@types/request": "^2.48.5",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
     "babel-jest": "^26.6.3",
@@ -98,12 +99,12 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "@dsnp/contracts": "0.0.0-54f452",
-    "@dsnp/parquetjs": "^0.0.0-2ccc4e",
+    "@dsnp/contracts": "0.1.0",
+    "@dsnp/parquetjs": "0.9.0",
     "@ethersproject/abi": "^5.3.0",
     "ethers": "^5.3.0",
     "js-sha3": "^0.8.0",
-    "ws": "^7.4.5"
+    "ws": "^7.4.6"
   },
   "peerDependencies": {
     "@aws-sdk/client-s3": "^3.17.0"
