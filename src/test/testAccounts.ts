@@ -47,7 +47,7 @@ export const newRegistrationForAccountIndex = async (
   const identityContract = await new Identity__factory(signer).deploy(newSignerAddr);
   await identityContract.deployed();
   const contractAddr = identityContract.address;
-  const tx2 = await register(contractAddr, "Handel");
+  const tx2 = await register(contractAddr, handle);
   const dsnpId = await getIdFromRegisterTransaction(tx2);
   return { contractAddr, dsnpId, handle, signer };
 };

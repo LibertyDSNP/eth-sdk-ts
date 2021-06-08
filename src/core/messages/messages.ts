@@ -23,6 +23,9 @@ export interface DSNPMessage {
   dsnpType: DSNPType;
 }
 
+/**
+ * BroadcastMessage: a DSNP message of type Broadcast
+ */
 export interface BroadcastMessage extends DSNPMessage {
   dsnpType: DSNPType.Broadcast;
   contentHash: string;
