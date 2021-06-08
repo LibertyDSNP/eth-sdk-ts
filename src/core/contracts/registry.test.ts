@@ -268,8 +268,7 @@ describe("registry", () => {
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
       const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(19, "Handel");
-      const res = await validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied);
-      expect(res).toBeFalsy();
+      await expect(validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied)).toBeFalsy();
     });
 
     it("accepts a block number", async () => {
