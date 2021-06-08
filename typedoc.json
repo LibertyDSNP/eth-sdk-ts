@@ -1,0 +1,9 @@
+{
+  "entryPoints": [
+    "./src/index.ts",
+    "./src/core"
+  ],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeInternal": true
+}
