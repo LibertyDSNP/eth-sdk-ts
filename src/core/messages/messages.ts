@@ -23,9 +23,6 @@ export interface DSNPMessage {
   dsnpType: DSNPType;
 }
 
-/**
- * BroadcastMessage: a DSNP message of type Broadcast
- */
 export interface BroadcastMessage extends DSNPMessage {
   dsnpType: DSNPType.Broadcast;
   contentHash: string;
@@ -104,7 +101,7 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   inReplyTo,
 });
 
-const serialize = (message: DSNPMessage): string => {
+export const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 

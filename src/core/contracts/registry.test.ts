@@ -1,9 +1,19 @@
 import { BigNumber, ContractTransaction, Signer } from "ethers";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
-import { resolveRegistration, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
-import { Identity__factory, Registry__factory } from "../../types/typechain";
-import { setupConfig } from "../../test/sdkTestConfig";
 import { JsonRpcProvider } from "@ethersproject/providers";
+import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
+import {
+  changeAddress,
+  changeHandle,
+  getDSNPRegistryUpdateEvents,
+  register,
+  resolveRegistration,
+  validateMessage,
+} from "./registry";
+import { Identity__factory, Registry__factory } from "../../types/typechain";
+import { setupConfig, getSignerFromPrivateKey } from "../../test/sdkTestConfig";
+import { Permission } from "./identity";
+import { DSNPMessage, sign } from "../messages/messages";
+import { generateBroadcast} from "../../test/generators/dsnpGenerators";
 
 describe("registry", () => {
   let signer: Signer;
@@ -223,10 +233,63 @@ describe("registry", () => {
   });
 
   describe("validateMessage", () => {
-    it("throws if not registered");
-    it("throws if can't get block height");
-    it("returns true if the signer is authorized to do the thing");
-    it("returns false if the signer is not authorized to do the thing");
+    const msg: DSNPMessage = generateBroadcast();
+
+    let contractAddr = "";
+    const permAllowed = Permission.ANNOUNCE;
+    const permDenied = Permission.OWNERSHIP_TRANSFER;
+    let signerAddr = "";
+
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
+      signerAddr = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(signerAddr);
+      await identityContract.deployed();
+      contractAddr = identityContract.address;
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
+    });
+
+    it("throws if id cannot be resolved", async () => {
+      let err: Error = new Error();
+      try {
+        await validateMessage("0xdeadbeef", msg, "0xabcd1234", permAllowed);
+      } catch (e) {
+        err = e;
+      }
+      expect(err.message).toEqual("Contract was not found");
+    });
+
+    it("returns true if the signer is authorized to do the thing", async () => {
+      const tx = await register(contractAddr, "Foofy Fr");
+      const dsnpId = await getIdFromRegisterTransaction(tx);
+      const sig = await sign(msg);
+
+      const res = await validateMessage(sig, msg, dsnpId.toString(), permAllowed);
+      expect(res).toBeTruthy();
+    });
+
+    it("returns false if the signer is not authorized", async () => {
+      const tx = await register(contractAddr, "Handle");
+      const dsnpId = await getIdFromRegisterTransaction(tx);
+      const sig = await sign(msg);
+
+      // last key in the test setup
+      const otherSignerPrivateKey = "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e";
+      const newSigner = getSignerFromPrivateKey(otherSignerPrivateKey);
+      const newSignerAddr = await newSigner.getAddress();
+      const identityContract = await new Identity__factory(newSigner).deploy(newSignerAddr);
+      await identityContract.deployed();
+      const newContractAddr = identityContract.address;
+      const tx2 = await register(newContractAddr, "Handel");
+      const dsnpId2 = await getIdFromRegisterTransaction(tx2);
+      expect(dsnpId).not.toEqual(dsnpId2);
+
+      const res = await validateMessage(sig, msg, dsnpId2.toString(), permDenied);
+      expect(res).toBeFalsy();
+    });
   });
 });
 

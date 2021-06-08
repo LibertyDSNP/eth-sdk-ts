@@ -1,6 +1,6 @@
 //eslint-disable-next-line
 require("dotenv").config();
-import { setConfig } from "../config";
+import { getConfig, setConfig } from "../config";
 import { ethers } from "ethers";
 
 type SdkTestConfig = { provider: ethers.providers.JsonRpcProvider; signer: ethers.Signer };
@@ -18,4 +18,14 @@ export const setupConfig = (): SdkTestConfig => {
     signer,
     provider,
   };
+};
+
+/**
+ * Use this function to set up a new signer other than what is in the config.
+ * @param privateKey
+ */
+export const getSignerFromPrivateKey = (privateKey: string): ethers.Signer => {
+  const { provider } = getConfig();
+  if (!provider) throw new Error("no provider configured");
+  return new ethers.Wallet(privateKey, provider);
 };

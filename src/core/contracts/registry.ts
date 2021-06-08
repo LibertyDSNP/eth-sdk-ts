@@ -8,6 +8,7 @@ import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { resolveId} from "../../handles";
 import { isAuthorizedTo } from "./identity";
+import { DSNPMessage, serialize } from "../messages/messages";
 
 const CONTRACT_NAME = "Registry";
 
@@ -108,7 +109,7 @@ export const getDSNPRegistryUpdateEvents = async (
 
 export const validateMessage = async (
   signature: HexString,
-  message: string,
+  message: DSNPMessage,
   dsnpId: HexString,
   permission: Permission
 ): Promise<boolean> => {
@@ -121,7 +122,7 @@ export const validateMessage = async (
   const bh = (await provider?.getBlock("latest"))?.number;
   if (!bh) throw MissingProvider;
 
-  const signerAddr = ethers.utils.verifyMessage(message, signature);
+  const signerAddr = ethers.utils.verifyMessage(serialize(message), signature);
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, bh);
 };
 
