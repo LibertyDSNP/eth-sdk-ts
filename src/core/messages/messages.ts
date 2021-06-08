@@ -4,6 +4,7 @@ import { getConfig, ConfigOpts } from "../../config";
 import { HexString } from "../../types/Strings";
 import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
+import { DSNPBatchMessage } from "../batch/batchMesssages";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages
@@ -116,20 +117,24 @@ const serialize = (message: DSNPMessage): string => {
 };
 
 /**
- * sign() takes a DSNP message and returns a Uint8Array signature for the
- * message using the Signer provided in the configuration options.
+ * sign() takes a DSNP message and returns a signed DSNP message ready for
+ * inclusion in a batch.
  *
  * @throws {@link MissingSigner}
  * This error is thrown if no Signer is defined in the configuration options.
  *
  * @param message The DSNP message to sign
  * @param opts    Optional. Configuration overrides, such as from address, if any
- * @returns       The message signature in hex
+ * @returns       The signed DSNP message
  */
-export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<HexString> => {
+export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
   const { signer } = await getConfig(opts);
   if (!signer) throw MissingSigner;
-  return signer.signMessage(serialize(message));
+  const signature = await signer.signMessage(serialize(message));
+  return {
+    ...message,
+    signature,
+  };
 };
 
 /**

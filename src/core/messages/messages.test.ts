@@ -16,8 +16,9 @@ describe("messages", () => {
 
     it("returns a valid signature for a valid private key and message", async () => {
       const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
+      const signedMessage = await sign(message);
 
-      expect(await sign(message)).toEqual(
+      expect(signedMessage.signature).toEqual(
         "0xd33f14693809e6c7bcd5148cb585a63ce51d54bd229a7306dab22d3437b001140538494c1b7b19a2a806bcc6da26fc205b237cfe4a60dd738d994ec72e2a6a561c"
       );
     });
@@ -54,8 +55,8 @@ describe("messages", () => {
       signer,
     });
 
-    const signature = await sign(message);
+    const signedMessage = await sign(message);
 
-    expect(recoverPublicKey(message, signature)).toEqual(address);
+    expect(recoverPublicKey(message, signedMessage.signature)).toEqual(address);
   });
 });
