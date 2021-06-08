@@ -6,9 +6,9 @@ import { BigNumber, ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
-import { resolveId} from "../../handles";
+import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
-import { DSNPMessage, serialize } from "../messages/messages";
+import { DSNPMessage, serialize } from "../messages";
 
 const CONTRACT_NAME = "Registry";
 

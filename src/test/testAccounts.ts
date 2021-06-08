@@ -1,6 +1,6 @@
 import { ContractTransaction, ethers } from "ethers";
-import { getConfig } from "../config/config";
-import { register, Registration } from "../contracts/registry";
+import { getConfig } from "../config";
+import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 
 export interface RegistrationWithSigner extends Registration {

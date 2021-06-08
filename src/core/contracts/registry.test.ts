@@ -1,4 +1,4 @@
-import { BigNumber, ContractTransaction, Signer } from "ethers";
+import { BigNumber, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
 import {
@@ -9,11 +9,11 @@ import {
   resolveRegistration,
   validateMessage,
 } from "./registry";
-import { Identity__factory, Registry__factory } from "../../types/typechain";
-import { setupConfig, getSignerFromPrivateKey } from "../../test/sdkTestConfig";
+import { Identity__factory } from "../../types/typechain";
+import { setupConfig } from "../../test/sdkTestConfig";
 import { Permission } from "./identity";
-import { DSNPMessage, sign } from "../messages/messages";
-import { generateBroadcast} from "../../test/generators/dsnpGenerators";
+import { DSNPMessage, sign } from "../messages";
+import { generateBroadcast } from "../../test/generators/dsnpGenerators";
 import {
   getIdFromRegisterTransaction,
   newRegistrationForAccountIndex,
