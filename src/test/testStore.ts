@@ -1,4 +1,4 @@
-import { Content, File, StorageInterface } from "../storage/storage";
+import { Content, File, StorageInterface } from "../core/storage/storage";
 
 export default class TestStore implements StorageInterface {
   store: Record<string, Content>;

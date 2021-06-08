@@ -1,10 +1,10 @@
 import { keccak256 } from "js-sha3";
 
-import * as config from "../config/config";
+import * as config from "./config";
 import * as content from "./content";
-import { DSNPType } from "../messages/messages";
-import TestStore from "../test/testStore";
-import { MissingStoreError, MissingUser } from "../utilities";
+import { DSNPType } from "./core/messages/messages";
+import TestStore from "./test/testStore";
+import { MissingStoreError, MissingUser } from "./core/utilities";
 
 describe("content", () => {
   describe("broadcast", () => {
@@ -50,7 +50,7 @@ describe("content", () => {
 
           expect(message).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
-            type: DSNPType.Broadcast,
+            dsnpType: DSNPType.Broadcast,
             uri: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
           });
@@ -155,7 +155,7 @@ describe("content", () => {
 
           expect(message).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
-            type: DSNPType.Reply,
+            dsnpType: DSNPType.Reply,
             uri: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
             inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
@@ -252,7 +252,7 @@ describe("content", () => {
 
         expect(message).toMatchObject({
           fromId: "dsnp://0123456789ABCDEF",
-          type: DSNPType.Reaction,
+          dsnpType: DSNPType.Reaction,
           emoji: "🏳️‍🌈",
           inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
         });

@@ -1,8 +1,8 @@
-import * as activityPub from "../activityPub/activityPub";
-import * as config from "../config/config";
-import * as messages from "../messages/messages";
-import * as store from "../store/store";
-import { getRandomString, validateDSNPId, MissingUser } from "../utilities";
+import * as activityPub from "./core/activityPub/activityPub";
+import * as config from "./config";
+import * as messages from "./core/messages/messages";
+import * as store from "./core/store/store";
+import { getRandomString, validateDSNPId, MissingUser } from "./core/utilities";
 
 /**
  * InvalidActivityPubOpts represents an error in the activity pub options
