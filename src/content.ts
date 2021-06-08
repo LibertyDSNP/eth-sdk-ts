@@ -1,10 +1,9 @@
 import * as activityPub from "../activityPub/activityPub";
 import * as config from "../config/config";
-import * as handles from "./handles";
 import * as messages from "../messages/messages";
 import * as queue from "../queue/queue";
 import * as store from "../store/store";
-import { getRandomString, MissingSigner } from "../utilities";
+import { getRandomString, MissingUser } from "../utilities";
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -24,20 +23,18 @@ export const broadcast = async (
   opts?: config.ConfigOpts
 ): Promise<void> => {
   // Create the activity pub file and upload it
-  const contentObj: activityPub.ActivityPub = activityPub.create(contentOptions);
+  const contentObj = activityPub.create(contentOptions);
   const filename = getRandomString();
-  const content = JSON.stringify(contentObj);
+  const content = activityPub.serialize(contentObj);
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { signer } = await config.getConfig(opts);
-  if (!signer) throw MissingSigner;
-  const fromAddress = await signer.getAddress();
-  const fromId = await handles.addressToId(fromAddress);
+  const { currentUserId } = await config.getConfig(opts);
+  if (!currentUserId) throw MissingUser;
 
   // Create the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
-  const message = messages.createBroadcastMessage(fromId, uri.toString(), contentHash);
+  const message = messages.createBroadcastMessage(currentUserId, uri.toString(), contentHash);
 
   // Enqueue the message
   queue.enqueue(message, opts);
@@ -54,20 +51,23 @@ export const broadcast = async (
  */
 export const reply = async (contentOptions: activityPub.ActivityPubOpts, opts: config.ConfigOpts): Promise<void> => {
   // Create the activity pub file and upload it
-  const contentObj: activityPub.ActivityPub = activityPub.create(contentOptions);
+  const contentObj = activityPub.create(contentOptions);
   const filename = getRandomString();
-  const content = JSON.stringify(contentObj);
+  const content = activityPub.serialize(contentObj);
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { signer } = await config.getConfig(opts);
-  if (!signer) throw MissingSigner;
-  const fromAddress = await signer.getAddress();
-  const fromId = await handles.addressToId(fromAddress);
+  const { currentUserId } = await config.getConfig(opts);
+  if (!currentUserId) throw MissingUser;
 
   // Create the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
-  const message = messages.createReplyMessage(fromId, uri.toString(), contentHash, contentObj.inReplyTo as string);
+  const message = messages.createReplyMessage(
+    currentUserId,
+    uri.toString(),
+    contentHash,
+    contentObj.inReplyTo as string
+  );
 
   // Enqueue the message
   queue.enqueue(message, opts);
@@ -84,13 +84,11 @@ export const reply = async (contentOptions: activityPub.ActivityPubOpts, opts: c
  */
 export const react = async (emoji: string, inReplyTo: string, opts: config.ConfigOpts): Promise<void> => {
   // Get current user id
-  const { signer } = await config.getConfig(opts);
-  if (!signer) throw MissingSigner;
-  const fromAddress = await signer.getAddress();
-  const fromId = await handles.addressToId(fromAddress);
+  const { currentUserId } = await config.getConfig(opts);
+  if (!currentUserId) throw MissingUser;
 
   // Create the DSNP Reaction message
-  const message = messages.createReactionMessage(fromId, emoji, inReplyTo);
+  const message = messages.createReactionMessage(currentUserId, emoji, inReplyTo);
 
   // Enqueue the message
   queue.enqueue(message, opts);

@@ -1,15 +1,13 @@
-import { ethers } from "ethers";
-
 import * as config from "../config/config";
 import * as content from "./content";
 import { DSNPType } from "../messages/messages";
 import MemoryQueue from "../queue/memoryQueue";
 import TestStore from "../test/testStore";
-import { MissingSigner, MissingStore } from "../utilities";
+import { MissingStoreError, MissingUser } from "../utilities";
 
 describe("content", () => {
   describe("broadcast", () => {
-    describe("with a valid signer and storage adapter", () => {
+    describe("with a valid storage adapter and user id", () => {
       let queue: MemoryQueue;
       let store: TestStore;
 
@@ -20,59 +18,43 @@ describe("content", () => {
         config.setConfig({
           queue: queue,
           store: store,
-          signer: ethers.Wallet.createRandom(),
+          currentUserId: "dsnp://0123456789ABCDEF",
         });
       });
 
       it("uploads an activity pub object matching the provided specifications", async () => {
         await content.broadcast({
-          author: "John Doe <johndoe@sample.org>",
-          body: "Lorem ipsum delor blah blah blah",
-          title: "Lorem Ipsum",
+          attributedTo: "John Doe <johndoe@sample.org>",
+          content: "Lorem ipsum delor blah blah blah",
+          name: "Lorem Ipsum",
         });
 
         const storeContents = store.getStore();
         const keys = Object.keys(storeContents);
         expect(keys.length).toEqual(1);
 
-        expect(storeContents[keys[0]]).toEqual("");
+        expect(storeContents[keys[0]]).toMatch(
+          /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","attributedTo":"John Doe <johndoe@sample\.org>","content":"Lorem ipsum delor blah blah blah","name":"Lorem Ipsum","published":"[0-9TZ\-:.]+","type":"Note"\}/
+        );
       });
 
       it("enqueues a broadcast DSNP message linking to the activity pub object", async () => {
         await content.broadcast({
-          author: "John Doe <johndoe@sample.org>",
-          body: "Lorem ipsum delor blah blah blah",
-          title: "Lorem Ipsum",
+          attributedTo: "John Doe <johndoe@sample.org>",
+          content: "Lorem ipsum delor blah blah blah",
+          name: "Lorem Ipsum",
         });
 
         const storeContents = store.getStore();
         const keys = Object.keys(storeContents);
         expect(keys.length).toEqual(1);
 
-        const messages = await queue.getAll();
+        const message = await queue.dequeue(DSNPType.Broadcast);
 
-        expect(messages.length).toEqual(1);
-        expect(messages[0]).toMatchObject({
+        expect(message).toMatchObject({
           type: DSNPType.Broadcast,
           uri: `http://fakestore.org/${keys[0]}`,
         });
-      });
-    });
-
-    describe("without a valid signer", () => {
-      it("throws MissingSigner", async () => {
-        config.setConfig({
-          queue: new MemoryQueue(),
-          store: new TestStore(),
-        });
-
-        await expect(
-          content.broadcast({
-            author: "John Doe <johndoe@sample.org>",
-            body: "Lorem ipsum delor blah blah blah",
-            title: "Lorem Ipsum",
-          })
-        ).rejects.toThrow(MissingSigner);
       });
     });
 
@@ -80,16 +62,33 @@ describe("content", () => {
       it("throws MissingStore", async () => {
         config.setConfig({
           queue: new MemoryQueue(),
-          signer: ethers.Wallet.createRandom(),
+          currentUserId: "dsnp://0123456789ABCDEF",
         });
 
         await expect(
           content.broadcast({
-            author: "John Doe <johndoe@sample.org>",
-            body: "Lorem ipsum delor blah blah blah",
-            title: "Lorem Ipsum",
+            attributedTo: "John Doe <johndoe@sample.org>",
+            content: "Lorem ipsum delor blah blah blah",
+            name: "Lorem Ipsum",
           })
-        ).rejects.toThrow(MissingStore);
+        ).rejects.toThrow(MissingStoreError);
+      });
+    });
+
+    describe("without a user id", () => {
+      it("throws MissingStore", async () => {
+        config.setConfig({
+          queue: new MemoryQueue(),
+          store: new TestStore(),
+        });
+
+        await expect(
+          content.broadcast({
+            attributedTo: "John Doe <johndoe@sample.org>",
+            content: "Lorem ipsum delor blah blah blah",
+            name: "Lorem Ipsum",
+          })
+        ).rejects.toThrow(MissingUser);
       });
     });
   });
