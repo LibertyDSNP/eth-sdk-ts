@@ -1,12 +1,12 @@
 import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./generators/dsnpGenerators";
 import { countBy } from "lodash";
-import { DSNPType } from "../messages/messages";
+import { DSNPType } from "core/messages/messages";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {
     const numMsgs = 100;
     const data = generateDSNPStream(numMsgs);
-    const counts = countBy(data, "type");
+    const counts = countBy(data, "dsnpType");
 
     expect(data.length).toEqual(numMsgs);
 
@@ -20,7 +20,7 @@ describe("dsnp functions", () => {
   it("generateBroadcast works", () => {
     const dsnpMsg = generateBroadcast();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.type).toEqual(DSNPType.Broadcast);
+    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Broadcast);
     expect(dsnpMsg.fromId.length).toBeGreaterThan(0);
 
     // validates that it gets a parseable URL and not garbage.
@@ -31,11 +31,11 @@ describe("dsnp functions", () => {
   it("generateReply works", () => {
     const dsnpMsg = generateReply();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.type).toEqual(DSNPType.Reply);
+    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Reply);
   });
   it("generateReaction works", () => {
     const dsnpMsg = generateReaction();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.type).toEqual(DSNPType.Reaction);
+    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Reaction);
   });
 });

@@ -2,8 +2,8 @@ import { addresses } from "@dsnp/test-generators";
 const getNPrefabAddresses = addresses.getNPrefabAddresses;
 
 import * as apg from "./generators/activityPubGenerators";
-import { HexString } from "../types/Strings";
-import { ActivityPub, ActivityPubAttachment } from "../activityPub/activityPub";
+import { HexString } from "types/Strings";
+import { ActivityPub, ActivityPubAttachment } from "core/activityPub/activityPub";
 
 describe("activityPubGenerators", () => {
   const addrs: Array<HexString> = getNPrefabAddresses(2);

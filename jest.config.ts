@@ -9,6 +9,7 @@ const config: Config.InitialOptions = {
 // apparently it's not enough to set test root as <rootDir>/src
 module.exports = {
   moduleFileExtensions: ["ts", "js", "json"],
+  moduleDirectories: ["node_modules", "src"],
   preset: "ts-jest",
   roots: ["<rootDir>/src"],
   testEnvironment: "node",

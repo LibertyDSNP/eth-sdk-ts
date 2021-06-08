@@ -2,8 +2,8 @@
 require("dotenv").config();
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import { batch, decodeDSNPBatchEvents } from "../contracts/announcement";
-import { setConfig, getConfig } from "../config/config";
+import { batch, decodeDSNPBatchEvents } from "core/contracts/announcement";
+import { setConfig, getConfig } from "../config";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";
 
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);

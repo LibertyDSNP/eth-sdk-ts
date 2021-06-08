@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import { times } from "lodash";
 
-import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "../../messages/messages";
-import { EthereumAddress } from "../../types/Strings";
+import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "core/messages/messages";
+import { EthereumAddress } from "types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
 
@@ -68,7 +68,7 @@ export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): nu
 
 export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
   return {
-    type: DSNPType.Broadcast,
+    dsnpType: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
     uri: sample(prefabURLs),
@@ -81,7 +81,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
  */
 export const generateReply = (from?: EthereumAddress): ReplyMessage => {
   return {
-    type: DSNPType.Reply,
+    dsnpType: DSNPType.Reply,
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
@@ -95,7 +95,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
  */
 export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
   return {
-    type: DSNPType.Reaction,
+    dsnpType: DSNPType.Reaction,
     fromId: from ? from : generateEthereumAddress(),
     emoji: generateHexString(20),
     inReplyTo: generateHexString(64),
