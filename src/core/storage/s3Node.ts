@@ -14,7 +14,7 @@ export interface S3Credentials extends S3ClientConfig {
 }
 /**
  * S3Node provides a storage solution for saving DSNP messages
- * This adapter is provided for convinience can be used in other applications configuration.
+ * This adapter is provided for convenience can be used in other applications configuration.
  */
 export class S3Node implements StorageInterface {
   client: S3Client;

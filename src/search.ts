@@ -25,7 +25,7 @@ export interface BaseFilters {
  * @property {BlockNumber} to          The last block to scan for events. Defaults to current block.
  * @property {BlockNumber} from        The first block to scan for events. Defaults to genesis.
  */
-interface FetchFilters extends BaseFilters {
+export interface FetchFilters extends BaseFilters {
   limit?: number;
   to?: BlockNumber;
   from?: BlockNumber;
