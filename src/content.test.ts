@@ -290,7 +290,7 @@ describe("content", () => {
         });
       });
 
-      it("returns a reaction DSNP message linking to the activity pub object", async () => {
+      it("returns a reaction DSNP message", async () => {
         const message = await content.react(
           "🏳️‍🌈",
           "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
