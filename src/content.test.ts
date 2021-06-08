@@ -1,22 +1,20 @@
+import { keccak256 } from "js-sha3";
+
 import * as config from "../config/config";
 import * as content from "./content";
 import { DSNPType } from "../messages/messages";
-import MemoryQueue from "../queue/memoryQueue";
 import TestStore from "../test/testStore";
 import { MissingStoreError, MissingUser } from "../utilities";
 
 describe("content", () => {
   describe("broadcast", () => {
     describe("with a valid storage adapter and user id", () => {
-      let queue: MemoryQueue;
       let store: TestStore;
 
       beforeEach(() => {
-        queue = new MemoryQueue();
         store = new TestStore();
 
         config.setConfig({
-          queue: queue,
           store: store,
           currentUserId: "dsnp://0123456789ABCDEF",
         });
@@ -38,8 +36,8 @@ describe("content", () => {
         );
       });
 
-      it("enqueues a broadcast DSNP message linking to the activity pub object", async () => {
-        await content.broadcast({
+      it("returns a broadcast DSNP message linking to the activity pub object", async () => {
+        const message = await content.broadcast({
           attributedTo: "John Doe <johndoe@sample.org>",
           content: "Lorem ipsum delor blah blah blah",
           name: "Lorem Ipsum",
@@ -49,19 +47,18 @@ describe("content", () => {
         const keys = Object.keys(storeContents);
         expect(keys.length).toEqual(1);
 
-        const message = await queue.dequeue(DSNPType.Broadcast);
-
         expect(message).toMatchObject({
+          fromId: "dsnp://0123456789ABCDEF",
           type: DSNPType.Broadcast,
           uri: `http://fakestore.org/${keys[0]}`,
+          contentHash: keccak256(storeContents[keys[0]] as string),
         });
       });
     });
 
     describe("without a storage adapter", () => {
-      it("throws MissingStore", async () => {
+      it("throws MissingStoreError", async () => {
         config.setConfig({
-          queue: new MemoryQueue(),
           currentUserId: "dsnp://0123456789ABCDEF",
         });
 
@@ -76,9 +73,8 @@ describe("content", () => {
     });
 
     describe("without a user id", () => {
-      it("throws MissingStore", async () => {
+      it("throws MissingUser", async () => {
         config.setConfig({
-          queue: new MemoryQueue(),
           store: new TestStore(),
         });
 
