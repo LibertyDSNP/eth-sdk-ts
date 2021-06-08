@@ -1,6 +1,5 @@
 import * as fs from "fs";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
+import path from "path";
 import parquet from "@dsnp/parquetjs";
 import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";

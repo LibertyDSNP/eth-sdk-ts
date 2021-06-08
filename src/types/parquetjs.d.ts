@@ -1,1 +1,1 @@
-declare module '@dsnp/parquetjs';
+declare module "@dsnp/parquetjs";

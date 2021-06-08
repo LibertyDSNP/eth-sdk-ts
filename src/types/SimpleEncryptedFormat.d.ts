@@ -5,7 +5,6 @@
  */
 import { Base64UrlString, HexString } from "./Strings";
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
 export type KeyTypes = "xsalsa20" | "x25519";
 export type Algorithms = "x25519-xsalsa20-poly1305" | "xsalsa20-poly1305";
 

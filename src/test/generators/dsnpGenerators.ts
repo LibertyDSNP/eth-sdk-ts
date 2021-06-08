@@ -54,8 +54,7 @@ export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): nu
   const ok = true;
   let i = 0;
 
-  // eslint-disable-next-line
-  const header = "{ \"entries\": [";
+  const header = '{ "entries": [';
   ws.write(header);
   do {
     ws.write(data[i] + ",");
