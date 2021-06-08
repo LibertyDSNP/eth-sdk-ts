@@ -105,6 +105,54 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   inReplyTo,
 });
 
+/**
+ * DSNPGraphChangeType: an enum representing different types of graph changes
+ */
+export enum DSNPGraphChangeType {
+  Follow = 1,
+  Unfollow = 2,
+}
+
+/**
+ * GraphChangeMessage: a DSNP message of type GraphChange
+ */
+export interface GraphChangeMessage extends DSNPMessage {
+  fromId: string;
+  dsnpType: DSNPType.GraphChange;
+  changeType: DSNPGraphChangeType;
+  objectId: string;
+}
+
+/**
+ * createFollowGraphChangeMessage() generates a follow graph change message from
+ * a given DSNP user id.
+ *
+ * @param   fromId     The id of the user from whom the message is posted
+ * @param   followeeId The id of the user to follow
+ * @returns            A GraphChangeMessage
+ */
+export const createFollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
+  fromId,
+  dsnpType: DSNPType.GraphChange,
+  changeType: DSNPGraphChangeType.Follow,
+  objectId: followeeId,
+});
+
+/**
+ * createUnfollowGraphChangeMessage() generates an unfollow graph change message
+ * from a given DSNP user id.
+ *
+ * @param   fromId     The id of the user from whom the message is posted
+ * @param   followeeId The id of the user to unfollow
+ * @returns            A GraphChangeMessage
+ */
+export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
+  fromId,
+  dsnpType: DSNPType.GraphChange,
+  changeType: DSNPGraphChangeType.Unfollow,
+  objectId: followeeId,
+});
+
 const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
