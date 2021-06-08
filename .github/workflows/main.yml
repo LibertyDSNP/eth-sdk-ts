@@ -45,6 +45,7 @@ jobs:
         run: |
           npm list @dsnp/contracts
           export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(.{6}).*$/\1/p'`
+          export version=`[ "$version" ] || npm list @dsnp/contracts --silent | sed -En 's/.*contracts@(.*)$/v\1/p'`
           echo "Found version ${version}"
           git clone --bare https://github.com/LibertyDSNP/contracts.git contracts-temp
           cd contracts-temp

@@ -2,7 +2,7 @@
 require("dotenv").config();
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import { batch, decodeDSNPBatchEvents } from "core/contracts/announcement";
+import { batch, decodeDSNPBatchEvents } from "../core/contracts/announcement";
 import { setConfig, getConfig } from "../config";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";
 

@@ -1,5 +1,5 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
-import { EthereumAddress } from "types/Strings";
+import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
 import {
   createCloneProxy,
@@ -10,9 +10,9 @@ import {
   isAuthorizedTo,
   Permission,
 } from "./identity";
-import { EthAddressRegex } from "test/matchers";
-import { setupConfig } from "test/sdkTestConfig";
-import { snapshotSetup } from "test/hardhatRPC";
+import { EthAddressRegex } from "../../test/matchers";
+import { setupConfig } from "../../test/sdkTestConfig";
+import { snapshotSetup } from "../../test/hardhatRPC";
 import { MissingContract } from "../utilities";
 
 const owner = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";

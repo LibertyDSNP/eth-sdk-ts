@@ -10,17 +10,18 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "build": "npm run clean && run-p build:*",
+    "build": "npm run clean && npm run build:types && npm run build:multimodules && npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.json",
     "build:types": "tsc -p tsconfig.types.json && mkdir -p ./dist/types/types && rsync -a --filter='+ */' --filter='-! **/*.d.ts' ./src/types/* ./dist/types/types",
     "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\": \"module\"}'> dist/esm/package.json",
     "build:multimodules": "node scripts/multimodules.js",
     "coverage": "jest test --runInBand --coverage --collectCoverageFrom='src/**/*.ts'",
-    "clean": "rm -Rf dist docs ./*.d.ts ./*.js",
+    "clean": "rm -Rf dist docs core ./*.d.ts ./*.js ./src/*.d.ts ./src/*.js",
     "doc": "rm -Rf dist/docs && run-s doc:html",
-    "doc:html": "typedoc src/ --plugin none --theme default --out dist/docs",
-    "doc:json": "typedoc src/ --json dist/docs/typedoc.json",
-    "doc:markdown": "rm -Rf docs && typedoc src/ --theme markdown --out docs",
+    "doc:html": "typedoc --options ./typedoc.json --plugin none --theme default --out dist/docs",
+    "doc:config": "typedoc --showConfig --options ./typedoc.json --plugin none --theme default --out dist/docs",
+    "doc:json": "typedoc --options ./typedoc.json --json dist/docs/typedoc.json",
+    "doc:markdown": "rm -Rf docs && typedoc --options ./typedoc.json --theme markdown --out docs",
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
     "prepublishOnly": "npm run build && npm run doc:markdown",
@@ -45,6 +46,7 @@
     "@types/jest": "26.0.22",
     "@types/lodash": "^4.14.170",
     "@types/mkdirp": "^1.0.1",
+    "@types/request": "^2.48.5",
     "@typescript-eslint/eslint-plugin": "4.21.0",
     "@typescript-eslint/parser": "4.21.0",
     "babel-jest": "^26.6.3",
@@ -61,8 +63,8 @@
     "ts-jest": "26.5.4",
     "ts-node": "9.1.1",
     "typechain": "^5.0.0",
-    "typedoc": "0.20.35",
-    "typedoc-plugin-markdown": "3.6.1",
+    "typedoc": "0.20.36",
+    "typedoc-plugin-markdown": "3.9.0",
     "typescript": "4.2.3"
   },
   "jest": {
@@ -98,12 +100,12 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "@dsnp/contracts": "0.0.0-54f452",
-    "@dsnp/parquetjs": "^0.0.0-2ccc4e",
+    "@dsnp/contracts": "0.1.0",
+    "@dsnp/parquetjs": "0.9.0",
     "@ethersproject/abi": "^5.3.0",
     "ethers": "^5.3.0",
     "js-sha3": "^0.8.0",
-    "ws": "^7.4.5"
+    "ws": "^7.4.6"
   },
   "peerDependencies": {
     "@aws-sdk/client-s3": "^3.17.0"

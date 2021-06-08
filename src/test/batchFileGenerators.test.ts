@@ -1,8 +1,6 @@
 import os from "os";
 import fs from "fs";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const parquet = require("@dsnp/parquetjs");
+import parquet from "@dsnp/parquetjs";
 
 import {
   DSNPBatchWriteResult,

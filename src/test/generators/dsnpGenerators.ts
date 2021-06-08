@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import { times } from "lodash";
 
-import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "core/messages/messages";
-import { EthereumAddress } from "types/Strings";
+import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "../../core/messages/messages";
+import { EthereumAddress } from "../../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
 
@@ -54,8 +54,7 @@ export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): nu
   const ok = true;
   let i = 0;
 
-  // eslint-disable-next-line
-  const header = "{ \"entries\": [";
+  const header = '{ "entries": [';
   ws.write(header);
   do {
     ws.write(data[i] + ",");

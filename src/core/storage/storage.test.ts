@@ -1,8 +1,8 @@
 import { getConfig } from "../../config";
-import { MissingStoreError, NotImplementedError } from "../utilities/errors";
+import { MissingStoreError, NotImplementedError } from "../utilities";
 import { get, put } from "./storage";
 
-jest.mock("config");
+jest.mock("../../config");
 
 describe("storage", () => {
   describe("#get", () => {

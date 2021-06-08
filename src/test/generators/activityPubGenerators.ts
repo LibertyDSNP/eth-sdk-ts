@@ -1,5 +1,5 @@
-import { ActivityPub, ActivityPubAttachment } from "core/activityPub/activityPub";
-import { HexString } from "types/Strings";
+import { ActivityPub, ActivityPubAttachment } from "../../core/activityPub/activityPub";
+import { HexString } from "../../types/Strings";
 
 import { sample, sampleText } from "@dsnp/test-generators";
 

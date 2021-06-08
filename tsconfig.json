@@ -3,7 +3,6 @@
     "target": "es6",
     "outDir": "dist/cjs",
     "rootDir": "src",
-    "baseUrl": "src",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "inlineSourceMap": true,

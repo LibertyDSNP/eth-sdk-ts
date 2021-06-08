@@ -17,9 +17,21 @@ npm install @dsnp/sdk
 The configuration can be set at runtime with the following:
 
 ```js
-var config = require("@dsnp/sdk/config");
+// Node
+var { setConfig } = require("@dsnp/sdk");
 
-config.setConfig({
+setConfig({
+    signer: signer,
+    provider: provider
+  })
+// Do something with the SDK
+```
+
+```typescript
+// TypeScript
+import { setConfig } from "@dsnp/sdk";
+
+setConfig({
     signer: signer,
     provider: provider
   })
@@ -29,22 +41,22 @@ config.setConfig({
 #### Storing Messages and Batches
 
 Amazon S3 is supported when adding the following configuration:
-```
-import { S3Node } from "./storage/s3Node";
+```typescript
+import { setConfig } from "@dsnp/sdk";
+import { S3Node } from "@dsnp/sdk/core/storage";
 
-config
-  .setConfig({
-    ...,
-    store: S3Node({
-      key: "tomyheartisno",
-      secret: "itsa",
-      bucket: "ofchicken",
-      region: "us-east-la",
-    })
-  });
+setConfig({
+  ...,
+  store: S3Node({
+    key: "tomyheartisno",
+    secret: "itsa",
+    bucket: "ofchicken",
+    region: "us-east-la",
+  })
+});
 ```
 Other storage solutions can be added so as long it contains the following interface.
-```
+```typescript
 interface StorageInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
   get?: (targetPath: string) => Promise<string>;
@@ -65,7 +77,15 @@ See [Config Documentation](https://libertydsnp.github.io/sdk-ts/interfaces/confi
 Once the SDK is installed and configured, the following code can be used to post a batch on the chain:
 
 ```js
-var announcement = require("@dsnp/sdk/contracts/announcement");
+// Node
+const announcement = require("@dsnp/sdk/core/contracts/announcement");
+
+announcement.batch([{ hash, uri, dsnpType }]);
+```
+
+```typescript
+// TypeScript
+import announcement from "@dsnp/sdk/core/contracts/announcement";
 
 announcement.batch([{ hash, uri, dsnpType }]);
 ```

@@ -1,13 +1,11 @@
 import * as fs from "fs";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const parquet = require("@dsnp/parquetjs");
+import path from "path";
+import parquet from "@dsnp/parquetjs";
 import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
-import * as pq from "core/batch/parquetSchema";
-import { EthereumAddress } from "types/Strings";
-import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "core/batch/batchMesssages";
+import * as pq from "../../core/batch/parquetSchema";
+import { EthereumAddress } from "../../types/Strings";
+import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../../core/batch/batchMesssages";
 import { generateHexString } from "@dsnp/test-generators";
 
 export type DSNPBatchWriteResult = {
