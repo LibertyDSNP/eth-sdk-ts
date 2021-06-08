@@ -18,3 +18,18 @@ export * from "./content";
 export * from "./handles";
 export * from "./network";
 export * from "./search";
+
+import * as config from "./config";
+import * as content from "./content";
+import * as handles from "./handles";
+import * as network from "./network";
+import * as search from "./search";
+
+export default {
+  ...config,
+  ...content,
+  ...handles,
+  ...network,
+  ...search,
+  core,
+}

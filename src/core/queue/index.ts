@@ -17,8 +17,5 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as queueImport from "./queue";
-export const queue = queueImport;
-
-import * as memoryQueueImport from "./memoryQueue";
-export const memoryQueue = memoryQueueImport;
+export * from "./queue";
+export * from "./memoryQueue";

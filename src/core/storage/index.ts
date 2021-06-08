@@ -17,8 +17,5 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as storageImport from "./storage";
-export const storage = storageImport;
-
-import * as s3NodeImport from "./s3Node";
-export const s3Node = s3NodeImport;
+export * from "./storage";
+export * from "./s3Node";
