@@ -1,9 +1,9 @@
 import { ContractTransaction, ethers, EventFilter } from "ethers";
-import { getConfig } from "config";
-import { HexString } from "types/Strings";
-import { MissingProvider, MissingSigner, MissingContract } from "core/utilities/errors";
+import { getConfig } from "../../config";
+import { HexString } from "../../types/Strings";
+import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
-import { Announcer, Announcer__factory } from "types/typechain";
+import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
 
 const CONTRACT_NAME = "Announcer";

@@ -1,7 +1,7 @@
 import { getContractAddress } from "./contract";
 import { ethers } from "ethers";
-import { setupConfig } from "test/sdkTestConfig";
-import { snapshotSetup } from "test/hardhatRPC";
+import { setupConfig } from "../../test/sdkTestConfig";
+import { snapshotSetup } from "../../test/hardhatRPC";
 
 describe("Contracts", () => {
   snapshotSetup();

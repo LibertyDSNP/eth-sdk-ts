@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 import { getConfig, ConfigOpts } from "../../config";
-import { HexString } from "types/Strings";
+import { HexString } from "../../types/Strings";
 import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
 

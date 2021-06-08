@@ -1,14 +1,14 @@
 import { ContractTransaction } from "ethers";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
 import { getConfig } from "../../config";
-import { EthereumAddress } from "types/Strings";
+import { EthereumAddress } from "../../types/Strings";
 import {
   IdentityCloneFactory,
   BeaconFactory,
   BeaconFactory__factory,
   Identity__factory,
   IdentityCloneFactory__factory,
-} from "types/typechain";
+} from "../../types/typechain";
 import { getContractAddress } from "./contract";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
