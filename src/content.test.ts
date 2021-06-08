@@ -117,7 +117,7 @@ describe("content", () => {
         });
       });
 
-      describe("with valid activity pub options", () => {
+      describe("with valid activity pub options and a valid inReplyTo Id", () => {
         it("uploads an activity pub object matching the provided specifications", async () => {
           await content.reply(
             {
@@ -160,6 +160,22 @@ describe("content", () => {
             contentHash: keccak256(storeContents[keys[0]] as string),
             inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
           });
+        });
+      });
+
+      describe("with an invalid inReplyTo Id", () => {
+        it("throws InvalidActivityPubOpts", async () => {
+          await expect(
+            content.reply(
+              {
+                attributedTo: "John Doe <johndoe@sample.org>",
+                content: "Lorem ipsum delor blah blah blah",
+                name: "Lorem Ipsum",
+                inReplyTo: "dsnp://badbadbad/badbadbadk",
+              },
+              "dsnp://badbadbad/badbadbad"
+            )
+          ).rejects.toThrow(content.InvalidInReplyTo);
         });
       });
 

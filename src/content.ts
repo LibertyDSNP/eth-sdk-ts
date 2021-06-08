@@ -2,13 +2,19 @@ import * as activityPub from "../activityPub/activityPub";
 import * as config from "../config/config";
 import * as messages from "../messages/messages";
 import * as store from "../store/store";
-import { getRandomString, MissingUser } from "../utilities";
+import { getRandomString, validateDSNPId, MissingUser } from "../utilities";
 
 /**
  * InvalidActivityPubOpts represents an error in the activity pub options
  * provided to a method.
  */
 export const InvalidActivityPubOpts = new Error("Invalid activity pub options.");
+
+/**
+ * InvalidInReplyTo represents an error in the DSNP Id provided for the
+ * inReplyTo parameter.
+ */
+export const InvalidInReplyTo = new Error("Invalid DSNP Id for inReplyTo");
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -58,6 +64,9 @@ export const reply = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<messages.ReplyMessage> => {
+  // Validate inReplyTo
+  if (!validateDSNPId(inReplyTo)) throw InvalidInReplyTo;
+
   // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
   if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
