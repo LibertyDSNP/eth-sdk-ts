@@ -367,7 +367,7 @@ describe("content", () => {
           );
         });
 
-        it("returns a broadcast DSNP message linking to the activity pub object", async () => {
+        it("returns a profile DSNP message linking to the activity pub object", async () => {
           const message = await content.profile({
             type: "Person",
             name: "Rose Karr",
