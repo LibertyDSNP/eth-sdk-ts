@@ -8,9 +8,9 @@ import { findEvent } from "./core/contracts/contract";
 import { BigNumber } from "ethers";
 
 /**
- * UserNotFound represents an error in finding the user to follow or unfollow.
+ * RegistrationNotFound represents an error in finding the user to follow or unfollow.
  */
-export const UserNotFound = new Error("User not found.");
+export const RegistrationNotFound = new Error("User not found.");
 
 /**
  * authenticateHandle() finds the DSNP user id associated with a given handle
@@ -21,7 +21,7 @@ export const UserNotFound = new Error("User not found.");
  */
 export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpts): Promise<void> => {
   const registration = await resolveRegistration(handle, opts);
-  if (!registration) throw UserNotFound;
+  if (!registration) throw RegistrationNotFound;
   const userId = registration.dsnpId;
 
   config.setConfig({

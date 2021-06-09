@@ -2,7 +2,7 @@ import { resolveRegistration, Handle } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
-import { UserNotFound } from "./handles";
+import { RegistrationNotFound } from "./handles";
 import { MissingUser, NotImplementedError } from "./core/utilities";
 
 /**
@@ -22,7 +22,7 @@ export const follow = async (
 
   // Get followeeId from handle
   const registration = await resolveRegistration(handle);
-  if (!registration) throw UserNotFound;
+  if (!registration) throw RegistrationNotFound;
   const followeeId = registration.dsnpId;
 
   // Creates and returns the DSNP Graph Change message
@@ -50,7 +50,7 @@ export const unfollow = async (
 
   // Get followeeId from handle
   const registration = await resolveRegistration(handle);
-  if (!registration) throw UserNotFound;
+  if (!registration) throw RegistrationNotFound;
   const followeeId = registration.dsnpId;
 
   // Creates and returns the DSNP Graph Change message

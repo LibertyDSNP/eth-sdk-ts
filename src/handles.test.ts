@@ -7,7 +7,7 @@ import {
   resolveHandle,
   resolveId,
   createRegistration,
-  UserNotFound,
+  RegistrationNotFound,
 } from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
@@ -51,8 +51,8 @@ describe("handles", () => {
       expect(config.getConfig().currentFromId).toEqual("0x03e8");
     });
 
-    it("throws UserNotFound when the handle does not exist", async () => {
-      await expect(authenticateHandle("not-taken")).rejects.toThrow(UserNotFound);
+    it("throws RegistrationNotFound when the handle does not exist", async () => {
+      await expect(authenticateHandle("not-taken")).rejects.toThrow(RegistrationNotFound);
     });
   });
 
