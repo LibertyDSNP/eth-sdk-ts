@@ -1,3 +1,5 @@
+import { keccak256 } from "js-sha3";
+
 import * as activityPub from "./core/activityPub/activityPub";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
@@ -40,10 +42,9 @@ export const broadcast = async (
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  const filename = activityPub.hash(contentObj);
-  const uri = await store.put(filename, content, opts);
+  const contentHash = keccak256(content);
+  const uri = await store.put(contentHash, content, opts);
 
-  const contentHash = activityPub.hash(contentObj);
   const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
@@ -74,10 +75,9 @@ export const reply = async (
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  const filename = activityPub.hash(contentObj);
-  const uri = await store.put(filename, content, opts);
+  const contentHash = keccak256(content);
+  const uri = await store.put(contentHash, content, opts);
 
-  const contentHash = activityPub.hash(contentObj);
   const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
@@ -129,10 +129,9 @@ export const profile = async (
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  const filename = activityPub.hash(contentObj);
-  const uri = await store.put(filename, content, opts);
+  const contentHash = keccak256(content);
+  const uri = await store.put(contentHash, content, opts);
 
-  const contentHash = activityPub.hash(contentObj);
   const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);

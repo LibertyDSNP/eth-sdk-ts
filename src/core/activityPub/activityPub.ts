@@ -1,5 +1,3 @@
-import { keccak256 } from "js-sha3";
-import { HexString } from "../../types/Strings";
 import { sortObject } from "../utilities/json";
 
 const ISO8601_REGEX = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?/;
@@ -104,17 +102,4 @@ export const validateProfile = (activityPub: ActivityPub): boolean => {
 export const serialize = (data: ActivityPub): string => {
   const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
   return JSON.stringify(sortedData);
-};
-
-/**
- * hash() provides a simple way to hash activityPub objects while guaranteeing
- * that identical objects with different key orders still return the same hash.
- * The underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).
- *
- * @param   data  The activity pub object to hash
- * @returns       A hexadecimal string containing the Keccak hash
- */
-export const hash = (data: ActivityPub): HexString => {
-  const jsonString = serialize(data);
-  return keccak256(jsonString);
 };
