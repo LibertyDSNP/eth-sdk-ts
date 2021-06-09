@@ -1,10 +1,10 @@
 import { getConfig } from "../../config";
 import { MissingStoreError, NotImplementedError } from "../utilities";
-import { get, put } from "./storage";
+import { get, put } from "./interface";
 
 jest.mock("../../config");
 
-describe("storage", () => {
+describe("store", () => {
   describe("#get", () => {
     describe("when store configuration is not set", () => {
       beforeEach(() => {

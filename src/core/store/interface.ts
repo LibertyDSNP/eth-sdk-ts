@@ -5,11 +5,11 @@ export type File = Buffer | string;
 export type Content = string | Buffer;
 
 /**
- * StorageInterface is the interface a storage adapter is expected to implement to
+ * StoreInterface is the interface a storage adapter is expected to implement to
  * be used with high-level methods in this SDK. The require methods consist of
  * an put function, a dequeue function and a get function.
  */
-export interface StorageInterface {
+export interface StoreInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
   get?: (targetPath: string) => Promise<File>;
 }

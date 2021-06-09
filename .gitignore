@@ -15,7 +15,7 @@ dist
 *.js
 *.d.ts
 docs
-core
+/core
 
 ### ignore typechain types
 /src/types/typechain/*

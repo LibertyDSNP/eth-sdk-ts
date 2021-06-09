@@ -17,5 +17,5 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-export * from "./storage";
+export * from "./interface";
 export * from "./s3Node";

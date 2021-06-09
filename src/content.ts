@@ -1,5 +1,5 @@
 // import * as config from "../config/config";
-// import * as storage from "../storage/storage";
+// import * as store from "../store";
 import { ActivityPubOpts } from "./core/activityPub/activityPub";
 import { ConfigOpts } from "./config";
 import { NotImplementedError } from "./core/utilities/errors";
@@ -20,7 +20,7 @@ export const broadcast = async (_content: ActivityPubOpts, _opts?: ConfigOpts): 
   //
   // const activityPubObject = activityPub.create(activityPubOpts);
   // const activityPubHash = activityPub.hash(activityPubObject);
-  // const uri = storage.store(activityPubObject, opts);
+  // const uri = store.put(activityPubObject, opts);
   //
   // return events.createBroadcastEvent(uri, activityPubHash);
 };
@@ -41,7 +41,7 @@ export const reply = async (_content: ActivityPubOpts, _opts?: ConfigOpts): Prom
   // const inReplyTo = activityPubOpts.inReplyTo;
   // const activityPubObject = activityPub.create(activityPubOpts);
   // const activityPubHash = activityPub.hash(activityPubObject);
-  // const uri = storage.store(activityPubObject, opts);
+  // const uri = store.put(activityPubObject, opts);
   //
   // return events.createReplyEvent(uri, inReplyTo, activityPubHash);
 };
@@ -63,7 +63,7 @@ export const react = async (_emoji: string, _inReplyTo: string, _opts?: ConfigOp
   // const inReplyTo = activityPubOpts.inReplyTo;
   // const activityPubObject = activityPub.create(activityPubOpts);
   // const activityPubHash = activityPub.hash(activityPubObject);
-  // const uri = storage.store(activityPubObject, opts);
+  // const uri = store.put(activityPubObject, opts);
   //
   // return events.createReactionEvent(uri, inReplyTo, activityPubHash);
 };

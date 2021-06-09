@@ -1,5 +1,5 @@
 import { S3Client, S3ClientConfig, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { StorageInterface } from "./storage";
+import { StoreInterface } from "./interface";
 import { Readable } from "stream";
 
 /**
@@ -16,7 +16,7 @@ export interface S3Credentials extends S3ClientConfig {
  * S3Node provides a storage solution for saving DSNP messages
  * This adapter is provided for convenience can be used in other applications configuration.
  */
-export class S3Node implements StorageInterface {
+export class S3Node implements StoreInterface {
   client: S3Client;
   bucket: string;
   region: string;

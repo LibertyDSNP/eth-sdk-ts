@@ -45,7 +45,7 @@ setConfig({
 Amazon S3 is supported when adding the following configuration:
 ```typescript
 import { setConfig } from "@dsnp/sdk";
-import { S3Node } from "@dsnp/sdk/core/storage";
+import { S3Node } from "@dsnp/sdk/core/store";
 
 setConfig({
   ...,
@@ -59,7 +59,7 @@ setConfig({
 ```
 Other storage solutions can be added so as long it contains the following interface.
 ```typescript
-interface StorageInterface {
+interface StoreInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
   get?: (targetPath: string) => Promise<string>;
 }
@@ -68,7 +68,7 @@ interface StorageInterface {
 ```
 config
   .setConfig({
-    storage: new MyStorage()
+    store: new MyStore()
    });
 ```
 
