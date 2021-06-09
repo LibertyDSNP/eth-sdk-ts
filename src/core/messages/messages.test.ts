@@ -2,9 +2,18 @@ import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
 import { getConfig, setConfig } from "../../config";
-import { createBroadcastMessage, sign, recoverPublicKey } from "./messages";
+import { createBroadcastMessage, serialize, sign, recoverPublicKey } from "./messages";
 
 describe("messages", () => {
+  describe("#serialize", () => {
+    it("returns the correct serialization for a given message", async () => {
+      const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
+      const serializedMessage = await serialize(message);
+
+      expect(serializedMessage).toEqual("contentHash0x12345dsnpType2fromId1urihttps://dsnp.org");
+    });
+  });
+
   describe("#sign", () => {
     beforeAll(async () => {
       const privateKey = "0x6dcefd57d921dc570e198f6bd9dffc32954ab071184c780770cf4541dd23f68e";

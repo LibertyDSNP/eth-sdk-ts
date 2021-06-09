@@ -2,19 +2,20 @@ import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { getConfig, ConfigOpts } from "../../config";
-import { BigNumber, ContractTransaction } from "ethers";
+import { ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
+import { DSNPUserId } from "../utilities/identifiers";
 
 const CONTRACT_NAME = "Registry";
 
 export interface Registration {
   contractAddr: EthereumAddress;
-  dsnpId: HexString;
+  dsnpUserId: DSNPUserId;
   handle: Handle;
 }
 
@@ -29,10 +30,10 @@ export type Handle = string;
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
   const contract = await getContract(opts);
   try {
-    const [dsnpId, contractAddr] = await contract.resolveRegistration(handle);
+    const [dsnpUserId, contractAddr] = await contract.resolveRegistration(handle);
     return {
       handle,
-      dsnpId: dsnpId.toHexString(),
+      dsnpUserId: `dsnp://${dsnpUserId.toHexString().replace("0x", "")}`,
       contractAddr,
     };
   } catch (e) {
@@ -100,20 +101,21 @@ export const changeHandle = async (
 
 /**
  * Get all the DSNPRegistryUpdate events
- * @param filter By dsnpId or Contract Address
+ * @param filter By dsnpUserId or Contract Address
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
   filter: Partial<Omit<Registration, "handle">>,
   opts?: ConfigOpts
 ): Promise<Registration[]> => {
+  const dsnpUserId = filter.dsnpUserId ? filter.dsnpUserId.replace("dsnp://", "0x") : undefined;
   const contract = await getContract(opts);
-  const dsnpId = filter.dsnpId ? BigNumber.from(filter.dsnpId) : undefined;
-  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpId, filter.contractAddr));
+  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpUserId, filter.contractAddr));
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    return { contractAddr: addr, dsnpId: id.toHexString(), handle };
+    const dsnpUserId = `dsnp://${id.toHexString().replace("0x", "")}`;
+    return { contractAddr: addr, dsnpUserId, handle };
   });
 };
 
@@ -123,7 +125,7 @@ export const getDSNPRegistryUpdateEvents = async (
  * without serializing, to guarantee consistent results.
  * @param signature the signature for the message
  * @param message the signed message
- * @param dsnpId the DSNP Id of the supposed signer
+ * @param dsnpUserId the DSNP User Id of the supposed signer
  * @param permission the permissions to check for
  * @param blockTag (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
@@ -132,11 +134,11 @@ export const getDSNPRegistryUpdateEvents = async (
 export const isMessageSignatureAuthorizedTo = async (
   signature: HexString,
   message: DSNPMessage | string,
-  dsnpId: HexString,
+  dsnpUserId: DSNPUserId,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag
 ): Promise<boolean> => {
-  const reg = await resolveId(dsnpId);
+  const reg = await resolveId(dsnpUserId);
   if (!reg) throw MissingContract;
 
   const { provider } = getConfig();

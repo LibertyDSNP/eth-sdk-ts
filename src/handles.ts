@@ -5,7 +5,7 @@ import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration 
 import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { BigNumber } from "ethers";
+import { DSNPUserId } from "./core/utilities/identifiers";
 
 /**
  * RegistrationNotFound represents an error in finding the user to follow or unfollow.
@@ -22,7 +22,7 @@ export const RegistrationNotFound = new Error("User not found.");
 export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpts): Promise<void> => {
   const registration = await resolveRegistration(handle, opts);
   if (!registration) throw RegistrationNotFound;
-  const userId = registration.dsnpId;
+  const userId = registration.dsnpUserId;
 
   config.setConfig({
     ...config.getConfig(),
@@ -41,12 +41,12 @@ export const createRegistration = async (
   addr: HexString,
   handle: Handle,
   opts?: config.ConfigOpts
-): Promise<number> => {
+): Promise<DSNPUserId> => {
   const txn = await createAndRegisterBeaconProxy(addr, handle, opts);
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return (registerEvent.args[0] as BigNumber).toNumber();
+  return `dsnp://${registerEvent.args[0].toHexString().replace("0x", "")}`;
 };
 
 /**
@@ -77,14 +77,13 @@ export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise
 
 /**
  * Get the current registration from a DSNP Id
- * @param id The Hex or decimal DSNP Id
- * @returns The Registration object with Handle, DSNP Id, and Identity contract address
+ * @param dsnpUserId The DSNP User Id
+ * @returns          The Registration object with Handle, DSNP User Id, and Identity contract address
  */
-export const resolveId = async (id: HexString | number, opts?: config.ConfigOpts): Promise<Registration | null> => {
-  const dsnpId = typeof id === "string" ? id : "0x" + id.toString(16);
+export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts): Promise<Registration | null> => {
   const registrations = await getDSNPRegistryUpdateEvents(
     {
-      dsnpId,
+      dsnpUserId,
     },
     opts
   );

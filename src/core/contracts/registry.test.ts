@@ -1,4 +1,4 @@
-import { BigNumber, Signer } from "ethers";
+import { Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
 import {
@@ -20,6 +20,7 @@ import {
   RegistrationWithSigner,
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
+import { DSNPUserId } from "../utilities/identifiers";
 
 describe("registry", () => {
   let signer: Signer;
@@ -33,7 +34,7 @@ describe("registry", () => {
 
   describe("#resolveRegistration", () => {
     const handle = "registered";
-    let givenId: BigNumber;
+    let givenId: DSNPUserId;
 
     beforeAll(async () => {
       await snapshotHardhat(provider);
@@ -49,10 +50,10 @@ describe("registry", () => {
     });
 
     it("Returns the correct id", async () => {
-      expect(givenId.toHexString()).toEqual("0x03e8");
+      expect(givenId).toEqual("dsnp://03e8");
       const result = await resolveRegistration(handle);
 
-      expect(result?.dsnpId).toEqual(givenId.toHexString());
+      expect(result?.dsnpUserId).toEqual(givenId);
     });
 
     it("Returns null for an unfound handle", async () => {
@@ -87,7 +88,7 @@ describe("registry", () => {
     it("returns a Contract Transaction that can be resolved into a DSNP Id", async () => {
       const transaction = await register(idContractAddr, "new-handle");
 
-      expect((await getIdFromRegisterTransaction(transaction)).toHexString()).toEqual("0x03e9"); // 1001
+      expect(await getIdFromRegisterTransaction(transaction)).toEqual("dsnp://03e9"); // 1001
     });
   });
 
@@ -184,10 +185,12 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
-      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContractAddress });
+      const regs = await getDSNPRegistryUpdateEvents({
+        contractAddr: identityContractAddress,
+      });
       expect(regs[0].contractAddr).toEqual(identityContractAddress);
 
-      expect(regs[0].dsnpId).toEqual("0x0" + Number(1000).toString(16));
+      expect(regs[0].dsnpUserId).toEqual("dsnp://0" + Number(1000).toString(16));
       expect(regs[0].handle).toEqual(handle);
     });
 
@@ -201,7 +204,9 @@ describe("registry", () => {
       await register(identityContract.address, handle);
       await register(identityContract2.address, handle + "2");
 
-      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContract.address });
+      const regs = await getDSNPRegistryUpdateEvents({
+        contractAddr: identityContract.address,
+      });
       expect(regs).toHaveLength(1);
       expect(regs[0].contractAddr).toEqual(identityContract.address);
       expect(regs[0].handle).toEqual(handle);
@@ -216,7 +221,9 @@ describe("registry", () => {
       await register(identityContractAddress, handle);
       await register(identityContractAddress, handle + "2");
 
-      const regs = await getDSNPRegistryUpdateEvents({ contractAddr: identityContractAddress });
+      const regs = await getDSNPRegistryUpdateEvents({
+        contractAddr: identityContractAddress,
+      });
       expect(regs).toHaveLength(2);
       expect(regs[0].handle).toEqual(handle);
       expect(regs[1].handle).toEqual(handle + "2");
@@ -231,7 +238,7 @@ describe("registry", () => {
       const id = await getIdFromRegisterTransaction(tx);
       await changeHandle(handle, handle + "new");
 
-      const regs = await getDSNPRegistryUpdateEvents({ dsnpId: id });
+      const regs = await getDSNPRegistryUpdateEvents({ dsnpUserId: id });
       expect(regs).toHaveLength(2);
       expect(regs[0].handle).toEqual(handle);
       expect(regs[1].handle).toEqual(handle + "new");
@@ -245,7 +252,7 @@ describe("registry", () => {
     const permDenied = Permission.OWNERSHIP_TRANSFER;
     let contractAddr = "";
     let sig = "";
-    let dsnpId = "";
+    let dsnpUserId = "";
     let signerAddr = "";
 
     beforeAll(async () => {
@@ -255,8 +262,9 @@ describe("registry", () => {
       await identityContract.deployed();
       contractAddr = identityContract.address;
       const tx = await register(contractAddr, "Animaniacs");
-      dsnpId = await getIdFromRegisterTransaction(tx);
-      sig = await sign(msg);
+      dsnpUserId = await getIdFromRegisterTransaction(tx);
+      const signedMessage = await sign(msg);
+      sig = signedMessage.signature;
     });
 
     afterAll(async () => {
@@ -264,19 +272,20 @@ describe("registry", () => {
     });
 
     it("returns true if the signer is authorized for the given permissions", async () => {
-      await expect(isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed)).toBeTruthy();
+      await expect(isMessageSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed)).toBeTruthy();
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
       const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(2, "Handel");
-      const res = await isMessageSignatureAuthorizedTo(sig, msg, regSigner.dsnpId.toString(), permDenied);
+      const res = await isMessageSignatureAuthorizedTo(sig, msg, regSigner.dsnpUserId, permDenied);
       expect(res).toBeFalsy();
     });
 
     it("returns false if signature is a real one but not for this message", async () => {
       const otherMsg = generateBroadcast();
-      const badSig = await sign(otherMsg);
-      const res = await isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed);
+      const signedMessage = await sign(otherMsg);
+      const badSig = signedMessage.signature;
+      const res = await isMessageSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed);
       expect(res).toBeFalsy();
     });
 
@@ -291,7 +300,7 @@ describe("registry", () => {
         { name: "0x1", value: 0x1, expected: true },
       ].forEach((tc) => {
         it(`${tc.name} returns ${tc.expected}`, async () => {
-          const actual = await isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed, 1);
+          const actual = await isMessageSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed, 1);
           expect(actual).toEqual(tc.expected);
         });
       });
@@ -304,7 +313,7 @@ describe("registry", () => {
     });
     it("throws if signature is garbage", async () => {
       const badSig = generateHexString(65);
-      await expect(isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed)).rejects.toThrow(
+      await expect(isMessageSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed)).rejects.toThrow(
         /signature missing v and recoveryParam/
       );
     });

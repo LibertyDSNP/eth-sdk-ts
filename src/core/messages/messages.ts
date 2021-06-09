@@ -153,7 +153,13 @@ export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: str
   objectId: followeeId,
 });
 
-const serialize = (message: DSNPMessage): string => {
+/**
+ * serialize() takes a DSNP message and returns a serialized string.
+ *
+ * @param message The DSNP message to serialized
+ * @returns       A string serialization of the message
+ */
+export const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
 

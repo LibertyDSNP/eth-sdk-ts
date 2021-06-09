@@ -48,7 +48,7 @@ describe("handles", () => {
   describe("#authenticateHandle", () => {
     it("sets the currentFromId correctly when a handle exists", async () => {
       await authenticateHandle("taken");
-      expect(config.getConfig().currentFromId).toEqual("0x03e8");
+      expect(config.getConfig().currentFromId).toEqual("dsnp://03e8");
     });
 
     it("throws RegistrationNotFound when the handle does not exist", async () => {
@@ -87,7 +87,7 @@ describe("handles", () => {
       expect(result).not.toBeNull();
       if (result === null) throw new Error();
       expect(result.contractAddr).toMatch(EthAddressRegex);
-      expect(parseInt(result.dsnpId, 16)).toEqual(1000);
+      expect(result.dsnpUserId).toEqual("dsnp://03e8");
       expect(result.handle).toEqual("taken");
     });
 
@@ -99,23 +99,23 @@ describe("handles", () => {
 
   describe("#resolveId", () => {
     it("returns null for unfound", async () => {
-      const result = await resolveId(5000);
+      const result = await resolveId("dsnp://1388");
       expect(result).toBeNull();
     });
 
     it("Handles the case of a single event with number", async () => {
-      const result = await resolveId(1000);
+      const result = await resolveId("dsnp://03e8");
       expect(result?.handle).toEqual("taken");
     });
 
     it("Handles the case of a single event with hex", async () => {
-      const result = await resolveId("0x0000" + Number(1001).toString(16));
+      const result = await resolveId("dsnp://0" + Number(1001).toString(16));
       expect(result?.handle).toEqual("taken1");
     });
 
     it("Handles the case of multiple events", async () => {
       await registry.changeHandle("taken", "new-taken");
-      const result = await resolveId(1000);
+      const result = await resolveId("dsnp://03e8");
 
       expect(result?.handle).toEqual("new-taken");
     });
@@ -125,8 +125,9 @@ describe("handles", () => {
     const handle = "flarp";
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
 
-    it("returns a DSNP Id", async () => {
-      const id = await createRegistration(fakeAddress, handle);
+    it("returns a DSNP User Id", async () => {
+      const dsnpUserId = await createRegistration(fakeAddress, handle);
+      const id = parseInt(dsnpUserId.replace("dsnp://", ""), 16);
 
       expect(id).toBeGreaterThan(999);
     });

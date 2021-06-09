@@ -23,7 +23,7 @@ export const follow = async (
   // Get followeeId from handle
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;
-  const followeeId = registration.dsnpId;
+  const followeeId = registration.dsnpUserId;
 
   // Creates and returns the DSNP Graph Change message
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
@@ -51,7 +51,7 @@ export const unfollow = async (
   // Get followeeId from handle
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;
-  const followeeId = registration.dsnpId;
+  const followeeId = registration.dsnpUserId;
 
   // Creates and returns the DSNP Graph Change message
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);

@@ -1,9 +1,16 @@
 /**
- * DSNPId represents a DSNP message Id following the DSNP
+ * DSNPId represents a DSNP message id following the DSNP
  * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
  * specification.
  */
 export type DSNPId = string;
+
+/**
+ * DSNPUserId represents a DSNP user id following the DSNP
+ * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
+ * specification.
+ */
+export type DSNPUserId = string;
 
 /**
  * validateDSNPId validates a given string as a DSNPId. If the given string is
