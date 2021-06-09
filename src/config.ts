@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 
 import MemoryQueue from "./core/queue/memoryQueue";
-import { QueueInterface } from "./core/queue/queue";
-import { StorageInterface } from "./core/storage/storage";
+import { QueueInterface } from "./core/queue";
+import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
 /**
@@ -16,7 +16,7 @@ export interface Config {
   /** The queue manages Announcements waiting to be batched */
   queue: QueueInterface;
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
-  store?: StorageInterface;
+  store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
   contracts: {
     /** The Address of the Batch Announce contract */
