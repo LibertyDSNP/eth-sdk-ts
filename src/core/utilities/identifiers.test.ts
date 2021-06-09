@@ -1,43 +1,28 @@
 import { validateDSNPId } from "./identifiers";
 
 describe("validateDSNPId", () => {
-  it("returns true for 'dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'", () => {
-    expect(
-      validateDSNPId("dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF")
-    ).toEqual(true);
-  });
+  const validDSNPIds = [
+    "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Uppercase
+    "dsnp://0123456789abcdef/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // Lowercase
+  ];
 
-  it("returns true for 'dsnp://0123456789abcdef/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'", () => {
-    expect(
-      validateDSNPId("dsnp://0123456789abcdef/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")
-    ).toEqual(true);
-  });
+  const invalidDSNPIds = [
+    "dsnp://badbadbad/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Bad user id
+    "dsnp://0123456789ABCDEF/badbadbad", // Bad message id
+    "dsnp://0123456789ABCDE/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // User id too short
+    "dsnp://0123456789ABCDEFA/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // User id too long
+    "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDE", // Message id too short
+  ];
 
-  it("returns false for 'dsnp://badbadbad/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'", () => {
-    expect(validateDSNPId("dsnp://badbadbad/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF")).toEqual(
-      false
-    );
-  });
+  for (const id of validDSNPIds) {
+    it(`returns true for "${id}"`, () => {
+      expect(validateDSNPId(id)).toEqual(true);
+    });
+  }
 
-  it("returns false for 'dsnp://0123456789ABCDEF/badbadbad'", () => {
-    expect(validateDSNPId("dsnp://0123456789ABCDEF/badbadbad")).toEqual(false);
-  });
-
-  it("returns false for 'dsnp://0123456789ABCDE/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'", () => {
-    expect(
-      validateDSNPId("dsnp://0123456789ABCDE/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF")
-    ).toEqual(false);
-  });
-
-  it("returns false for 'dsnp://0123456789ABCDEFA/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF'", () => {
-    expect(
-      validateDSNPId("dsnp://0123456789ABCDEFA/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF")
-    ).toEqual(false);
-  });
-
-  it("returns false for 'dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDE'", () => {
-    expect(
-      validateDSNPId("dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDE")
-    ).toEqual(false);
-  });
+  for (const id of invalidDSNPIds) {
+    it(`returns false for "${id}"`, () => {
+      expect(validateDSNPId(id)).toEqual(false);
+    });
+  }
 });
