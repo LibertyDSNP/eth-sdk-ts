@@ -9,7 +9,7 @@ import { Permission } from "./identity";
 import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
-import { DSNPUserId } from "../utilities/identifiers";
+import { bigNumberToDSNPUserId, dsnpUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
 
 const CONTRACT_NAME = "Registry";
 
@@ -33,7 +33,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
     const [dsnpUserId, contractAddr] = await contract.resolveRegistration(handle);
     return {
       handle,
-      dsnpUserId: `dsnp://${dsnpUserId.toHexString().replace("0x", "")}`,
+      dsnpUserId: bigNumberToDSNPUserId(dsnpUserId),
       contractAddr,
     };
   } catch (e) {
@@ -108,13 +108,13 @@ export const getDSNPRegistryUpdateEvents = async (
   filter: Partial<Omit<Registration, "handle">>,
   opts?: ConfigOpts
 ): Promise<Registration[]> => {
-  const dsnpUserId = filter.dsnpUserId ? filter.dsnpUserId.replace("dsnp://", "0x") : undefined;
+  const dsnpUserId = filter.dsnpUserId ? dsnpUserIdToBigNumber(filter.dsnpUserId) : undefined;
   const contract = await getContract(opts);
   const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpUserId, filter.contractAddr));
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    const dsnpUserId = `dsnp://${id.toHexString().replace("0x", "")}`;
+    const dsnpUserId = bigNumberToDSNPUserId(id);
     return { contractAddr: addr, dsnpUserId, handle };
   });
 };

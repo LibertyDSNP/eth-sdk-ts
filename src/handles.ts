@@ -5,7 +5,7 @@ import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration 
 import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { DSNPUserId } from "./core/utilities/identifiers";
+import { bigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
 
 /**
  * RegistrationNotFound represents an error in finding the user to follow or unfollow.
@@ -46,7 +46,7 @@ export const createRegistration = async (
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return `dsnp://${registerEvent.args[0].toHexString().replace("0x", "")}`;
+  return bigNumberToDSNPUserId(registerEvent.args[0]);
 };
 
 /**

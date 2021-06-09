@@ -91,7 +91,7 @@ describe("activityPub", () => {
         "@context": "https://www.w3.org/ns/activitystreams",
         type: "Note",
         url: "http://placekitten.com",
-        inReplyTo: "dsnp://12345/67890",
+        inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
       };
 
       expect(validate(activityPub)).toBeTruthy();

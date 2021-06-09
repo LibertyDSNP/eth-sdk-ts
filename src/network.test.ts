@@ -42,7 +42,7 @@ describe("network", () => {
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          objectId: "dsnp://03e8",
+          objectId: "dsnp://00000000000003e8",
         });
       });
     });
@@ -98,7 +98,7 @@ describe("network", () => {
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          objectId: "dsnp://03e8",
+          objectId: "dsnp://00000000000003e8",
         });
       });
     });
