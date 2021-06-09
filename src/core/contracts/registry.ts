@@ -1,9 +1,14 @@
+import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { getConfig } from "../../config";
 import { BigNumber, ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
+import { Permission } from "./identity";
+import { resolveId } from "../../handles";
+import { isAuthorizedTo } from "./identity";
+import { DSNPMessage, serialize } from "../messages";
 
 const CONTRACT_NAME = "Registry";
 
@@ -100,6 +105,42 @@ export const getDSNPRegistryUpdateEvents = async (
     const [id, addr, handle] = desc.args;
     return { contractAddr: addr, dsnpId: id.toHexString(), handle };
   });
+};
+
+/**
+ * validates a serialized message or DSNPMessage against a signature and then checks that the
+ * signer has the permissions specified.  DSNPMessages should be passed as is,
+ * without serializing, to guarantee consistent results.
+ * @param signature the signature for the message
+ * @param message the signed message
+ * @param dsnpId the DSNP Id of the supposed signer
+ * @param permission the permissions to check for
+ * @param blockTag (optional). A block number or string BlockTag
+ *    (see https://docs.ethers.io/v5/api/providers/types/)
+ *    Defaults to 0x0, which checks for "forever" permissions.
+ */
+export const isMessageSignatureAuthorizedTo = async (
+  signature: HexString,
+  message: DSNPMessage | string,
+  dsnpId: HexString,
+  permission: Permission,
+  blockTag?: ethers.providers.BlockTag
+): Promise<boolean> => {
+  const reg = await resolveId(dsnpId);
+  if (!reg) throw MissingContract;
+
+  const { provider } = getConfig();
+  if (!provider) throw MissingProvider;
+
+  let blockNumber = 0x0;
+  if (blockTag) {
+    const bn = (await provider?.getBlock(blockNumber))?.number;
+    if (bn) blockNumber = bn;
+  }
+  const messageString = typeof message === "string" ? (message as string) : serialize(message);
+
+  const signerAddr = ethers.utils.verifyMessage(messageString, signature);
+  return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 
 const getContract = async () => {

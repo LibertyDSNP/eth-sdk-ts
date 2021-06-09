@@ -1,9 +1,25 @@
-import { BigNumber, ContractTransaction, Signer } from "ethers";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
-import { resolveRegistration, register, getDSNPRegistryUpdateEvents, changeHandle, changeAddress } from "./registry";
-import { Identity__factory, Registry__factory } from "../../types/typechain";
-import { setupConfig } from "../../test/sdkTestConfig";
+import { BigNumber, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
+import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
+import {
+  changeAddress,
+  changeHandle,
+  getDSNPRegistryUpdateEvents,
+  register,
+  resolveRegistration,
+  isMessageSignatureAuthorizedTo,
+} from "./registry";
+import { Identity__factory } from "../../types/typechain";
+import { setupConfig } from "../../test/sdkTestConfig";
+import { Permission } from "./identity";
+import { DSNPMessage, sign } from "../messages";
+import { generateBroadcast } from "../../test/generators/dsnpGenerators";
+import {
+  getIdFromRegisterTransaction,
+  newRegistrationForAccountIndex,
+  RegistrationWithSigner,
+} from "../../test/testAccounts";
+import { generateHexString } from "@dsnp/test-generators";
 
 describe("registry", () => {
   let signer: Signer;
@@ -221,11 +237,76 @@ describe("registry", () => {
       expect(regs[1].handle).toEqual(handle + "new");
     });
   });
-});
 
-const getIdFromRegisterTransaction = async (transaction: ContractTransaction) => {
-  const receipt = await transaction.wait(1);
-  const reg = Registry__factory.createInterface();
-  const event = reg.parseLog(receipt.logs[0]);
-  return event.args[0];
-};
+  describe("validateMessage", () => {
+    const msg: DSNPMessage = generateBroadcast();
+
+    const permAllowed = Permission.ANNOUNCE;
+    const permDenied = Permission.OWNERSHIP_TRANSFER;
+    let contractAddr = "";
+    let sig = "";
+    let dsnpId = "";
+    let signerAddr = "";
+
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
+      signerAddr = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(signerAddr);
+      await identityContract.deployed();
+      contractAddr = identityContract.address;
+      const tx = await register(contractAddr, "Animaniacs");
+      dsnpId = await getIdFromRegisterTransaction(tx);
+      sig = await sign(msg);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
+    });
+
+    it("returns true if the signer is authorized for the given permissions", async () => {
+      await expect(isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed)).toBeTruthy();
+    });
+
+    it("returns false if the signer is not authorized for the given permissions", async () => {
+      const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(2, "Handel");
+      const res = await isMessageSignatureAuthorizedTo(sig, msg, regSigner.dsnpId.toString(), permDenied);
+      expect(res).toBeFalsy();
+    });
+
+    it("returns false if signature is a real one but not for this message", async () => {
+      const otherMsg = generateBroadcast();
+      const badSig = await sign(otherMsg);
+      const res = await isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed);
+      expect(res).toBeFalsy();
+    });
+
+    describe("valid block tag =", () => {
+      [
+        { name: "latest", value: "latest", expected: true },
+        { name: "earliest", value: "earliest", expected: true },
+        { name: "pending", value: "pending", expected: true },
+        { name: "negative number", value: -1, expected: true },
+        { name: "positive number", value: 1, expected: true },
+        { name: "0x0", value: 0x0, expected: true },
+        { name: "0x1", value: 0x1, expected: true },
+      ].forEach((tc) => {
+        it(`${tc.name} returns ${tc.expected}`, async () => {
+          const actual = await isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed, 1);
+          expect(actual).toEqual(tc.expected);
+        });
+      });
+    });
+
+    it("throws if id cannot be resolved", async () => {
+      await expect(isMessageSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
+        "Contract was not found"
+      );
+    });
+    it("throws if signature is garbage", async () => {
+      const badSig = generateHexString(65);
+      await expect(isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed)).rejects.toThrow(
+        /signature missing v and recoveryParam/
+      );
+    });
+  });
+});
