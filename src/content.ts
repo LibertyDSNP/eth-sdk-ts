@@ -38,13 +38,13 @@ export const broadcast = async (
   if (!activityPub.validate(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  // Upload the content file
-  const filename = getRandomString();
-  const uri = await store.put(filename, content, opts);
-
   // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
+
+  // Upload the content file
+  const filename = getRandomString();
+  const uri = await store.put(filename, content, opts);
 
   // Creates and returns the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
@@ -78,13 +78,13 @@ export const reply = async (
   if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  // Upload the content file
-  const filename = getRandomString();
-  const uri = await store.put(filename, content, opts);
-
   // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
+
+  // Upload the content file
+  const filename = getRandomString();
+  const uri = await store.put(filename, content, opts);
 
   // Create and returns the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
