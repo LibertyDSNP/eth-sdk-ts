@@ -335,4 +335,120 @@ describe("content", () => {
       });
     });
   });
+
+  describe("profile", () => {
+    describe("with a valid signer, storage adapter and user id", () => {
+      let store: TestStore;
+
+      beforeEach(() => {
+        store = new TestStore();
+
+        config.setConfig({
+          currentFromId: "dsnp://0123456789ABCDEF",
+          signer: ethers.Wallet.createRandom(),
+          store: store,
+        });
+      });
+
+      describe("with valid activity pub options", () => {
+        it("uploads an activity pub object matching the provided specifications", async () => {
+          await content.profile({
+            type: "Person",
+            name: "Rose Karr",
+            preferredUsername: "rosalinekarr",
+          });
+
+          const storeContents = store.getStore();
+          const keys = Object.keys(storeContents);
+          expect(keys.length).toEqual(1);
+
+          expect(storeContents[keys[0]]).toMatch(
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"Rose Karr","preferredUsername":"rosalinekarr","published":"[0-9TZ\-:.]+","type":"Person"\}/
+          );
+        });
+
+        it("returns a broadcast DSNP message linking to the activity pub object", async () => {
+          const message = await content.profile({
+            type: "Person",
+            name: "Rose Karr",
+            preferredUsername: "rosalinekarr",
+          });
+
+          const storeContents = store.getStore();
+          const keys = Object.keys(storeContents);
+          expect(keys.length).toEqual(1);
+
+          expect(message).toMatchObject({
+            fromId: "dsnp://0123456789ABCDEF",
+            dsnpType: DSNPType.Profile,
+            uri: `http://fakestore.org/${keys[0]}`,
+            contentHash: keccak256(storeContents[keys[0]] as string),
+          });
+        });
+      });
+
+      describe("with invalid activity pub options", () => {
+        it("throws InvalidActivityPubOpts", async () => {
+          await expect(
+            content.profile({
+              type: "Note",
+              name: "Rose Karr",
+              preferredUsername: "rosalinekarr",
+            })
+          ).rejects.toThrow(content.InvalidActivityPubOpts);
+        });
+      });
+    });
+
+    describe("without a signer", () => {
+      it("throws MissingStoreError", async () => {
+        config.setConfig({
+          currentFromId: "dsnp://0123456789ABCDEF",
+          store: new TestStore(),
+        });
+
+        await expect(
+          content.profile({
+            type: "Person",
+            name: "Rose Karr",
+            preferredUsername: "rosalinekarr",
+          })
+        ).rejects.toThrow(MissingSigner);
+      });
+    });
+
+    describe("without a storage adapter", () => {
+      it("throws MissingStoreError", async () => {
+        config.setConfig({
+          currentFromId: "dsnp://0123456789ABCDEF",
+          signer: ethers.Wallet.createRandom(),
+        });
+
+        await expect(
+          content.profile({
+            type: "Person",
+            name: "Rose Karr",
+            preferredUsername: "rosalinekarr",
+          })
+        ).rejects.toThrow(MissingStoreError);
+      });
+    });
+
+    describe("without a user id", () => {
+      it("throws MissingUser", async () => {
+        config.setConfig({
+          signer: ethers.Wallet.createRandom(),
+          store: new TestStore(),
+        });
+
+        await expect(
+          content.profile({
+            type: "Person",
+            name: "Rose Karr",
+            preferredUsername: "rosalinekarr",
+          })
+        ).rejects.toThrow(MissingUser);
+      });
+    });
+  });
 });

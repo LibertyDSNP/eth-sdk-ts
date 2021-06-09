@@ -1,4 +1,11 @@
-import { BroadcastMessage, DSNPMessage, ReactionMessage, ReplyMessage, GraphChangeMessage } from "../messages/messages";
+import {
+  BroadcastMessage,
+  DSNPMessage,
+  ReactionMessage,
+  ReplyMessage,
+  GraphChangeMessage,
+  ProfileMessage,
+} from "../messages/messages";
 
 export interface BatchBroadcastMessage extends BroadcastMessage {
   signature: string;
@@ -12,6 +19,10 @@ export interface BatchReactionMessage extends ReactionMessage {
 }
 
 export interface BatchGraphChangeMessage extends GraphChangeMessage {
+  signature: string;
+}
+
+export interface BatchProfileMessage extends ProfileMessage {
   signature: string;
 }
 

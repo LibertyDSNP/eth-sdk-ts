@@ -119,3 +119,41 @@ export const react = async (
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchReactionMessage;
 };
+
+/**
+ * profile() creates an activity pub file with the given content options,
+ * uploads it with a random filename using the configured storage adapter and
+ * creates a DSNP profile message for the hosted file for later announcement.
+ *
+ * @throws {@link MissingSigner}
+ * Thrown if the signer is not configured.
+ *
+ * @param contentOptions Options for the activity pub content to generate
+ * @param opts           Optional. Configuration overrides, such as from address, if any
+ * @returns              A Signed DSNP Profile message ready for inclusion in a batch
+ */
+export const profile = async (
+  contentOptions: activityPub.ActivityPubOpts,
+  opts?: config.ConfigOpts
+): Promise<batchMessages.BatchProfileMessage> => {
+  // Create the activity pub file
+  const contentObj = activityPub.create(contentOptions);
+  if (!activityPub.validateProfile(contentObj)) throw InvalidActivityPubOpts;
+  const content = activityPub.serialize(contentObj);
+
+  // Get current user id
+  const { currentFromId } = config.getConfig(opts);
+  if (!currentFromId) throw MissingUser;
+
+  // Upload the content file
+  const filename = getRandomString();
+  const uri = await storage.put(filename, content, opts);
+
+  // Creates and returns the DSNP Broadcast message
+  const contentHash = activityPub.hash(contentObj);
+  const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
+
+  // Sign and return the message
+  const signedMessage = await messages.sign(message, opts);
+  return signedMessage as batchMessages.BatchProfileMessage;
+};

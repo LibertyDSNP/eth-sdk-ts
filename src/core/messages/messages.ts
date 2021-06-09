@@ -165,6 +165,31 @@ const serialize = (message: DSNPMessage): string => {
 };
 
 /**
+ * ProfileMessage: a DSNP message of type Profile
+ */
+export interface ProfileMessage extends DSNPMessage {
+  dsnpType: DSNPType.Profile;
+  contentHash: string;
+  fromId: string;
+  uri: string;
+}
+
+/**
+ * createProfileMessage() generates a profile message from a given URI and hash.
+ *
+ * @param   fromId The id of the user from whom the message is posted
+ * @param   uri    The URI of the activity pub content to reference
+ * @param   hash   The hash of the content at the URI
+ * @returns        A ProfileMessage
+ */
+export const createProfileMessage = (fromId: string, uri: string, hash: HexString): ProfileMessage => ({
+  dsnpType: DSNPType.Profile,
+  contentHash: hash,
+  fromId,
+  uri,
+});
+
+/**
  * sign() takes a DSNP message and returns a signed DSNP message ready for
  * inclusion in a batch.
  *

@@ -109,6 +109,30 @@ describe("activityPub", () => {
     });
   });
 
+  describe("#validateProfile", () => {
+    it("return true for valid activity pub objects with an inReplyTo field", () => {
+      const activityPub = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Person",
+        name: "Rose Karr",
+        preferredUsername: "rosalinekarr",
+      };
+
+      expect(validate(activityPub)).toBeTruthy();
+    });
+
+    it("return false for activity pubs with wrong type", () => {
+      const activityPub = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        url: "http://placekitten.com",
+        published: "Yesterday",
+      };
+
+      expect(validate(activityPub)).toBeFalsy();
+    });
+  });
+
   describe("#serialize", () => {
     it("returns a serialized version of the activity pub object", () => {
       const sampleActivityPub = {
