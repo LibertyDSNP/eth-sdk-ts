@@ -7,7 +7,7 @@ import {
   getDSNPRegistryUpdateEvents,
   register,
   resolveRegistration,
-  validateMessage,
+  isMessageSignatureAuthorizedTo,
 } from "./registry";
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -264,39 +264,47 @@ describe("registry", () => {
     });
 
     it("returns true if the signer is authorized for the given permissions", async () => {
-      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed)).toBeTruthy();
+      await expect(isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed)).toBeTruthy();
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
       const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(2, "Handel");
-      const res = await validateMessage(sig, msg, regSigner.dsnpId.toString(), permDenied);
+      const res = await isMessageSignatureAuthorizedTo(sig, msg, regSigner.dsnpId.toString(), permDenied);
       expect(res).toBeFalsy();
     });
 
     it("returns false if signature is a real one but not for this message", async () => {
       const otherMsg = generateBroadcast();
       const badSig = await sign(otherMsg);
-      const res = await validateMessage(badSig, msg, dsnpId.toString(), permAllowed);
+      const res = await isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed);
       expect(res).toBeFalsy();
     });
 
-    it("accepts a block number", async () => {
-      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed, 1)).toBeTruthy();
+    describe("valid block tag =", () => {
+      [
+        { name: "latest", value: "latest", expected: true },
+        { name: "earliest", value: "earliest", expected: true },
+        { name: "pending", value: "pending", expected: true },
+        { name: "negative number", value: -1, expected: true },
+        { name: "positive number", value: 1, expected: true },
+        { name: "0x0", value: 0x0, expected: true },
+        { name: "0x1", value: 0x1, expected: true },
+      ].forEach((tc) => {
+        it(`${tc.name} returns ${tc.expected}`, async () => {
+          const actual = await isMessageSignatureAuthorizedTo(sig, msg, dsnpId.toString(), permAllowed, 1);
+          expect(actual).toEqual(tc.expected);
+        });
+      });
     });
 
     it("throws if id cannot be resolved", async () => {
-      await expect(validateMessage("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
+      await expect(isMessageSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
         "Contract was not found"
-      );
-    });
-    it("throws if block number cannot be retrieved", async () => {
-      await expect(validateMessage(sig, msg, dsnpId.toString(), permAllowed, 99999)).rejects.toThrow(
-        "could not get block at height 99999"
       );
     });
     it("throws if signature is garbage", async () => {
       const badSig = generateHexString(65);
-      await expect(validateMessage(badSig, msg, dsnpId.toString(), permAllowed)).rejects.toThrow(
+      await expect(isMessageSignatureAuthorizedTo(badSig, msg, dsnpId.toString(), permAllowed)).rejects.toThrow(
         /signature missing v and recoveryParam/
       );
     });

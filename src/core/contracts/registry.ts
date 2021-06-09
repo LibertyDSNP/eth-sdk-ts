@@ -108,20 +108,23 @@ export const getDSNPRegistryUpdateEvents = async (
 };
 
 /**
- * validates a message against a signature and then checks that the signer has the permissions
- * specified.
+ * validates a serialized message or DSNPMessage against a signature and then checks that the
+ * signer has the permissions specified.  DSNPMessages should be passed as is,
+ * without serializing, to guarantee consistent results.
  * @param signature the signature for the message
- * @param message the DSNPMessage
+ * @param message the signed message
  * @param dsnpId the DSNP Id of the supposed signer
  * @param permission the permissions to check for
- * @param blockNumber (optional) the block number at which to perform this check.  Defaults to "latest"
+ * @param blockTag (optional). A block number or string BlockTag
+ *    (see https://docs.ethers.io/v5/api/providers/types/)
+ *    Defaults to 0x0, which checks for "forever" permissions.
  */
-export const validateMessage = async (
+export const isMessageSignatureAuthorizedTo = async (
   signature: HexString,
-  message: DSNPMessage,
+  message: DSNPMessage | string,
   dsnpId: HexString,
   permission: Permission,
-  blockNumber?: number
+  blockTag?: ethers.providers.BlockTag
 ): Promise<boolean> => {
   const reg = await resolveId(dsnpId);
   if (!reg) throw MissingContract;
@@ -129,12 +132,15 @@ export const validateMessage = async (
   const { provider } = getConfig();
   if (!provider) throw MissingProvider;
 
-  const realBlockNumber = blockNumber ? blockNumber : "latest";
-  const bh = (await provider?.getBlock(realBlockNumber))?.number;
-  if (!bh) throw new Error("could not get block at height " + realBlockNumber);
+  let blockNumber = 0x0;
+  if (blockTag) {
+    const bn = (await provider?.getBlock(blockNumber))?.number;
+    if (bn) blockNumber = bn;
+  }
+  const messageString = typeof message === "string" ? (message as string) : serialize(message);
 
-  const signerAddr = ethers.utils.verifyMessage(serialize(message), signature);
-  return isAuthorizedTo(signerAddr, reg.contractAddr, permission, bh);
+  const signerAddr = ethers.utils.verifyMessage(messageString, signature);
+  return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 
 const getContract = async () => {
