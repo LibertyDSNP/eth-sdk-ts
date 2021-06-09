@@ -4,6 +4,7 @@ import { getConfig, ConfigOpts } from "../../config";
 import { HexString } from "../../types/Strings";
 import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
+import { DSNPBatchMessage } from "../batch/batchMesssages";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages
@@ -104,6 +105,60 @@ export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: 
   inReplyTo,
 });
 
+/**
+ * DSNPGraphChangeType: an enum representing different types of graph changes
+ */
+export enum DSNPGraphChangeType {
+  Follow = 1,
+  Unfollow = 2,
+}
+
+/**
+ * GraphChangeMessage: a DSNP message of type GraphChange
+ */
+export interface GraphChangeMessage extends DSNPMessage {
+  fromId: string;
+  dsnpType: DSNPType.GraphChange;
+  changeType: DSNPGraphChangeType;
+  objectId: string;
+}
+
+/**
+ * createFollowGraphChangeMessage() generates a follow graph change message from
+ * a given DSNP user id.
+ *
+ * @param   fromId     The id of the user from whom the message is posted
+ * @param   followeeId The id of the user to follow
+ * @returns            A GraphChangeMessage
+ */
+export const createFollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
+  fromId,
+  dsnpType: DSNPType.GraphChange,
+  changeType: DSNPGraphChangeType.Follow,
+  objectId: followeeId,
+});
+
+/**
+ * createUnfollowGraphChangeMessage() generates an unfollow graph change message
+ * from a given DSNP user id.
+ *
+ * @param   fromId     The id of the user from whom the message is posted
+ * @param   followeeId The id of the user to unfollow
+ * @returns            A GraphChangeMessage
+ */
+export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
+  fromId,
+  dsnpType: DSNPType.GraphChange,
+  changeType: DSNPGraphChangeType.Unfollow,
+  objectId: followeeId,
+});
+
+/**
+ * serialize() takes a DSNP message and returns a serialized string.
+ *
+ * @param message The DSNP message to serialized
+ * @returns       A string serialization of the message
+ */
 export const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
   let serialization = "";
@@ -116,20 +171,49 @@ export const serialize = (message: DSNPMessage): string => {
 };
 
 /**
- * sign() takes a DSNP message and returns a Uint8Array signature for the
- * message using the Signer provided in the configuration options.
+ * ProfileMessage: a DSNP message of type Profile
+ */
+export interface ProfileMessage extends DSNPMessage {
+  dsnpType: DSNPType.Profile;
+  contentHash: string;
+  fromId: string;
+  uri: string;
+}
+
+/**
+ * createProfileMessage() generates a profile message from a given URI and hash.
+ *
+ * @param   fromId The id of the user from whom the message is posted
+ * @param   uri    The URI of the activity pub content to reference
+ * @param   hash   The hash of the content at the URI
+ * @returns        A ProfileMessage
+ */
+export const createProfileMessage = (fromId: string, uri: string, hash: HexString): ProfileMessage => ({
+  dsnpType: DSNPType.Profile,
+  contentHash: hash,
+  fromId,
+  uri,
+});
+
+/**
+ * sign() takes a DSNP message and returns a signed DSNP message ready for
+ * inclusion in a batch.
  *
  * @throws {@link MissingSigner}
  * This error is thrown if no Signer is defined in the configuration options.
  *
  * @param message The DSNP message to sign
  * @param opts    Optional. Configuration overrides, such as from address, if any
- * @returns       The message signature in hex
+ * @returns       The signed DSNP message
  */
-export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<HexString> => {
+export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
   const { signer } = await getConfig(opts);
   if (!signer) throw MissingSigner;
-  return signer.signMessage(serialize(message));
+  const signature = await signer.signMessage(serialize(message));
+  return {
+    ...message,
+    signature,
+  };
 };
 
 /**

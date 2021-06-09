@@ -2,22 +2,32 @@ import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
 import { getConfig, setConfig } from "../../config";
-import { createBroadcastMessage, sign, recoverPublicKey } from "./messages";
+import { createBroadcastMessage, serialize, sign, recoverPublicKey } from "./messages";
 
 describe("messages", () => {
+  describe("#serialize", () => {
+    it("returns the correct serialization for a given message", async () => {
+      const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
+      const serializedMessage = await serialize(message);
+
+      expect(serializedMessage).toEqual("contentHash0x12345dsnpType2fromId1urihttps://dsnp.org");
+    });
+  });
+
   describe("#sign", () => {
     beforeAll(async () => {
       const privateKey = "0x6dcefd57d921dc570e198f6bd9dffc32954ab071184c780770cf4541dd23f68e";
       await setConfig({
-        ...(await getConfig()),
+        ...getConfig(),
         signer: new ethers.Wallet(privateKey),
       });
     });
 
     it("returns a valid signature for a valid private key and message", async () => {
       const message = createBroadcastMessage("1", "https://dsnp.org", "0x12345");
+      const signedMessage = await sign(message);
 
-      expect(await sign(message)).toEqual(
+      expect(signedMessage.signature).toEqual(
         "0xd33f14693809e6c7bcd5148cb585a63ce51d54bd229a7306dab22d3437b001140538494c1b7b19a2a806bcc6da26fc205b237cfe4a60dd738d994ec72e2a6a561c"
       );
     });
@@ -50,12 +60,12 @@ describe("messages", () => {
     const address = await signer.getAddress();
 
     await setConfig({
-      ...(await getConfig()),
+      ...getConfig(),
       signer,
     });
 
-    const signature = await sign(message);
+    const signedMessage = await sign(message);
 
-    expect(recoverPublicKey(message, signature)).toEqual(address);
+    expect(recoverPublicKey(message, signedMessage.signature)).toEqual(address);
   });
 });

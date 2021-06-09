@@ -1,5 +1,3 @@
-import { keccak256 } from "js-sha3";
-import { HexString } from "../../types/Strings";
 import { sortObject } from "../utilities/json";
 
 const ISO8601_REGEX = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?/;
@@ -20,6 +18,7 @@ export interface ActivityPubAttachment {
  */
 export interface ActivityPub {
   "@context": string;
+  id?: string;
   type: string;
   name?: string;
   content?: string;
@@ -27,6 +26,7 @@ export interface ActivityPub {
   published?: string;
   inReplyTo?: string;
   attributedTo?: string;
+  preferredUsername?: string;
   attachments?: ActivityPubAttachment[];
 }
 
@@ -79,6 +79,20 @@ export const validateReply = (activityPub: ActivityPub): boolean => {
 };
 
 /**
+ * validateProfile() returns true if the object provided is a valid activityPub
+ * profile. Otherwise, it returns false.
+ *
+ * @param   activityPub  An object to be validated against the activity pub standard
+ * @returns              True or false depending on whether the given object is a valid
+ */
+export const validateProfile = (activityPub: ActivityPub): boolean => {
+  if (!validate(activityPub)) return false;
+  if (activityPub["type"] !== "Person") return false;
+
+  return true;
+};
+
+/**
  * serialize() converts an activityPub object to string for upload via the
  * storage adapter.
  *
@@ -88,17 +102,4 @@ export const validateReply = (activityPub: ActivityPub): boolean => {
 export const serialize = (data: ActivityPub): string => {
   const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;
   return JSON.stringify(sortedData);
-};
-
-/**
- * hash() provides a simple way to hash activityPub objects while guaranteeing
- * that identical objects with different key orders still return the same hash.
- * The underlying hash method used is [Keccak256](https://en.wikipedia.org/wiki/SHA-3).
- *
- * @param   data  The activity pub object to hash
- * @returns       A hexadecimal string containing the Keccak hash
- */
-export const hash = (data: ActivityPub): HexString => {
-  const jsonString = serialize(data);
-  return keccak256(jsonString);
 };

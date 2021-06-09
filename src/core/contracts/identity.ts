@@ -1,6 +1,6 @@
 import { ContractTransaction } from "ethers";
 import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
-import { getConfig } from "../../config";
+import { getConfig, ConfigOpts } from "../../config";
 import { EthereumAddress } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -27,9 +27,9 @@ export enum Permission {
  * @param logic The address to use for the logic contract
  * @returns     A contract receipt promise
  */
-export const createCloneProxy = async (logic?: EthereumAddress): Promise<ContractTransaction> => {
-  if (!logic) logic = await getIdentityLogicContractAddress();
-  const contract = await getIdentityCloneFactoryContract();
+export const createCloneProxy = async (logic?: EthereumAddress, opts?: ConfigOpts): Promise<ContractTransaction> => {
+  if (!logic) logic = await getIdentityLogicContractAddress(opts);
+  const contract = await getIdentityCloneFactoryContract(opts);
   return contract.createCloneProxy(logic);
 };
 
@@ -41,10 +41,11 @@ export const createCloneProxy = async (logic?: EthereumAddress): Promise<Contrac
  */
 export const createCloneProxyWithOwner = async (
   owner: EthereumAddress,
-  logic?: EthereumAddress
+  logic?: EthereumAddress,
+  opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
-  if (!logic) logic = await getIdentityLogicContractAddress();
-  const contract = await getIdentityCloneFactoryContract();
+  if (!logic) logic = await getIdentityLogicContractAddress(opts);
+  const contract = await getIdentityCloneFactoryContract(opts);
   return contract.createCloneProxyWithOwner(logic, owner);
 };
 
@@ -53,8 +54,8 @@ export const createCloneProxyWithOwner = async (
  * @param beacon The beacon address to use logic contract resolution
  * @returns A contract receipt promise
  */
-export const createBeaconProxy = async (beacon: EthereumAddress): Promise<ContractTransaction> => {
-  const contract = await getBeaconFactoryContract();
+export const createBeaconProxy = async (beacon: EthereumAddress, opts?: ConfigOpts): Promise<ContractTransaction> => {
+  const contract = await getBeaconFactoryContract(opts);
   return contract["createBeaconProxy(address)"](beacon);
 };
 
@@ -66,9 +67,10 @@ export const createBeaconProxy = async (beacon: EthereumAddress): Promise<Contra
  */
 export const createBeaconProxyWithOwner = async (
   owner: EthereumAddress,
-  beacon: EthereumAddress
+  beacon: EthereumAddress,
+  opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
-  const contract = await getBeaconFactoryContract();
+  const contract = await getBeaconFactoryContract(opts);
   return contract.createBeaconProxyWithOwner(beacon, owner);
 };
 
@@ -82,18 +84,19 @@ export const createBeaconProxyWithOwner = async (
  */
 export const createAndRegisterBeaconProxy = async (
   userAddress: EthereumAddress,
-  handle: string
+  handle: string,
+  opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
-  const beaconFactory = await getBeaconFactoryContract();
-  const beaconAddr = await getBeaconAddress();
+  const beaconFactory = await getBeaconFactoryContract(opts);
+  const beaconAddr = await getBeaconAddress(opts);
   return await beaconFactory.createAndRegisterBeaconProxy(beaconAddr, userAddress, handle);
 };
 
-const getIdentityLogicContractAddress = async (): Promise<EthereumAddress> => {
+const getIdentityLogicContractAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
   const {
     provider,
     contracts: { identityLogic },
-  } = getConfig();
+  } = getConfig(opts);
   if (!provider) throw MissingProvider;
   const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
 
@@ -101,12 +104,12 @@ const getIdentityLogicContractAddress = async (): Promise<EthereumAddress> => {
   return address;
 };
 
-const getIdentityCloneFactoryContract = async (): Promise<IdentityCloneFactory> => {
+const getIdentityCloneFactoryContract = async (opts?: ConfigOpts): Promise<IdentityCloneFactory> => {
   const {
     provider,
     signer,
     contracts: { identityCloneFactory },
-  } = getConfig();
+  } = getConfig(opts);
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
@@ -116,12 +119,12 @@ const getIdentityCloneFactoryContract = async (): Promise<IdentityCloneFactory> 
   return IdentityCloneFactory__factory.connect(address, signer);
 };
 
-const getBeaconFactoryContract = async (): Promise<BeaconFactory> => {
+const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactory> => {
   const {
     signer,
     provider,
     contracts: { beaconFactory },
-  } = getConfig();
+  } = getConfig(opts);
   if (!signer) throw MissingSigner;
   if (!provider) throw MissingProvider;
 
@@ -144,19 +147,20 @@ export const isAuthorizedTo = async (
   address: EthereumAddress,
   contractAddress: EthereumAddress,
   permission: Permission,
-  blockNumber: number
+  blockNumber: number,
+  opts?: ConfigOpts
 ): Promise<boolean> => {
-  const { provider } = await getConfig();
+  const { provider } = await getConfig(opts);
   if (!provider) throw MissingProvider;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
 };
 
-const getBeaconAddress = async (): Promise<EthereumAddress> => {
+const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
   const {
     provider,
     contracts: { beacon },
-  } = getConfig();
+  } = getConfig(opts);
   if (!provider) throw MissingProvider;
   const address = beacon || (await getContractAddress(provider, BEACON_CONTRACT));
 

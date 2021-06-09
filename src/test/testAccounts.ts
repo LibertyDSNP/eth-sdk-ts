@@ -2,6 +2,7 @@ import { ContractTransaction, ethers } from "ethers";
 import { getConfig } from "../config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
+import { bigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
 
 export interface RegistrationWithSigner extends Registration {
   signer: ethers.Signer;
@@ -130,11 +131,11 @@ export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
  * @param transaction
  * @returns the DSNP Id
  */
-export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<any> => {
+export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<DSNPUserId> => {
   const receipt = await transaction.wait(1);
   const reg = Registry__factory.createInterface();
   const event = reg.parseLog(receipt.logs[0]);
-  return event.args[0];
+  return bigNumberToDSNPUserId(event.args[0]);
 };
 
 /**
@@ -154,6 +155,6 @@ export const newRegistrationForAccountIndex = async (
   await identityContract.deployed();
   const contractAddr = identityContract.address;
   const tx2 = await register(contractAddr, handle);
-  const dsnpId = await getIdFromRegisterTransaction(tx2);
-  return { contractAddr, dsnpId, handle, signer };
+  const dsnpUserId = await getIdFromRegisterTransaction(tx2);
+  return { contractAddr, dsnpUserId, handle, signer };
 };

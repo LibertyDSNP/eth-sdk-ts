@@ -1,4 +1,4 @@
-import { getConfig, Config } from "../../config";
+import { getConfig, ConfigOpts } from "../../config";
 import { MissingStoreError, NotImplementedError } from "../utilities/errors";
 
 export type File = Buffer | string;
@@ -20,10 +20,11 @@ export interface StoreInterface {
  *
  * @param   targetPath  The path to and name of file.
  * @param   content The file object to store on the chosen hosting solution
+ * @param   opts Optional. Configuration overrides, such as from address, if any
  * @returns       The URI of the hosted file
  */
-export const put = async (targetPath: string, content: Content, config?: Config): Promise<URL> => {
-  const { store } = getConfig(config);
+export const put = async (targetPath: string, content: Content, opts?: ConfigOpts): Promise<URL> => {
+  const { store } = getConfig(opts);
   if (!store) throw MissingStoreError;
 
   return await store.put(targetPath, content);
@@ -33,10 +34,11 @@ export const put = async (targetPath: string, content: Content, config?: Config)
  * get() fetches a batch file from the given target path.
  *
  * @param   targetPath  The path to and name of file.
+ * @param   opts Optional. Configuration overrides, such as from address, if any
  * @returns   The batch file fetched from the given URI
  */
-export const get = async (targetPath: string, config?: Config): Promise<File> => {
-  const { store } = getConfig(config);
+export const get = async (targetPath: string, opts?: ConfigOpts): Promise<File> => {
+  const { store } = getConfig(opts);
   if (!store) throw MissingStoreError;
   if (!store.get) throw NotImplementedError;
 

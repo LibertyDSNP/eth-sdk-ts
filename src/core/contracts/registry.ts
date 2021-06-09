@@ -1,20 +1,21 @@
 import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { getConfig } from "../../config";
-import { BigNumber, ContractTransaction } from "ethers";
+import { getConfig, ConfigOpts } from "../../config";
+import { ContractTransaction } from "ethers";
 import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
+import { bigNumberToDSNPUserId, dsnpUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
 
 const CONTRACT_NAME = "Registry";
 
 export interface Registration {
   contractAddr: EthereumAddress;
-  dsnpId: HexString;
+  dsnpUserId: DSNPUserId;
   handle: Handle;
 }
 
@@ -26,13 +27,13 @@ export type Handle = string;
  * @param handle String handle to resolve
  * @returns The Hex for the DSNP Id or null if not found
  */
-export const resolveRegistration = async (handle: Handle): Promise<Registration | null> => {
-  const contract = await getContract();
+export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
+  const contract = await getContract(opts);
   try {
-    const [dsnpId, contractAddr] = await contract.resolveRegistration(handle);
+    const [dsnpUserId, contractAddr] = await contract.resolveRegistration(handle);
     return {
       handle,
-      dsnpId: dsnpId.toHexString(),
+      dsnpUserId: bigNumberToDSNPUserId(dsnpUserId),
       contractAddr,
     };
   } catch (e) {
@@ -51,9 +52,13 @@ export const resolveRegistration = async (handle: Handle): Promise<Registration 
  * @param handle The string handle to register
  * @returns The contract Transaction
  */
-export const register = async (identityContractAddress: HexString, handle: Handle): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+export const register = async (
+  identityContractAddress: HexString,
+  handle: Handle,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).register(identityContractAddress, handle);
 };
@@ -67,10 +72,11 @@ export const register = async (identityContractAddress: HexString, handle: Handl
  */
 export const changeAddress = async (
   handle: Handle,
-  identityContractAddress: HexString
+  identityContractAddress: HexString,
+  opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).changeAddress(identityContractAddress, handle);
 };
@@ -82,28 +88,34 @@ export const changeAddress = async (
  * @param newHandle The new handle to use instead
  * @returns The contract Transaction
  */
-export const changeHandle = async (oldHandle: Handle, newHandle: Handle): Promise<ContractTransaction> => {
-  const contract = await getContract();
-  const { signer } = getConfig();
+export const changeHandle = async (
+  oldHandle: Handle,
+  newHandle: Handle,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const contract = await getContract(opts);
+  const { signer } = getConfig(opts);
   if (!signer) throw MissingSigner;
   return await contract.connect(signer).changeHandle(oldHandle, newHandle);
 };
 
 /**
  * Get all the DSNPRegistryUpdate events
- * @param filter By dsnpId or Contract Address
+ * @param filter By dsnpUserId or Contract Address
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
-  filter: Partial<Omit<Registration, "handle">>
+  filter: Partial<Omit<Registration, "handle">>,
+  opts?: ConfigOpts
 ): Promise<Registration[]> => {
-  const contract = await getContract();
-  const dsnpId = filter.dsnpId ? BigNumber.from(filter.dsnpId) : undefined;
-  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpId, filter.contractAddr));
+  const dsnpUserId = filter.dsnpUserId ? dsnpUserIdToBigNumber(filter.dsnpUserId) : undefined;
+  const contract = await getContract(opts);
+  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpUserId, filter.contractAddr));
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    return { contractAddr: addr, dsnpId: id.toHexString(), handle };
+    const dsnpUserId = bigNumberToDSNPUserId(id);
+    return { contractAddr: addr, dsnpUserId, handle };
   });
 };
 
@@ -113,7 +125,7 @@ export const getDSNPRegistryUpdateEvents = async (
  * without serializing, to guarantee consistent results.
  * @param signature the signature for the message
  * @param message the signed message
- * @param dsnpId the DSNP Id of the supposed signer
+ * @param dsnpUserId the DSNP User Id of the supposed signer
  * @param permission the permissions to check for
  * @param blockTag (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
@@ -122,11 +134,11 @@ export const getDSNPRegistryUpdateEvents = async (
 export const isMessageSignatureAuthorizedTo = async (
   signature: HexString,
   message: DSNPMessage | string,
-  dsnpId: HexString,
+  dsnpUserId: DSNPUserId,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag
 ): Promise<boolean> => {
-  const reg = await resolveId(dsnpId);
+  const reg = await resolveId(dsnpUserId);
   if (!reg) throw MissingContract;
 
   const { provider } = getConfig();
@@ -143,11 +155,11 @@ export const isMessageSignatureAuthorizedTo = async (
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 
-const getContract = async () => {
+const getContract = async (opts?: ConfigOpts) => {
   const {
     provider,
     contracts: { registry },
-  } = getConfig();
+  } = getConfig(opts);
   if (!provider) throw MissingProvider;
   const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
 
