@@ -1,13 +1,17 @@
 import * as config from "./config";
 import * as network from "./network";
+import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
 import { MissingProvider, MissingSigner, MissingUser } from "./core/utilities";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
+import { bigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
 
 describe("network", () => {
+  let registerId: DSNPUserId;
+
   snapshotSetup();
   const { signer, provider } = setupConfig();
 
@@ -18,7 +22,11 @@ describe("network", () => {
     const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
     await identityContract.deployed();
 
-    await register(identityContract.address, "dril");
+    const txn = await register(identityContract.address, "dril");
+    const receipt = await txn.wait(1);
+
+    const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
+    registerId = bigNumberToDSNPUserId(registerEvent.args[0]);
   });
 
   afterAll(async () => {
@@ -42,7 +50,7 @@ describe("network", () => {
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          objectId: "dsnp://00000000000003e8",
+          objectId: registerId,
         });
       });
     });
@@ -98,7 +106,7 @@ describe("network", () => {
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          objectId: "dsnp://00000000000003e8",
+          objectId: registerId,
         });
       });
     });
