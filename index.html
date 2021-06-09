@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@unfinishedlabs/sdk</title>
-	<meta name="description" content="Documentation for @unfinishedlabs/sdk">
+	<title>@dsnp/sdk</title>
+	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<script async src="assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@unfinishedlabs/sdk</a>
+					<a href="index.html" class="title">@dsnp/sdk</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -39,8 +39,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -50,7 +48,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>@unfinishedlabs/sdk</h1>
+			<h1>@dsnp/sdk</h1>
 		</div>
 	</div>
 </header>
@@ -69,17 +67,17 @@
 					<h2>Quick Start</h2>
 				</a>
 				<ul>
-					<li><code>npm install @unfinishedlabs/sdk</code></li>
+					<li><code>npm install @dsnp/sdk</code></li>
 					<li>Import:<ul>
-							<li><code>import * as dsnp from &quot;@unfinishedlabs/sdk&quot;;</code></li>
-							<li><code>import { Announcement } from &quot;@unfinishedlabs/sdk&quot;;</code></li>
-							<li><code>import { batch } from &quot;@unfinishedlabs/sdk/Announcement&quot;;</code></li>
+							<li><code>import sdk from &quot;@dsnp/sdk&quot;;</code></li>
+							<li><code>import { setConfig } from &quot;@dsnp/sdk&quot;;</code></li>
+							<li><code>import { batch } from &quot;@dsnp/sdk/core/contracts/announcement&quot;;</code></li>
 						</ul>
 					</li>
 					<li>Require:<ul>
-							<li><code>const dsnp = require(&quot;@unfinishedlabs/sdk&quot;);</code></li>
-							<li><code>const { Announcement } = require(&quot;@unfinishedlabs/sdk&quot;);</code></li>
-							<li><code>const { batch } = require(&quot;@unfinishedlabs/sdk/Announcement&quot;);</code></li>
+							<li><code>const sdk = require(&quot;@dsnp/sdk&quot;);</code></li>
+							<li><code>const { setConfig } = require(&quot;@dsnp/sdk&quot;);</code></li>
+							<li><code>const { batch } = require(&quot;@dsnp/sdk/core/contracts/announcement&quot;);</code></li>
 						</ul>
 					</li>
 				</ul>
@@ -89,73 +87,85 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class=" ">
-						<a href="modules.html">Exports</a>
+						<a href="modules.html">Modules</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/activitypub_activitypub.html">activity<wbr>Pub/activity<wbr>Pub</a>
+						<a href="modules/core.html">core</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/batch_actiontype.html">batch/action<wbr>Type</a>
+						<a href="modules/core_activitypub.html">core/activity<wbr>Pub</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/batch_batch.html">batch/batch</a>
+						<a href="modules/core_activitypub_activitypub.html">core/activity<wbr>Pub/activity<wbr>Pub</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/batch_memoryqueue.html">batch/memory<wbr>Queue</a>
+						<a href="modules/core_batch.html">core/batch</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/batch_queue.html">batch/queue</a>
+						<a href="modules/core_batch_batch.html">core/batch/batch</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/config_config.html">config/config</a>
+						<a href="modules/core_batch_batchmesssages.html">core/batch/batch<wbr>Messsages</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/contracts.html">contracts</a>
+						<a href="modules/core_batch_parquetschema.html">core/batch/parquet<wbr>Schema</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/contracts_announcement.html">contracts/announcement</a>
+						<a href="modules/core_contracts.html">core/contracts</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/social_content.html">social/content</a>
+						<a href="modules/core_contracts_announcement.html">core/contracts/announcement</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/social_handles.html">social/handles</a>
+						<a href="modules/core_contracts_contract.html">core/contracts/contract</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/social_network.html">social/network</a>
+						<a href="modules/core_contracts_identity.html">core/contracts/identity</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/social_search.html">social/search</a>
+						<a href="modules/core_contracts_registry.html">core/contracts/registry</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/storage_memorystorage.html">storage/memory<wbr>Storage</a>
+						<a href="modules/core_messages.html">core/messages</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/storage_storage.html">storage/storage</a>
+						<a href="modules/core_messages_messages.html">core/messages/messages</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/types_dsnp.html">types/DSNP</a>
+						<a href="modules/core_queue.html">core/queue</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/types_simpleencryptedformat.html">types/<wbr>Simple<wbr>Encrypted<wbr>Format</a>
+						<a href="modules/core_queue_memoryqueue.html">core/queue/memory<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/types_strings.html">types/<wbr>Strings</a>
+						<a href="modules/core_queue_queue.html">core/queue/queue</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/utilities.html">utilities</a>
+						<a href="modules/core_store.html">core/store</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/utilities_errors.html">utilities/errors</a>
+						<a href="modules/core_store_interface.html">core/store/interface</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/utilities_guards.html">utilities/guards</a>
+						<a href="modules/core_store_s3node.html">core/store/s3<wbr>Node</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/utilities_hash.html">utilities/hash</a>
+						<a href="modules/core_utilities.html">core/utilities</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/utilities_json.html">utilities/json</a>
+						<a href="modules/core_utilities_errors.html">core/utilities/errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/core_utilities_guards.html">core/utilities/guards</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/core_utilities_hash.html">core/utilities/hash</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/core_utilities_json.html">core/utilities/json</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/index.html">index</a>
 					</li>
 				</ul>
 			</nav>
@@ -181,6 +191,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 			</ul>
 		</div>
 	</div>
