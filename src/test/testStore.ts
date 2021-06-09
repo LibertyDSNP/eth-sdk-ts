@@ -1,6 +1,6 @@
-import { Content, File, StorageInterface } from "../core/storage/storage";
+import { Content, File, StoreInterface } from "../core/store/interface";
 
-export default class TestStore implements StorageInterface {
+export default class TestStore implements StoreInterface {
   store: Record<string, Content>;
 
   constructor() {

@@ -4,7 +4,7 @@ import * as activityPub from "./core/activityPub/activityPub";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
-import * as store from "./core/store/store";
+import * as store from "./core/store/interface";
 import { validateDSNPId, MissingUser } from "./core/utilities";
 
 /**
