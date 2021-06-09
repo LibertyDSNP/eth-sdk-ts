@@ -17,7 +17,7 @@ export const follow = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
   // Get current user id
-  const { currentFromId } = await config.getConfig(opts);
+  const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
   // Get followeeId from handle
@@ -45,7 +45,7 @@ export const unfollow = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
   // Get current user id
-  const { currentFromId } = await config.getConfig(opts);
+  const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
   // Get followeeId from handle

@@ -43,7 +43,7 @@ export const broadcast = async (
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { currentFromId } = await config.getConfig(opts);
+  const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
   // Creates and returns the DSNP Broadcast message
@@ -83,7 +83,7 @@ export const reply = async (
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { currentFromId } = await config.getConfig(opts);
+  const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
   // Create and returns the DSNP Reply message
@@ -109,7 +109,7 @@ export const react = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReactionMessage> => {
   // Get current user id
-  const { currentFromId } = await config.getConfig(opts);
+  const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
   // Creates and returns the DSNP Reaction message
