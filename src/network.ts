@@ -16,19 +16,15 @@ export const follow = async (
   handle: Handle,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Get followeeId from handle
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;
   const followeeId = registration.dsnpUserId;
 
-  // Creates and returns the DSNP Graph Change message
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchGraphChangeMessage;
 };
@@ -44,19 +40,15 @@ export const unfollow = async (
   handle: Handle,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Get followeeId from handle
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;
   const followeeId = registration.dsnpUserId;
 
-  // Creates and returns the DSNP Graph Change message
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchGraphChangeMessage;
 };

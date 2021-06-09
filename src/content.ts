@@ -33,24 +33,19 @@ export const broadcast = async (
   contentOptions: activityPub.ActivityPubOpts,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchBroadcastMessage> => {
-  // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
   if (!activityPub.validate(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Upload the content file
   const filename = activityPub.hash(contentObj);
   const uri = await store.put(filename, content, opts);
 
-  // Creates and returns the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
   const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchBroadcastMessage;
 };
@@ -70,27 +65,21 @@ export const reply = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReplyMessage> => {
-  // Validate inReplyTo
   if (!validateDSNPId(inReplyTo)) throw InvalidInReplyTo;
 
-  // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
   if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Upload the content file
   const filename = activityPub.hash(contentObj);
   const uri = await store.put(filename, content, opts);
 
-  // Create and returns the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
   const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchReplyMessage;
 };
@@ -108,14 +97,11 @@ export const react = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReactionMessage> => {
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Creates and returns the DSNP Reaction message
   const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchReactionMessage;
 };
@@ -136,24 +122,19 @@ export const profile = async (
   contentOptions: activityPub.ActivityPubOpts,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchProfileMessage> => {
-  // Create the activity pub file
   const contentObj = activityPub.create(contentOptions);
   if (!activityPub.validateProfile(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  // Get current user id
   const { currentFromId } = config.getConfig(opts);
   if (!currentFromId) throw MissingUser;
 
-  // Upload the content file
   const filename = activityPub.hash(contentObj);
   const uri = await store.put(filename, content, opts);
 
-  // Creates and returns the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
   const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
 
-  // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
   return signedMessage as batchMessages.BatchProfileMessage;
 };
