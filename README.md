@@ -18,23 +18,25 @@ The configuration can be set at runtime with the following:
 
 ```js
 // Node
-var { setConfig } = require("@dsnp/sdk");
+const { setConfig } = require("@dsnp/sdk");
+const { Wallet, providers } = require("ethers");
 
 setConfig({
-    signer: signer,
-    provider: provider
-  })
+  signer: new Wallet("key"),
+  provider: new providers.JsonRpcProvider("https://...")
+});
 // Do something with the SDK
 ```
 
 ```typescript
 // TypeScript
+import { Wallet, providers } from "ethers";
 import { setConfig } from "@dsnp/sdk";
 
 setConfig({
-    signer: signer,
-    provider: provider
-  })
+  signer: new Wallet("key"),
+  provider: new providers.JsonRpcProvider("https://...")
+});
 // Do something with the SDK
 ```
 

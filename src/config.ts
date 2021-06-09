@@ -63,12 +63,15 @@ export const getConfig = (overrides?: ConfigOpts): Config => {
  * setConfig() sets the current configuration with the given object.
  *
  * @params newConfig The configuration settings to set with
+ * @return The newly constructed config
  */
-export const setConfig = (newConfig: ConfigOpts): void => {
-  config = {
+export const setConfig = (newConfig: ConfigOpts): Config => {
+  const { signer, provider } = newConfig;
+  if (provider && signer && !signer.provider) newConfig.signer = signer.connect(provider);
+  return (config = {
     // Defaults
     queue: new MemoryQueue(),
     contracts: {},
     ...newConfig,
-  };
+  });
 };

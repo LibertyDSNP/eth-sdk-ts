@@ -12,7 +12,10 @@ dist
 /*.d.ts
 /**/*.map
 /**/*.js
+*.js
+*.d.ts
 docs
+core
 
 ### ignore typechain types
 /src/types/typechain/*

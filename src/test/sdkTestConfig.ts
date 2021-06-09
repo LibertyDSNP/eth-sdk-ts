@@ -1,21 +1,21 @@
 //eslint-disable-next-line
 require("dotenv").config();
 import { setConfig } from "../config";
-import { ethers } from "ethers";
+import { Wallet, Signer, providers } from "ethers";
 
-type SdkTestConfig = { provider: ethers.providers.JsonRpcProvider; signer: ethers.Signer };
+type SdkTestConfig = { provider: providers.JsonRpcProvider; signer: Signer };
 
 export const setupConfig = (): SdkTestConfig => {
   const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
   const RPC_URL = String(process.env.RPC_URL);
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-  const signer = new ethers.Wallet(TESTING_PRIVATE_KEY, provider);
-  setConfig({
+  const provider = new providers.JsonRpcProvider(RPC_URL);
+  const signer = new Wallet(TESTING_PRIVATE_KEY);
+  const conf = setConfig({
     signer,
     provider,
   });
   return {
-    signer,
-    provider,
+    signer: conf.signer as Signer,
+    provider: conf.provider as providers.JsonRpcProvider,
   };
 };
