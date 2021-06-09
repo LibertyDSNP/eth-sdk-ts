@@ -8,10 +8,10 @@ See [README](https://github.com/LibertyDSNP/sdk-ts/)
 
 - `npm install @dsnp/sdk`
 - Import:
-  - `import * as dsnp from "@dsnp/sdk";`
-  - `import { Announcement } from "@dsnp/sdk";`
-  - `import { batch } from "@dsnp/sdk/Announcement";`
+  - `import sdk from "@dsnp/sdk";`
+  - `import { setConfig } from "@dsnp/sdk";`
+  - `import { batch } from "@dsnp/sdk/core/contracts/announcement";`
 - Require:
-  - `const dsnp = require("@dsnp/sdk");`
-  - `const { Announcement } = require("@dsnp/sdk");`
-  - `const { batch } = require("@dsnp/sdk/Announcement");`
+  - `const sdk = require("@dsnp/sdk");`
+  - `const { setConfig } = require("@dsnp/sdk");`
+  - `const { batch } = require("@dsnp/sdk/core/contracts/announcement");`

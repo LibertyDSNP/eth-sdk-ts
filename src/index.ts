@@ -19,11 +19,16 @@ export * from "./handles";
 export * from "./network";
 export * from "./search";
 
-import * as config from "./config";
-import * as content from "./content";
-import * as handles from "./handles";
-import * as network from "./network";
-import * as search from "./search";
+import * as configImport from "./config";
+export const config = configImport;
+import * as contentImport from "./content";
+export const content = contentImport;
+import * as handlesImport from "./handles";
+export const handles = handlesImport;
+import * as networkImport from "./network";
+export const network = networkImport;
+import * as searchImport from "./search";
+export const search = searchImport;
 
 export default {
   ...config,
