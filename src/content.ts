@@ -3,7 +3,7 @@ import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
 import * as store from "./core/store/store";
-import { getRandomString, validateDSNPId, MissingUser } from "./core/utilities";
+import { validateDSNPId, MissingUser } from "./core/utilities";
 
 /**
  * InvalidActivityPubOpts represents an error in the activity pub options
@@ -43,7 +43,7 @@ export const broadcast = async (
   if (!currentFromId) throw MissingUser;
 
   // Upload the content file
-  const filename = getRandomString();
+  const filename = activityPub.hash(contentObj);
   const uri = await store.put(filename, content, opts);
 
   // Creates and returns the DSNP Broadcast message
@@ -83,7 +83,7 @@ export const reply = async (
   if (!currentFromId) throw MissingUser;
 
   // Upload the content file
-  const filename = getRandomString();
+  const filename = activityPub.hash(contentObj);
   const uri = await store.put(filename, content, opts);
 
   // Create and returns the DSNP Reply message
@@ -146,8 +146,8 @@ export const profile = async (
   if (!currentFromId) throw MissingUser;
 
   // Upload the content file
-  const filename = getRandomString();
-  const uri = await storage.put(filename, content, opts);
+  const filename = activityPub.hash(contentObj);
+  const uri = await store.put(filename, content, opts);
 
   // Creates and returns the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
