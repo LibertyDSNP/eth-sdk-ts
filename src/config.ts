@@ -32,8 +32,8 @@ export interface Config {
     /** The Address of the Registry contract */
     registry?: HexString;
   };
-  /** CurrentUserId stores the id of the currently authenticated user */
-  currentUserId?: string;
+  /** currentFromId stores the id of the currently authenticated user */
+  currentFromId?: string;
 }
 
 /**

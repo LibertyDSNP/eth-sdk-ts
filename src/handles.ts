@@ -14,7 +14,7 @@ export const UserNotFound = new Error("User not found.");
 
 /**
  * authenticateHandle() finds the DSNP user id associated with a given handle
- * and sets the currentUserId in the config.
+ * and sets the currentFromId in the config.
  *
  * @param handle The handle to authenticate
  * @returns      A void promise which will either resolve or reject
@@ -26,7 +26,7 @@ export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpt
 
   config.setConfig({
     ...config.getConfig(),
-    currentUserId: userId,
+    currentFromId: userId,
   });
 };
 

@@ -43,12 +43,12 @@ export const broadcast = async (
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { currentUserId } = await config.getConfig(opts);
-  if (!currentUserId) throw MissingUser;
+  const { currentFromId } = await config.getConfig(opts);
+  if (!currentFromId) throw MissingUser;
 
   // Creates and returns the DSNP Broadcast message
   const contentHash = activityPub.hash(contentObj);
-  const message = messages.createBroadcastMessage(currentUserId, uri.toString(), contentHash);
+  const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
 
   // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
@@ -83,12 +83,12 @@ export const reply = async (
   const uri = await store.put(filename, content, opts);
 
   // Get current user id
-  const { currentUserId } = await config.getConfig(opts);
-  if (!currentUserId) throw MissingUser;
+  const { currentFromId } = await config.getConfig(opts);
+  if (!currentFromId) throw MissingUser;
 
   // Create and returns the DSNP Reply message
   const contentHash = activityPub.hash(contentObj);
-  const message = messages.createReplyMessage(currentUserId, uri.toString(), contentHash, inReplyTo);
+  const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
 
   // Sign and return the message
   const signedMessage = await messages.sign(message, opts);
@@ -109,11 +109,11 @@ export const react = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReactionMessage> => {
   // Get current user id
-  const { currentUserId } = await config.getConfig(opts);
-  if (!currentUserId) throw MissingUser;
+  const { currentFromId } = await config.getConfig(opts);
+  if (!currentFromId) throw MissingUser;
 
   // Creates and returns the DSNP Reaction message
-  const message = messages.createReactionMessage(currentUserId, emoji, inReplyTo);
+  const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
 
   // Sign and return the message
   const signedMessage = await messages.sign(message, opts);

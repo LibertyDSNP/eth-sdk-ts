@@ -16,7 +16,7 @@ describe("content", () => {
         store = new TestStore();
 
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: store,
         });
@@ -76,7 +76,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingStoreError", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           store: new TestStore(),
         });
 
@@ -93,7 +93,7 @@ describe("content", () => {
     describe("without a storage adapter", () => {
       it("throws MissingStoreError", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
         });
 
@@ -133,7 +133,7 @@ describe("content", () => {
         store = new TestStore();
 
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: store,
         });
@@ -220,7 +220,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingStoreError", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           store: new TestStore(),
         });
 
@@ -241,7 +241,7 @@ describe("content", () => {
     describe("without a storage adapter", () => {
       it("throws MissingStoreError", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
         });
 
@@ -285,7 +285,7 @@ describe("content", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
         });
       });
@@ -308,7 +308,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0123456789ABCDEF",
         });
 
         await expect(

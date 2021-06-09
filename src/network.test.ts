@@ -29,7 +29,7 @@ describe("network", () => {
     describe("with a valid provider, signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           signer,
           provider,
         });
@@ -50,7 +50,7 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           provider,
         });
 
@@ -72,7 +72,7 @@ describe("network", () => {
     describe("without a provider", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           signer,
         });
 
@@ -85,7 +85,7 @@ describe("network", () => {
     describe("with a valid provider, signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           signer,
           provider,
         });
@@ -106,7 +106,7 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           provider,
         });
 
@@ -128,7 +128,7 @@ describe("network", () => {
     describe("without a provider", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
-          currentUserId: "dsnp://0000000000000000",
+          currentFromId: "dsnp://0000000000000000",
           signer,
         });
 

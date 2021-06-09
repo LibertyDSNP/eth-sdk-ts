@@ -46,9 +46,9 @@ describe("handles", () => {
   });
 
   describe("#authenticateHandle", () => {
-    it("sets the currentUserId correctly when a handle exists", async () => {
+    it("sets the currentFromId correctly when a handle exists", async () => {
       await authenticateHandle("taken");
-      expect(config.getConfig().currentUserId).toEqual("0x03e8");
+      expect(config.getConfig().currentFromId).toEqual("0x03e8");
     });
 
     it("throws UserNotFound when the handle does not exist", async () => {
