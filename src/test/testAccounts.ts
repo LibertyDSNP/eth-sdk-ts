@@ -7,52 +7,7 @@ export interface RegistrationWithSigner extends Registration {
   signer: ethers.Signer;
 }
 
-/**
- * Use this function to set up a new signer other than what is in the config.
- * @param accountIndex the index in the TestAccounts to get the signer for.
- * @return the ethers.Signer associated with the test account
- */
-export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
-  if (accountIndex >= TestAccounts.length) throw new Error(`there are only ${TestAccounts.length} accounts.`);
-  const { provider } = getConfig();
-  if (!provider) throw new Error("no provider configured");
-  return new ethers.Wallet(TestAccounts[accountIndex].privateKey, provider);
-};
-
-/**
- * Parses a DSNP Id in a contract transaction log event.
- * @param transaction
- * @returns the DSNP Id
- */
-export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<any> => {
-  const receipt = await transaction.wait(1);
-  const reg = Registry__factory.createInterface();
-  const event = reg.parseLog(receipt.logs[0]);
-  return event.args[0];
-};
-
-/**
- * Creates a new DSNP Identity Proxy contract using the specified test account, and registers the
- * provided handle. Callers must keep track of what accounts have already been used.
- * @param acctIdx the index in TestAccounts to use.
- * @param handle the handle to register
- * @return a RegistrationWithSigner object
- */
-export const newRegistrationForAccountIndex = async (
-  acctIdx: number,
-  handle: string
-): Promise<RegistrationWithSigner> => {
-  const signer = getSignerForAccount(acctIdx);
-  const newSignerAddr = await signer.getAddress();
-  const identityContract = await new Identity__factory(signer).deploy(newSignerAddr);
-  await identityContract.deployed();
-  const contractAddr = identityContract.address;
-  const tx2 = await register(contractAddr, handle);
-  const dsnpId = await getIdFromRegisterTransaction(tx2);
-  return { contractAddr, dsnpId, handle, signer };
-};
-
-const TestAccounts = [
+const TESTACCOUNTS = [
   {
     account: "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
     privateKey: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
@@ -157,3 +112,48 @@ const TestAccounts = [
     privateKey: "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e",
   },
 ];
+
+/**
+ * Use this function to set up a new signer other than what is in the config.
+ * @param accountIndex the index in the TESTACCOUNTS to get the signer for.
+ * @return the ethers.Signer associated with the test account
+ */
+export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
+  if (accountIndex >= TESTACCOUNTS.length) throw new Error(`there are only ${TESTACCOUNTS.length} accounts.`);
+  const { provider } = getConfig();
+  if (!provider) throw new Error("no provider configured");
+  return new ethers.Wallet(TESTACCOUNTS[accountIndex].privateKey, provider);
+};
+
+/**
+ * Parses a DSNP Id in a contract transaction log event.
+ * @param transaction
+ * @returns the DSNP Id
+ */
+export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<any> => {
+  const receipt = await transaction.wait(1);
+  const reg = Registry__factory.createInterface();
+  const event = reg.parseLog(receipt.logs[0]);
+  return event.args[0];
+};
+
+/**
+ * Creates a new DSNP Identity Proxy contract using the specified test account, and registers the
+ * provided handle. Callers must keep track of what accounts have already been used.
+ * @param acctIdx the index in TESTACCOUNTS to use.
+ * @param handle the handle to register
+ * @return a RegistrationWithSigner object
+ */
+export const newRegistrationForAccountIndex = async (
+  acctIdx: number,
+  handle: string
+): Promise<RegistrationWithSigner> => {
+  const signer = getSignerForAccount(acctIdx);
+  const newSignerAddr = await signer.getAddress();
+  const identityContract = await new Identity__factory(signer).deploy(newSignerAddr);
+  await identityContract.deployed();
+  const contractAddr = identityContract.address;
+  const tx2 = await register(contractAddr, handle);
+  const dsnpId = await getIdFromRegisterTransaction(tx2);
+  return { contractAddr, dsnpId, handle, signer };
+};
