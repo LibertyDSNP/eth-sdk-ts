@@ -18,6 +18,9 @@ export const batch = batchImport;
 import * as contractsImport from "./contracts";
 export const contracts = contractsImport;
 
+import * as messagesImport from "./messages";
+export const messages = messagesImport;
+
 import * as queueImport from "./queue";
 export const queue = queueImport;
 
