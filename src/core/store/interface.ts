@@ -1,5 +1,5 @@
 import { getConfig, ConfigOpts } from "../../config";
-import { MissingStoreError, NotImplementedError } from "../utilities/errors";
+import { MissingStore, NotImplementedError } from "../utilities/errors";
 
 export type File = Buffer | string;
 export type Content = string | Buffer;
@@ -25,7 +25,7 @@ export interface StoreInterface {
  */
 export const put = async (targetPath: string, content: Content, opts?: ConfigOpts): Promise<URL> => {
   const { store } = getConfig(opts);
-  if (!store) throw MissingStoreError;
+  if (!store) throw MissingStore;
 
   return await store.put(targetPath, content);
 };
@@ -39,7 +39,7 @@ export const put = async (targetPath: string, content: Content, opts?: ConfigOpt
  */
 export const get = async (targetPath: string, opts?: ConfigOpts): Promise<File> => {
   const { store } = getConfig(opts);
-  if (!store) throw MissingStoreError;
+  if (!store) throw MissingStore;
   if (!store.get) throw NotImplementedError;
 
   return await store.get(targetPath);

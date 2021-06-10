@@ -5,7 +5,7 @@ import * as config from "./config";
 import * as content from "./content";
 import { DSNPType } from "./core/messages/messages";
 import TestStore from "./test/testStore";
-import { MissingSigner, MissingStoreError, MissingUser } from "./core/utilities";
+import { MissingSigner, MissingStore, MissingUser } from "./core/utilities";
 
 describe("content", () => {
   describe("broadcast", () => {
@@ -103,7 +103,7 @@ describe("content", () => {
             content: "Lorem ipsum delor blah blah blah",
             name: "Lorem Ipsum",
           })
-        ).rejects.toThrow(MissingStoreError);
+        ).rejects.toThrow(MissingStore);
       });
     });
 
@@ -255,7 +255,7 @@ describe("content", () => {
             },
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(MissingStoreError);
+        ).rejects.toThrow(MissingStore);
       });
     });
 
@@ -430,7 +430,7 @@ describe("content", () => {
             name: "Rose Karr",
             preferredUsername: "rosalinekarr",
           })
-        ).rejects.toThrow(MissingStoreError);
+        ).rejects.toThrow(MissingStore);
       });
     });
 

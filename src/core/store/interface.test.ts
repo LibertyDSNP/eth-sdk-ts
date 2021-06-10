@@ -1,5 +1,5 @@
 import { getConfig } from "../../config";
-import { MissingStoreError, NotImplementedError } from "../utilities";
+import { MissingStore, NotImplementedError } from "../utilities";
 import { get, put } from "./interface";
 
 jest.mock("../../config");
@@ -12,7 +12,7 @@ describe("store", () => {
       });
 
       it("throws MissingStoreError error", async () => {
-        await expect(get("file.txt")).rejects.toThrow(MissingStoreError);
+        await expect(get("file.txt")).rejects.toThrow(MissingStore);
       });
 
       describe("and #get function is not set", () => {
@@ -49,7 +49,7 @@ describe("store", () => {
       });
 
       it("throws MissingStoreError error", async () => {
-        await expect(put("file.txt", "{}")).rejects.toThrow(MissingStoreError);
+        await expect(put("file.txt", "{}")).rejects.toThrow(MissingStore);
       });
     });
 

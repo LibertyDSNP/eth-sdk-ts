@@ -4,6 +4,22 @@ import MemoryQueue from "./core/queue/memoryQueue";
 import { QueueInterface } from "./core/queue";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
+import { MissingProvider, MissingSigner, MissingStore, MissingUser } from "./core/utilities";
+
+export interface Contracts {
+  /** The Address of the Batch Announce contract */
+  announcer?: HexString;
+  /** The Address of the Beacon contract */
+  beacon?: HexString;
+  /** The Address of the Beacon Proxy Factory contract */
+  beaconFactory?: HexString;
+  /** The Address of the Identity Logic contract */
+  identityLogic?: HexString;
+  /** The Address of the Identity Clone Proxy Factory contract */
+  identityCloneFactory?: HexString;
+  /** The Address of the Registry contract */
+  registry?: HexString;
+}
 
 /**
  * The Config Interface provides for various settings and plugable modules.
@@ -18,22 +34,11 @@ export interface Config {
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
-  contracts: {
-    /** The Address of the Batch Announce contract */
-    announcer?: HexString;
-    /** The Address of the Beacon contract */
-    beacon?: HexString;
-    /** The Address of the Beacon Proxy Factory contract */
-    beaconFactory?: HexString;
-    /** The Address of the Identity Logic contract */
-    identityLogic?: HexString;
-    /** The Address of the Identity Clone Proxy Factory contract */
-    identityCloneFactory?: HexString;
-    /** The Address of the Registry contract */
-    registry?: HexString;
-  };
+  contracts: Contracts;
   /** currentFromId stores the id of the currently authenticated user */
   currentFromId?: string;
+  /** to allow access of keys by name */
+  [index: string]: unknown;
 }
 
 /**
@@ -76,4 +81,64 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
     contracts: {},
     ...newConfig,
   });
+};
+
+// - Update all `getConfig()` calls to use these getters where appropriate
+// - Move associated "Missing" errors to the config module
+export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
+  const c = getConfig(opts);
+  if (!c.provider) throw MissingProvider;
+  return c.provider;
+};
+export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
+  const c = getConfig(opts);
+  if (!c.signer) throw MissingSigner;
+  return c.signer;
+};
+export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
+  const c = getConfig(opts);
+  if (!c.store) throw MissingStore;
+  return c.store;
+};
+export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
+  const c = getConfig(opts);
+  if (!c.currentFromId) throw MissingUser;
+  return c.currentFromId;
+};
+export const getQueue = (opts?: ConfigOpts): QueueInterface => {
+  const c = getConfig(opts);
+  return c.queue;
+};
+
+export const getContracts = (opts?: ConfigOpts): Contracts => {
+  const c = getConfig(opts);
+  return c.contracts;
+};
+
+/**
+ * use if you need to guarantee that >1 configs are set
+ * @param requiredConfigs: list of config strings
+ * @param opts
+ */
+export const requireGetConfig = (requiredConfigs?: Array<string>, opts?: ConfigOpts): Config => {
+  const c = getConfig(opts);
+  if (requiredConfigs) {
+    requiredConfigs.forEach((configKey) => {
+      if (c[configKey] === undefined) {
+        switch (configKey) {
+          case "store":
+            throw MissingStore;
+          case "signer":
+            throw MissingSigner;
+          case "provider":
+            throw MissingProvider;
+          case "currentFromId":
+            throw MissingUser;
+          default:
+            throw new Error("unknown config: " + configKey);
+        }
+      }
+    });
+  }
+  return c;
 };

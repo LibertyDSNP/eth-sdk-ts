@@ -1,6 +1,6 @@
-import { ContractTransaction } from "ethers";
-import { MissingProvider, MissingSigner, MissingContract } from "../utilities";
-import { getConfig, ConfigOpts } from "../../config";
+import { ContractTransaction, Signer } from "ethers";
+import { MissingProvider, MissingContract } from "../utilities";
+import { ConfigOpts, requireGetProvider, requireGetConfig } from "../../config";
 import { EthereumAddress } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -10,6 +10,7 @@ import {
   IdentityCloneFactory__factory,
 } from "../../types/typechain";
 import { getContractAddress } from "./contract";
+import { Provider } from "@ethersproject/providers";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
 const BEACON_FACTORY_CONTRACT = "BeaconFactory";
@@ -96,9 +97,8 @@ const getIdentityLogicContractAddress = async (opts?: ConfigOpts): Promise<Ether
   const {
     provider,
     contracts: { identityLogic },
-  } = getConfig(opts);
-  if (!provider) throw MissingProvider;
-  const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
+  } = requireGetConfig(["provider"], opts);
+  const address = identityLogic || (await getContractAddress(provider as Provider, IDENTITY_CONTRACT));
 
   if (!address) throw MissingContract;
   return address;
@@ -109,14 +109,12 @@ const getIdentityCloneFactoryContract = async (opts?: ConfigOpts): Promise<Ident
     provider,
     signer,
     contracts: { identityCloneFactory },
-  } = getConfig(opts);
-  if (!signer) throw MissingSigner;
-  if (!provider) throw MissingProvider;
-
-  const address = identityCloneFactory || (await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT));
+  } = requireGetConfig(["signer", "provider"], opts);
+  const address =
+    identityCloneFactory || (await getContractAddress(provider as Provider, IDENTITY_CLONE_FACTORY_CONTRACT));
   if (!address) throw MissingContract;
 
-  return IdentityCloneFactory__factory.connect(address, signer);
+  return IdentityCloneFactory__factory.connect(address, signer as Signer);
 };
 
 const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactory> => {
@@ -124,14 +122,12 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
     signer,
     provider,
     contracts: { beaconFactory },
-  } = getConfig(opts);
-  if (!signer) throw MissingSigner;
-  if (!provider) throw MissingProvider;
+  } = requireGetConfig(["signer", "provider"], opts);
 
-  const address = beaconFactory || (await getContractAddress(provider, BEACON_FACTORY_CONTRACT));
+  const address = beaconFactory || (await getContractAddress(provider as Provider, BEACON_FACTORY_CONTRACT));
   if (!address) throw MissingContract;
 
-  return BeaconFactory__factory.connect(address, signer);
+  return BeaconFactory__factory.connect(address, signer as Signer);
 };
 
 /**
@@ -139,7 +135,8 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
  * @param address Address that is used to test permission
  * @param contractAddress Address of contract to check against
  * @param permission Level of permission check. See Permission for details
- * @param blockNumber Check for authorization at a particular block number, 0x0 reserved for endless permissions
+ * @param blockNumber Check for authorization at a particular block number,
+ *        0x0 reserved for endless permissions
  * @return boolean
  * @dev Return MAY change as deauthorization can revoke past messages
  */
@@ -150,7 +147,7 @@ export const isAuthorizedTo = async (
   blockNumber: number,
   opts?: ConfigOpts
 ): Promise<boolean> => {
-  const { provider } = await getConfig(opts);
+  const provider = requireGetProvider(opts);
   if (!provider) throw MissingProvider;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
@@ -160,9 +157,8 @@ const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => 
   const {
     provider,
     contracts: { beacon },
-  } = getConfig(opts);
-  if (!provider) throw MissingProvider;
-  const address = beacon || (await getContractAddress(provider, BEACON_CONTRACT));
+  } = requireGetConfig(["provider"], opts);
+  const address = beacon || (await getContractAddress(provider as Provider, BEACON_CONTRACT));
 
   if (!address) throw MissingContract;
   return address;

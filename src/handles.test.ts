@@ -49,7 +49,7 @@ describe("handles", () => {
   describe("#authenticateHandle", () => {
     it("sets the currentFromId correctly when a handle exists", async () => {
       await authenticateHandle("taken");
-      expect(config.getConfig().currentFromId).toEqual("dsnp://00000000000003e8");
+      expect(config.requireGetCurrentFromId()).toEqual("dsnp://00000000000003e8");
     });
 
     it("throws RegistrationNotFound when the handle does not exist", async () => {
