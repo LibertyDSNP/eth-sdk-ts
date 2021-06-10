@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
 
-import { getConfig, ConfigOpts } from "../../config";
+import { ConfigOpts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
-import { MissingSigner } from "../utilities/errors";
 import { sortObject } from "../utilities/json";
 import { DSNPBatchMessage } from "../batch/batchMesssages";
 
@@ -207,8 +206,7 @@ export const createProfileMessage = (fromId: string, uri: string, hash: HexStrin
  * @returns       The signed DSNP message
  */
 export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
-  const { signer } = await getConfig(opts);
-  if (!signer) throw MissingSigner;
+  const signer = requireGetSigner(opts);
   const signature = await signer.signMessage(serialize(message));
   return {
     ...message,

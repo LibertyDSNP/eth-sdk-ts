@@ -1,15 +1,15 @@
 import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { getConfig, ConfigOpts } from "../../config";
+import { ConfigOpts, MissingContract, requireGetSigner, requireGetProvider, requireGetConfig } from "../../config";
 import { ContractTransaction } from "ethers";
-import { MissingContract, MissingProvider, MissingSigner } from "../utilities";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
 import { bigNumberToDSNPUserId, dsnpUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
+import { Provider } from "@ethersproject/providers";
 
 const CONTRACT_NAME = "Registry";
 
@@ -25,6 +25,7 @@ export type Handle = string;
  * resolveRegistration() Try to resolve a handle into a DSNP Id
  *
  * @param handle String handle to resolve
+ * @param opts (optional) any config overrides.
  * @returns The Hex for the DSNP Id or null if not found
  */
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
@@ -50,6 +51,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
  *
  * @param identityContractAddress Address of the identity contract to use
  * @param handle The string handle to register
+ * @param opts (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const register = async (
@@ -58,8 +60,8 @@ export const register = async (
   opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
   const contract = await getContract(opts);
-  const { signer } = getConfig(opts);
-  if (!signer) throw MissingSigner;
+  const signer = requireGetSigner(opts);
+
   return await contract.connect(signer).register(identityContractAddress, handle);
 };
 
@@ -68,6 +70,7 @@ export const register = async (
  *
  * @param handle The string handle to alter
  * @param identityContractAddress Address of the new identity contract to use
+ * @param opts (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const changeAddress = async (
@@ -76,8 +79,7 @@ export const changeAddress = async (
   opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
   const contract = await getContract(opts);
-  const { signer } = getConfig(opts);
-  if (!signer) throw MissingSigner;
+  const signer = requireGetSigner(opts);
   return await contract.connect(signer).changeAddress(identityContractAddress, handle);
 };
 
@@ -86,6 +88,7 @@ export const changeAddress = async (
  *
  * @param oldHandle The string handle to alter
  * @param newHandle The new handle to use instead
+ * @param opts (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const changeHandle = async (
@@ -94,14 +97,14 @@ export const changeHandle = async (
   opts?: ConfigOpts
 ): Promise<ContractTransaction> => {
   const contract = await getContract(opts);
-  const { signer } = getConfig(opts);
-  if (!signer) throw MissingSigner;
+  const signer = requireGetSigner(opts);
   return await contract.connect(signer).changeHandle(oldHandle, newHandle);
 };
 
 /**
  * Get all the DSNPRegistryUpdate events
  * @param filter By dsnpUserId or Contract Address
+ * @param opts (optional) any config overrides.
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
@@ -130,20 +133,20 @@ export const getDSNPRegistryUpdateEvents = async (
  * @param blockTag (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
  *    Defaults to 0x0, which checks for "forever" permissions.
+ * @param opts (optional) any config overrides.
  */
 export const isMessageSignatureAuthorizedTo = async (
   signature: HexString,
   message: DSNPMessage | string,
   dsnpUserId: DSNPUserId,
   permission: Permission,
-  blockTag?: ethers.providers.BlockTag
+  blockTag?: ethers.providers.BlockTag,
+  opts?: ConfigOpts
 ): Promise<boolean> => {
   const reg = await resolveId(dsnpUserId);
   if (!reg) throw MissingContract;
 
-  const { provider } = getConfig();
-  if (!provider) throw MissingProvider;
-
+  const provider = requireGetProvider(opts);
   let blockNumber = 0x0;
   if (blockTag) {
     const bn = (await provider?.getBlock(blockNumber))?.number;
@@ -159,10 +162,9 @@ const getContract = async (opts?: ConfigOpts) => {
   const {
     provider,
     contracts: { registry },
-  } = getConfig(opts);
-  if (!provider) throw MissingProvider;
-  const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
+  } = requireGetConfig(["provider"], opts);
+  const address = registry || (await getContractAddress(provider as Provider, CONTRACT_NAME));
 
   if (!address) throw MissingContract;
-  return Registry__factory.connect(address, provider);
+  return Registry__factory.connect(address, provider as Provider);
 };

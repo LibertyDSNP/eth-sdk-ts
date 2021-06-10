@@ -1,7 +1,6 @@
 import { ContractTransaction, ethers, EventFilter, Signer } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetConfig } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetConfig, MissingContract } from "../../config";
 import { HexString } from "../../types/Strings";
-import { MissingContract } from "../utilities";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";

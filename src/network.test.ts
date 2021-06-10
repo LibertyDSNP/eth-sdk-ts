@@ -3,7 +3,6 @@ import * as network from "./network";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
-import { MissingProvider, MissingSigner, MissingUser } from "./core/utilities";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
@@ -62,7 +61,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(MissingSigner);
+        await expect(network.follow("dril")).rejects.toThrow(config.MissingSigner);
       });
     });
 
@@ -73,7 +72,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(MissingUser);
+        await expect(network.follow("dril")).rejects.toThrow(config.MissingUser);
       });
     });
 
@@ -84,7 +83,7 @@ describe("network", () => {
           signer,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(MissingProvider);
+        await expect(network.follow("dril")).rejects.toThrow(config.MissingProvider);
       });
     });
   });
@@ -118,7 +117,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow("dril")).rejects.toThrow(MissingSigner);
+        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingSigner);
       });
     });
 
@@ -129,7 +128,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow("dril")).rejects.toThrow(MissingUser);
+        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingUser);
       });
     });
 
@@ -140,7 +139,7 @@ describe("network", () => {
           signer,
         });
 
-        await expect(network.unfollow("dril")).rejects.toThrow(MissingProvider);
+        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingProvider);
       });
     });
   });

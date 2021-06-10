@@ -1,6 +1,5 @@
 import { ContractTransaction, Signer } from "ethers";
-import { MissingProvider, MissingContract } from "../utilities";
-import { ConfigOpts, requireGetProvider, requireGetConfig } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetConfig, MissingProvider, MissingContract } from "../../config";
 import { EthereumAddress } from "../../types/Strings";
 import {
   IdentityCloneFactory,

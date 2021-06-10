@@ -4,7 +4,12 @@ import MemoryQueue from "./core/queue/memoryQueue";
 import { QueueInterface } from "./core/queue";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
-import { MissingProvider, MissingSigner, MissingStore, MissingUser } from "./core/utilities";
+
+export const MissingContract = new Error("Contract was not found");
+export const MissingSigner = new Error("Signer is not set.");
+export const MissingProvider = new Error("Blockchain provider is not set.");
+export const MissingStore = new Error("Store adapter was not found");
+export const MissingUser = new Error("No user id found. Please authenticate a handle.");
 
 export interface Contracts {
   /** The Address of the Batch Announce contract */
@@ -54,7 +59,7 @@ let config: Config = {
 /**
  * getConfig() fetches the current configuration settings and returns them.
  *
- * @returns The current configuration settings
+ * @returns The current configuration settings with ConfigOpts as overrides.
  */
 export const getConfig = (overrides?: ConfigOpts): Config => {
   if (!overrides) return config;
@@ -83,40 +88,66 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
   });
 };
 
-// - Update all `getConfig()` calls to use these getters where appropriate
-// - Move associated "Missing" errors to the config module
+/**
+ * Get the provider and if undefined, throw.
+ * @param opts overrides for the current configuration.
+ */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
   const c = getConfig(opts);
   if (!c.provider) throw MissingProvider;
   return c.provider;
 };
+
+/**
+ * Get the signer and if undefined, throw.
+ * @param opts overrides for the current configuration.
+ */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
   const c = getConfig(opts);
   if (!c.signer) throw MissingSigner;
   return c.signer;
 };
+
+/**
+ * Get the store and if undefined, throw.
+ * @param opts overrides for the current configuration.
+ */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
   const c = getConfig(opts);
   if (!c.store) throw MissingStore;
   return c.store;
 };
+
+/**
+ * Get the currentFromId and if undefined, throw.
+ * @param opts overrides for the current configuration.
+ */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
   if (!c.currentFromId) throw MissingUser;
   return c.currentFromId;
 };
+
+/**
+ * Get the queue.  Since this is a required field, this is a plain getter.
+ * @param opts overrides for the current configuration.
+ */
 export const getQueue = (opts?: ConfigOpts): QueueInterface => {
   const c = getConfig(opts);
   return c.queue;
 };
 
+/**
+ * Get the contracts.  Since this is a required field, this is a plain getter.
+ * @param opts overrides for the current configuration.
+ */
 export const getContracts = (opts?: ConfigOpts): Contracts => {
   const c = getConfig(opts);
   return c.contracts;
 };
 
 /**
- * use if you need to guarantee that >1 configs are set
+ * Get the full configuration. Use if you need to guarantee that >1 configs are set
  * @param requiredConfigs: list of config strings
  * @param opts
  */

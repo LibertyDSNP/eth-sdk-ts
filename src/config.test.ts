@@ -1,6 +1,15 @@
 import { providers, Wallet } from "ethers";
-import { getConfig, setConfig, Config, getQueue, ConfigOpts, requireGetConfig } from "./config";
-import { MissingStore, MissingUser } from "./core/utilities";
+import {
+  getConfig,
+  setConfig,
+  Config,
+  getQueue,
+  ConfigOpts,
+  MissingStore,
+  MissingUser,
+  requireGetConfig,
+} from "./config";
+import {} from "./core/utilities";
 
 describe("config", () => {
   describe("#getConfig", () => {
