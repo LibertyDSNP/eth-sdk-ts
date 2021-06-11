@@ -1,7 +1,8 @@
-import { Content, File, StoreInterface } from "../core/store/interface";
+import { Content, File, StoreInterface, PassThroughCallback } from "../core/store/interface";
+import { PassThrough } from "stream";
 
 export default class TestStore implements StoreInterface {
-  store: Record<string, Content>;
+  store: Record<string, Content | PassThrough>;
 
   constructor() {
     this.store = {};
@@ -16,7 +17,14 @@ export default class TestStore implements StoreInterface {
     return new URL(`http://fakestore.org/${targetPath}`);
   }
 
-  getStore(): Record<string, Content> {
+  async putStream(targetPath: string, callback: PassThroughCallback): Promise<URL> {
+    const readWriteStream = new PassThrough();
+    callback(readWriteStream);
+    this.store[targetPath] = readWriteStream;
+    return new URL(`http://fakestore.org/${targetPath}`);
+  }
+
+  getStore(): Record<string, Content | PassThrough> {
     return this.store;
   }
 }

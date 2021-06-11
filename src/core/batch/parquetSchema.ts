@@ -3,12 +3,21 @@
  * See DSNP type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
+import { DSNPType } from "../messages/messages";
+
+/**
+ * BloomFilterColumnOptions: bloom filter options for a column intented to be used with when writing a batch file
+ */
 export interface BloomFilterColumnOptions {
   column: string;
   numFilterBytes?: number;
   falsePositiveRate?: number;
   numDistinct?: number;
 }
+
+/**
+ * BloomFilterOptions: bloom filter options intented to be used with when writing a batch file
+ */
 export interface BloomFilterOptions {
   bloomFilters: Array<BloomFilterColumnOptions>;
 }
@@ -28,6 +37,9 @@ export const BroadcastSchema = {
   signature: { type: "BYTE_ARRAY" },
 };
 
+/**
+ * BroadcastBloomFilter: bloom filter options for batching broadcast messages
+ */
 export const BroadcastBloomFilterOptions: BloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }],
 };
@@ -44,6 +56,9 @@ export const ReplySchema = {
   signature: { type: "BYTE_ARRAY" },
 };
 
+/**
+ * ReplyBloomBloomFilter: bloom filter options for batching reply messages
+ */
 export const ReplyBloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }, { column: "inReplyTo" }],
 };
@@ -60,6 +75,13 @@ export const GraphChangeSchema = {
 };
 
 /**
+ * GraphChangeBloomFilter: bloom filter options for batching graph changes messages
+ */
+export const GraphChangeBloomFilterOptions = {
+  bloomFilters: [{ column: "fromId" }],
+};
+
+/**
  * Profile - a profile change message
  */
 export const ProfileSchema = {
@@ -67,6 +89,13 @@ export const ProfileSchema = {
   fromId: { type: "BYTE_ARRAY" },
   uri: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+};
+
+/**
+ * ProfileBloomFilter: bloom filter options for batching profile messages
+ */
+export const ProfileBloomFilterOptions = {
+  bloomFilters: [{ column: "fromId" }],
 };
 
 /**
@@ -80,6 +109,55 @@ export const ReactionSchema = {
   signature: { type: "BYTE_ARRAY" },
 };
 
+/**
+ * ReactionBloomFilter: bloom filter options for batching reaction messages
+ */
 export const ReactionBloomFilterOptions = {
   bloomFilters: [{ column: "emoji" }, { column: "fromId" }, { column: "inReplyTo" }],
+};
+
+/**
+ * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
+ *
+ * @param   dsnpType a dsnpType
+ * @returns The corresponding parquet schema
+ */
+export const getSchemaFor = (dsnpType: DSNPType): Schema => {
+  switch (dsnpType) {
+    case DSNPType.GraphChange:
+      return GraphChangeSchema;
+    case DSNPType.Broadcast:
+      return BroadcastSchema;
+    case DSNPType.Reply:
+      return ReplySchema;
+    case DSNPType.Reaction:
+      return ReactionSchema;
+    case DSNPType.Profile:
+      return ProfileSchema;
+  }
+
+  throw new Error(`Invalid DSNP type: ${dsnpType}`);
+};
+
+/**
+ * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
+ *
+ * @param   dsnpType a dsnpType
+ * @returns The corresponding parquet bloom filter options
+ */
+export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions => {
+  switch (dsnpType) {
+    case DSNPType.GraphChange:
+      return GraphChangeBloomFilterOptions;
+    case DSNPType.Broadcast:
+      return BroadcastBloomFilterOptions;
+    case DSNPType.Reply:
+      return ReplyBloomFilterOptions;
+    case DSNPType.Reaction:
+      return ReactionBloomFilterOptions;
+    case DSNPType.Profile:
+      return ProfileBloomFilterOptions;
+  }
+
+  throw new Error(`Invalid DSNP type: ${dsnpType}`);
 };
