@@ -75,7 +75,7 @@ export const getConfig = (overrides?: ConfigOpts): Config => {
  * setConfig() sets the current configuration with the given object.
  *
  * @params newConfig The configuration settings to set with
- * @return The newly constructed config
+ * @returns The newly constructed config
  */
 export const setConfig = (newConfig: ConfigOpts): Config => {
   const { signer, provider } = newConfig;
@@ -91,6 +91,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
 /**
  * Get the provider and if undefined, throw.
  * @param opts overrides for the current configuration.
+ * @returns a never-undefined provider
  */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
   const c = getConfig(opts);
@@ -101,6 +102,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
 /**
  * Get the signer and if undefined, throw.
  * @param opts overrides for the current configuration.
+ * @returns a never-undefined signer
  */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
   const c = getConfig(opts);
@@ -111,6 +113,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
 /**
  * Get the store and if undefined, throw.
  * @param opts overrides for the current configuration.
+ * @returns a never-undefined store
  */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
   const c = getConfig(opts);
@@ -121,6 +124,7 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 /**
  * Get the currentFromId and if undefined, throw.
  * @param opts overrides for the current configuration.
+ * @returns a never-undefined currentFromId
  */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
@@ -144,32 +148,4 @@ export const getQueue = (opts?: ConfigOpts): QueueInterface => {
 export const getContracts = (opts?: ConfigOpts): Contracts => {
   const c = getConfig(opts);
   return c.contracts;
-};
-
-/**
- * Get the full configuration. Use if you need to guarantee that >1 configs are set
- * @param requiredConfigs: list of config strings
- * @param opts
- */
-export const requireGetConfig = (requiredConfigs?: Array<string>, opts?: ConfigOpts): Config => {
-  const c = getConfig(opts);
-  if (requiredConfigs) {
-    requiredConfigs.forEach((configKey) => {
-      if (c[configKey] === undefined) {
-        switch (configKey) {
-          case "store":
-            throw MissingStore;
-          case "signer":
-            throw MissingSigner;
-          case "provider":
-            throw MissingProvider;
-          case "currentFromId":
-            throw MissingUser;
-          default:
-            throw new Error("unknown config: " + configKey);
-        }
-      }
-    });
-  }
-  return c;
 };
