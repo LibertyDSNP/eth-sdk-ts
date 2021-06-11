@@ -7,7 +7,7 @@ import {
   generateBroadcastBatchFile,
   generateReactionBatchFile,
   generateReplyBatchFile,
-} from "./generators/batchFileGenerators";
+} from "./batchFileGenerators";
 
 describe("batchFileGenerators", () => {
   [

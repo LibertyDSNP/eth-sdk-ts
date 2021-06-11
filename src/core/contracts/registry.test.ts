@@ -13,7 +13,7 @@ import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { Permission } from "./identity";
 import { DSNPMessage, sign } from "../messages";
-import { generateBroadcast } from "../../test/generators/dsnpGenerators";
+import { generateBroadcast } from "../../generators/dsnpGenerators";
 import {
   getIdFromRegisterTransaction,
   newRegistrationForAccountIndex,
