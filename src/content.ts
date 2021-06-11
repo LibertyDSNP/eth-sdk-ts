@@ -5,7 +5,7 @@ import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
 import * as store from "./core/store/interface";
-import { validateDSNPId, MissingUser } from "./core/utilities";
+import { validateDSNPId } from "./core/utilities";
 
 /**
  * InvalidActivityPubOpts represents an error in the activity pub options
@@ -39,8 +39,7 @@ export const broadcast = async (
   if (!activityPub.validate(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
   const uri = await store.put(contentHash, content, opts);
@@ -72,8 +71,7 @@ export const reply = async (
   if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
   const uri = await store.put(contentHash, content, opts);
@@ -97,8 +95,7 @@ export const react = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReactionMessage> => {
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
 
@@ -126,8 +123,7 @@ export const profile = async (
   if (!activityPub.validateProfile(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
   const uri = await store.put(contentHash, content, opts);

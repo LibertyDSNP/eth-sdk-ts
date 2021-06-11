@@ -3,7 +3,7 @@ import * as messages from "./core/messages/messages";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import { RegistrationNotFound } from "./handles";
-import { MissingUser, NotImplementedError } from "./core/utilities";
+import { NotImplementedError } from "./core/utilities";
 
 /**
  * follow() creates a follow event and returns it.
@@ -16,8 +16,7 @@ export const follow = async (
   handle: Handle,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;
@@ -40,8 +39,7 @@ export const unfollow = async (
   handle: Handle,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
-  const { currentFromId } = config.getConfig(opts);
-  if (!currentFromId) throw MissingUser;
+  const currentFromId = config.requireGetCurrentFromId(opts);
 
   const registration = await resolveRegistration(handle);
   if (!registration) throw RegistrationNotFound;

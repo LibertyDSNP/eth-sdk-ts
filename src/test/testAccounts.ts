@@ -1,5 +1,5 @@
 import { ContractTransaction, ethers } from "ethers";
-import { getConfig } from "../config";
+import { requireGetProvider } from "../config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { bigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
@@ -121,8 +121,7 @@ const TESTACCOUNTS = [
  */
 export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
   if (accountIndex >= TESTACCOUNTS.length) throw new Error(`there are only ${TESTACCOUNTS.length} accounts.`);
-  const { provider } = getConfig();
-  if (!provider) throw new Error("no provider configured");
+  const provider = requireGetProvider();
   return new ethers.Wallet(TESTACCOUNTS[accountIndex].privateKey, provider);
 };
 
