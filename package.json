@@ -16,7 +16,7 @@
     "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\": \"module\"}'> dist/esm/package.json",
     "build:multimodules": "node scripts/multimodules.js",
     "coverage": "jest test --runInBand --coverage --collectCoverageFrom='src/**/*.ts'",
-    "clean": "rm -Rf dist docs core ./*.d.ts ./*.js",
+    "clean": "rm -Rf dist docs core generators ./*.d.ts ./*.js",
     "doc": "rm -Rf dist/docs && run-s doc:html",
     "doc:html": "typedoc --options ./typedoc.json --plugin none --theme default --out dist/docs",
     "doc:config": "typedoc --showConfig --options ./typedoc.json --plugin none --theme default --out dist/docs",
@@ -35,6 +35,7 @@
     "dist/**/*",
     "docs/**/*",
     "core/**/*",
+    "generators/**/*",
     "CONTRIBUTING.md",
     "*.js",
     "*.d.ts"

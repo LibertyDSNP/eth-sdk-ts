@@ -16,6 +16,7 @@ dist
 *.d.ts
 docs
 /core
+/generators
 
 ### ignore typechain types
 /src/types/typechain/*
