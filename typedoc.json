@@ -1,7 +1,8 @@
 {
   "entryPoints": [
     "./src/index.ts",
-    "./src/core"
+    "./src/core",
+    "./src/generators"
   ],
   "excludeExternals": true,
   "excludePrivate": true,

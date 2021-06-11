@@ -1,4 +1,4 @@
-import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./generators/dsnpGenerators";
+import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./dsnpGenerators";
 import { countBy } from "lodash";
 import { DSNPType } from "../core/messages/messages";
 

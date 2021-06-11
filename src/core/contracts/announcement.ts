@@ -38,7 +38,7 @@ export const dsnpBatchFilter = async (): Promise<EventFilter> => {
 
 /**
  * Goes through logs finding all DNSPBatch events
- * @param provider provider from which to retrieve events
+ * @param opts optional configuration
  * @returns All announcements recorded as DSNPBatch events
  */
 export const decodeDSNPBatchEvents = async (opts?: ConfigOpts): Promise<Announcement[]> => {

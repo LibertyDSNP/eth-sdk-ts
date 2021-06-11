@@ -12,6 +12,9 @@
 import * as coreImport from "./core";
 export const core = coreImport;
 
+import * as generatorsImport from "./generators";
+export const generators = generatorsImport;
+
 // Porcelain
 export * from "./config";
 export * from "./content";
