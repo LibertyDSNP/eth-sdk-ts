@@ -1,10 +1,9 @@
-import { ContractTransaction, ethers, EventFilter, Signer } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetConfig, MissingContract } from "../../config";
+import { ContractTransaction, ethers, EventFilter } from "ethers";
+import { ConfigOpts, requireGetProvider, MissingContract, getContracts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
-import { Provider } from "@ethersproject/providers";
 
 const CONTRACT_NAME = "Announcer";
 
@@ -56,14 +55,12 @@ export const decodeDSNPBatchEvents = async (opts?: ConfigOpts): Promise<Announce
 };
 
 const getAnnouncerContract = async (opts?: ConfigOpts): Promise<Announcer> => {
-  const {
-    signer,
-    provider,
-    contracts: { announcer },
-  } = requireGetConfig(["signer", "provider"], opts);
+  const { announcer } = getContracts(opts);
+  const signer = requireGetSigner(opts);
+  const provider = requireGetProvider(opts);
 
-  const address = announcer || (await getContractAddress(provider as Provider, CONTRACT_NAME));
+  const address = announcer || (await getContractAddress(provider, CONTRACT_NAME));
 
   if (!address) throw MissingContract;
-  return Announcer__factory.connect(address, signer as Signer);
+  return Announcer__factory.connect(address, signer);
 };

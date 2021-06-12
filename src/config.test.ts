@@ -3,18 +3,21 @@ import {
   getConfig,
   setConfig,
   Config,
-  getQueue,
-  ConfigOpts,
   MissingStore,
+  MissingSigner,
+  MissingProvider,
+  requireGetCurrentFromId,
+  requireGetProvider,
+  requireGetSigner,
+  requireGetStore,
   MissingUser,
-  requireGetConfig,
 } from "./config";
-import {} from "./core/utilities";
+import TestStore from "./test/testStore";
 
 describe("config", () => {
   describe("#getConfig", () => {
     it("returns the default settings when the config hasn't been set yet", () => {
-      const queue = getQueue();
+      const { queue } = getConfig();
 
       // We have to test keys here because #toMatchObject doesn't work with
       // object instances
@@ -61,44 +64,35 @@ describe("config", () => {
     });
   });
 
-  describe("getConfigOrThrow", () => {
-    // get a minimal valid config
-    describe("when config is missing required params", () => {
-      it("throws when something is missing", () => {
-        const testConfig = {
-          signer: Wallet.createRandom(),
-          provider: new providers.JsonRpcProvider("http://localhost:8383"),
-        };
-        setConfig(testConfig);
-        expect(() => requireGetConfig(["signer", "provider", "currentFromId"])).toThrow(MissingUser);
-      });
+  describe("requireGetters", () => {
+    const badConfig = getConfig();
 
-      it("throws when we require invalid config", () => {
-        expect(() => requireGetConfig(["singer"])).toThrow("unknown config: singer");
-      });
+    it("requireGetSigner works", () => {
+      expect(() => requireGetSigner(badConfig)).toThrow(MissingSigner);
 
-      it("throws when the config key exists but its value is undefined", () => {
-        setConfig({
-          provider: undefined,
-          store: undefined,
-          signer: undefined,
-          currentFromId: undefined,
-        });
-        expect(() => requireGetConfig(["store", "currentFromId", "provider", "signer"])).toThrow(MissingStore);
-      });
+      const signer = Wallet.createRandom();
+      expect(requireGetSigner({ signer: signer })).toBeInstanceOf(Object);
     });
 
-    describe("when config has all expected values", () => {
-      const testConfig: ConfigOpts = getConfig();
+    it("requireGetProvider works", () => {
+      expect(() => requireGetProvider(badConfig)).toThrow(MissingProvider);
 
-      [
-        { name: "when passed no params", require: [] },
-        { name: "when passed params that exist", require: ["queue", "contracts"] },
-      ].forEach((tc) => {
-        it(`${tc.name} returns config`, () => {
-          expect(requireGetConfig([])).toEqual(testConfig);
-        });
-      });
+      const testProvider = new providers.JsonRpcProvider("http://localhost:8383");
+      expect(requireGetProvider({ provider: testProvider })).toBeInstanceOf(Object);
+    });
+
+    it("requireGetStore works", () => {
+      expect(() => requireGetStore(badConfig)).toThrow(MissingStore);
+
+      const testStore = new TestStore();
+      expect(requireGetStore({ store: testStore })).toBeInstanceOf(Object);
+    });
+
+    it("requireGetCurrentFromId", () => {
+      expect(() => requireGetCurrentFromId(badConfig)).toThrow(MissingUser);
+
+      const testRegistration = "0xabcd1234";
+      expect(requireGetCurrentFromId({ currentFromId: testRegistration })).toEqual(testRegistration);
     });
   });
 });

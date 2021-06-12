@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { getContractAddress, getVmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { ConfigOpts, MissingContract, requireGetSigner, requireGetProvider, requireGetConfig } from "../../config";
+import { ConfigOpts, MissingContract, requireGetSigner, requireGetProvider, getContracts } from "../../config";
 import { ContractTransaction } from "ethers";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
@@ -9,7 +9,6 @@ import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
 import { bigNumberToDSNPUserId, dsnpUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
-import { Provider } from "@ethersproject/providers";
 
 const CONTRACT_NAME = "Registry";
 
@@ -159,12 +158,10 @@ export const isMessageSignatureAuthorizedTo = async (
 };
 
 const getContract = async (opts?: ConfigOpts) => {
-  const {
-    provider,
-    contracts: { registry },
-  } = requireGetConfig(["provider"], opts);
-  const address = registry || (await getContractAddress(provider as Provider, CONTRACT_NAME));
+  const { registry } = getContracts(opts);
+  const provider = requireGetProvider(opts);
+  const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
 
   if (!address) throw MissingContract;
-  return Registry__factory.connect(address, provider as Provider);
+  return Registry__factory.connect(address, provider);
 };
