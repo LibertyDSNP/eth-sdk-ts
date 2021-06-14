@@ -98,7 +98,7 @@ jobs:
         run: |
           - npm run build && npm pack
           - cd ./test/importTest
-          - npm i ../../../dsnp-sdk-0.0.0.tgz
+          - npm ci
           - npm test
         working-directory: ./main
 #
