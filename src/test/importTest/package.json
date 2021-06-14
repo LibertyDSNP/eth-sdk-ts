@@ -1,0 +1,16 @@
+{
+  "name": "importtest",
+  "version": "1.0.0",
+  "description": "Used for testing @dsnp/sdk builds in CI",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run build && node index.js",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@dsnp/sdk": "file:../../../dsnp-sdk-0.0.0.tgz",
+    "typescript": "^4.3.2"
+  }
+}

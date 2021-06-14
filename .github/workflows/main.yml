@@ -93,6 +93,14 @@ jobs:
       - name: Build & Publish Dry Run
         run: npm publish --dry-run
         working-directory: ./main
+
+      - name: Test Project Import
+        run: |
+          - npm run build && npm pack
+          - cd ./test/importTest
+          - npm i ../../../dsnp-sdk-0.0.0.tgz
+          - npm test
+        working-directory: ./main
 #
 #      - name: Report Test
 #        uses: IgnusG/jest-report-action@v2.3.3
