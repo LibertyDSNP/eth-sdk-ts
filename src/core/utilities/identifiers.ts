@@ -24,13 +24,13 @@ export const validateDSNPId = (id: string): id is DSNPId => id.match(/dsnp:\/\/[
 export type DSNPUserId = string;
 
 /**
- * bigNumberToDSNPUserId() converts ethers' ridiculous BigNumber implementation
+ * convertBigNumberToDSNPUserId() converts ethers' ridiculous BigNumber implementation
  * hex output to a proper DSNP user id with zero padding.
  *
  * @param num - The number to convert
  * @returns   The same number as a properly formatted DSNPUserId
  */
-export const bigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
+export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
   const hex = num.toHexString().replace("0x", "");
   const paddingLength = 16 - hex.length;
   const padding = Array(paddingLength + 1).join("0");
@@ -39,12 +39,12 @@ export const bigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
 };
 
 /**
- * dsnpUserIdToBigNumber() converts DSNP user ids to ethers BigNumbers.
+ * convertDSNPUserIdToBigNumber() converts DSNP user ids to ethers BigNumbers.
  *
  * @param dsnpUserId - The DSNP user id to convert
  * @returns          A big number representation of the same id
  */
-export const dsnpUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {
+export const convertDSNPUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {
   const hex = dsnpUserId.replace("dsnp://", "0x");
   return BigNumber.from(hex);
 };

@@ -16,7 +16,7 @@ export const revertHardhat = async (provider: ethers.providers.JsonRpcProvider):
   expect(revertResponse.error).toBeUndefined();
 };
 
-export const snapshotSetup = (): void => {
+export const setupSnapshot = (): void => {
   let provider: ethers.providers.JsonRpcProvider;
 
   beforeAll(async () => {
