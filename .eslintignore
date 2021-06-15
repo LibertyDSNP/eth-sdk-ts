@@ -1,8 +1,15 @@
 # /node_modules/* in the project root is ignored by default
 # build artefacts
 dist/*
+generators/*
+core/*
 coverage/*
 
 /*.d.ts
 /*.map
 /src/*.js
+/*.js
+
+# import Test
+/src/test/importTest/*
+!/src/test/importTest/*.ts
