@@ -95,7 +95,11 @@ jobs:
         working-directory: ./main
 
       - name: Pack up for testing project import
-        run: npm run build && npm pack
+        run: | 
+          npm run build
+          npm pack 
+          export version = `cat ./package.json | grep -m 1 version | sed 's/[^0-9.]//g'`
+          mv dsnp-sdk-${version}.tgz dsnp-sdk.tgz
         working-directory: ./main
 
 #     This needs to happen in a non-subfolder of the sdk to prevent resolving from a parent dir node_modules
@@ -103,5 +107,5 @@ jobs:
         run: |
           cp -r ./main/src/test/importTest ./
           cd importTest
-          npm i ../main/dsnp-sdk-0.0.0.tgz
+          npm i ../main/dsnp-sdk.tgz
           npm test
