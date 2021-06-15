@@ -6,7 +6,7 @@ import { EthereumAddress } from "../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
 
-const prefabURLs = sampleText.prefabURLs;
+const PREFAB_URLS = sampleText.prefabURLs;
 const generateEthereumAddress = addresses.generateEthereumAddress;
 
 /**
@@ -70,7 +70,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
     dsnpType: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
-    uri: sample(prefabURLs),
+    uri: sample(PREFAB_URLS),
   };
 };
 
@@ -84,7 +84,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
-    uri: sample(prefabURLs),
+    uri: sample(PREFAB_URLS),
   };
 };
 

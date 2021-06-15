@@ -3,10 +3,10 @@ import { HexString } from "../types/Strings";
 
 import { sample, sampleText } from "@dsnp/test-generators";
 
-const prefabFirstNames = sampleText.prefabFirstNames;
-const prefabLastNames = sampleText.prefabLastNames;
-const prefabURLs = sampleText.prefabURLs;
-const prefabVideos = sampleText.prefabVideos;
+const PREFAB_FIRST_NAMES = sampleText.prefabFirstNames;
+const PREFAB_LAST_NAMES = sampleText.prefabLastNames;
+const PREFAB_URLS = sampleText.prefabURLs;
+const PREFAB_VIDEOS = sampleText.prefabVideos;
 /**
  * Generate a Note ActivityPub that is a reply to another Note
  * @param address - the HexString socialAddress to associate with making this note
@@ -42,7 +42,7 @@ export const generateNote = (address: HexString, message: string, hasAttachment?
  * @param username - (optional) the new username of the profile update TODO
  */
 export const generatePerson = (address: HexString, name?: string): ActivityPub => {
-  const newName = name ? name : [sample(prefabFirstNames), sample(prefabLastNames)].join(" ");
+  const newName = name ? name : [sample(PREFAB_FIRST_NAMES), sample(PREFAB_LAST_NAMES)].join(" ");
   return {
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
@@ -58,7 +58,7 @@ export const generatePerson = (address: HexString, name?: string): ActivityPub =
  * @param url - The url to generate the NoteAttachment around
  */
 export const generateImageAttachment = (url?: string): ActivityPubAttachment => {
-  const theURL = url ? url : sample(prefabURLs);
+  const theURL = url ? url : sample(PREFAB_URLS);
   return {
     mediaType: theURL.replace(/(^\w+:|^)\/\//, ""), // Regex to scrub protocol from string
     type: "Image",
@@ -71,7 +71,7 @@ export const generateImageAttachment = (url?: string): ActivityPubAttachment => 
  * @param url - The url to generate the NoteAttachment around
  */
 export const generateVideoAttachment = (url?: string): ActivityPubAttachment => {
-  const theURL = url ? url : sample(prefabVideos);
+  const theURL = url ? url : sample(PREFAB_VIDEOS);
   return {
     mediaType: theURL.replace(/(^\w+:|^)\/\//, ""), // Regex to scrub protocol from string
     type: "Video",

@@ -17,6 +17,7 @@ const EVENTS_ABI = new ethers.utils.Interface(
     types.Migrations__factory,
     types.Registry__factory,
   ]
+    // eslint-disable-next-line id-length
     .reduce((m, f) => m.concat(f.abi as Array<JsonFragment>), [] as Array<JsonFragment>)
     .filter((ef) => ef.type === "event") as Array<JsonFragment>
 );
@@ -28,7 +29,7 @@ interface ContractResult {
   blockHash: string;
 }
 
-export const DSNPMigrationABI: ethers.utils.ParamType[] = [
+export const DSNP_MIGRATION_ABI: ethers.utils.ParamType[] = [
   ethers.utils.ParamType.fromObject({
     indexed: false,
     baseType: "address",
@@ -78,7 +79,7 @@ export const getContractAddress = async (
   const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
   const logs: ethers.providers.Log[] = await provider.getLogs({ topics: [topic], fromBlock: 0 });
-  const decodedValues = decodeReturnValues(DSNPMigrationABI, logs);
+  const decodedValues = decodeReturnValues(DSNP_MIGRATION_ABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
   return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
 };
@@ -113,7 +114,7 @@ export const getVmError = (e: { body?: string; error?: { body?: string } }): str
  * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescription> => {
-  return logs.map((l) => EVENTS_ABI.parseLog(l)) as Array<ethers.utils.LogDescription>;
+  return logs.map((log) => EVENTS_ABI.parseLog(log)) as Array<ethers.utils.LogDescription>;
 };
 
 /**
