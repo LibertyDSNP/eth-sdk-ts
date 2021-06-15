@@ -100,6 +100,7 @@ jobs:
           npm pack 
           export version=`cat ./package.json | grep -m 1 version | sed 's/[^0-9.]//g'`
           mv dsnp-sdk-${version}.tgz dsnp-sdk.tgz
+        shell: bash
         working-directory: ./main
 
 #     This needs to happen in a non-subfolder of the sdk to prevent resolving from a parent dir node_modules
