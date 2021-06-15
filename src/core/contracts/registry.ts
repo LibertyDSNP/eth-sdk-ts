@@ -101,7 +101,7 @@ export const changeHandle = async (
 };
 
 /**
- * Get all the DSNPRegistryUpdate events
+ * getDSNPRegistryUpdateEvents() Get all the DSNPRegistryUpdate events
  * @param filter - By dsnpUserId or Contract Address
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
@@ -122,7 +122,7 @@ export const getDSNPRegistryUpdateEvents = async (
 };
 
 /**
- * validates a serialized message or DSNPMessage against a signature and then checks that the
+ * isMessageSignatureAuthorizedTo() validates a serialized message or DSNPMessage against a signature and then checks that the
  * signer has the permissions specified.  DSNPMessages should be passed as is,
  * without serializing, to guarantee consistent results.
  * @param signature - the signature for the message

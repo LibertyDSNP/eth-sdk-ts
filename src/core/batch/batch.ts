@@ -64,15 +64,14 @@ export const readFile = async (reader: typeof ParquetReader, callback: ReadRowFu
 };
 
 /**
- * batchIncludes() checks if a column/field in a
- * Parquet batch file contains an item.
+ * includes() checks if a column/field in a Parquet batch file contains an item.
  *
  * @param reader - a ParquetReader object.
  * @param column - the column name to check if a value is included.
  * @param item - a value.
  * @returns void.
  */
-export const batchIncludes = async (
+export const includes = async (
   reader: typeof ParquetReader,
   column: string,
   item: number | string

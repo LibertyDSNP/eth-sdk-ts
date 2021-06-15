@@ -23,14 +23,14 @@ export const generateReply = (address: HexString, reply: string, inReplyTo: HexS
  * Generate a Note type ActivityPub
  * @param address - the HexString socialAddress to associate with making this note
  * @param message - The message string to display in the note
- * @param attachment - the NoteAttachments for pictures and videos in this Note.
+ * @param hasAttachment - the NoteAttachments for pictures and videos in this Note.
  */
-export const generateNote = (address: HexString, message: string, attachment?: boolean): ActivityPub => {
+export const generateNote = (address: HexString, message: string, hasAttachment?: boolean): ActivityPub => {
   return {
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
     content: message,
-    attachments: attachment ? [generateImageAttachment()] : [],
+    attachments: hasAttachment ? [generateImageAttachment()] : [],
     type: "Note",
   };
 };

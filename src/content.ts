@@ -36,7 +36,7 @@ export const broadcast = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchBroadcastMessage> => {
   const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.validate(contentObj)) throw InvalidActivityPubOpts;
+  if (!activityPub.isValid(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
@@ -68,7 +68,7 @@ export const reply = async (
   if (!validateDSNPId(inReplyTo)) throw InvalidInReplyTo;
 
   const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.validateReply(contentObj)) throw InvalidActivityPubOpts;
+  if (!activityPub.isValidReply(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
