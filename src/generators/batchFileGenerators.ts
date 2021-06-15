@@ -19,7 +19,7 @@ type BatchGenerator = { (): BatchMessageType };
 
 /**
  * generateBatchBroadcast
- * @param from - a desired fromID (optional)
+ * @param from - - a desired fromID (optional)
  */
 export const generateBatchBroadcast = (from?: EthereumAddress): BatchBroadcastMessage => {
   return { signature: generateHexString(256), ...generateBroadcast(from) };

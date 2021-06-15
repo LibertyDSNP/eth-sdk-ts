@@ -38,7 +38,7 @@ export type ActivityPubOpts = Partial<ActivityPub>;
 /**
  * create() provides a simple factory for generating activityPub notes.
  *
- * @param   options Options for the activity pub object to create
+ * @param options - Options for the activity pub object to create
  * @returns         An activity pub object
  */
 export const create = (options: ActivityPubOpts): ActivityPub =>
@@ -53,7 +53,7 @@ export const create = (options: ActivityPubOpts): ActivityPub =>
  * validate() returns true if the object provided is a valid activityPub.
  * Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
 export const validate = (activityPub: ActivityPub): boolean => {
@@ -68,7 +68,7 @@ export const validate = (activityPub: ActivityPub): boolean => {
  * validateReply() returns true if the object provided is a valid activityPub
  * reply. Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
 export const validateReply = (activityPub: ActivityPub): boolean => {
@@ -82,7 +82,7 @@ export const validateReply = (activityPub: ActivityPub): boolean => {
  * validateProfile() returns true if the object provided is a valid activityPub
  * profile. Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
 export const validateProfile = (activityPub: ActivityPub): boolean => {
@@ -96,7 +96,7 @@ export const validateProfile = (activityPub: ActivityPub): boolean => {
  * serialize() converts an activityPub object to string for upload via the
  * storage adapter.
  *
- * @param   data  The activity pub object to hash
+ * @param data - The activity pub object to hash
  * @returns       A string representation of the activity pub object
  */
 export const serialize = (data: ActivityPub): string => {

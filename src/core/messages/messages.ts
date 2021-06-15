@@ -37,9 +37,9 @@ export interface BroadcastMessage extends DSNPMessage {
  * createBroadcastMessage() generates a broadcast message from a given URI and
  * hash.
  *
- * @param   fromId The id of the user from whom the message is posted
- * @param   uri    The URI of the activity pub content to reference
- * @param   hash   The hash of the content at the URI
+ * @param fromId - The id of the user from whom the message is posted
+ * @param uri -  The URI of the activity pub content to reference
+ * @param hash - The hash of the content at the URI
  * @returns        A BroadcastMessage
  */
 export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
@@ -64,10 +64,10 @@ export interface ReplyMessage extends DSNPMessage {
  * createReplyMessage() generates a reply message from a given URI, hash and
  * message identifier.
  *
- * @param   fromId    The id of the user from whom the message is posted
- * @param   uri       The URI of the activity pub content to reference
- * @param   hash      The hash of the content at the URI
- * @param   inReplyTo The message id of the parent message
+ * @param fromId    - The id of the user from whom the message is posted
+ * @param uri       - The URI of the activity pub content to reference
+ * @param hash      - The hash of the content at the URI
+ * @param inReplyTo - The message id of the parent message
  * @returns           A ReplyMessage
  */
 export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
@@ -92,10 +92,10 @@ export interface ReactionMessage extends DSNPMessage {
  * createReactionMessage() generates a reply message from a given URI, hash and
  * message identifier.
  *
- * @param   fromId    The id of the user from whom the message is posted
- * @param   emoji     The emoji to respond with
- * @param   inReplyTo The message id of the parent message
- * @returns           A ReactionMessage
+ * @param   fromId    - The id of the user from whom the message is posted
+ * @param   emoji     - The emoji to respond with
+ * @param   inReplyTo - The message id of the parent message
+ * @returns             A ReactionMessage
  */
 export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: string): ReactionMessage => ({
   dsnpType: DSNPType.Reaction,
@@ -126,8 +126,8 @@ export interface GraphChangeMessage extends DSNPMessage {
  * createFollowGraphChangeMessage() generates a follow graph change message from
  * a given DSNP user id.
  *
- * @param   fromId     The id of the user from whom the message is posted
- * @param   followeeId The id of the user to follow
+ * @param   fromId     - The id of the user from whom the message is posted
+ * @param   followeeId - The id of the user to follow
  * @returns            A GraphChangeMessage
  */
 export const createFollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
@@ -141,8 +141,8 @@ export const createFollowGraphChangeMessage = (fromId: string, followeeId: strin
  * createUnfollowGraphChangeMessage() generates an unfollow graph change message
  * from a given DSNP user id.
  *
- * @param   fromId     The id of the user from whom the message is posted
- * @param   followeeId The id of the user to unfollow
+ * @param   fromId     - The id of the user from whom the message is posted
+ * @param   followeeId - The id of the user to unfollow
  * @returns            A GraphChangeMessage
  */
 export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
@@ -155,7 +155,7 @@ export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: str
 /**
  * serialize() takes a DSNP message and returns a serialized string.
  *
- * @param message The DSNP message to serialized
+ * @param message - The DSNP message to serialized
  * @returns       A string serialization of the message
  */
 export const serialize = (message: DSNPMessage): string => {
@@ -182,9 +182,9 @@ export interface ProfileMessage extends DSNPMessage {
 /**
  * createProfileMessage() generates a profile message from a given URI and hash.
  *
- * @param   fromId The id of the user from whom the message is posted
- * @param   uri    The URI of the activity pub content to reference
- * @param   hash   The hash of the content at the URI
+ * @param   fromId - The id of the user from whom the message is posted
+ * @param   uri    - The URI of the activity pub content to reference
+ * @param   hash   - The hash of the content at the URI
  * @returns        A ProfileMessage
  */
 export const createProfileMessage = (fromId: string, uri: string, hash: HexString): ProfileMessage => ({
@@ -201,8 +201,8 @@ export const createProfileMessage = (fromId: string, uri: string, hash: HexStrin
  * @throws {@link MissingSigner}
  * This error is thrown if no Signer is defined in the configuration options.
  *
- * @param message The DSNP message to sign
- * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @param message - The DSNP message to sign
+ * @param opts -    Optional. Configuration overrides, such as from address, if any
  * @returns       The signed DSNP message
  */
 export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
@@ -218,8 +218,8 @@ export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSN
  * recoverPublicKey() takes a DSNP message and a message signature and returns
  * the corresponding public key for validation.
  *
- * @param message   The DSNP message to sign
- * @param signature The message signature to validate
+ * @param message -   The DSNP message to sign
+ * @param signature - The message signature to validate
  * @returns         The address of the signer in hex
  */
 export const recoverPublicKey = (message: DSNPMessage, signature: HexString): HexString => {

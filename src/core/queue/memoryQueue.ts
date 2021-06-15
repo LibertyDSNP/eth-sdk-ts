@@ -29,7 +29,7 @@ export default class MemoryQueue implements QueueInterface {
    * DSNP message, adds it to an in-memory store and returns an id which can be
    * used to reverse this action, if needed.
    *
-   * @param message The DSNP message to queue up for the next batch
+   * @param message - The DSNP message to queue up for the next batch
    * @returns       A queue id to be used to remove the message if needed
    */
   async enqueue(message: DSNPBatchMessage): Promise<QueueId> {
@@ -49,7 +49,7 @@ export default class MemoryQueue implements QueueInterface {
    * type added to the queue. If no messages of the type exist, null will be
    * returned to indicate the end of the queue.
    *
-   * @param type The DSNP message type to dequeue
+   * @param type - The DSNP message type to dequeue
    * @returns    The dequeued DSNP message or null to indicate end of queue
    */
   async dequeue(type: DSNPType): Promise<DSNPBatchMessage | null> {
@@ -74,7 +74,7 @@ export default class MemoryQueue implements QueueInterface {
    * @throws {@link IdDoesNotExist}
    * Thrown if called with a Queue Id that does not match any existing message.
    *
-   * @param queueId The id of the DSNP message to remove from the queue
+   * @param queueId - The id of the DSNP message to remove from the queue
    * @returns  The removed message
    */
   async remove(queueId: QueueId): Promise<DSNPBatchMessage> {

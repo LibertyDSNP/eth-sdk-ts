@@ -116,8 +116,8 @@ const TESTACCOUNTS = [
 
 /**
  * Use this function to set up a new signer other than what is in the config.
- * @param accountIndex the index in the TESTACCOUNTS to get the signer for.
- * @return the ethers.Signer associated with the test account
+ * @param accountIndex - the index in the TESTACCOUNTS to get the signer for.
+ * @returns the ethers.Signer associated with the test account
  */
 export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
   if (accountIndex >= TESTACCOUNTS.length) throw new Error(`there are only ${TESTACCOUNTS.length} accounts.`);
@@ -127,7 +127,7 @@ export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
 
 /**
  * Parses a DSNP Id in a contract transaction log event.
- * @param transaction
+ * @param transaction -
  * @returns the DSNP Id
  */
 export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<DSNPUserId> => {
@@ -140,9 +140,9 @@ export const getIdFromRegisterTransaction = async (transaction: ContractTransact
 /**
  * Creates a new DSNP Identity Proxy contract using the specified test account, and registers the
  * provided handle. Callers must keep track of what accounts have already been used.
- * @param acctIdx the index in TESTACCOUNTS to use.
- * @param handle the handle to register
- * @return a RegistrationWithSigner object
+ * @param acctIdx - the index in TESTACCOUNTS to use.
+ * @param handle - the handle to register
+ * @returns a RegistrationWithSigner object
  */
 export const newRegistrationForAccountIndex = async (
   acctIdx: number,

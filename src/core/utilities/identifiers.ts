@@ -11,7 +11,7 @@ export type DSNPId = string;
  * validateDSNPId() validates a given string as a DSNPId. If the given string is
  * valid, true is returned. Otherwise, false is returned.
  *
- * @param id The string to validate
+ * @param id - The string to validate
  * @returns  True of false depending on whether the string is a valid DSNPId
  */
 export const validateDSNPId = (id: string): id is DSNPId => id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
@@ -27,7 +27,7 @@ export type DSNPUserId = string;
  * bigNumberToDSNPUserId() converts ethers' ridiculous BigNumber implementation
  * hex output to a proper DSNP user id with zero padding.
  *
- * @param num The number to convert
+ * @param num - The number to convert
  * @returns   The same number as a properly formatted DSNPUserId
  */
 export const bigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
@@ -41,7 +41,7 @@ export const bigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
 /**
  * dsnpUserIdToBigNumber() converts DSNP user ids to ethers BigNumbers.
  *
- * @param dsnpUserId The DSNP user id to convert
+ * @param dsnpUserId - The DSNP user id to convert
  * @returns          A big number representation of the same id
  */
 export const dsnpUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {

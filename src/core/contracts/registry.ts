@@ -23,8 +23,8 @@ export type Handle = string;
 /**
  * resolveRegistration() Try to resolve a handle into a DSNP Id
  *
- * @param handle String handle to resolve
- * @param opts (optional) any config overrides.
+ * @param handle - String handle to resolve
+ * @param opts - (optional) any config overrides.
  * @returns The Hex for the DSNP Id or null if not found
  */
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
@@ -48,9 +48,9 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
 /**
  * register() registers a handle to get a new DSNP Id
  *
- * @param identityContractAddress Address of the identity contract to use
- * @param handle The string handle to register
- * @param opts (optional) any config overrides.
+ * @param identityContractAddress - Address of the identity contract to use
+ * @param handle - The string handle to register
+ * @param opts - (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const register = async (
@@ -67,9 +67,9 @@ export const register = async (
 /**
  * changeAddress() changes the identity contract address of a DSNP Id
  *
- * @param handle The string handle to alter
- * @param identityContractAddress Address of the new identity contract to use
- * @param opts (optional) any config overrides.
+ * @param handle - The string handle to alter
+ * @param identityContractAddress - Address of the new identity contract to use
+ * @param opts - (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const changeAddress = async (
@@ -85,9 +85,9 @@ export const changeAddress = async (
 /**
  * changeHandle() changes the handle of a DSNP Id
  *
- * @param oldHandle The string handle to alter
- * @param newHandle The new handle to use instead
- * @param opts (optional) any config overrides.
+ * @param oldHandle - The string handle to alter
+ * @param newHandle - The new handle to use instead
+ * @param opts - (optional) any config overrides.
  * @returns The contract Transaction
  */
 export const changeHandle = async (
@@ -102,8 +102,8 @@ export const changeHandle = async (
 
 /**
  * Get all the DSNPRegistryUpdate events
- * @param filter By dsnpUserId or Contract Address
- * @param opts (optional) any config overrides.
+ * @param filter - By dsnpUserId or Contract Address
+ * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
@@ -125,14 +125,14 @@ export const getDSNPRegistryUpdateEvents = async (
  * validates a serialized message or DSNPMessage against a signature and then checks that the
  * signer has the permissions specified.  DSNPMessages should be passed as is,
  * without serializing, to guarantee consistent results.
- * @param signature the signature for the message
- * @param message the signed message
- * @param dsnpUserId the DSNP User Id of the supposed signer
- * @param permission the permissions to check for
- * @param blockTag (optional). A block number or string BlockTag
+ * @param signature - the signature for the message
+ * @param message - the signed message
+ * @param dsnpUserId - the DSNP User Id of the supposed signer
+ * @param permission - the permissions to check for
+ * @param blockTag - (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
  *    Defaults to 0x0, which checks for "forever" permissions.
- * @param opts (optional) any config overrides.
+ * @param opts - (optional) any config overrides.
  */
 export const isMessageSignatureAuthorizedTo = async (
   signature: HexString,

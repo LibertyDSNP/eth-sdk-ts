@@ -74,7 +74,7 @@ export const getConfig = (overrides?: ConfigOpts): Config => {
 /**
  * setConfig() sets the current configuration with the given object.
  *
- * @params newConfig The configuration settings to set with
+ * @param newConfig - The configuration settings to set with
  * @returns The newly constructed config
  */
 export const setConfig = (newConfig: ConfigOpts): Config => {
@@ -90,7 +90,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
 
 /**
  * Get the provider and if undefined, throw.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  * @returns a never-undefined provider
  */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
@@ -101,7 +101,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
 
 /**
  * Get the signer and if undefined, throw.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  * @returns a never-undefined signer
  */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
@@ -112,7 +112,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
 
 /**
  * Get the store and if undefined, throw.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  * @returns a never-undefined store
  */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
@@ -123,7 +123,7 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 
 /**
  * Get the currentFromId and if undefined, throw.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  * @returns a never-undefined currentFromId
  */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
@@ -134,7 +134,7 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
 
 /**
  * Get the queue.  Since this is a required field, this is a plain getter.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  */
 export const getQueue = (opts?: ConfigOpts): QueueInterface => {
   const c = getConfig(opts);
@@ -143,7 +143,7 @@ export const getQueue = (opts?: ConfigOpts): QueueInterface => {
 
 /**
  * Get the contracts.  Since this is a required field, this is a plain getter.
- * @param opts overrides for the current configuration.
+ * @param opts - overrides for the current configuration.
  */
 export const getContracts = (opts?: ConfigOpts): Contracts => {
   const c = getConfig(opts);

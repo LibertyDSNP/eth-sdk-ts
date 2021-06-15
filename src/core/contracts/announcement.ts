@@ -17,8 +17,8 @@ export interface Announcement {
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param announcements array of announcments to batch.
- * @param opts Optional. Configuration overrides, such as from address, if any
+ * @param announcements - array of announcments to batch.
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns    A contract receipt promise
  */
 export const batch = async (announcements: Announcement[]): Promise<ContractTransaction> => {
@@ -37,7 +37,7 @@ export const dsnpBatchFilter = async (): Promise<EventFilter> => {
 
 /**
  * Goes through logs finding all DNSPBatch events
- * @param opts optional configuration
+ * @param opts - optional configuration
  * @returns All announcements recorded as DSNPBatch events
  */
 export const decodeDSNPBatchEvents = async (opts?: ConfigOpts): Promise<Announcement[]> => {
