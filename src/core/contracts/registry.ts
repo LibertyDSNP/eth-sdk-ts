@@ -8,7 +8,7 @@ import { Permission } from "./identity";
 import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
-import { bigNumberToDSNPUserId, dsnpUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
+import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
 
 const CONTRACT_NAME = "Registry";
 
@@ -33,10 +33,10 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
     const [dsnpUserId, contractAddr] = await contract.resolveRegistration(handle);
     return {
       handle,
-      dsnpUserId: bigNumberToDSNPUserId(dsnpUserId),
+      dsnpUserId: convertBigNumberToDSNPUserId(dsnpUserId),
       contractAddr,
     };
-  } catch (e) {
+  } catch (e: any) {
     const vmError = getVmError(e);
     if (vmError?.includes("Handle does not exist")) {
       return null;
@@ -110,13 +110,13 @@ export const getDSNPRegistryUpdateEvents = async (
   filter: Partial<Omit<Registration, "handle">>,
   opts?: ConfigOpts
 ): Promise<Registration[]> => {
-  const dsnpUserId = filter.dsnpUserId ? dsnpUserIdToBigNumber(filter.dsnpUserId) : undefined;
+  const dsnpUserId = filter.dsnpUserId ? convertDSNPUserIdToBigNumber(filter.dsnpUserId) : undefined;
   const contract = await getContract(opts);
   const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpUserId, filter.contractAddr));
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    const dsnpUserId = bigNumberToDSNPUserId(id);
+    const dsnpUserId = convertBigNumberToDSNPUserId(id);
     return { contractAddr: addr, dsnpUserId, handle };
   });
 };

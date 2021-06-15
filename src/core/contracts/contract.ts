@@ -4,7 +4,7 @@ import * as types from "../../types/typechain";
 import { ethers } from "ethers";
 import { JsonFragment } from "@ethersproject/abi";
 
-export const keccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
+export const getKeccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 
 type RawLog = { topics: Array<string>; data: string };
@@ -75,7 +75,7 @@ export const getContractAddress = async (
   provider: ethers.providers.Provider,
   contractName: string
 ): Promise<HexString | null> => {
-  const topic = keccakTopic(DSNP_MIGRATION_TYPE);
+  const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
   const logs: ethers.providers.Log[] = await provider.getLogs({ topics: [topic], fromBlock: 0 });
   const decodedValues = decodeReturnValues(DSNPMigrationABI, logs);

@@ -1,7 +1,7 @@
-import { batchIncludes } from "./batch";
+import { includes } from "./batch";
 import { ParquetReader } from "@dsnp/parquetjs";
 
-describe("batchIncludes", () => {
+describe("includes", () => {
   let reader: typeof ParquetReader;
 
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe("batchIncludes", () => {
   });
 
   it("calls getBloomFilter", () => {
-    batchIncludes(reader, "name", "banana");
+    includes(reader, "name", "banana");
 
     expect(reader.getBloomFilters.mock.calls.length).toBe(1);
   });

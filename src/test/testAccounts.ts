@@ -2,7 +2,7 @@ import { ContractTransaction, ethers } from "ethers";
 import { requireGetProvider } from "../config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
-import { bigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
 
 export interface RegistrationWithSigner extends Registration {
   signer: ethers.Signer;
@@ -134,7 +134,7 @@ export const getIdFromRegisterTransaction = async (transaction: ContractTransact
   const receipt = await transaction.wait(1);
   const reg = Registry__factory.createInterface();
   const event = reg.parseLog(receipt.logs[0]);
-  return bigNumberToDSNPUserId(event.args[0]);
+  return convertBigNumberToDSNPUserId(event.args[0]);
 };
 
 /**

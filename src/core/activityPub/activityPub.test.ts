@@ -1,4 +1,4 @@
-import { create, serialize, validate, ActivityPub } from "./activityPub";
+import { create, serialize, isValid, ActivityPub } from "./activityPub";
 
 describe("activityPub", () => {
   describe("#create", () => {
@@ -32,7 +32,7 @@ describe("activityPub", () => {
     });
   });
 
-  describe("#validate", () => {
+  describe("#isValid", () => {
     it("return true for valid activity pub objects with valid published fields", () => {
       const activityPub = {
         "@context": "https://www.w3.org/ns/activitystreams",
@@ -41,7 +41,7 @@ describe("activityPub", () => {
         published: "2015-02-10T15:04:55Z",
       };
 
-      expect(validate(activityPub)).toBeTruthy();
+      expect(isValid(activityPub)).toBeTruthy();
     });
 
     it("return true for valid activity pub objects with no published field", () => {
@@ -51,7 +51,7 @@ describe("activityPub", () => {
         url: "http://placekitten.com",
       };
 
-      expect(validate(activityPub)).toBeTruthy();
+      expect(isValid(activityPub)).toBeTruthy();
     });
 
     it("return false for activity pubs with incorrect published fields", () => {
@@ -62,7 +62,7 @@ describe("activityPub", () => {
         published: "Yesterday",
       };
 
-      expect(validate(activityPub)).toBeFalsy();
+      expect(isValid(activityPub)).toBeFalsy();
     });
 
     it("return false for activity pubs with incorrect contexts fields", () => {
@@ -72,7 +72,7 @@ describe("activityPub", () => {
         url: "http://placekitten.com",
       };
 
-      expect(validate(activityPub)).toBeFalsy();
+      expect(isValid(activityPub)).toBeFalsy();
     });
 
     it("return false for activity pubs with missing types", () => {
@@ -81,7 +81,7 @@ describe("activityPub", () => {
         url: "http://placekitten.com",
       };
 
-      expect(validate(activityPub as ActivityPub)).toBeFalsy();
+      expect(isValid(activityPub as ActivityPub)).toBeFalsy();
     });
   });
 
@@ -94,7 +94,7 @@ describe("activityPub", () => {
         inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
       };
 
-      expect(validate(activityPub)).toBeTruthy();
+      expect(isValid(activityPub)).toBeTruthy();
     });
 
     it("return false for activity pubs without an inReplyTo field", () => {
@@ -105,11 +105,11 @@ describe("activityPub", () => {
         published: "Yesterday",
       };
 
-      expect(validate(activityPub)).toBeFalsy();
+      expect(isValid(activityPub)).toBeFalsy();
     });
   });
 
-  describe("#validateProfile", () => {
+  describe("#isValidProfile", () => {
     it("return true for valid activity pub objects with an inReplyTo field", () => {
       const activityPub = {
         "@context": "https://www.w3.org/ns/activitystreams",
@@ -118,7 +118,7 @@ describe("activityPub", () => {
         preferredUsername: "rosalinekarr",
       };
 
-      expect(validate(activityPub)).toBeTruthy();
+      expect(isValid(activityPub)).toBeTruthy();
     });
 
     it("return false for activity pubs with wrong type", () => {
@@ -129,7 +129,7 @@ describe("activityPub", () => {
         published: "Yesterday",
       };
 
-      expect(validate(activityPub)).toBeFalsy();
+      expect(isValid(activityPub)).toBeFalsy();
     });
   });
 

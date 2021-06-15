@@ -120,7 +120,7 @@ export const profile = async (
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchProfileMessage> => {
   const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.validateProfile(contentObj)) throw InvalidActivityPubOpts;
+  if (!activityPub.isValidProfile(contentObj)) throw InvalidActivityPubOpts;
   const content = activityPub.serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
