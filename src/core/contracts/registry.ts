@@ -37,7 +37,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
       contractAddr,
     };
   } catch (e) {
-    const error = <VmError>e
+    const error = <VmError>e;
     const vmError = getVmError(error);
     if (vmError?.includes("Handle does not exist")) {
       return null;

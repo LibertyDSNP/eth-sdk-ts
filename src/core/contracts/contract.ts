@@ -34,7 +34,7 @@ export interface VmError {
   body?: string;
   error?: {
     body?: string;
-  }
+  };
 }
 
 export const DSNP_MIGRATION_ABI: ethers.utils.ParamType[] = [
