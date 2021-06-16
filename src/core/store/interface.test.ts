@@ -59,5 +59,12 @@ describe("store", () => {
         expect(putMock).toBeCalled();
       });
     });
+
+    describe("and #put function is not set", () => {
+      it("throws NotImplementedError error", async () => {
+        (requireGetStore as jest.Mock).mockReturnValue({});
+        await expect(get("file.txt")).rejects.toThrow(NotImplementedError);
+      });
+    });
   });
 });

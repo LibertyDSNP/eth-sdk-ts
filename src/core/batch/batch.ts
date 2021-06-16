@@ -1,7 +1,10 @@
-import { DSNPType } from "../messages/messages";
-import { NotImplementedError } from "../utilities";
+import { DSNPMessage, DSNPType } from "../messages/messages";
 import request from "request";
-import { ParquetReader } from "@dsnp/parquetjs";
+import parquet from "@dsnp/parquetjs";
+const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
+import { putStream, ReadWriteStream, WriteStream } from "../store/interface";
+import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
+import { EmptyArrayError } from "../utilities";
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -17,17 +20,53 @@ interface BloomFilterData {
   RowGroupIndex: number;
 }
 
+interface WriteBatchFileOptions {
+  bloomFilters?: BloomFilterOptions;
+}
+
 export type BatchFileObject = string;
 
 /**
- * createFile() takes a series of DSNP messages and returns a Batch file
- * object for publishing. This method is not yet implemented.
+ * createFile() takes a series of DSNP messages and returns a URL
+ * for storage location.
  *
- * @param events -  An array of DSNPEvents to include in the batch file
- * @returns         A batch file object
+ * @param targetPath - The path to and name of file
+ * @param messages - An array of DSNPMessage to include in the batch file
+ * @returns         A URL of the storage location
+ * @throws error if messages argument is empty.
  */
-export const createFile = (_events: DSNPType[]): BatchFileObject => {
-  throw NotImplementedError;
+export const createFile = async (targetPath: string, messages: DSNPMessage[]): Promise<URL> => {
+  if (messages.length === 0) throw EmptyArrayError;
+
+  const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
+  const bloomFilterOptions = getBloomFilterOptionsFor(messages[0].dsnpType);
+
+  return putStream(targetPath, async (writeStream: ReadWriteStream) => {
+    await writeBatch(writeStream, schema, messages, { bloomFilters: bloomFilterOptions });
+  });
+};
+
+/**
+ * writeBatch() takes a series of DSNP messages and returns a Batch file
+ * object for publishing.
+ *
+ * @param writeStream - A writable stream
+ * @param schema - The ParquetJS schema for the messages DSNP type
+ * @param messages - An array of DSNPMessage to include in the batch file
+ * @param opts - Options for creating a Parquet file
+ * @returns        A void promise which will either resolve or reject
+ */
+export const writeBatch = async (
+  writeStream: WriteStream,
+  schema: Schema,
+  messages: DSNPMessage[],
+  opts?: WriteBatchFileOptions
+): Promise<void> => {
+  const writer = await ParquetWriter.openStream(schema, writeStream, opts);
+
+  await Promise.all(messages.map((message) => writer.appendRow(message)));
+
+  await writer.close();
 };
 
 /**
