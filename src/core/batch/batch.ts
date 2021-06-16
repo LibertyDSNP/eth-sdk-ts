@@ -1,10 +1,11 @@
-import { DSNPMessage, DSNPType } from "../messages/messages";
+import { DSNPMessage, DSNPType } from "../messages";
 import request from "request";
 import parquet from "@dsnp/parquetjs";
 const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
-import { putStream, ReadWriteStream, WriteStream } from "../store/interface";
+import { WriteStream } from "../store";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { EmptyArrayError } from "../utilities";
+import { ConfigOpts, requireGetStore } from "../../config";
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -41,8 +42,9 @@ export const createFile = async (targetPath: string, messages: DSNPMessage[]): P
   const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
   const bloomFilterOptions = getBloomFilterOptionsFor(messages[0].dsnpType);
 
-  return putStream(targetPath, async (writeStream: ReadWriteStream) => {
     await writeBatch(writeStream, schema, messages, { bloomFilters: bloomFilterOptions });
+  const store = requireGetStore(opts);
+  return store.putStream(targetPath, async (writeStream: WriteStream) => {
   });
 };
 

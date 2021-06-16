@@ -61,7 +61,7 @@ Other storage solutions can be added so as long it contains the following interf
 ```typescript
 interface StoreInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
-  get?: (targetPath: string) => Promise<string>;
+  putStream: (targetPath: string, doWriteToStream: PassThroughCallback) => Promise<URL>;
 }
 ```
 
