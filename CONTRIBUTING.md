@@ -4,6 +4,20 @@
 - `.js` files are not allowed in the root directory. For more information why see `scripts/multimodules.js`.
 - Update the docs folder as needed by running `npm run docs:markdown`
 
+### Styleguide
+
+This SDK is linted with `Prettier` and `ESlint`.
+
+- All functions should be documented using typedoc
+- Booleans should be named `isFoo`
+- Functions should begin with verbs
+- Getters and Setters should always be prefixed with `get` and `set`
+- Only unused variables should be prefixed with an `_`
+- Global constants and enums should be in all caps with underscores: `HELLO_WORLD`
+- Don't use really short variable names except for loop indices or functions less than 3 lines.
+- :hourglass: For callbacks, prefix name with `do`
+
+
 ### Local Development Library Use
 
 1. sdk-ts: `npm install`
