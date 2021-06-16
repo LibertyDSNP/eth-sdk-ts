@@ -30,6 +30,13 @@ interface ContractResult {
   blockHash: string;
 }
 
+export interface VmError {
+  body?: string;
+  error?: {
+    body?: string;
+  }
+}
+
 export const DSNP_MIGRATION_ABI: ethers.utils.ParamType[] = [
   ethers.utils.ParamType.fromObject({
     indexed: false,
@@ -94,7 +101,7 @@ export const getContractAddress = async (
  *
  * @returns the error if any
  */
-export const getVmError = (e: { body?: string; error?: { body?: string } }): string | undefined => {
+export const getVmError = (e: VmError): string | undefined => {
   try {
     if (e.body) {
       const parsed = JSON.parse(e.body);

@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { getContractAddress, getVmError } from "./contract";
+import { getContractAddress, getVmError, VmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, MissingContract, requireGetSigner, requireGetProvider, getContracts } from "../../config";
 import { ContractTransaction } from "ethers";
@@ -36,8 +36,9 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
       dsnpUserId: convertBigNumberToDSNPUserId(dsnpUserId),
       contractAddr,
     };
-  } catch (e: Error) {
-    const vmError = getVmError(e);
+  } catch (e) {
+    const error = <VmError>e
+    const vmError = getVmError(error);
     if (vmError?.includes("Handle does not exist")) {
       return null;
     }
