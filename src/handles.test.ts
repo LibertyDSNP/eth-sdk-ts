@@ -12,10 +12,10 @@ import {
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
 import { setupConfig } from "./test/sdkTestConfig";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
+import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "./test/matchers";
-import { dsnpUserIdToBigNumber } from "./core/utilities/identifiers";
+import { convertDSNPUserIdToBigNumber } from "./core/utilities/identifiers";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -24,7 +24,7 @@ const createIdentityContract = async () => {
 };
 
 describe("handles", () => {
-  snapshotSetup();
+  setupSnapshot();
 
   const notTakens = ["not-taken", "not-taken1", "not-taken2"];
   const takens = ["taken", "taken1", "taken2"];
@@ -128,7 +128,7 @@ describe("handles", () => {
 
     it("returns a DSNP User Id", async () => {
       const dsnpUserId = await createRegistration(fakeAddress, handle);
-      const id = dsnpUserIdToBigNumber(dsnpUserId);
+      const id = convertDSNPUserIdToBigNumber(dsnpUserId);
 
       expect(id.toNumber()).toBeGreaterThan(999);
     });

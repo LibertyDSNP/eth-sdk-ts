@@ -119,7 +119,7 @@ export const ReactionBloomFilterOptions = {
 /**
  * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
  *
- * @param   dsnpType a dsnpType
+ * @param dsnpType - a dsnpType
  * @returns The corresponding parquet schema
  */
 export const getSchemaFor = (dsnpType: DSNPType): Schema => {
@@ -142,7 +142,7 @@ export const getSchemaFor = (dsnpType: DSNPType): Schema => {
 /**
  * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
  *
- * @param   dsnpType a dsnpType
+ * @param dsnpType - a dsnpType
  * @returns The corresponding parquet bloom filter options
  */
 export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions => {

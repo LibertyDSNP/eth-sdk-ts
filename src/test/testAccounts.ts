@@ -2,7 +2,7 @@ import { ContractTransaction, ethers } from "ethers";
 import { requireGetProvider } from "../config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
-import { bigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
 
 export interface RegistrationWithSigner extends Registration {
   signer: ethers.Signer;
@@ -116,8 +116,8 @@ const TESTACCOUNTS = [
 
 /**
  * Use this function to set up a new signer other than what is in the config.
- * @param accountIndex the index in the TESTACCOUNTS to get the signer for.
- * @return the ethers.Signer associated with the test account
+ * @param accountIndex - the index in the TESTACCOUNTS to get the signer for.
+ * @returns the ethers.Signer associated with the test account
  */
 export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
   if (accountIndex >= TESTACCOUNTS.length) throw new Error(`there are only ${TESTACCOUNTS.length} accounts.`);
@@ -127,22 +127,22 @@ export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
 
 /**
  * Parses a DSNP Id in a contract transaction log event.
- * @param transaction
+ * @param transaction - The transaction to parse
  * @returns the DSNP Id
  */
 export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<DSNPUserId> => {
   const receipt = await transaction.wait(1);
   const reg = Registry__factory.createInterface();
   const event = reg.parseLog(receipt.logs[0]);
-  return bigNumberToDSNPUserId(event.args[0]);
+  return convertBigNumberToDSNPUserId(event.args[0]);
 };
 
 /**
  * Creates a new DSNP Identity Proxy contract using the specified test account, and registers the
  * provided handle. Callers must keep track of what accounts have already been used.
- * @param acctIdx the index in TESTACCOUNTS to use.
- * @param handle the handle to register
- * @return a RegistrationWithSigner object
+ * @param acctIdx - the index in TESTACCOUNTS to use.
+ * @param handle - the handle to register
+ * @returns a RegistrationWithSigner object
  */
 export const newRegistrationForAccountIndex = async (
   acctIdx: number,

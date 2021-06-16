@@ -4,7 +4,8 @@ import { ethers } from "ethers";
 
 const RPC_URL = String(process.env.RPC_URL);
 
-const latestSnapshot: string[] = [];
+// eslint-disable-next-line prefer-const
+let latestSnapshot: string[] = [];
 
 export const snapshotHardhat = async (provider: ethers.providers.JsonRpcProvider): Promise<void> => {
   latestSnapshot.push(await provider.send("evm_snapshot", []));
@@ -16,7 +17,7 @@ export const revertHardhat = async (provider: ethers.providers.JsonRpcProvider):
   expect(revertResponse.error).toBeUndefined();
 };
 
-export const snapshotSetup = (): void => {
+export const setupSnapshot = (): void => {
   let provider: ethers.providers.JsonRpcProvider;
 
   beforeAll(async () => {

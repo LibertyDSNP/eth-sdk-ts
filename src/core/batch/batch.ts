@@ -30,8 +30,8 @@ export type BatchFileObject = string;
  * createFile() takes a series of DSNP messages and returns a URL
  * for storage location.
  *
- * @param targetPath  The path to and name of file
- * @param messages An array of DSNPMessage to include in the batch file
+ * @param targetPath - The path to and name of file
+ * @param messages - An array of DSNPMessage to include in the batch file
  * @returns         A URL of the storage location
  * @throws error if messages argument is empty.
  */
@@ -50,10 +50,10 @@ export const createFile = async (targetPath: string, messages: DSNPMessage[]): P
  * writeBatch() takes a series of DSNP messages and returns a Batch file
  * object for publishing.
  *
- * @param writeStream A writable stream
- * @param schema    The ParquetJS schema for the messages DSNP type
- * @param messages An array of DSNPMessage to include in the batch file
- * @param opts     Options for creating a Parquet file
+ * @param writeStream - A writable stream
+ * @param schema - The ParquetJS schema for the messages DSNP type
+ * @param messages - An array of DSNPMessage to include in the batch file
+ * @param opts - Options for creating a Parquet file
  * @returns        A void promise which will either resolve or reject
  */
 export const writeBatch = async (
@@ -72,7 +72,7 @@ export const writeBatch = async (
 /**
  * openURL() allows users to open a parquet file with a URL.
  *
- * @param url a URL to fetch parquet file from.
+ * @param url - a URL to fetch parquet file from.
  * @returns a ParquetReader object.
  **/
 export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(request, url);
@@ -80,7 +80,7 @@ export const openURL = async (url: URL): Promise<typeof ParquetReader> => Parque
 /**
  * openFile() allows users to open a parquet file with a path.
  *
- * @param path to parquet file.
+ * @param path - to parquet file.
  * @returns a ParquetReader object.
  **/
 export const openFile = async (path: string): Promise<typeof ParquetReader> => ParquetReader.openFile(path);
@@ -88,7 +88,7 @@ export const openFile = async (path: string): Promise<typeof ParquetReader> => P
 /**
  * readFile() reads a Parquet file by row.
  *
- * @param reader a ParquetReader object.
+ * @param reader - a ParquetReader object.
  * @returns void.
  */
 export const readFile = async (reader: typeof ParquetReader, callback: ReadRowFunction): Promise<void> => {
@@ -103,15 +103,14 @@ export const readFile = async (reader: typeof ParquetReader, callback: ReadRowFu
 };
 
 /**
- * batchIncludes() checks if a column/field in a
- * Parquet batch file contains an item.
+ * includes() checks if a column/field in a Parquet batch file contains an item.
  *
- * @param  reader a ParquetReader object.
- * @param  column the column name to check if a value is included.
- * @param  item a value.
+ * @param reader - a ParquetReader object.
+ * @param column - the column name to check if a value is included.
+ * @param item - a value.
  * @returns void.
  */
-export const batchIncludes = async (
+export const includes = async (
   reader: typeof ParquetReader,
   column: string,
   item: number | string

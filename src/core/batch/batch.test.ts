@@ -7,7 +7,7 @@ import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 jest.mock("../store/interface");
 
-describe("batchIncludes", () => {
+describe("includes", () => {
   let reader: typeof ParquetReader;
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe("batchIncludes", () => {
   });
 
   it("calls getBloomFilter", () => {
-    batch.batchIncludes(reader, "name", "banana");
+    batch.includes(reader, "name", "banana");
 
     expect(reader.getBloomFilters.mock.calls.length).toBe(1);
   });

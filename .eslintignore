@@ -9,7 +9,8 @@ coverage/*
 /*.map
 /src/*.js
 /*.js
+/jest.config.ts
+/scripts/*
 
 # import Test
 /src/test/importTest/*
-!/src/test/importTest/*.ts

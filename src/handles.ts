@@ -5,7 +5,7 @@ import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration 
 import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { bigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
 
 /**
  * RegistrationNotFound represents an error in finding the user to follow or unfollow.
@@ -16,7 +16,7 @@ export const RegistrationNotFound = new Error("User not found.");
  * authenticateHandle() finds the DSNP user id associated with a given handle
  * and sets the currentFromId in the config.
  *
- * @param handle The handle to authenticate
+ * @param handle - The handle to authenticate
  * @returns      A void promise which will either resolve or reject
  */
 export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpts): Promise<void> => {
@@ -33,9 +33,9 @@ export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpt
 /**
  * createRegistration() creates a new identity for a public key and registers a handle to it.
  * This function will wait for the identity to land on chain before resolving.
- * @param addr public key address that will be used to control identity delegate
- * @param handle name of identity (must be globaly unique)
- * @return id of identity created
+ * @param addr - public key address that will be used to control identity delegate
+ * @param handle - name of identity (must be globaly unique)
+ * @returns id of identity created
  */
 export const createRegistration = async (
   addr: HexString,
@@ -46,7 +46,7 @@ export const createRegistration = async (
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return bigNumberToDSNPUserId(registerEvent.args[0]);
+  return convertBigNumberToDSNPUserId(registerEvent.args[0]);
 };
 
 /**
@@ -54,9 +54,9 @@ export const createRegistration = async (
  * will only work if the given handle has already been authenticated. This
  * method is not yet implemented.
  *
- * @param id   The Handle of the user for which to fetch profile data
- * @param registration Any updates to be merged into the current profile data
- * @param opts Optional. Configuration overrides, such as from address, if any
+ * @param id -   The Handle of the user for which to fetch profile data
+ * @param registration - Any updates to be merged into the current profile data
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns    The pending transaction
  */
 export const updateRegistration = async (
@@ -69,7 +69,7 @@ export const updateRegistration = async (
 
 /**
  * Get the current registration from a handle
- * @param handle The Registry Handle
+ * @param handle - The Registry Handle
  * @returns The Registration object with Handle, DSNP Id, and Identity contract address
  */
 export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise<Registration | null> =>
@@ -77,7 +77,7 @@ export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise
 
 /**
  * Get the current registration from a DSNP Id
- * @param dsnpUserId The DSNP User Id
+ * @param dsnpUserId - The DSNP User Id
  * @returns          The Registration object with Handle, DSNP User Id, and Identity contract address
  */
 export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts): Promise<Registration | null> => {
@@ -93,7 +93,7 @@ export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts
 
 /**
  * availabilityFilter() takes a list of handles returning a filtered list of just the ones that are available
- * @param handles A list of handles to check for availability
+ * @param handles - A list of handles to check for availability
  * @returns       The filtered list of handles that are currently available
  */
 export const availabilityFilter = async (handles: Handle[], opts?: config.ConfigOpts): Promise<Handle[]> => {
@@ -103,7 +103,7 @@ export const availabilityFilter = async (handles: Handle[], opts?: config.Config
 
 /**
  * isAvailable() checks to see if the given handle is available
- * @param handle    The handle to test for availability
+ * @param handle -    The handle to test for availability
  * @returns boolean If the handle is available
  */
 export const isAvailable = async (handle: Handle, opts?: config.ConfigOpts): Promise<boolean> => {

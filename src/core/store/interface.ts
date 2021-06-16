@@ -47,8 +47,8 @@ export interface StoreInterface {
  * putStream() takes a pass-through stream to upload data to chosen hosting solution and
  * returns the URL of the file once stored.
  *
- * @param   targetPath  The path to and name of file
- * @param   callback A callback function that receives a writable to stream data to the chosen hosting solution
+ * @param targetPath - The path to and name of file
+ * @param callback - A callback function that receives a writable to stream data to the chosen hosting solution
  * @returns The URI of the hosted file
  */
 export const putStream = (targetPath: string, callback: PassThroughCallback, opts?: ConfigOpts): Promise<URL> => {
@@ -60,9 +60,9 @@ export const putStream = (targetPath: string, callback: PassThroughCallback, opt
  * put() takes a batch file to store with the chosen hosting solution and
  * returns the URL of the file once stored.
  *
- * @param   targetPath  The path to and name of file
- * @param   content The file object to store on the chosen hosting solution
- * @param   opts Optional. Configuration overrides, such as from address, if any
+ * @param targetPath - The path to and name of file.
+ * @param content - The file object to store on the chosen hosting solution
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns       The URI of the hosted file
  */
 export const put = async (targetPath: string, content: Content, opts?: ConfigOpts): Promise<URL> => {
@@ -75,8 +75,8 @@ export const put = async (targetPath: string, content: Content, opts?: ConfigOpt
 /**
  * get() fetches a batch file from the given target path.
  *
- * @param   targetPath  The path to and name of file.
- * @param   opts Optional. Configuration overrides, such as from address, if any
+ * @param targetPath - The path to and name of file.
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns   The batch file fetched from the given URI
  */
 export const get = async (targetPath: string, opts?: ConfigOpts): Promise<File> => {
