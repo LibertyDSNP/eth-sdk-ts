@@ -81,9 +81,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
   const { signer, provider } = newConfig;
   if (provider && signer && !signer.provider) newConfig.signer = signer.connect(provider);
   return (config = {
-    // Defaults
-    queue: new MemoryQueue(),
-    contracts: {},
+    ...config,
     ...newConfig,
   });
 };
