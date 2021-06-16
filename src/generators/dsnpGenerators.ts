@@ -76,7 +76,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
 
 /**
  * generateReply
- * @param from - - a desired fromID (optional)
+ * @param from - a desired fromID (optional)
  */
 export const generateReply = (from?: EthereumAddress): ReplyMessage => {
   return {
@@ -90,7 +90,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
 
 /**
  * generateReaction
- * @param from - - a desired fromID (optional)
+ * @param from - a desired fromID (optional)
  */
 export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
   return {
