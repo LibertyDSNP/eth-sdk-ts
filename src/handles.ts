@@ -8,29 +8,6 @@ import { findEvent } from "./core/contracts/contract";
 import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
 
 /**
- * RegistrationNotFound represents an error in finding the user to follow or unfollow.
- */
-export const RegistrationNotFound = new Error("User not found.");
-
-/**
- * authenticateHandle() finds the DSNP user id associated with a given handle
- * and sets the currentFromId in the config.
- *
- * @param handle - The handle to authenticate
- * @returns      A void promise which will either resolve or reject
- */
-export const authenticateHandle = async (handle: Handle, opts?: config.ConfigOpts): Promise<void> => {
-  const registration = await resolveRegistration(handle, opts);
-  if (!registration) throw RegistrationNotFound;
-  const userId = registration.dsnpUserId;
-
-  config.setConfig({
-    ...config.getConfig(),
-    currentFromId: userId,
-  });
-};
-
-/**
  * createRegistration() creates a new identity for a public key and registers a handle to it.
  * This function will wait for the identity to land on chain before resolving.
  * @param addr - public key address that will be used to control identity delegate

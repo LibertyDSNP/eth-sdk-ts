@@ -1,14 +1,6 @@
 import { Signer } from "ethers";
 import * as config from "./config";
-import {
-  authenticateHandle,
-  isAvailable,
-  availabilityFilter,
-  resolveHandle,
-  resolveId,
-  createRegistration,
-  RegistrationNotFound,
-} from "./handles";
+import { isAvailable, availabilityFilter, resolveHandle, resolveId, createRegistration } from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
 import { setupConfig } from "./test/sdkTestConfig";
@@ -44,17 +36,6 @@ describe("handles", () => {
 
   afterAll(async () => {
     await revertHardhat(provider);
-  });
-
-  describe("#authenticateHandle", () => {
-    it("sets the currentFromId correctly when a handle exists", async () => {
-      await authenticateHandle("taken");
-      expect(config.requireGetCurrentFromId()).toEqual("dsnp://00000000000003e8");
-    });
-
-    it("throws RegistrationNotFound when the handle does not exist", async () => {
-      await expect(authenticateHandle("not-taken")).rejects.toThrow(RegistrationNotFound);
-    });
   });
 
   describe("#isAvailable", () => {

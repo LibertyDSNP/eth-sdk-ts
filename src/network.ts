@@ -1,26 +1,22 @@
-import { resolveRegistration, Handle } from "./core/contracts/registry";
+import { Registration } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
-import { RegistrationNotFound } from "./handles";
 import { NotImplementedError } from "./core/utilities";
+import { DSNPUserId } from "./core/utilities/identifiers";
 
 /**
  * follow() creates a follow event and returns it.
  *
- * @param handle - The handle of the user to follow
- * @param opts -   Optional. Configuration overrides, such as from address, if any
- * @returns      The signed DSNP Graph Change message
+ * @param followeeId - The id of the user to follow
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The signed DSNP Graph Change message
  */
 export const follow = async (
-  handle: Handle,
+  followeeId: DSNPUserId,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
-
-  const registration = await resolveRegistration(handle);
-  if (!registration) throw RegistrationNotFound;
-  const followeeId = registration.dsnpUserId;
 
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
@@ -31,19 +27,15 @@ export const follow = async (
 /**
  * unfollow() creates an unfollow event and returns it.
  *
- * @param handle -  The handle of the user to unfollow
- * @param opts -    Optional. Configuration overrides, such as from address, if any
- * @returns      The signed DSNP Graph Change message
+ * @param followeeId - The id of the user to unfollow
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The signed DSNP Graph Change message
  */
 export const unfollow = async (
-  handle: Handle,
+  followeeId: DSNPUserId,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchGraphChangeMessage> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
-
-  const registration = await resolveRegistration(handle);
-  if (!registration) throw RegistrationNotFound;
-  const followeeId = registration.dsnpUserId;
 
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
@@ -56,14 +48,14 @@ export const unfollow = async (
  * representing whether or not a given user is following another given user.
  * This method is not yet implemented.
  *
- * @param follower - The handle of the user to unfollow
- * @param followee - Optional. The following user. Defaults to current user.
- * @param opts -     Optional. Configuration overrides, such as from address, if any
- * @returns        A boolean representing whether or not the follower is following the followee
+ * @param follower - The id of the follower
+ * @param followee - Optional. The id of the following user. Defaults to current user.
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A boolean representing whether or not the follower is following the followee
  */
 export const isFollowing = async (
-  _follower: Handle,
-  _followee?: Handle,
+  _follower: DSNPUserId,
+  _followee?: DSNPUserId,
   _opts?: config.ConfigOpts
 ): Promise<boolean> => {
   throw NotImplementedError;
@@ -71,26 +63,26 @@ export const isFollowing = async (
 
 /**
  * getFollowers() scans the current state of the network and returns an array of
- * all user handles following the given followee handle. This method is not yet
+ * all users following the given followee handle. This method is not yet
  * implemented.
  *
- * @param followee - Optional. The followee handle to fetch followers for. Defaults to the current user.
- * @param opts -     Optional. Configuration overrides, such as from address, if any
+ * @param followee - Optional. The followee id to fetch followers for. Defaults to the current user.
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns        An array of all users following the followee
  */
-export const getFollowers = async (_followee?: Handle, _opts?: config.ConfigOpts): Promise<Handle[]> => {
+export const getFollowers = async (_followee?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
   throw NotImplementedError;
 };
 
 /**
  * getFollowees() scans the current state of the network and returns an array of
- * all user handles being followed by the given follower handle. This method is
- * not yet implemented.
+ * all users being followed by the given follower handle. This method is not yet
+ * implemented.
  *
- * @param follower - Optional. The follower handle to fetch followees for. Defaults to the current user.
+ * @param follower - Optional. The follower id to fetch followees for. Defaults to the current user.
  * @param opts -     Optional. Configuration overrides, such as from address, if any
  * @returns        An array of all users followed by the follower user
  */
-export const getFollowees = (_follower?: Handle, _opts?: config.ConfigOpts): Promise<Handle[]> => {
+export const getFollowees = (_follower?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
   throw NotImplementedError;
 };
