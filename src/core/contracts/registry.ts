@@ -36,7 +36,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
       dsnpUserId: convertBigNumberToDSNPUserId(dsnpUserId),
       contractAddr,
     };
-  } catch (e: any) {
+  } catch (e: Error) {
     const vmError = getVmError(e);
     if (vmError?.includes("Handle does not exist")) {
       return null;
