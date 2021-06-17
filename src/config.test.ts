@@ -62,6 +62,20 @@ describe("config", () => {
 
       expect(getConfig()).toMatchObject({ test: "object" });
     });
+
+    it("does not remove existing keys in the config settings", async () => {
+      setConfig({
+        other_test: "blah blah",
+      });
+
+      const testConfig = ({
+        test: "object",
+      } as unknown) as Config;
+
+      setConfig(testConfig);
+
+      expect(getConfig()).toMatchObject({ other_test: "blah blah", test: "object" });
+    });
   });
 
   describe("requireGetters", () => {

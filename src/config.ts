@@ -72,7 +72,10 @@ export const getConfig = (overrides?: ConfigOpts): Config => {
 };
 
 /**
- * setConfig() sets the current configuration with the given object.
+ * setConfig() sets the current configuration with the given object. Any keys
+ * previously set on the config object will not be removed. To remove a config
+ * option, this method should be called with undefined passed for the given key
+ * to override it.
  *
  * @param newConfig - The configuration settings to set with
  * @returns The newly constructed config
@@ -81,9 +84,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
   const { signer, provider } = newConfig;
   if (provider && signer && !signer.provider) newConfig.signer = signer.connect(provider);
   return (config = {
-    // Defaults
-    queue: new MemoryQueue(),
-    contracts: {},
+    ...config,
     ...newConfig,
   });
 };

@@ -33,7 +33,7 @@ describe("network", () => {
   });
 
   describe("follow", () => {
-    describe("with a valid provider, signer and user id", () => {
+    describe("with a valid signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
@@ -43,7 +43,7 @@ describe("network", () => {
       });
 
       it("returns a follow graph change DSNP message", async () => {
-        const message = await network.follow("dril");
+        const message = await network.follow(registerId);
 
         expect(message).toMatchObject({
           fromId: "dsnp://0000000000000000",
@@ -58,16 +58,18 @@ describe("network", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
+          signer: undefined,
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(config.MissingSigner);
+        await expect(network.follow(registerId)).rejects.toThrow(config.MissingSigner);
       });
     });
 
     describe("without a user id", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
+          currentFromId: undefined,
           signer,
           provider,
         });
@@ -75,21 +77,10 @@ describe("network", () => {
         await expect(network.follow("dril")).rejects.toThrow(config.MissingUser);
       });
     });
-
-    describe("without a provider", () => {
-      it("throws MissingUser", async () => {
-        config.setConfig({
-          currentFromId: "dsnp://0000000000000000",
-          signer,
-        });
-
-        await expect(network.follow("dril")).rejects.toThrow(config.MissingProvider);
-      });
-    });
   });
 
   describe("unfollow", () => {
-    describe("with a valid provider, signer and user id", () => {
+    describe("with a valid signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
@@ -99,7 +90,7 @@ describe("network", () => {
       });
 
       it("returns a follow graph change DSNP message", async () => {
-        const message = await network.unfollow("dril");
+        const message = await network.unfollow(registerId);
 
         expect(message).toMatchObject({
           fromId: "dsnp://0000000000000000",
@@ -114,32 +105,23 @@ describe("network", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
+          signer: undefined,
           provider,
         });
 
-        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingSigner);
+        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingSigner);
       });
     });
 
     describe("without a user id", () => {
       it("throws MissingUser", async () => {
         config.setConfig({
+          currentFromId: undefined,
           signer,
           provider,
         });
 
-        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingUser);
-      });
-    });
-
-    describe("without a provider", () => {
-      it("throws MissingUser", async () => {
-        config.setConfig({
-          currentFromId: "dsnp://0000000000000000",
-          signer,
-        });
-
-        await expect(network.unfollow("dril")).rejects.toThrow(config.MissingProvider);
+        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingUser);
       });
     });
   });
