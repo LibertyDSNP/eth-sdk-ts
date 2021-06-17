@@ -6,14 +6,14 @@ import { EthereumAddress } from "../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
 
-const prefabURLs = sampleText.prefabURLs;
+const PREFAB_URLS = sampleText.prefabURLs;
 const generateEthereumAddress = addresses.generateEthereumAddress;
 
 /**
- * @function generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds.
+ * generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds.
  * It generates a randomized list of DSNP messages at an estimated frequency for each type.
- * @param messageCount
- * @return an array of Messages.
+ * @param messageCount -
+ * @returns an array of Messages.
  */
 export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => {
   // A WAG of the ratios of message types
@@ -42,10 +42,10 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
 };
 
 /**
- * @function writeFixture writes messages as JSON to provided jsonFilePath
- * @param data the data to write out
- * @param jsonFilePath where to write the output file
- * @return number of bytes written
+ * writeFixture writes messages as JSON to provided jsonFilePath
+ * @param data - the data to write out
+ * @param jsonFilePath - where to write the output file
+ * @returns number of bytes written
  */
 export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): number => {
   const ws = fs.createWriteStream(jsonFilePath).on("error", (e: Error) => {
@@ -70,7 +70,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
     dsnpType: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
-    uri: sample(prefabURLs),
+    uri: sample(PREFAB_URLS),
   };
 };
 
@@ -84,7 +84,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
-    uri: sample(prefabURLs),
+    uri: sample(PREFAB_URLS),
   };
 };
 

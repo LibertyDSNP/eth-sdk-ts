@@ -1,6 +1,6 @@
 import { Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "../../test/hardhatRPC";
+import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import {
   changeAddress,
   changeHandle,
@@ -26,7 +26,7 @@ describe("registry", () => {
   let signer: Signer;
   let provider: JsonRpcProvider;
 
-  snapshotSetup();
+  setupSnapshot();
 
   beforeAll(() => {
     ({ signer, provider } = setupConfig());

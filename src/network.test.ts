@@ -5,13 +5,13 @@ import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
-import { revertHardhat, snapshotHardhat, snapshotSetup } from "./test/hardhatRPC";
-import { bigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;
 
-  snapshotSetup();
+  setupSnapshot();
   const { signer, provider } = setupConfig();
 
   beforeAll(async () => {
@@ -25,7 +25,7 @@ describe("network", () => {
     const receipt = await txn.wait(1);
 
     const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-    registerId = bigNumberToDSNPUserId(registerEvent.args[0]);
+    registerId = convertBigNumberToDSNPUserId(registerEvent.args[0]);
   });
 
   afterAll(async () => {

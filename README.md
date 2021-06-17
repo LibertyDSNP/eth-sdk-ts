@@ -137,7 +137,7 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 ### Test Writing Utilities
 
 - test/hardhatRPC
-  - `snapshotSetup`: Call this to use evm snapshots before each test to make sure the blockchain state is clean
+  - `setupSnapshot`: Call this to use evm snapshots before each test to make sure the blockchain state is clean
   - `snapshotHardhat`/`revertHardhat`: Make other snapshots, but remember to revert them for other tests
 - test/sdkTestConfig
   - `setupConfig`: An easy way to setup the default config for the sdk for testing.

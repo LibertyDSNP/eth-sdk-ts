@@ -4,8 +4,9 @@ import * as types from "../../types/typechain";
 import { ethers } from "ethers";
 import { JsonFragment } from "@ethersproject/abi";
 
-export const keccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
+
+export const getKeccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 
 type RawLog = { topics: Array<string>; data: string };
 
@@ -17,6 +18,7 @@ const EVENTS_ABI = new ethers.utils.Interface(
     types.Migrations__factory,
     types.Registry__factory,
   ]
+    // eslint-disable-next-line id-length
     .reduce((m, f) => m.concat(f.abi as Array<JsonFragment>), [] as Array<JsonFragment>)
     .filter((ef) => ef.type === "event") as Array<JsonFragment>
 );
@@ -28,7 +30,14 @@ interface ContractResult {
   blockHash: string;
 }
 
-export const DSNPMigrationABI: ethers.utils.ParamType[] = [
+export interface VmError {
+  body?: string;
+  error?: {
+    body?: string;
+  };
+}
+
+export const DSNP_MIGRATION_ABI: ethers.utils.ParamType[] = [
   ethers.utils.ParamType.fromObject({
     indexed: false,
     baseType: "address",
@@ -67,29 +76,32 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  * getContractAddress() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param provider initialized provider
- * @param contractName Name of contract to find address for
+ * @param provider - initialized provider
+ * @param contractName - Name of contract to find address for
  * @returns HexString A hexidecimal string representing the contract address
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
   contractName: string
 ): Promise<HexString | null> => {
-  const topic = keccakTopic(DSNP_MIGRATION_TYPE);
+  const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
-  const logs: ethers.providers.Log[] = await provider.getLogs({ topics: [topic], fromBlock: 0 });
-  const decodedValues = decodeReturnValues(DSNPMigrationABI, logs);
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    topics: [topic],
+    fromBlock: 0,
+  });
+  const decodedValues = decodeReturnValues(DSNP_MIGRATION_ABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
   return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
 };
 
 /**
  * Get the JSON RPC error from the body, if one exists
- * @param e The error expected to have a vm Error
+ * @param e - The error expected to have a vm Error
  *
  * @returns the error if any
  */
-export const getVmError = (e: { body?: string; error?: { body?: string } }): string | undefined => {
+export const getVmError = (e: VmError): string | undefined => {
   try {
     if (e.body) {
       const parsed = JSON.parse(e.body);
@@ -108,19 +120,19 @@ export const getVmError = (e: { body?: string; error?: { body?: string } }): str
 /**
  * Parse all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
- * @param logs raw logs from a transaction
- * @return parsed logs excluding any logs that cannot be parsed by the interface.
+ * @param logs - raw logs from a transaction
+ * @returns parsed logs excluding any logs that cannot be parsed by the interface.
  * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescription> => {
-  return logs.map((l) => EVENTS_ABI.parseLog(l)) as Array<ethers.utils.LogDescription>;
+  return logs.map((log) => EVENTS_ABI.parseLog(log)) as Array<ethers.utils.LogDescription>;
 };
 
 /**
  * Find event with given name.
- * @param name name of event to find.
- * @param logs raw logs from a transaction
- * @return First event in log that matches name
+ * @param name - name of event to find.
+ * @param logs - raw logs from a transaction
+ * @returns First event in log that matches name
  * @throws error if no matching events were found
  * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */

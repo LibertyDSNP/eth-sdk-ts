@@ -12,15 +12,15 @@ import {
 } from "./identity";
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
-import { snapshotSetup } from "../../test/hardhatRPC";
+import { setupSnapshot } from "../../test/hardhatRPC";
 import { MissingContract } from "../../config";
 
-const owner = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
-const nonOwner = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
+const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
+const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
 
 describe("identity", () => {
   let provider: ethers.providers.JsonRpcProvider;
-  snapshotSetup();
+  setupSnapshot();
   beforeAll(() => {
     ({ provider } = setupConfig());
   });
@@ -51,7 +51,7 @@ describe("identity", () => {
     let contractAddress: EthereumAddress;
 
     beforeEach(async () => {
-      proxyReceipt = (await (await createCloneProxyWithOwner(owner)).wait()) as ContractReceipt;
+      proxyReceipt = (await (await createCloneProxyWithOwner(OWNER)).wait()) as ContractReceipt;
       proxyContractEvents =
         proxyReceipt && proxyReceipt.events && proxyReceipt
           ? proxyReceipt.events.filter((event) => {
@@ -66,11 +66,11 @@ describe("identity", () => {
     });
 
     it("expect isAuthorizedTo to return true for owner", async () => {
-      const authorized = await isAuthorizedTo(owner, contractAddress, Permission.ANNOUNCE, 0);
+      const authorized = await isAuthorizedTo(OWNER, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(true);
     });
     it("expect isAuthorizedTo to return false for non owner", async () => {
-      const authorized = await isAuthorizedTo(nonOwner, contractAddress, Permission.ANNOUNCE, 0);
+      const authorized = await isAuthorizedTo(NON_OWNER, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(false);
     });
   });
@@ -97,7 +97,7 @@ describe("identity", () => {
 
     beforeEach(async () => {
       const beacon = await getBeacon();
-      proxyReceipt = (await (await createBeaconProxyWithOwner(owner, beacon)).wait()) as ContractReceipt;
+      proxyReceipt = (await (await createBeaconProxyWithOwner(OWNER, beacon)).wait()) as ContractReceipt;
       proxyContractEvents =
         proxyReceipt && proxyReceipt.events
           ? proxyReceipt.events.filter((event) => {
@@ -111,12 +111,12 @@ describe("identity", () => {
     });
 
     it("expect isAuthorized  to return false or nonOwner", async () => {
-      const authorized = await isAuthorizedTo(nonOwner, contractAddress, Permission.ANNOUNCE, 0);
+      const authorized = await isAuthorizedTo(NON_OWNER, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(false);
     });
 
     it("expect isAuthorizedTo to return true for owner", async () => {
-      const authorized = await isAuthorizedTo(owner, contractAddress, Permission.ANNOUNCE, 0);
+      const authorized = await isAuthorizedTo(OWNER, contractAddress, Permission.ANNOUNCE, 0);
       expect(authorized).toBe(true);
     });
   });

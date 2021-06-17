@@ -38,7 +38,7 @@ export type ActivityPubOpts = Partial<ActivityPub>;
 /**
  * create() provides a simple factory for generating activityPub notes.
  *
- * @param   options Options for the activity pub object to create
+ * @param options - Options for the activity pub object to create
  * @returns         An activity pub object
  */
 export const create = (options: ActivityPubOpts): ActivityPub =>
@@ -50,13 +50,13 @@ export const create = (options: ActivityPubOpts): ActivityPub =>
   } as ActivityPub);
 
 /**
- * validate() returns true if the object provided is a valid activityPub.
+ * isValid() returns true if the object provided is a valid activityPub.
  * Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
-export const validate = (activityPub: ActivityPub): boolean => {
+export const isValid = (activityPub: ActivityPub): boolean => {
   if (activityPub["@context"] !== "https://www.w3.org/ns/activitystreams") return false;
   if (!activityPub.type || typeof activityPub.type !== "string") return false;
   if (activityPub.published && !activityPub.published.match(ISO8601_REGEX)) return false;
@@ -65,28 +65,28 @@ export const validate = (activityPub: ActivityPub): boolean => {
 };
 
 /**
- * validateReply() returns true if the object provided is a valid activityPub
+ * isValidReply() returns true if the object provided is a valid activityPub
  * reply. Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
-export const validateReply = (activityPub: ActivityPub): boolean => {
-  if (!validate(activityPub)) return false;
+export const isValidReply = (activityPub: ActivityPub): boolean => {
+  if (!isValid(activityPub)) return false;
   if (!activityPub["inReplyTo"]) return false;
 
   return true;
 };
 
 /**
- * validateProfile() returns true if the object provided is a valid activityPub
+ * isValidProfile() returns true if the object provided is a valid activityPub
  * profile. Otherwise, it returns false.
  *
- * @param   activityPub  An object to be validated against the activity pub standard
+ * @param activityPub - An object to be validated against the activity pub standard
  * @returns              True or false depending on whether the given object is a valid
  */
-export const validateProfile = (activityPub: ActivityPub): boolean => {
-  if (!validate(activityPub)) return false;
+export const isValidProfile = (activityPub: ActivityPub): boolean => {
+  if (!isValid(activityPub)) return false;
   if (activityPub["type"] !== "Person") return false;
 
   return true;
@@ -96,7 +96,7 @@ export const validateProfile = (activityPub: ActivityPub): boolean => {
  * serialize() converts an activityPub object to string for upload via the
  * storage adapter.
  *
- * @param   data  The activity pub object to hash
+ * @param data - The activity pub object to hash
  * @returns       A string representation of the activity pub object
  */
 export const serialize = (data: ActivityPub): string => {

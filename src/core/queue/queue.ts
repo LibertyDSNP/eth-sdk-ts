@@ -24,8 +24,8 @@ export interface QueueInterface {
  * enqueue() adds a DSNP message to the queue for later publishing to the
  * blockchain as a batch file.
  *
- * @param message The DSNP message to queue up for batching
- * @param opts    Optional. Configuration overrides, such as from address, if any
+ * @param message - The DSNP message to queue up for batching
+ * @param opts -    Optional. Configuration overrides, such as from address, if any
  * @returns       A Queue ID for the queued message
  */
 export const enqueue = async (message: DSNPBatchMessage, opts?: ConfigOpts): Promise<QueueId> => {
@@ -37,8 +37,8 @@ export const enqueue = async (message: DSNPBatchMessage, opts?: ConfigOpts): Pro
  * remove() removes a DSNP message from the queue for later publishing
  * to the blockchain.
  *
- * @param id   The Queue ID of the message to remove from the queue
- * @param opts Optional. Configuration overrides, such as from address, if any
+ * @param id -   The Queue ID of the message to remove from the queue
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns    The DSNP message removed from the queue
  */
 export const remove = async (id: QueueId, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
@@ -51,9 +51,9 @@ export const remove = async (id: QueueId, opts?: ConfigOpts): Promise<DSNPBatchM
  * returns an array for inclusion in a batch file. If the number provided is
  * zero, all messages in the queue with a matching type will be returned.
  *
- * @param dsnpType  The DSNP type of messages to dequeue
- * @param count The number of messages to dequeue and return
- * @param opts  Optional. Configuration overrides, such as from address, if any
+ * @param dsnpType -  The DSNP type of messages to dequeue
+ * @param count - The number of messages to dequeue and return
+ * @param opts -  Optional. Configuration overrides, such as from address, if any
  * @returns     An array of DSNP messages removed from the queue
  */
 export const dequeueBatch = async (

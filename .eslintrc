@@ -4,7 +4,7 @@
     "commonjs": true,
     "es6": true
   },
-  "plugins": ["jest", "prettier", "@typescript-eslint"],
+  "plugins": ["jest", "prettier", "@typescript-eslint","eslint-plugin-tsdoc"],
   "parser": "@typescript-eslint/parser",
   "extends": [
     "plugin:@typescript-eslint/recommended",
@@ -14,7 +14,8 @@
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
   "rules": {
     "semi": ["error", "always"],
@@ -24,6 +25,13 @@
     "no-use-before-define": "off",
     "no-unused-vars": "off",
     "no-var": "error",
+    "id-length": [
+      "error",
+      {
+        "exceptionPatterns": ["[i-k]","e","c","x","y"],
+        "properties": "never"
+      }
+    ],
     "allow-namespace": "off",
     "@typescript-eslint/no-inferrable-types": [
       "warn",
@@ -36,6 +44,16 @@
       {
         "argsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "@typescript-eslint/naming-convention":[
+      "error",
+      {
+        "selector": ["variable"],
+        "modifiers": ["const","global"],
+        "format": ["UPPER_CASE"],
+        "types": ["string","number","array","boolean"]
+      }
+    ],
+    "tsdoc/syntax":"error"
   }
 }

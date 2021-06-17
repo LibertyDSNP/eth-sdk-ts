@@ -5,7 +5,7 @@
  * string, since implementations of [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#issue_with_plain_json.stringify_for_use_as_javascript)
  * do not necessarily guarantee key order.
  *
- * @param obj The object to recursively sort
+ * @param obj - The object to recursively sort
  * @returns   A sorted copy of the given object
  */
 export const sortObject = (obj: Record<string, unknown>): Record<string, unknown> => {
