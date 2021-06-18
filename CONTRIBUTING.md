@@ -37,8 +37,8 @@ This SDK is linted with `Prettier` and `ESlint`.
 
 1. Commit version update in package.json following [Semver 2.0](https://semver.org/)
 2. Draft New Release on GitHub.com
-3. Set tag to [package.json version]
-4. Set title to "[package.json version] Major Feature Name"
+3. Set tag to v[package.json version]
+4. Set title to "v[package.json version] Major Feature Name"
 5. Set contents to follow [KeepAChangeLog.com 1.0](https://keepachangelog.com/en/1.0.0/), but limited to just the new release information
     ```markdown
     ## [0.1.0] - 2017-06-20
