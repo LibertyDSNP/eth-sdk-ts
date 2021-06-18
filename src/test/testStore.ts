@@ -27,10 +27,12 @@ export default class TestStore implements StoreInterface {
       },
       end: (...args: unknown[]) => {
         const [chunkOrFunction, maybeCallback] = args;
-        if (typeof chunkOrFunction === "function") chunkOrFunction(null);
-        else buffers.push(chunkOrFunction as Buffer);
-        if (typeof maybeCallback === "function") maybeCallback(null);
-        return;
+        if (typeof chunkOrFunction === "function") {
+          chunkOrFunction(null);
+        } else {
+          buffers.push(chunkOrFunction as Buffer);
+          if (typeof maybeCallback === "function") maybeCallback(null);
+        }
       },
     };
     await callback(readWriteStream);
