@@ -42,22 +42,7 @@ setConfig({
 
 #### Storing Messages and Batches
 
-Amazon S3 is supported when adding the following configuration:
-```typescript
-import { setConfig } from "@dsnp/sdk";
-import { S3Node } from "@dsnp/sdk/core/store";
-
-setConfig({
-  ...,
-  store: S3Node({
-    key: "tomyheartisno",
-    secret: "itsa",
-    bucket: "ofchicken",
-    region: "us-east-la",
-  })
-});
-```
-Other storage solutions can be added so as long it contains the following interface.
+Storage solutions can be added so as long it matches the [StoreInterface](https://github.com/LibertyDSNP/sdk-ts/blob/main/src/core/store/interface.ts).
 ```typescript
 interface StoreInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
@@ -65,14 +50,20 @@ interface StoreInterface {
 }
 ```
 
+Configuration is set like so:
 ```
 config
   .setConfig({
-    store: new MyStore()
+    store: MyStoreModule, // for modules
+    store: new MyStore(), // for classes
    });
 ```
 
 See [Config Documentation](https://libertydsnp.github.io/sdk-ts/interfaces/config_config.config.html) for details on additional options.
+
+#### Example Stores
+
+An example implementations of storage can be found under the [examples folder](https://github.com/LibertyDSNP/sdk-ts/tree/main/examples)
 
 ## Usage
 

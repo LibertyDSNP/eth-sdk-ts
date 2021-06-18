@@ -1,23 +1,8 @@
-import { S3Client, S3ClientConfig, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
-import { StoreInterface } from "./interface";
+// import { PassThroughCallback, StoreInterface } from "@dsnp/sdk/core/store";
+import { PassThroughCallback, StoreInterface } from "../src/core/store";
+import { S3Client, S3ClientConfig, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import { Readable, PassThrough } from "stream";
-
-/**
- * PassThroughStream a stream that can be written to and read from. It is
- * intended for streaming parquet data to storage.
- */
-interface PassThroughStream {
-  read(chunk: unknown, size: number): void;
-  write(chunk: unknown, encoding?: string, callbck?: (error: Error | null | undefined) => void): boolean;
-  write(chunk: unknown, cb?: (error: Error | null | undefined) => void): boolean;
-  end(chunk: unknown, cb?: () => void): void;
-  end(chunk: unknown, encoding?: string, cb?: () => void): void;
-}
-
-interface PassThroughCallback {
-  (stream: PassThroughStream): void;
-}
+import { PassThrough } from "stream";
 
 /**
  * S3Credentials extends S3ClientConfig
@@ -30,8 +15,20 @@ export interface S3Credentials extends S3ClientConfig {
   region: string;
 }
 /**
- * S3Node provides a storage solution for saving DSNP messages
+ * S3Node provides an example storage solution for saving DSNP messages on Amazon S3
  * This adapter is provided for convenience can be used in other applications configuration.
+ * This can be configured on the SDK like so:
+ * ```typescript
+ setConfig({
+  ...,
+  store: S3Node({
+    key: "tomyheartisno",
+    secret: "itsa",
+    bucket: "ofchicken",
+    region: "us-east-la",
+  })
+});
+ ```
  */
 export class S3Node implements StoreInterface {
   client: S3Client;
@@ -87,28 +84,7 @@ export class S3Node implements StoreInterface {
     return this.getURLFrom(targetPath);
   }
 
-  public async get(targetPath: string): Promise<string> {
-    const params = { Key: targetPath, Bucket: this.bucket };
-
-    try {
-      const { Body } = await this.client.send(new GetObjectCommand(params));
-
-      return this.streamToString(Body as Readable);
-    } catch (e) {
-      throw new Error(`Failed to retrieve file from S3: ${e.message}`);
-    }
-  }
-
   private getURLFrom(targetPath: string): URL {
     return new URL(`https://${this.bucket}.s3.${this.region}.amazonaws.com/${targetPath}`);
-  }
-
-  private async streamToString(stream: Readable): Promise<string> {
-    return await new Promise((resolve, reject) => {
-      const chunks: Uint8Array[] = [];
-      stream.on("data", (chunk) => chunks.push(chunk));
-      stream.on("error", reject);
-      stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf-8")));
-    });
   }
 }
