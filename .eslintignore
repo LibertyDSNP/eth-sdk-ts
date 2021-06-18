@@ -13,4 +13,8 @@ coverage/*
 /scripts/*
 
 # import Test
-/src/test/importTest/*
+/src/test/importTest/**/*.d.ts
+/src/test/importTest/**/*.js
+
+# Examples
+/examples/**/*.d.ts

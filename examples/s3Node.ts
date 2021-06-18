@@ -28,7 +28,7 @@ export interface S3Credentials extends S3ClientConfig {
     region: "us-east-la",
   })
 });
- ```
+```
  */
 export class S3Node implements StoreInterface {
   client: S3Client;
