@@ -33,10 +33,11 @@ export type BatchFileObject = string;
  *
  * @param targetPath - The path to and name of file
  * @param messages - An array of DSNPMessage to include in the batch file
+ * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns         A URL of the storage location
  * @throws error if messages argument is empty.
  */
-export const createFile = async (targetPath: string, messages: DSNPMessage[]): Promise<URL> => {
+export const createFile = async (targetPath: string, messages: DSNPMessage[], opts?: ConfigOpts): Promise<URL> => {
   if (messages.length === 0) throw EmptyArrayError;
 
   const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
