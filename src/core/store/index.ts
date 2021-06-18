@@ -18,4 +18,3 @@
  */
 
 export * from "./interface";
-export * from "./s3Node";
