@@ -1,15 +1,13 @@
-import { Content, File, StoreInterface, PassThroughCallback } from "../core/store/interface";
-import { PassThrough } from "stream";
+import { Content, StoreInterface, PassThroughCallback } from "../core/store";
+import { ParquetReader } from "@dsnp/parquetjs";
+
+type ParquetContent = { type: string; rowCount: number };
 
 export default class TestStore implements StoreInterface {
-  store: Record<string, Content | PassThrough>;
+  store: Record<string, Content | ParquetContent>;
 
   constructor() {
     this.store = {};
-  }
-
-  async get(targetPath: string): Promise<File> {
-    return this.store[targetPath] as File;
   }
 
   async put(targetPath: string, content: Content): Promise<URL> {
@@ -18,13 +16,33 @@ export default class TestStore implements StoreInterface {
   }
 
   async putStream(targetPath: string, callback: PassThroughCallback): Promise<URL> {
-    const readWriteStream = new PassThrough();
-    callback(readWriteStream);
-    this.store[targetPath] = readWriteStream;
+    const buffers: Buffer[] = [];
+    const readWriteStream = {
+      write: (...args: unknown[]): boolean => {
+        const [chunk, maybeCallback1, maybeCallback2] = args;
+        if (typeof maybeCallback1 === "function") maybeCallback1(null);
+        else if (typeof maybeCallback2 === "function") maybeCallback2(null);
+        buffers.push(chunk as Buffer);
+        return false;
+      },
+      end: (...args: unknown[]) => {
+        const [chunkOrFunction, maybeCallback] = args;
+        if (typeof chunkOrFunction === "function") chunkOrFunction(null);
+        else buffers.push(chunkOrFunction as Buffer);
+        if (typeof maybeCallback === "function") maybeCallback(null);
+        return;
+      },
+    };
+    await callback(readWriteStream);
+    const read = await ParquetReader.openBuffer(Buffer.concat(buffers));
+    this.store[targetPath] = {
+      type: "parquet",
+      rowCount: parseInt(read.metadata.num_rows.buffer.toString("hex"), 16),
+    };
     return new URL(`http://fakestore.org/${targetPath}`);
   }
 
-  getStore(): Record<string, Content | PassThrough> {
+  getStore(): Record<string, Content | ParquetContent> {
     return this.store;
   }
 }

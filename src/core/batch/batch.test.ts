@@ -1,11 +1,9 @@
 import * as batch from "./batch";
 import { generateBroadcast } from "../../generators/dsnpGenerators";
 import { EmptyArrayError } from "../utilities/errors";
-import { putStream } from "../store/interface";
 import { BroadcastSchema } from "./parquetSchema";
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
-
-jest.mock("../store/interface");
+import TestStore from "../../test/testStore";
 
 describe("includes", () => {
   let reader: typeof ParquetReader;
@@ -68,28 +66,31 @@ describe("#writeBatch", () => {
 
 describe("#createFile", () => {
   const { createFile } = batch;
-  const messages = [generateBroadcast()];
+  const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
 
   beforeEach(() => {
-    jest.spyOn(batch, "writeBatch");
-    (putStream as jest.Mock).mockImplementation((path, callback) => callback(path, callback));
+    jest.clearAllMocks();
   });
 
   it("calls putStream to start streaming", async () => {
-    await createFile("batch.parquet", messages);
-
-    expect(putStream).toHaveBeenCalled();
+    const mockStore = new TestStore();
+    jest.spyOn(mockStore, "putStream");
+    await createFile("batch.parquet", messages, { store: mockStore });
+    expect(mockStore.putStream).toHaveBeenCalled();
   });
 
   it("calls #writeBatch to stream write parquet", async () => {
-    await createFile("batch.parquet", messages);
+    jest.spyOn(batch, "writeBatch");
+    const mockStore = new TestStore();
+    await createFile("batch.parquet", messages, { store: mockStore });
 
-    expect(batch.writeBatch).toHaveBeenCalledWith(
-      "batch.parquet",
-      expect.objectContaining({ fieldList: expect.any(Array) }),
-      messages,
-      { bloomFilters: { bloomFilters: [{ column: "fromId" }] } }
-    );
+    expect(batch.writeBatch).toHaveBeenCalled();
+    expect(mockStore.store).toEqual({
+      "batch.parquet": {
+        rowCount: 1,
+        type: "parquet",
+      },
+    });
   });
 
   describe("when messages argument is empty", () => {

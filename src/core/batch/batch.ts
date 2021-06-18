@@ -21,10 +21,6 @@ interface BloomFilterData {
   RowGroupIndex: number;
 }
 
-interface WriteBatchFileOptions {
-  bloomFilters?: BloomFilterOptions;
-}
-
 export type BatchFileObject = string;
 
 /**
@@ -43,9 +39,9 @@ export const createFile = async (targetPath: string, messages: DSNPMessage[], op
   const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
   const bloomFilterOptions = getBloomFilterOptionsFor(messages[0].dsnpType);
 
-    await writeBatch(writeStream, schema, messages, { bloomFilters: bloomFilterOptions });
   const store = requireGetStore(opts);
   return store.putStream(targetPath, async (writeStream: WriteStream) => {
+    await writeBatch(writeStream, schema, messages, bloomFilterOptions);
   });
 };
 
@@ -63,7 +59,7 @@ export const writeBatch = async (
   writeStream: WriteStream,
   schema: Schema,
   messages: DSNPMessage[],
-  opts?: WriteBatchFileOptions
+  opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);
 
