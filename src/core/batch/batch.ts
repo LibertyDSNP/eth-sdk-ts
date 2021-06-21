@@ -1,5 +1,4 @@
-import { DSNPMessage, DSNPType } from "../messages";
-import request from "request";
+import { DSNPMessage, DSNPType } from "../messages/messages";
 import parquet from "@dsnp/parquetjs";
 const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
 import { WriteStream } from "../store";
@@ -74,7 +73,7 @@ export const writeBatch = async (
  * @param url - a URL to fetch parquet file from.
  * @returns a ParquetReader object.
  **/
-export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(request, url);
+export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url);
 
 /**
  * openFile() allows users to open a parquet file with a path.
