@@ -3,7 +3,6 @@ import { ConfigOpts, requireGetProvider, MissingContract, getContracts, requireG
 import { HexString } from "../../types/Strings";
 import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
-// import { LogDescription } from "@ethersproject/abi/src.ts/interface";
 
 const CONTRACT_NAME = "Announcer";
 

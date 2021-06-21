@@ -12,13 +12,10 @@ describe("subscription", () => {
   setupSnapshot();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.resetAllMocks();
     setupConfig();
   });
 
   afterEach(async () => {
-    jest.clearAllMocks();
     jest.resetAllMocks();
   });
 

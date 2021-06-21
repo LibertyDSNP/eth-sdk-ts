@@ -4,8 +4,8 @@
  * export * from "./foo"
  * ```
  * Leads to use like:
- *   - `import { functionInFoo } from "@dsnp/sdk/utilities.ts";`
- *   - `import util from "@dsnp/sdk/utilities.ts"; util.functionInFoo();`
+ *   - `import { functionInFoo } from "@dsnp/sdk/utilities";`
+ *   - `import util from "@dsnp/sdk/utilities"; util.functionInFoo();`
  *
  * To export at a nested level:
  * ```
@@ -13,8 +13,8 @@
  * export const foo = fooImport;
  * ```
  * Leads to use like:
- *   - `import util from "@dsnp/sdk/utilities.ts"; util.foo.functionInFoo();`
- *   - `import { foo } from "@dsnp/sdk/utilities.ts"; foo.functionInFoo();`
+ *   - `import util from "@dsnp/sdk/utilities"; util.foo.functionInFoo();`
+ *   - `import { foo } from "@dsnp/sdk/utilities"; foo.functionInFoo();`
  */
 
 export * from "./errors";
