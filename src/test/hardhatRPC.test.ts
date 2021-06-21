@@ -2,7 +2,7 @@
 require("dotenv").config();
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import { batch, decodeDSNPBatchEvents } from "../core/contracts/announcement";
+import { batch, dsnpBatchFilter } from "../core/contracts/announcement";
 import { setConfig, getConfig } from "../config";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";
 
@@ -23,6 +23,7 @@ beforeEach(async () => {
 
 describe("snapshot and revert", () => {
   it("clears changes after revert", async () => {
+    const filter = await dsnpBatchFilter();
     jest.setTimeout(12000);
 
     // snapshot
@@ -36,15 +37,15 @@ describe("snapshot and revert", () => {
     // create a batch
     await batch(announcements);
 
+    const batchEventLogs1 = await provider.getLogs(filter);
     // confirm batch event exists
-    const batchEvents1 = await decodeDSNPBatchEvents();
-    expect(batchEvents1.length).toEqual(1);
+    expect(batchEventLogs1.length).toEqual(1);
 
     // revert
     await revertHardhat(provider);
 
     // confirm batch event has been reverted
-    const batchEvents2 = await decodeDSNPBatchEvents();
-    expect(batchEvents2.length).toEqual(0);
+    const batchEventsLogs2 = await provider.getLogs(filter);
+    expect(batchEventsLogs2.length).toEqual(0);
   });
 });
