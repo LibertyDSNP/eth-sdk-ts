@@ -47,7 +47,7 @@ export const broadcast = async (
   const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchBroadcastMessage;
+  return signedMessage;
 };
 
 /**
@@ -79,7 +79,7 @@ export const reply = async (
   const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchReplyMessage;
+  return signedMessage;
 };
 
 /**
@@ -100,7 +100,7 @@ export const react = async (
   const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchReactionMessage;
+  return signedMessage;
 };
 
 /**
@@ -131,5 +131,5 @@ export const profile = async (
   const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchProfileMessage;
+  return signedMessage;
 };

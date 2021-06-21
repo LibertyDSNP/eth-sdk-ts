@@ -1,9 +1,9 @@
 import { Registration } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
-import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import { NotImplementedError } from "./core/utilities";
 import { DSNPUserId } from "./core/utilities/identifiers";
+import { BatchGraphChangeMessage } from "./core/batch/batchMesssages";
 
 /**
  * follow() creates a follow event and returns it.
@@ -12,16 +12,13 @@ import { DSNPUserId } from "./core/utilities/identifiers";
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed DSNP Graph Change message
  */
-export const follow = async (
-  followeeId: DSNPUserId,
-  opts?: config.ConfigOpts
-): Promise<batchMessages.BatchGraphChangeMessage> => {
+export const follow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): Promise<BatchGraphChangeMessage> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
 
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchGraphChangeMessage;
+  return signedMessage;
 };
 
 /**
@@ -31,16 +28,13 @@ export const follow = async (
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed DSNP Graph Change message
  */
-export const unfollow = async (
-  followeeId: DSNPUserId,
-  opts?: config.ConfigOpts
-): Promise<batchMessages.BatchGraphChangeMessage> => {
+export const unfollow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): Promise<BatchGraphChangeMessage> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
 
   const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchGraphChangeMessage;
+  return signedMessage;
 };
 
 /**

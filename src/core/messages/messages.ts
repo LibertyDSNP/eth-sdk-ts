@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { ConfigOpts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { sortObject } from "../utilities/json";
-import { DSNPBatchMessage } from "../batch/batchMesssages";
+import { DSNPMessageSigned } from "../batch/batchMesssages";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages
@@ -205,7 +205,7 @@ export const createProfileMessage = (fromId: string, uri: string, hash: HexStrin
  * @param opts -    Optional. Configuration overrides, such as from address, if any
  * @returns       The signed DSNP message
  */
-export const sign = async (message: DSNPMessage, opts?: ConfigOpts): Promise<DSNPBatchMessage> => {
+export const sign = async <T extends DSNPMessage>(message: T, opts?: ConfigOpts): Promise<DSNPMessageSigned<T>> => {
   const signer = requireGetSigner(opts);
   const signature = await signer.signMessage(serialize(message));
   return {
