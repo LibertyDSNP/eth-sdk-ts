@@ -7,7 +7,7 @@ import { Announcer__factory } from "../../types/typechain";
 const ANNOUNCER_DECODER = new ethers.utils.Interface(Announcer__factory.abi);
 
 /**
- * BatchAnnounceCallbackArgs: interface for callback function that is passed to batchAnnounceEvents
+ * BatchAnnounceCallbackArgs: interface for callback function that is passed to subscribeToBatchAnnounceEvents
  */
 export interface BatchAnnounceCallbackArgs {
   blockNumber: number;
@@ -29,7 +29,7 @@ interface batchFilterOptions {
 type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) => void;
 
 /**
- * batchAnnounceEvents() sets up a listener to listen to retrieve Batch Announce events from the chain.
+ * subscribeToBatchAnnounceEvents() sets up a listener to listen to retrieve Batch Announce events from the chain.
  * It takes a callback and a filter. The filter is used to filter events that come through.
  * The callback is invoked for each correctly filtered event.
  *
@@ -37,7 +37,7 @@ type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) 
  * @param filters -  Any filter options for including or excluding certain events
  * @returns        A function that can be called to remove listener for this type of event
  */
-export const batchAnnounceEvents = async (
+export const subscribeToBatchAnnounceEvents = async (
   doReceiveAnnouncement: BatchAnnounceCallback,
   filter?: batchFilterOptions
 ): Promise<() => void> => {

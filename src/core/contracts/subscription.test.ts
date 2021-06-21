@@ -1,7 +1,7 @@
 import { keccak256 } from "js-sha3";
 
 import { batch, Announcement, dsnpBatchFilter } from "./announcement";
-import { batchAnnounceEvents } from "./subscription";
+import { subscribeToBatchAnnounceEvents } from "./subscription";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { requireGetProvider } from "../../config";
@@ -19,7 +19,7 @@ describe("subscription", () => {
     jest.resetAllMocks();
   });
 
-  describe("batchAnnounceEvents", () => {
+  describe("subscribeToBatchAnnounceEvents", () => {
     jest.setTimeout(70000);
     const testUri = "http://www.testconst.com";
     const hash = "0x" + keccak256("test");
@@ -28,7 +28,7 @@ describe("subscription", () => {
       const provider = requireGetProvider();
       const mock = jest.fn();
 
-      const removeListener = await batchAnnounceEvents(mock);
+      const removeListener = await subscribeToBatchAnnounceEvents(mock);
       const announcements: Announcement[] = [{ dsnpType: 2, uri: testUri, hash: hash }];
       await (await batch(announcements)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 30, 1);
@@ -53,7 +53,7 @@ describe("subscription", () => {
 
       const mock = jest.fn();
 
-      const removeListener = await batchAnnounceEvents(mock);
+      const removeListener = await subscribeToBatchAnnounceEvents(mock);
       const announcements: Announcement[] = [{ dsnpType: 2, uri: testUri1, hash: hash1 }];
       const announcements1: Announcement[] = [{ dsnpType: 2, uri: testUri2, hash: hash2 }];
       await (await batch(announcements)).wait(1);
@@ -73,7 +73,7 @@ describe("subscription", () => {
         const filter = await dsnpBatchFilter();
 
         const mock1 = jest.fn();
-        const removeListener = await batchAnnounceEvents(mock1);
+        const removeListener = await subscribeToBatchAnnounceEvents(mock1);
 
         expect(provider.listeners(filter).length).toEqual(1);
         await removeListener();
@@ -93,7 +93,7 @@ describe("subscription", () => {
       const testUri4 = "http://www.testconst333.com";
       const hash4 = "0x" + keccak256("test333");
 
-      const removeListener = await batchAnnounceEvents(mock, { dsnpType: 2 });
+      const removeListener = await subscribeToBatchAnnounceEvents(mock, { dsnpType: 2 });
       const announcements: Announcement[] = [{ dsnpType: 2, uri: testUri3, hash: hash3 }];
       const announcements1: Announcement[] = [{ dsnpType: 4, uri: testUri4, hash: hash4 }];
       await (await batch(announcements)).wait(1);
@@ -133,7 +133,7 @@ describe("subscription", () => {
       const blockNumber = (await provider.getBlockNumber()) + 1;
       await (await batch(announcements1)).wait(1);
 
-      const removeListener = await batchAnnounceEvents(mock, { dsnpType: 2, startBlock: blockNumber });
+      const removeListener = await subscribeToBatchAnnounceEvents(mock, { dsnpType: 2, startBlock: blockNumber });
 
       await (await batch(announcements2)).wait(1);
       await (await batch(announcements3)).wait(1);
