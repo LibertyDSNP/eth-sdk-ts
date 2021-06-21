@@ -10,6 +10,7 @@ src/**.js
 # Don't commit compiled output
 dist
 /*.d.ts
+/examples/**/*.d.ts
 /**/*.map
 /**/*.js
 *.js
