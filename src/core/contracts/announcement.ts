@@ -1,7 +1,6 @@
-import { ContractTransaction, ethers, EventFilter } from "ethers";
+import { ContractTransaction, EventFilter } from "ethers";
 import { ConfigOpts, requireGetProvider, MissingContract, getContracts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
-import { abi as announcerABI } from "@dsnp/contracts/abi/Announcer.json";
 import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
 
@@ -33,25 +32,6 @@ export const batch = async (announcements: Announcement[]): Promise<ContractTran
 export const dsnpBatchFilter = async (): Promise<EventFilter> => {
   const contract = await getAnnouncerContract();
   return contract.filters.DSNPBatch();
-};
-
-/**
- * Goes through logs finding all DNSPBatch events
- * @param opts - optional configuration
- * @returns All announcements recorded as DSNPBatch events
- */
-export const decodeDSNPBatchEvents = async (opts?: ConfigOpts): Promise<Announcement[]> => {
-  const provider = requireGetProvider(opts);
-  const filter = await dsnpBatchFilter();
-  const logs: ethers.providers.Log[] = await provider.getLogs(filter);
-  const decoder = new ethers.utils.Interface(announcerABI);
-  return logs
-    .map((log: ethers.providers.Log) => decoder.parseLog(log))
-    .filter((desc) => desc.name === "DSNPBatch")
-    .map((desc) => {
-      const { dsnpType, dsnpHash, dsnpUri } = desc.args;
-      return { dsnpType, hash: dsnpHash, uri: dsnpUri };
-    });
 };
 
 const getAnnouncerContract = async (opts?: ConfigOpts): Promise<Announcer> => {
