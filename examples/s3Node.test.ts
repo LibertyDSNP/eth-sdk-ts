@@ -1,5 +1,5 @@
 import { S3Client } from "@aws-sdk/client-s3";
-import { PassThroughCallback } from "../src/core/store";
+import { WriteStreamCallback } from "../src/core/store";
 import { Upload } from "@aws-sdk/lib-storage";
 
 import { S3Node } from "./s3Node";
@@ -15,7 +15,7 @@ describe("S3Node", () => {
   });
 
   describe("#putStream", () => {
-    let callback: PassThroughCallback;
+    let callback: WriteStreamCallback;
 
     beforeEach(() => {
       callback = jest.fn().mockImplementation();

@@ -1,5 +1,9 @@
-// import { PassThroughCallback, StoreInterface } from "@dsnp/sdk/core/store";
-import { PassThroughCallback, StoreInterface } from "../src/core/store";
+// This is an example S3 Implementation of the Store Interface
+
+// Type Imports from the SDK:
+// import { WriteStreamCallback, StoreInterface } from "@dsnp/sdk/core/store";
+import { WriteStreamCallback, StoreInterface } from "../src/core/store";
+
 import { S3Client, S3ClientConfig, PutObjectCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { PassThrough } from "stream";
@@ -61,7 +65,7 @@ export class S3Node implements StoreInterface {
     }
   }
 
-  public async putStream(targetPath: string, callback: PassThroughCallback): Promise<URL> {
+  public async putStream(targetPath: string, callback: WriteStreamCallback): Promise<URL> {
     const readWriteStream = new PassThrough();
 
     const upload = new Upload({

@@ -1,7 +1,4 @@
-export type File = Buffer | string;
 export type Content = string | Buffer;
-
-export interface ReadWriteStream extends WriteStream, ReadStream {}
 
 /**
  * WriteStream: a write stream intended writing a batch file
@@ -25,7 +22,7 @@ export interface ReadStream {
 /**
  * PassThroughCallback: a callback intended for receiving a write stream to create a batch file
  */
-export interface PassThroughCallback {
+export interface WriteStreamCallback {
   (stream: WriteStream): Promise<void>;
 }
 
@@ -53,5 +50,5 @@ export interface StoreInterface {
    * @param doWriteToStream - A callback function that receives a writable to stream data to the chosen hosting solution
    * @returns The URI of the hosted file
    */
-  putStream: (targetPath: string, doWriteToStream: PassThroughCallback) => Promise<URL>;
+  putStream: (targetPath: string, doWriteToStream: WriteStreamCallback) => Promise<URL>;
 }

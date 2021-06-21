@@ -1,4 +1,4 @@
-import { Content, StoreInterface, PassThroughCallback } from "../core/store";
+import { Content, StoreInterface, WriteStreamCallback } from "../core/store";
 import { ParquetReader } from "@dsnp/parquetjs";
 
 type ParquetContent = { type: string; rowCount: number };
@@ -15,9 +15,9 @@ export default class TestStore implements StoreInterface {
     return new URL(`http://fakestore.org/${targetPath}`);
   }
 
-  async putStream(targetPath: string, callback: PassThroughCallback): Promise<URL> {
+  async putStream(targetPath: string, callback: WriteStreamCallback): Promise<URL> {
     const buffers: Buffer[] = [];
-    const readWriteStream = {
+    const writeStream = {
       write: (...args: unknown[]): boolean => {
         const [chunk, maybeCallback1, maybeCallback2] = args;
         if (typeof maybeCallback1 === "function") maybeCallback1(null);
@@ -35,7 +35,7 @@ export default class TestStore implements StoreInterface {
         }
       },
     };
-    await callback(readWriteStream);
+    await callback(writeStream);
     const read = await ParquetReader.openBuffer(Buffer.concat(buffers));
     this.store[targetPath] = {
       type: "parquet",
