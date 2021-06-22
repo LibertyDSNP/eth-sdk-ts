@@ -10,8 +10,10 @@ import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/ident
 /**
  * createRegistration() creates a new identity for a public key and registers a handle to it.
  * This function will wait for the identity to land on chain before resolving.
+ *
  * @param addr - public key address that will be used to control identity delegate
  * @param handle - name of identity (must be globally unique)
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns id of identity created
  */
 export const createRegistration = async (
@@ -31,10 +33,10 @@ export const createRegistration = async (
  * will only work if the given handle has already been authenticated. This
  * method is not yet implemented.
  *
- * @param id -   The Handle of the user for which to fetch profile data
- * @param registration - Any updates to be merged into the current profile data
- * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns    The pending transaction
+ * @param _id - The Handle of the user for which to fetch profile data
+ * @param _registration - Any updates to be merged into the current profile data
+ * @param _opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The pending transaction
  */
 export const updateRegistration = async (
   _id: Handle,
@@ -46,7 +48,9 @@ export const updateRegistration = async (
 
 /**
  * Get the current registration from a handle
+ *
  * @param handle - The Registry Handle
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The Registration object with Handle, DSNP Id, and Identity contract address
  */
 export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise<Registration | null> =>
@@ -54,8 +58,10 @@ export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise
 
 /**
  * Get the current registration from a DSNP Id
+ *
  * @param dsnpUserId - The DSNP User Id
- * @returns          The Registration object with Handle, DSNP User Id, and Identity contract address
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
  */
 export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts): Promise<Registration | null> => {
   const registrations = await getDSNPRegistryUpdateEvents(
@@ -70,8 +76,10 @@ export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts
 
 /**
  * availabilityFilter() takes a list of handles returning a filtered list of just the ones that are available
+ *
  * @param handles - A list of handles to check for availability
- * @returns       The filtered list of handles that are currently available
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The filtered list of handles that are currently available
  */
 export const availabilityFilter = async (handles: Handle[], opts?: config.ConfigOpts): Promise<Handle[]> => {
   const availability = await Promise.all(handles.map((handle) => isAvailable(handle, opts)));
@@ -80,7 +88,9 @@ export const availabilityFilter = async (handles: Handle[], opts?: config.Config
 
 /**
  * isAvailable() checks to see if the given handle is available
- * @param handle -    The handle to test for availability
+ *
+ * @param handle - The handle to test for availability
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns boolean If the handle is available
  */
 export const isAvailable = async (handle: Handle, opts?: config.ConfigOpts): Promise<boolean> => {

@@ -31,8 +31,10 @@ export enum Permission {
 }
 /**
  * createCloneProxy(logic?: Ethereum Address ) Creates a new identity with the message sender as the owner
+ *
  * @param logic - The address to use for the logic contract
- * @returns     A contract receipt promise
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A contract receipt promise
  */
 export const createCloneProxy = async (logic?: EthereumAddress, opts?: ConfigOpts): Promise<ContractTransaction> => {
   if (!logic) logic = await getIdentityLogicContractAddress(opts);
@@ -42,9 +44,11 @@ export const createCloneProxy = async (logic?: EthereumAddress, opts?: ConfigOpt
 
 /**
  * createCloneProxyWithOwner() Creates a new identity with the ecrecover address as the owner
- * @param logic - The address to use for the logic contract
+ *
  * @param owner - The initial owner's address of the new contract
- * @returns     A contract receipt promise
+ * @param logic - The address to use for the logic contract
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A contract receipt promise
  */
 export const createCloneProxyWithOwner = async (
   owner: EthereumAddress,
@@ -58,7 +62,9 @@ export const createCloneProxyWithOwner = async (
 
 /**
  * createBeaconProxy(beacon: EthereumAddress) Creates a new identity with the message sender as the owner
+ *
  * @param beacon - The beacon address to use logic contract resolution
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A contract receipt promise
  */
 export const createBeaconProxy = async (beacon: EthereumAddress, opts?: ConfigOpts): Promise<ContractTransaction> => {
@@ -68,9 +74,11 @@ export const createBeaconProxy = async (beacon: EthereumAddress, opts?: ConfigOp
 
 /**
  * createBeaconProxyWithOwner(beacon: EthereumAddress, owner: EthereumAddress) Creates a new identity with the ecrecover address as the owner
- * @param beacon - The beacon address to use logic contract resolution
+ *
  * @param owner - The initial owner's address of the new contract
- * @returns     A contract receipt promise
+ * @param beacon - The beacon address to use logic contract resolution
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A contract receipt promise
  */
 export const createBeaconProxyWithOwner = async (
   owner: EthereumAddress,
@@ -87,6 +95,7 @@ export const createBeaconProxyWithOwner = async (
  *
  * @param userAddress - User's public key address
  * @param handle - The string handle to register
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The contract Transaction
  */
 export const createAndRegisterBeaconProxy = async (
@@ -133,11 +142,13 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
 
 /**
  * Checks to see if address is authorized with the given permission
+ *
  * @param address - Address that is used to test permission
  * @param contractAddress - Address of contract to check against
  * @param permission - Level of permission check. See Permission for details
  * @param blockNumber - Check for authorization at a particular block number,
  *        0x0 reserved for endless permissions
+ * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns boolean
  */
 export const isAuthorizedTo = async (

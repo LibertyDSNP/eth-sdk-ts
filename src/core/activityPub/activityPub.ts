@@ -39,7 +39,7 @@ export type ActivityPubOpts = Partial<ActivityPub>;
  * create() provides a simple factory for generating activityPub notes.
  *
  * @param options - Options for the activity pub object to create
- * @returns         An activity pub object
+ * @returns An activity pub object
  */
 export const create = (options: ActivityPubOpts): ActivityPub =>
   ({
@@ -54,7 +54,7 @@ export const create = (options: ActivityPubOpts): ActivityPub =>
  * Otherwise, it returns false.
  *
  * @param activityPub - An object to be validated against the activity pub standard
- * @returns              True or false depending on whether the given object is a valid
+ * @returns True or false depending on whether the given object is a valid
  */
 export const isValid = (activityPub: ActivityPub): boolean => {
   if (activityPub["@context"] !== "https://www.w3.org/ns/activitystreams") return false;
@@ -69,7 +69,7 @@ export const isValid = (activityPub: ActivityPub): boolean => {
  * reply. Otherwise, it returns false.
  *
  * @param activityPub - An object to be validated against the activity pub standard
- * @returns              True or false depending on whether the given object is a valid
+ * @returns True or false depending on whether the given object is a valid
  */
 export const isValidReply = (activityPub: ActivityPub): boolean => {
   if (!isValid(activityPub)) return false;
@@ -83,7 +83,7 @@ export const isValidReply = (activityPub: ActivityPub): boolean => {
  * profile. Otherwise, it returns false.
  *
  * @param activityPub - An object to be validated against the activity pub standard
- * @returns              True or false depending on whether the given object is a valid
+ * @returns True or false depending on whether the given object is a valid
  */
 export const isValidProfile = (activityPub: ActivityPub): boolean => {
   if (!isValid(activityPub)) return false;
@@ -97,7 +97,7 @@ export const isValidProfile = (activityPub: ActivityPub): boolean => {
  * storage adapter.
  *
  * @param data - The activity pub object to hash
- * @returns       A string representation of the activity pub object
+ * @returns A string representation of the activity pub object
  */
 export const serialize = (data: ActivityPub): string => {
   const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityPub;

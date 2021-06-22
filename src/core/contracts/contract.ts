@@ -97,8 +97,8 @@ export const getContractAddress = async (
 
 /**
  * Get the JSON RPC error from the body, if one exists
- * @param e - The error expected to have a vm Error
  *
+ * @param e - The error expected to have a vm Error
  * @returns the error if any
  */
 export const getVmError = (e: VmError): string | undefined => {
@@ -120,6 +120,7 @@ export const getVmError = (e: VmError): string | undefined => {
 /**
  * Parse all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
+ *
  * @param logs - raw logs from a transaction
  * @returns parsed logs excluding any logs that cannot be parsed by the interface.
  * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
@@ -130,6 +131,7 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
 
 /**
  * Find event with given name.
+ *
  * @param name - name of event to find.
  * @param logs - raw logs from a transaction
  * @returns First event in log that matches name

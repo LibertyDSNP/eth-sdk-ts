@@ -59,6 +59,7 @@ let config: Config = {
 /**
  * getConfig() fetches the current configuration settings and returns them.
  *
+ * @param overrides - Config overrides for this request
  * @returns The current configuration settings with ConfigOpts as overrides.
  */
 export const getConfig = (overrides?: ConfigOpts): Config => {
@@ -91,6 +92,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
 
 /**
  * Get the provider and if undefined, throw.
+ *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined provider
  */
@@ -102,6 +104,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
 
 /**
  * Get the signer and if undefined, throw.
+ *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined signer
  */
@@ -113,6 +116,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
 
 /**
  * Get the store and if undefined, throw.
+ *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined store
  */
@@ -124,6 +128,7 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 
 /**
  * Get the currentFromId and if undefined, throw.
+ *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined currentFromId
  */
@@ -135,6 +140,7 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
 
 /**
  * Get the queue.  Since this is a required field, this is a plain getter.
+ *
  * @param opts - overrides for the current configuration.
  */
 export const getQueue = (opts?: ConfigOpts): QueueInterface => {
@@ -144,6 +150,7 @@ export const getQueue = (opts?: ConfigOpts): QueueInterface => {
 
 /**
  * Get the contracts.  Since this is a required field, this is a plain getter.
+ *
  * @param opts - overrides for the current configuration.
  */
 export const getContracts = (opts?: ConfigOpts): Contracts => {

@@ -26,10 +26,9 @@ export const InvalidInReplyTo = new Error("Invalid DSNP Id for inReplyTo");
  *
  * @throws {@link MissingSigner}
  * Thrown if the signer is not configured.
- *
  * @param contentOptions - Options for the activity pub content to generate
- * @param opts -           Optional. Configuration overrides, such as from address, if any
- * @returns              A Signed DSNP Broadcast message ready for inclusion in a batch
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A Signed DSNP Broadcast message ready for inclusion in a batch
  */
 export const broadcast = async (
   contentOptions: activityPub.ActivityPubOpts,
@@ -57,9 +56,9 @@ export const broadcast = async (
  * creates a DSNP reply message for the hosted file for later announcement.
  *
  * @param contentOptions - Options for the activity pub content to generate
- * @param inReplyTo -      The DSNP Id of the message that this message is in reply to
- * @param opts -           Optional. Configuration overrides, such as from address, if any
- * @returns              A Signed DSNP Reply message ready for inclusion in a batch
+ * @param inReplyTo - The DSNP Id of the message that this message is in reply to
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A Signed DSNP Reply message ready for inclusion in a batch
  */
 export const reply = async (
   contentOptions: activityPub.ActivityPubOpts,
@@ -87,10 +86,10 @@ export const reply = async (
 /**
  * react() creates a DSNP reaction message for later announcement.
  *
- * @param emoji -     The emoji with which to react
+ * @param emoji - The emoji with which to react
  * @param inReplyTo - The DSNP Id of the message to which to react
- * @param opts -      Optional. Configuration overrides, such as from address, if any
- * @returns         A Signed DSNP Reaction message ready for inclusion in a batch
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A Signed DSNP Reaction message ready for inclusion in a batch
  */
 export const react = async (
   emoji: string,
@@ -112,10 +111,9 @@ export const react = async (
  *
  * @throws {@link MissingSigner}
  * Thrown if the signer is not configured.
- *
  * @param contentOptions - Options for the activity pub content to generate
- * @param opts -           Optional. Configuration overrides, such as from address, if any
- * @returns              A Signed DSNP Profile message ready for inclusion in a batch
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A Signed DSNP Profile message ready for inclusion in a batch
  */
 export const profile = async (
   contentOptions: activityPub.ActivityPubOpts,

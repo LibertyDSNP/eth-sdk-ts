@@ -12,6 +12,7 @@ const generateEthereumAddress = addresses.generateEthereumAddress;
 /**
  * generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds.
  * It generates a randomized list of DSNP messages at an estimated frequency for each type.
+ *
  * @param messageCount -
  * @returns an array of Messages.
  */
@@ -43,6 +44,7 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
 
 /**
  * writeFixture writes messages as JSON to provided jsonFilePath
+ *
  * @param data - the data to write out
  * @param jsonFilePath - where to write the output file
  * @returns number of bytes written
@@ -76,6 +78,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
 
 /**
  * generateReply
+ *
  * @param from - a desired fromID (optional)
  */
 export const generateReply = (from?: EthereumAddress): ReplyMessage => {
@@ -90,6 +93,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
 
 /**
  * generateReaction
+ *
  * @param from - a desired fromID (optional)
  */
 export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
