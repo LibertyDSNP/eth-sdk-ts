@@ -13,7 +13,6 @@ export const snapshotHardhat = async (provider: ethers.providers.JsonRpcProvider
 
 export const revertHardhat = async (provider: ethers.providers.JsonRpcProvider): Promise<void> => {
   const revertResponse = await provider.send("evm_revert", [latestSnapshot.pop()]);
-
   expect(revertResponse.error).toBeUndefined();
 };
 

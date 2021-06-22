@@ -10,6 +10,8 @@ export const setupConfig = (): SdkTestConfig => {
   const RPC_URL = String(process.env.RPC_URL);
   const provider = new providers.JsonRpcProvider(RPC_URL);
   const signer = new Wallet(TESTING_PRIVATE_KEY);
+  // polling interval determines how often it checks for events on chain
+  provider.pollingInterval = 500;
   const conf = setConfig({
     signer,
     provider,

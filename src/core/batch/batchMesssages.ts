@@ -1,31 +1,18 @@
 import {
   BroadcastMessage,
   DSNPMessage,
-  ReactionMessage,
-  ReplyMessage,
   GraphChangeMessage,
   ProfileMessage,
-} from "../messages/messages";
+  ReactionMessage,
+  ReplyMessage,
+} from "../messages";
 
-export interface BatchBroadcastMessage extends BroadcastMessage {
-  signature: string;
-}
-export interface BatchReplyMessage extends ReplyMessage {
-  signature: string;
-}
+export type DSNPMessageSigned<T extends DSNPMessage> = T & { signature: string };
 
-export interface BatchReactionMessage extends ReactionMessage {
-  signature: string;
-}
+export type DSNPBatchMessage = DSNPMessageSigned<DSNPMessage>;
 
-export interface BatchGraphChangeMessage extends GraphChangeMessage {
-  signature: string;
-}
-
-export interface BatchProfileMessage extends ProfileMessage {
-  signature: string;
-}
-
-export interface DSNPBatchMessage extends DSNPMessage {
-  signature: string;
-}
+export type BatchBroadcastMessage = DSNPMessageSigned<BroadcastMessage>;
+export type BatchReplyMessage = DSNPMessageSigned<ReplyMessage>;
+export type BatchReactionMessage = DSNPMessageSigned<ReactionMessage>;
+export type BatchProfileMessage = DSNPMessageSigned<ProfileMessage>;
+export type BatchGraphChangeMessage = DSNPMessageSigned<GraphChangeMessage>;

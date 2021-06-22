@@ -1,10 +1,10 @@
 import { DSNPMessage, DSNPType } from "../messages/messages";
-import request from "request";
 import parquet from "@dsnp/parquetjs";
 const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
-import { putStream, ReadWriteStream, WriteStream } from "../store/interface";
+import { WriteStream } from "../store";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { EmptyArrayError } from "../utilities";
+import { ConfigOpts, requireGetStore } from "../../config";
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -20,10 +20,6 @@ interface BloomFilterData {
   RowGroupIndex: number;
 }
 
-interface WriteBatchFileOptions {
-  bloomFilters?: BloomFilterOptions;
-}
-
 export type BatchFileObject = string;
 
 /**
@@ -32,17 +28,19 @@ export type BatchFileObject = string;
  *
  * @param targetPath - The path to and name of file
  * @param messages - An array of DSNPMessage to include in the batch file
+ * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns         A URL of the storage location
  * @throws error if messages argument is empty.
  */
-export const createFile = async (targetPath: string, messages: DSNPMessage[]): Promise<URL> => {
+export const createFile = async (targetPath: string, messages: DSNPMessage[], opts?: ConfigOpts): Promise<URL> => {
   if (messages.length === 0) throw EmptyArrayError;
 
   const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
   const bloomFilterOptions = getBloomFilterOptionsFor(messages[0].dsnpType);
 
-  return putStream(targetPath, async (writeStream: ReadWriteStream) => {
-    await writeBatch(writeStream, schema, messages, { bloomFilters: bloomFilterOptions });
+  const store = requireGetStore(opts);
+  return store.putStream(targetPath, async (writeStream: WriteStream) => {
+    await writeBatch(writeStream, schema, messages, bloomFilterOptions);
   });
 };
 
@@ -60,7 +58,7 @@ export const writeBatch = async (
   writeStream: WriteStream,
   schema: Schema,
   messages: DSNPMessage[],
-  opts?: WriteBatchFileOptions
+  opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);
 
@@ -75,7 +73,7 @@ export const writeBatch = async (
  * @param url - a URL to fetch parquet file from.
  * @returns a ParquetReader object.
  **/
-export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(request, url);
+export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url);
 
 /**
  * openFile() allows users to open a parquet file with a path.

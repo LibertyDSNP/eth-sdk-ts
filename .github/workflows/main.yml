@@ -9,12 +9,9 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       ganache:
-        image: unfinishedlabs/ganache-truffle-node:latest
+        image: dsnp/ganache:v0.1.0
         ports:
           - 8545:8545
-        options: >-
-          -e MNEMONIC="test test test test test test test test test test test junk"
-          -e CHAINID=31337
     steps:
       - name: Checkout SDK
         uses: actions/checkout@v2
@@ -39,41 +36,6 @@ jobs:
       - name: Install
         run: npm ci
         working-directory: ./main
-
-      - name: Find contracts package in SDK
-        id: contracts_version
-        run: |
-          npm list @dsnp/contracts
-          export version=`npm list @dsnp/contracts --silent | sed -En 's/.*contracts@0.0.0-(.{6}).*$/\1/p'`
-          export version=`[ "$version" ] || npm list @dsnp/contracts --silent | sed -En 's/.*contracts@(.*)$/v\1/p'`
-          echo "Found version ${version}"
-          git clone --bare https://github.com/LibertyDSNP/contracts.git contracts-temp
-          cd contracts-temp
-          export result=`git rev-parse $version`
-          [ "$result" ] || (echo "Unable to find the right git SHA for ${version}" && exit 1)
-          echo "Using SHA ${result}"
-          cd ..
-          rm -Rf ./contracts-temp
-          echo "contract_version=$result" >> $GITHUB_ENV
-        shell: bash
-        working-directory: ./main
-
-      - name: Checkout Contracts
-        uses: actions/checkout@v2
-        with:
-          repository: LibertyDSNP/contracts
-          path: contracts
-          ref: ${{ env.contract_version }}
-
-      - name: Install
-        run: npm ci
-        working-directory: ./contracts
-
-      - name: deploy contracts
-        run:  npm install hardhat && npm run build && npm run deploy:localhost
-        working-directory: ./contracts
-        env:
-          LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
       - name: Lint
         run: npm run lint

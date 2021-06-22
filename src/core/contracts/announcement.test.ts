@@ -1,8 +1,9 @@
 import { keccak256 } from "js-sha3";
 
-import { batch, decodeDSNPBatchEvents, Announcement } from "./announcement";
+import { batch, Announcement } from "./announcement";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
+import { requireGetProvider } from "../../config";
 
 describe("#batch", () => {
   setupSnapshot();
@@ -18,11 +19,11 @@ describe("#batch", () => {
     const announcements: Announcement[] = [{ dsnpType: 0, uri: testUri, hash: hash }];
 
     await batch(announcements);
-
-    const batchEvents = await decodeDSNPBatchEvents();
-
-    expect(batchEvents.length).toEqual(1);
-    expect(batchEvents[0].uri).toEqual(testUri);
-    expect(batchEvents[0].hash).toEqual(hash);
+    const provider = requireGetProvider();
+    const logs = await provider.getLogs({ fromBlock: "latest" });
+    expect(logs).toHaveLength(1);
+    expect(logs[0].data).toEqual(
+      "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000018687474703a2f2f7777772e74657374636f6e73742e636f6d0000000000000000"
+    );
   });
 });

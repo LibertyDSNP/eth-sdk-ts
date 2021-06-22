@@ -4,8 +4,8 @@ import * as activityPub from "./core/activityPub/activityPub";
 import * as batchMessages from "./core/batch/batchMesssages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
-import * as store from "./core/store/interface";
 import { validateDSNPId } from "./core/utilities";
+import { requireGetStore } from "./config";
 
 /**
  * InvalidActivityPubOpts represents an error in the activity pub options
@@ -42,12 +42,13 @@ export const broadcast = async (
   const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
-  const uri = await store.put(contentHash, content, opts);
+  const store = requireGetStore(opts);
+  const uri = await store.put(contentHash, content);
 
   const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchBroadcastMessage;
+  return signedMessage;
 };
 
 /**
@@ -74,12 +75,13 @@ export const reply = async (
   const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
-  const uri = await store.put(contentHash, content, opts);
+  const store = requireGetStore(opts);
+  const uri = await store.put(contentHash, content);
 
   const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchReplyMessage;
+  return signedMessage;
 };
 
 /**
@@ -100,7 +102,7 @@ export const react = async (
   const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchReactionMessage;
+  return signedMessage;
 };
 
 /**
@@ -126,10 +128,11 @@ export const profile = async (
   const currentFromId = config.requireGetCurrentFromId(opts);
 
   const contentHash = keccak256(content);
-  const uri = await store.put(contentHash, content, opts);
+  const store = requireGetStore(opts);
+  const uri = await store.put(contentHash, content);
 
   const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
-  return signedMessage as batchMessages.BatchProfileMessage;
+  return signedMessage;
 };
