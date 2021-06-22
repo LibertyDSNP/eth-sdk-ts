@@ -4,9 +4,10 @@
     "commonjs": true,
     "es6": true
   },
-  "plugins": ["jest", "prettier", "@typescript-eslint","eslint-plugin-tsdoc"],
+  "plugins": ["jest", "prettier", "@typescript-eslint", "eslint-plugin-tsdoc", "jsdoc"],
   "parser": "@typescript-eslint/parser",
   "extends": [
+    "plugin:jsdoc/recommended",
     "plugin:@typescript-eslint/recommended",
     "eslint:recommended",
     "plugin:jest/recommended",
@@ -28,7 +29,7 @@
     "id-length": [
       "error",
       {
-        "exceptionPatterns": ["[i-k]","e","c","x","y"],
+        "exceptionPatterns": ["[i-k]", "e", "c", "x", "y"],
         "properties": "never"
       }
     ],
@@ -45,15 +46,25 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/naming-convention":[
+    "@typescript-eslint/naming-convention": [
       "error",
       {
         "selector": ["variable"],
-        "modifiers": ["const","global"],
+        "modifiers": ["const", "global"],
         "format": ["UPPER_CASE"],
-        "types": ["string","number","array","boolean"]
+        "types": ["string", "number", "array", "boolean"]
       }
     ],
-    "tsdoc/syntax":"error"
+    "tsdoc/syntax": "error",
+    "jsdoc/valid-types": "off",
+    "jsdoc/require-hyphen-before-param-description": ["error", "always"],
+    "jsdoc/check-tag-names": ["error", { "definedTags": ["packageDocumentation"] }],
+    "jsdoc/check-param-names": ["error", { "enableFixer": false }],
+    "jsdoc/require-param": ["error", { "enableFixer": false }],
+    "jsdoc/require-returns": "off",
+    "jsdoc/check-types": "off",
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off",
+    "jsdoc/require-returns-check": "off",
   }
 }

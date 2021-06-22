@@ -30,7 +30,7 @@ export default class MemoryQueue implements QueueInterface {
    * used to reverse this action, if needed.
    *
    * @param message - The DSNP message to queue up for the next batch
-   * @returns       A queue id to be used to remove the message if needed
+   * @returns A queue id to be used to remove the message if needed
    */
   async enqueue(message: DSNPBatchMessage): Promise<QueueId> {
     const typeString = message.dsnpType.toString(16);
@@ -50,7 +50,7 @@ export default class MemoryQueue implements QueueInterface {
    * returned to indicate the end of the queue.
    *
    * @param type - The DSNP message type to dequeue
-   * @returns    The dequeued DSNP message or null to indicate end of queue
+   * @returns The dequeued DSNP message or null to indicate end of queue
    */
   async dequeue(type: DSNPType): Promise<DSNPBatchMessage | null> {
     const typeString = type.toString(16);
@@ -70,12 +70,10 @@ export default class MemoryQueue implements QueueInterface {
    *
    * @throws {@link InvalidId}
    * Thrown if called with an invalid Queue Id.
-   *
    * @throws {@link IdDoesNotExist}
    * Thrown if called with a Queue Id that does not match any existing message.
-   *
    * @param queueId - The id of the DSNP message to remove from the queue
-   * @returns  The removed message
+   * @returns The removed message
    */
   async remove(queueId: QueueId): Promise<DSNPBatchMessage> {
     const queueIdParts = queueId.split(":");

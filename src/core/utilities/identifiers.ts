@@ -12,7 +12,7 @@ export type DSNPId = string;
  * valid, true is returned. Otherwise, false is returned.
  *
  * @param id - The string to validate
- * @returns  True of false depending on whether the string is a valid DSNPId
+ * @returns True of false depending on whether the string is a valid DSNPId
  */
 export const validateDSNPId = (id: string): id is DSNPId => id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
 
@@ -28,7 +28,7 @@ export type DSNPUserId = string;
  * hex output to a proper DSNP user id with zero padding.
  *
  * @param num - The number to convert
- * @returns   The same number as a properly formatted DSNPUserId
+ * @returns The same number as a properly formatted DSNPUserId
  */
 export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
   const hex = num.toHexString().replace("0x", "");
@@ -42,7 +42,7 @@ export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
  * convertDSNPUserIdToBigNumber() converts DSNP user ids to ethers BigNumbers.
  *
  * @param dsnpUserId - The DSNP user id to convert
- * @returns          A big number representation of the same id
+ * @returns A big number representation of the same id
  */
 export const convertDSNPUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {
   const hex = dsnpUserId.replace("dsnp://", "0x");

@@ -34,8 +34,8 @@ type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) 
  * The callback is invoked for each correctly filtered event.
  *
  * @param doReceiveAnnouncement - The callback function to be called when an event is received
- * @param filter -  Any filter options for including or excluding certain events
- * @returns        A function that can be called to remove listener for this type of event
+ * @param filter - Any filter options for including or excluding certain events
+ * @returns A function that can be called to remove listener for this type of event
  */
 export const subscribeToBatchAnnounceEvents = async (
   doReceiveAnnouncement: BatchAnnounceCallback,

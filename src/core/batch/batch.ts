@@ -27,7 +27,7 @@ interface BloomFilterData {
  * @param targetPath - The path to and name of file
  * @param messages - An array of DSNPMessage to include in the batch file
  * @param opts - Optional. Configuration overrides, such as store, if any
- * @returns         A URL of the storage location
+ * @returns A URL of the storage location
  * @throws error if messages argument is empty.
  */
 export const createFile = async (targetPath: string, messages: DSNPMessage[], opts?: ConfigOpts): Promise<URL> => {
@@ -50,7 +50,7 @@ export const createFile = async (targetPath: string, messages: DSNPMessage[], op
  * @param schema - The ParquetJS schema for the messages DSNP type
  * @param messages - An array of DSNPMessage to include in the batch file
  * @param opts - Options for creating a Parquet file
- * @returns        A void promise which will either resolve or reject
+ * @returns A void promise which will either resolve or reject
  */
 export const writeBatch = async (
   writeStream: WriteStream,
@@ -70,7 +70,7 @@ export const writeBatch = async (
  *
  * @param url - a URL to fetch parquet file from.
  * @returns a ParquetReader object.
- **/
+ */
 export const openURL = async (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url);
 
 /**
@@ -78,7 +78,7 @@ export const openURL = async (url: URL): Promise<typeof ParquetReader> => Parque
  *
  * @param path - to parquet file.
  * @returns a ParquetReader object.
- **/
+ */
 export const openFile = async (path: string): Promise<typeof ParquetReader> => ParquetReader.openFile(path);
 
 /**

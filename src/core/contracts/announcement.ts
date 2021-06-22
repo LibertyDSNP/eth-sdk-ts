@@ -17,8 +17,7 @@ export interface Announcement {
  * of a generated batch to the blockchain.
  *
  * @param announcements - array of announcements to batch.
- * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns    A contract receipt promise
+ * @returns A contract receipt promise
  */
 export const batch = async (announcements: Announcement[]): Promise<ContractTransaction> => {
   const contract = await getAnnouncerContract();
@@ -27,6 +26,7 @@ export const batch = async (announcements: Announcement[]): Promise<ContractTran
 
 /**
  * Retrieves event filter for DSNPBatch event
+ *
  * @returns DSNPBatch event filter
  */
 export const dsnpBatchFilter = async (): Promise<EventFilter> => {

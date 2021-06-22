@@ -38,9 +38,9 @@ export interface BroadcastMessage extends DSNPMessage {
  * hash.
  *
  * @param fromId - The id of the user from whom the message is posted
- * @param uri -  The URI of the activity pub content to reference
+ * @param uri - The URI of the activity pub content to reference
  * @param hash - The hash of the content at the URI
- * @returns        A BroadcastMessage
+ * @returns A BroadcastMessage
  */
 export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
   dsnpType: DSNPType.Broadcast,
@@ -68,7 +68,7 @@ export interface ReplyMessage extends DSNPMessage {
  * @param uri       - The URI of the activity pub content to reference
  * @param hash      - The hash of the content at the URI
  * @param inReplyTo - The message id of the parent message
- * @returns           A ReplyMessage
+ * @returns A ReplyMessage
  */
 export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
   dsnpType: DSNPType.Reply,
@@ -95,7 +95,7 @@ export interface ReactionMessage extends DSNPMessage {
  * @param   fromId    - The id of the user from whom the message is posted
  * @param   emoji     - The emoji to respond with
  * @param   inReplyTo - The message id of the parent message
- * @returns             A ReactionMessage
+ * @returns A ReactionMessage
  */
 export const createReactionMessage = (fromId: string, emoji: string, inReplyTo: string): ReactionMessage => ({
   dsnpType: DSNPType.Reaction,
@@ -128,7 +128,7 @@ export interface GraphChangeMessage extends DSNPMessage {
  *
  * @param   fromId     - The id of the user from whom the message is posted
  * @param   followeeId - The id of the user to follow
- * @returns            A GraphChangeMessage
+ * @returns A GraphChangeMessage
  */
 export const createFollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
   fromId,
@@ -143,7 +143,7 @@ export const createFollowGraphChangeMessage = (fromId: string, followeeId: strin
  *
  * @param   fromId     - The id of the user from whom the message is posted
  * @param   followeeId - The id of the user to unfollow
- * @returns            A GraphChangeMessage
+ * @returns A GraphChangeMessage
  */
 export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: string): GraphChangeMessage => ({
   fromId,
@@ -156,7 +156,7 @@ export const createUnfollowGraphChangeMessage = (fromId: string, followeeId: str
  * serialize() takes a DSNP message and returns a serialized string.
  *
  * @param message - The DSNP message to serialized
- * @returns       A string serialization of the message
+ * @returns A string serialization of the message
  */
 export const serialize = (message: DSNPMessage): string => {
   const sortedMessage = sortObject((message as unknown) as Record<string, unknown>);
@@ -185,7 +185,7 @@ export interface ProfileMessage extends DSNPMessage {
  * @param   fromId - The id of the user from whom the message is posted
  * @param   uri    - The URI of the activity pub content to reference
  * @param   hash   - The hash of the content at the URI
- * @returns        A ProfileMessage
+ * @returns A ProfileMessage
  */
 export const createProfileMessage = (fromId: string, uri: string, hash: HexString): ProfileMessage => ({
   dsnpType: DSNPType.Profile,
@@ -200,10 +200,9 @@ export const createProfileMessage = (fromId: string, uri: string, hash: HexStrin
  *
  * @throws {@link MissingSigner}
  * This error is thrown if no Signer is defined in the configuration options.
- *
  * @param message - The DSNP message to sign
- * @param opts -    Optional. Configuration overrides, such as from address, if any
- * @returns       The signed DSNP message
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns The signed DSNP message
  */
 export const sign = async <T extends DSNPMessage>(message: T, opts?: ConfigOpts): Promise<DSNPMessageSigned<T>> => {
   const signer = requireGetSigner(opts);
@@ -218,9 +217,9 @@ export const sign = async <T extends DSNPMessage>(message: T, opts?: ConfigOpts)
  * recoverPublicKey() takes a DSNP message and a message signature and returns
  * the corresponding public key for validation.
  *
- * @param message -   The DSNP message to sign
+ * @param message - The DSNP message to sign
  * @param signature - The message signature to validate
- * @returns         The address of the signer in hex
+ * @returns The address of the signer in hex
  */
 export const recoverPublicKey = (message: DSNPMessage, signature: HexString): HexString => {
   return ethers.utils.verifyMessage(serialize(message), signature);

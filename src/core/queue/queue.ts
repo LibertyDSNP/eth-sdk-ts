@@ -25,10 +25,10 @@ export interface QueueInterface {
  * returns an array for inclusion in a batch file. If the number provided is
  * zero, all messages in the queue with a matching type will be returned.
  *
- * @param dsnpType -  The DSNP type of messages to dequeue
+ * @param dsnpType - The DSNP type of messages to dequeue
  * @param count - The number of messages to dequeue and return
- * @param opts -  Optional. Configuration overrides, such as from address, if any
- * @returns     An array of DSNP messages removed from the queue
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns An array of DSNP messages removed from the queue
  */
 export const dequeueBatch = async (
   dsnpType: DSNPType,

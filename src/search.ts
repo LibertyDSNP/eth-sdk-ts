@@ -34,9 +34,9 @@ type SubscriptionId = string;
  * in the configuration is a websocket provider. This method is not yet
  * implemented.
  *
- * @param filters -  Any filter options for including or excluding certain events
- * @param callback - The callback function to be called when an event is received
- * @returns        A subscription id to unsubscribe later if needed
+ * @param _filters - Any filter options for including or excluding certain events
+ * @param _callback - The callback function to be called when an event is received
+ * @returns A subscription id to unsubscribe later if needed
  */
 export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallbackFn): SubscriptionId => {
   throw NotImplementedError;
@@ -47,7 +47,7 @@ export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallback
  * method. This method only works if the web3 provider set in the configuration
  * is a websocket provider. This method is not yet implemented.
  *
- * @param subscriptionId - The ID of the subscription to close
+ * @param _id - The ID of the subscription to close
  */
 export const unsubscribe = (_id: SubscriptionId): void => {
   throw NotImplementedError;
@@ -57,9 +57,8 @@ export const unsubscribe = (_id: SubscriptionId): void => {
  * fetchEvents() fetches the most recent activity pub events matching the given
  * search criteria. This method is not yet implemented.
  *
- * @param filters - Any filter options for including or excluding certain events
- * @param opts -    Optional. Configuration overrides, such as from address, if any
- * @returns       An array of events
+ * @param _filters - Any filter options for including or excluding certain events
+ * @returns An array of events
  */
 export const fetchEvents = async (_filters: FetchFilters): Promise<DSNPType[]> => {
   throw NotImplementedError;

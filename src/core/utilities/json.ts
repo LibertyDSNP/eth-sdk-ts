@@ -6,7 +6,7 @@
  * do not necessarily guarantee key order.
  *
  * @param obj - The object to recursively sort
- * @returns   A sorted copy of the given object
+ * @returns A sorted copy of the given object
  */
 export const sortObject = (obj: Record<string, unknown>): Record<string, unknown> => {
   const result: Record<string, unknown> = {};
