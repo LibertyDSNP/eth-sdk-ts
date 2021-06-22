@@ -35,10 +35,11 @@ This SDK is linted with `Prettier` and `ESlint`.
 
 ### How to Release
 
-1. Draft New Release on GitHub.com
-2. Set tag to v0.0.0 following [Semver 2.0](https://semver.org/)
-3. Set title to "v0.0.0 Major Feature Name"
-4. Set contents to follow [KeepAChangeLog.com 1.0](https://keepachangelog.com/en/1.0.0/), but limited to just the new release information
+1. Commit version update in package.json following [Semver 2.0](https://semver.org/)
+2. Draft New Release on GitHub.com
+3. Set tag to v[package.json version]
+4. Set title to "v[package.json version] Major Feature Name"
+5. Set contents to follow [KeepAChangeLog.com 1.0](https://keepachangelog.com/en/1.0.0/), but limited to just the new release information
     ```markdown
     ## [0.1.0] - 2017-06-20
     ### Added
@@ -48,5 +49,5 @@ This SDK is linted with `Prettier` and `ESlint`.
     ### Removed
     - Not a thing anymore
     ```
-5. Publish
-6. TODO: CI will build and publish to the npm repository
+6. Publish
+7. TODO: CI will build and publish to the npm repository
