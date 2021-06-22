@@ -22,9 +22,9 @@ interface ParsedLog {
   log: ethers.providers.Log;
 }
 
-interface batchFilterOptions {
+export interface BatchFilterOptions {
   dsnpType?: number;
-  startBlock?: number;
+  fromBlock?: number;
 }
 type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) => void;
 
@@ -39,7 +39,7 @@ type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) 
  */
 export const subscribeToBatchAnnounceEvents = async (
   doReceiveAnnouncement: BatchAnnounceCallback,
-  filter?: batchFilterOptions
+  filter?: BatchFilterOptions
 ): Promise<() => void> => {
   let pastLogs: BatchAnnounceCallbackArgs[] = [];
   const currentLogQueue: BatchAnnounceCallbackArgs[] = [];
@@ -47,8 +47,8 @@ export const subscribeToBatchAnnounceEvents = async (
   const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
 
   const provider = requireGetProvider();
-  let maxBlockNumberForPastLogs = filter?.startBlock || 0;
-  let useQueue = filter?.startBlock != undefined;
+  let maxBlockNumberForPastLogs = filter?.fromBlock || 0;
+  let useQueue = filter?.fromBlock != undefined;
 
   provider.on(batchFilterWithOptions, (log: ethers.providers.Log) => {
     const logItem = decodeLogsForBatchAnnounce([log])[0];
@@ -61,7 +61,7 @@ export const subscribeToBatchAnnounceEvents = async (
   });
 
   if (useQueue) {
-    pastLogs = await getPastLogs(provider, { fromBlock: filter?.startBlock });
+    pastLogs = await getPastLogs(provider, { fromBlock: filter?.fromBlock });
     maxBlockNumberForPastLogs = pastLogs[pastLogs.length - 1].blockNumber;
 
     while (pastLogs.length > 0) {
@@ -82,7 +82,7 @@ export const subscribeToBatchAnnounceEvents = async (
   };
 };
 
-const createFilter = (batchFilter: ethers.EventFilter, filterOptions: batchFilterOptions) => {
+const createFilter = (batchFilter: ethers.EventFilter, filterOptions: BatchFilterOptions) => {
   const topics = batchFilter.topics ? batchFilter.topics : [];
   const dsnpTypeTopic = filterOptions?.dsnpType ? "0x" + filterOptions.dsnpType.toString(16).padStart(64, "0") : null;
   if (dsnpTypeTopic) {

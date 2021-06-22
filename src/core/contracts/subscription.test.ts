@@ -133,7 +133,7 @@ describe("subscription", () => {
       const blockNumber = (await provider.getBlockNumber()) + 1;
       await (await batch(announcements1)).wait(1);
 
-      const removeListener = await subscribeToBatchAnnounceEvents(mock, { dsnpType: 2, startBlock: blockNumber });
+      const removeListener = await subscribeToBatchAnnounceEvents(mock, { dsnpType: 2, fromBlock: blockNumber });
 
       await (await batch(announcements2)).wait(1);
       await (await batch(announcements3)).wait(1);
