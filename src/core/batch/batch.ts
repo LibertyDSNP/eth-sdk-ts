@@ -20,8 +20,6 @@ interface BloomFilterData {
   RowGroupIndex: number;
 }
 
-export type BatchFileObject = string;
-
 /**
  * createFile() takes a series of DSNP messages and returns a URL
  * for storage location.
@@ -87,14 +85,15 @@ export const openFile = async (path: string): Promise<typeof ParquetReader> => P
  * readFile() reads a Parquet file by row.
  *
  * @param reader - a ParquetReader object.
+ * @param doReadRow - The callback for each row
  * @returns void.
  */
-export const readFile = async (reader: typeof ParquetReader, callback: ReadRowFunction): Promise<void> => {
+export const readFile = async (reader: typeof ParquetReader, doReadRow: ReadRowFunction): Promise<void> => {
   const cursor = reader.getCursor();
 
   let record = null;
   while ((record = await cursor.next())) {
-    callback(record);
+    doReadRow(record);
   }
 
   return reader.close();

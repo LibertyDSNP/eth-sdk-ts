@@ -3,7 +3,7 @@ import * as messages from "./core/messages/messages";
 import * as config from "./config";
 import { NotImplementedError } from "./core/utilities";
 import { DSNPUserId } from "./core/utilities/identifiers";
-import { BatchGraphChangeMessage } from "./core/batch/batchMesssages";
+import { BatchGraphChangeMessage } from "./core/batch/batchMessages";
 
 /**
  * follow() creates a follow event and returns it.

@@ -61,7 +61,7 @@ describe("batch", () => {
       expect(parquetWriterInstance.appendRow).toHaveBeenCalledTimes(1);
     });
 
-    it("calls ParquetWriter#closes to end the stream", async () => {
+    it("calls ParquetWriter#close to end the stream", async () => {
       await writeBatch(writeStream, BroadcastSchema, messages);
       expect(parquetWriterInstance.close).toHaveBeenCalledTimes(1);
     });

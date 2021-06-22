@@ -1,7 +1,7 @@
 import { keccak256 } from "js-sha3";
 
 import * as activityPub from "./core/activityPub/activityPub";
-import * as batchMessages from "./core/batch/batchMesssages";
+import * as batchMessages from "./core/batch/batchMessages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
 import { validateDSNPId } from "./core/utilities";

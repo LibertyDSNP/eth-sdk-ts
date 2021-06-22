@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { ConfigOpts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { sortObject } from "../utilities/json";
-import { DSNPMessageSigned } from "../batch/batchMesssages";
+import { DSNPMessageSigned } from "../batch/batchMessages";
 
 /**
  * DSNPType: an enum representing different types of DSNP messages

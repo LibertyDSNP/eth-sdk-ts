@@ -1,6 +1,6 @@
 import { DSNPType } from "../messages/messages";
 import MemoryQueue from "./memoryQueue";
-import { BatchBroadcastMessage } from "../batch/batchMesssages";
+import { BatchBroadcastMessage } from "../batch/batchMessages";
 
 describe("memoryQueue", () => {
   const testMsg: BatchBroadcastMessage = {

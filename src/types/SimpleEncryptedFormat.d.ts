@@ -85,7 +85,7 @@ export interface WrappedSEM {
 }
 
 export interface WrappedSEMxSalsa20 extends WrappedSEM {
-  /* Nonce (required) */
+  /** Nonce (required) */
   n: Base64UrlString;
   /** Wrapped Key Type = xsalsa20 */
   t: "xsalsa20";

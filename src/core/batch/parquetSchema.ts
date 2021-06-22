@@ -6,7 +6,7 @@
 import { DSNPType } from "../messages/messages";
 
 /**
- * BloomFilterColumnOptions: bloom filter options for a column intented to be used with when writing a batch file
+ * BloomFilterColumnOptions: bloom filter options for a column intended to be used with when writing a batch file
  */
 export interface BloomFilterColumnOptions {
   column: string;
@@ -16,7 +16,7 @@ export interface BloomFilterColumnOptions {
 }
 
 /**
- * BloomFilterOptions: bloom filter options intented to be used with when writing a batch file
+ * BloomFilterOptions: bloom filter options intended to be used with when writing a batch file
  */
 export interface BloomFilterOptions {
   bloomFilters: Array<BloomFilterColumnOptions>;

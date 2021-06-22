@@ -1,6 +1,6 @@
 import { QueueId, QueueInterface } from "./queue";
 import { DSNPType } from "../messages/messages";
-import { DSNPBatchMessage } from "../batch/batchMesssages";
+import { DSNPBatchMessage } from "../batch/batchMessages";
 
 const InvalidId = new Error("The Queue Id provided is malformed.");
 const IdDoesNotExist = new Error("No message matching the given ID exists.");

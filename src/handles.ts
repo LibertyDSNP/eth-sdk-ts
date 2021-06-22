@@ -11,7 +11,7 @@ import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/ident
  * createRegistration() creates a new identity for a public key and registers a handle to it.
  * This function will wait for the identity to land on chain before resolving.
  * @param addr - public key address that will be used to control identity delegate
- * @param handle - name of identity (must be globaly unique)
+ * @param handle - name of identity (must be globally unique)
  * @returns id of identity created
  */
 export const createRegistration = async (
