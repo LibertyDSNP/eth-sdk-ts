@@ -5,7 +5,7 @@ import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
 import * as pq from "../core/batch/parquetSchema";
 import { EthereumAddress } from "../types/Strings";
-import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../core/batch/batchMesssages";
+import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../core/batch/batchMessages";
 import { generateHexString } from "@dsnp/test-generators";
 
 export type DSNPBatchWriteResult = {

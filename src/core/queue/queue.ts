@@ -1,6 +1,6 @@
 import { getConfig, ConfigOpts } from "../../config";
 import { DSNPType } from "../messages";
-import { DSNPBatchMessage } from "../batch/batchMesssages";
+import { DSNPBatchMessage } from "../batch/batchMessages";
 
 /**
  * QueueId is an representation of an identifier used by a queuing adapter for

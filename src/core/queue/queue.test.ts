@@ -1,7 +1,7 @@
 import { setConfig } from "../../config";
 import { DSNPType } from "../messages";
 import { dequeueBatch } from "./queue";
-import { BatchBroadcastMessage } from "../batch/batchMesssages";
+import { BatchBroadcastMessage } from "../batch/batchMessages";
 
 describe("queue", () => {
   const testMsg: BatchBroadcastMessage = {

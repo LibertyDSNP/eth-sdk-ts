@@ -19,8 +19,8 @@
 
 export * from "./batch";
 
-import * as batchMesssagesImport from "./batchMesssages";
-export const batchMesssages = batchMesssagesImport;
+import * as batchMessagesImport from "./batchMessages";
+export const batchMessages = batchMessagesImport;
 
 import * as parquetSchemaImport from "./parquetSchema";
 export const parquetSchema = parquetSchemaImport;
