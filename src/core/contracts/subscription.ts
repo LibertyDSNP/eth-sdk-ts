@@ -33,8 +33,8 @@ type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) 
  * It takes a callback and a filter. The filter is used to filter events that come through.
  * The callback is invoked for each correctly filtered event.
  *
- * @param callback - The callback function to be called when an event is received
- * @param filters -  Any filter options for including or excluding certain events
+ * @param doReceiveAnnouncement - The callback function to be called when an event is received
+ * @param filter -  Any filter options for including or excluding certain events
  * @returns        A function that can be called to remove listener for this type of event
  */
 export const subscribeToBatchAnnounceEvents = async (
@@ -100,9 +100,7 @@ const getPastLogs = async (
   filter: Filter
 ): Promise<BatchAnnounceCallbackArgs[]> => {
   const logs = await provider.getLogs(filter);
-  const formattedlogs = decodeLogsForBatchAnnounce(logs);
-
-  return formattedlogs;
+  return decodeLogsForBatchAnnounce(logs);
 };
 
 const decodeLogsForBatchAnnounce = (logs: ethers.providers.Log[]): BatchAnnounceCallbackArgs[] => {

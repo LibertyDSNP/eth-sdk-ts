@@ -22,3 +22,9 @@ export const announcement = announcementImport;
 
 import * as registryImport from "./registry";
 export const registry = registryImport;
+
+import * as identityImport from "./identity";
+export const identity = identityImport;
+
+import * as subscriptionImport from "./subscription";
+export const subscription = subscriptionImport;
