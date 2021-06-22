@@ -46,7 +46,7 @@ Storage solutions can be added so as long it matches the [StoreInterface](https:
 ```typescript
 interface StoreInterface {
   put: (targetPath: string, content: Content) => Promise<URL>;
-  putStream: (targetPath: string, doWriteToStream: PassThroughCallback) => Promise<URL>;
+  putStream: (targetPath: string, doWriteToStream: WriteStreamCallback) => Promise<URL>;
 }
 ```
 
