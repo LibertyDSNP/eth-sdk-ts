@@ -84,10 +84,10 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#create" class="tsd-kind-icon">create</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#hash" class="tsd-kind-icon">hash</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#isvalid" class="tsd-kind-icon">is<wbr>Valid</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#isvalidprofile" class="tsd-kind-icon">is<wbr>Valid<wbr>Profile</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#isvalidreply" class="tsd-kind-icon">is<wbr>Valid<wbr>Reply</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#serialize" class="tsd-kind-icon">serialize</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#validate" class="tsd-kind-icon">validate</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activitypub_activitypub.html#validatereply" class="tsd-kind-icon">validate<wbr>Reply</a></li>
 							</ul>
 						</section>
 					</div>
@@ -140,10 +140,10 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="hash" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> hash</h3>
+					<a name="isvalid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">hash<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<span class="tsd-signature-symbol">(</span>activityPub<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -151,22 +151,81 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>hash() provides a simple way to hash activityPub objects while guaranteeing
-										that identical objects with different key orders still return the same hash.
-									The underlying hash method used is <a href="https://en.wikipedia.org/wiki/SHA-3">Keccak256</a>.</p>
+									<p>isValid() returns true if the object provided is a valid activityPub.
+									Otherwise, it returns false.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>data: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
+									<h5>activityPub: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The activity pub object to hash</p>
+										<p>An object to be validated against the activity pub standard</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>A hexadecimal string containing the Keccak hash</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True or false depending on whether the given object is a valid</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isvalidprofile" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Profile</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Profile<span class="tsd-signature-symbol">(</span>activityPub<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>isValidProfile() returns true if the object provided is a valid activityPub
+									profile. Otherwise, it returns false.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>activityPub: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An object to be validated against the activity pub standard</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True or false depending on whether the given object is a valid</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isvalidreply" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Reply</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Reply<span class="tsd-signature-symbol">(</span>activityPub<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>isValidReply() returns true if the object provided is a valid activityPub
+									reply. Otherwise, it returns false.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>activityPub: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An object to be validated against the activity pub standard</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True or false depending on whether the given object is a valid</p>
 						</li>
 					</ul>
 				</section>
@@ -200,66 +259,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="validate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> validate</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">validate<span class="tsd-signature-symbol">(</span>activityPub<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>validate() returns true if the object provided is a valid activityPub.
-									Otherwise, it returns false.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>activityPub: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An object to be validated against the activity pub standard</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>True or false depending on whether the given object is a valid</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="validatereply" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> validate<wbr>Reply</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">validate<wbr>Reply<span class="tsd-signature-symbol">(</span>activityPub<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>validateReply() returns true if the object provided is a valid activityPub
-									reply. Otherwise, it returns false.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>activityPub: <a href="../interfaces/core_activitypub_activitypub.activitypub.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityPub</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>An object to be validated against the activity pub standard</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>True or false depending on whether the given object is a valid</p>
-						</li>
-					</ul>
-				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -288,16 +287,16 @@
 						<a href="core_activitypub_activitypub.html#create" class="tsd-kind-icon">create</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activitypub_activitypub.html#hash" class="tsd-kind-icon">hash</a>
+						<a href="core_activitypub_activitypub.html#isvalid" class="tsd-kind-icon">is<wbr>Valid</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activitypub_activitypub.html#isvalidprofile" class="tsd-kind-icon">is<wbr>Valid<wbr>Profile</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activitypub_activitypub.html#isvalidreply" class="tsd-kind-icon">is<wbr>Valid<wbr>Reply</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_activitypub_activitypub.html#serialize" class="tsd-kind-icon">serialize</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activitypub_activitypub.html#validate" class="tsd-kind-icon">validate</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activitypub_activitypub.html#validatereply" class="tsd-kind-icon">validate<wbr>Reply</a>
 					</li>
 				</ul>
 			</nav>
@@ -313,6 +312,7 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

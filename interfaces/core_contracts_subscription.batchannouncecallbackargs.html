@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BaseFilters | @dsnp/sdk</title>
+	<title>BatchAnnounceCallbackArgs | @dsnp/sdk</title>
 	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,29 +53,31 @@
 					<a href="../modules.html">@dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/index.html">index</a>
+					<a href="../modules/core_contracts_subscription.html">core/contracts/subscription</a>
 				</li>
 				<li>
-					<a href="index.basefilters.html">BaseFilters</a>
+					<a href="core_contracts_subscription.batchannouncecallbackargs.html">BatchAnnounceCallbackArgs</a>
 				</li>
 			</ul>
-			<h1>Interface BaseFilters</h1>
+			<h1>Interface BatchAnnounceCallbackArgs</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>BatchAnnounceCallbackArgs: interface for callback function that is passed to subscribeToBatchAnnounceEvents</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BaseFilters</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="index.fetchfilters.html" class="tsd-signature-type" data-tsd-kind="Interface">FetchFilters</a>
-							</li>
-						</ul>
+						<span class="target">BatchAnnounceCallbackArgs</span>
 					</li>
 				</ul>
 			</section>
@@ -86,10 +88,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#types" class="tsd-kind-icon">types</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_subscription.batchannouncecallbackargs.html#blocknumber" class="tsd-kind-icon">block<wbr>Number</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnphash" class="tsd-kind-icon">dsnp<wbr>Hash</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnptype" class="tsd-kind-icon">dsnp<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnpuri" class="tsd-kind-icon">dsnp<wbr>Uri</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_subscription.batchannouncecallbackargs.html#transactionhash" class="tsd-kind-icon">transaction<wbr>Hash</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,30 +101,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="excludehandles" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> exclude<wbr>Handles</h3>
-					<div class="tsd-signature tsd-kind-icon">exclude<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="blocknumber" class="tsd-anchor"></a>
+					<h3>block<wbr>Number</h3>
+					<div class="tsd-signature tsd-kind-icon">block<wbr>Number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="inreplyto" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> in<wbr>Reply<wbr>To</h3>
-					<div class="tsd-signature tsd-kind-icon">in<wbr>Reply<wbr>To<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="dsnphash" class="tsd-anchor"></a>
+					<h3>dsnp<wbr>Hash</h3>
+					<div class="tsd-signature tsd-kind-icon">dsnp<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="includehandles" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> include<wbr>Handles</h3>
-					<div class="tsd-signature tsd-kind-icon">include<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="dsnptype" class="tsd-anchor"></a>
+					<h3>dsnp<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">dsnp<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="types" class="tsd-anchor"></a>
-					<h3>types</h3>
-					<div class="tsd-signature tsd-kind-icon">types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="dsnpuri" class="tsd-anchor"></a>
+					<h3>dsnp<wbr>Uri</h3>
+					<div class="tsd-signature tsd-kind-icon">dsnp<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="transactionhash" class="tsd-anchor"></a>
+					<h3>transaction<wbr>Hash</h3>
+					<div class="tsd-signature tsd-kind-icon">transaction<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -134,7 +144,7 @@
 						<a href="../modules.html">Modules</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/index.html">index</a>
+						<a href="../modules/core_contracts_subscription.html">core/contracts/subscription</a>
 					</li>
 				</ul>
 			</nav>
@@ -143,24 +153,33 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.basefilters.html" class="tsd-kind-icon">Base<wbr>Filters</a>
+						<a href="core_contracts_subscription.batchannouncecallbackargs.html" class="tsd-kind-icon">Batch<wbr>Announce<wbr>Callback<wbr>Args</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a>
+								<a href="core_contracts_subscription.batchannouncecallbackargs.html#blocknumber" class="tsd-kind-icon">block<wbr>Number</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a>
+								<a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnphash" class="tsd-kind-icon">dsnp<wbr>Hash</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a>
+								<a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnptype" class="tsd-kind-icon">dsnp<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#types" class="tsd-kind-icon">types</a>
+								<a href="core_contracts_subscription.batchannouncecallbackargs.html#dsnpuri" class="tsd-kind-icon">dsnp<wbr>Uri</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="core_contracts_subscription.batchannouncecallbackargs.html#transactionhash" class="tsd-kind-icon">transaction<wbr>Hash</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="core_contracts_subscription.batchfilteroptions.html" class="tsd-kind-icon">Batch<wbr>Filter<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_subscription.html#subscribetobatchannounceevents" class="tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Announce<wbr>Events</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

@@ -81,6 +81,15 @@
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel tsd-kind-interface tsd-parent-kind-module">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>index: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">unknown</span></div>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>to allow access of keys by name</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -89,6 +98,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.config.html#contracts" class="tsd-kind-icon">contracts</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.config.html#currentfromid" class="tsd-kind-icon">current<wbr>From<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.config.html#provider" class="tsd-kind-icon">provider</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.config.html#queue" class="tsd-kind-icon">queue</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.config.html#signer" class="tsd-kind-icon">signer</a></li>
@@ -103,7 +113,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="contracts" class="tsd-anchor"></a>
 					<h3>contracts</h3>
-					<div class="tsd-signature tsd-kind-icon">contracts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>beacon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>beaconFactory<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>identityCloneFactory<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>identityLogic<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>registry<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">contracts<span class="tsd-signature-symbol">:</span> <a href="index.contracts.html" class="tsd-signature-type" data-tsd-kind="Interface">Contracts</a></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -111,58 +121,17 @@
 							<p>Contracts are different addresses for specific contracts or for running custom tests</p>
 						</div>
 					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> announcer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Batch Announce contract</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> beacon<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Beacon contract</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> beacon<wbr>Factory<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Beacon Proxy Factory contract</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> identity<wbr>Clone<wbr>Factory<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Identity Clone Proxy Factory contract</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> identity<wbr>Logic<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Identity Logic contract</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> registry<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>The Address of the Registry contract</p>
-									</div>
-								</div>
-							</li>
-						</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="currentfromid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> current<wbr>From<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">current<wbr>From<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>currentFromId stores the id of the currently authenticated user</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -228,9 +197,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.basefilters.html" class="tsd-kind-icon">Base<wbr>Filters</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
@@ -238,6 +204,9 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="index.config.html#contracts" class="tsd-kind-icon">contracts</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="index.config.html#currentfromid" class="tsd-kind-icon">current<wbr>From<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="index.config.html#provider" class="tsd-kind-icon">provider</a>
@@ -255,90 +224,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.fetchfilters.html" class="tsd-kind-icon">Fetch<wbr>Filters</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/index.html#configopts" class="tsd-kind-icon">Config<wbr>Opts</a>
-					</li>
-					<li class=" tsd-kind-property tsd-parent-kind-module">
-						<a href="../modules/index.html#default" class="tsd-kind-icon">default</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#config-1" class="tsd-kind-icon">config</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#content" class="tsd-kind-icon">content</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#core-1" class="tsd-kind-icon">core</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#handles" class="tsd-kind-icon">handles</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#network" class="tsd-kind-icon">network</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/index.html#search" class="tsd-kind-icon">search</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#availabilityfilter-1" class="tsd-kind-icon">availability<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#broadcast-1" class="tsd-kind-icon">broadcast</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#createregistration-1" class="tsd-kind-icon">create<wbr>Registration</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#fetchevents-1" class="tsd-kind-icon">fetch<wbr>Events</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#follow-1" class="tsd-kind-icon">follow</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#getconfig-1" class="tsd-kind-icon">get<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#getfollowees-1" class="tsd-kind-icon">get<wbr>Followees</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#getfollowers-1" class="tsd-kind-icon">get<wbr>Followers</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#isavailable-1" class="tsd-kind-icon">is<wbr>Available</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#isfollowing-1" class="tsd-kind-icon">is<wbr>Following</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#react-1" class="tsd-kind-icon">react</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#reply-1" class="tsd-kind-icon">reply</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#resolvehandle-1" class="tsd-kind-icon">resolve<wbr>Handle</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#resolveid-1" class="tsd-kind-icon">resolve<wbr>Id</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#setconfig-1" class="tsd-kind-icon">set<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#subscribe-1" class="tsd-kind-icon">subscribe</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#unfollow-1" class="tsd-kind-icon">unfollow</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#unsubscribe-1" class="tsd-kind-icon">unsubscribe</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/index.html#updateregistration-1" class="tsd-kind-icon">update<wbr>Registration</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -353,6 +238,7 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BaseFilters | @dsnp/sdk</title>
+	<title>Contracts | @dsnp/sdk</title>
 	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../modules/index.html">index</a>
 				</li>
 				<li>
-					<a href="index.basefilters.html">BaseFilters</a>
+					<a href="index.contracts.html">Contracts</a>
 				</li>
 			</ul>
-			<h1>Interface BaseFilters</h1>
+			<h1>Interface Contracts</h1>
 		</div>
 	</div>
 </header>
@@ -70,12 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BaseFilters</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="index.fetchfilters.html" class="tsd-signature-type" data-tsd-kind="Interface">FetchFilters</a>
-							</li>
-						</ul>
+						<span class="target">Contracts</span>
 					</li>
 				</ul>
 			</section>
@@ -86,10 +81,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.basefilters.html#types" class="tsd-kind-icon">types</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#announcer" class="tsd-kind-icon">announcer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#beacon" class="tsd-kind-icon">beacon</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#beaconfactory" class="tsd-kind-icon">beacon<wbr>Factory</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#identityclonefactory" class="tsd-kind-icon">identity<wbr>Clone<wbr>Factory</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#identitylogic" class="tsd-kind-icon">identity<wbr>Logic</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="index.contracts.html#registry" class="tsd-kind-icon">registry</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,32 +95,76 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="excludehandles" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> exclude<wbr>Handles</h3>
-					<div class="tsd-signature tsd-kind-icon">exclude<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="announcer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> announcer</h3>
+					<div class="tsd-signature tsd-kind-icon">announcer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Batch Announce contract</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="inreplyto" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> in<wbr>Reply<wbr>To</h3>
-					<div class="tsd-signature tsd-kind-icon">in<wbr>Reply<wbr>To<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="beacon" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> beacon</h3>
+					<div class="tsd-signature tsd-kind-icon">beacon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Beacon contract</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="includehandles" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> include<wbr>Handles</h3>
-					<div class="tsd-signature tsd-kind-icon">include<wbr>Handles<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="beaconfactory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> beacon<wbr>Factory</h3>
+					<div class="tsd-signature tsd-kind-icon">beacon<wbr>Factory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Beacon Proxy Factory contract</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="types" class="tsd-anchor"></a>
-					<h3>types</h3>
-					<div class="tsd-signature tsd-kind-icon">types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="identityclonefactory" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> identity<wbr>Clone<wbr>Factory</h3>
+					<div class="tsd-signature tsd-kind-icon">identity<wbr>Clone<wbr>Factory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Identity Clone Proxy Factory contract</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="identitylogic" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> identity<wbr>Logic</h3>
+					<div class="tsd-signature tsd-kind-icon">identity<wbr>Logic<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Identity Logic contract</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="registry" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> registry</h3>
+					<div class="tsd-signature tsd-kind-icon">registry<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The Address of the Registry contract</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -143,19 +184,25 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="index.basefilters.html" class="tsd-kind-icon">Base<wbr>Filters</a>
+						<a href="index.contracts.html" class="tsd-kind-icon">Contracts</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#excludehandles" class="tsd-kind-icon">exclude<wbr>Handles</a>
+								<a href="index.contracts.html#announcer" class="tsd-kind-icon">announcer</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#inreplyto" class="tsd-kind-icon">in<wbr>Reply<wbr>To</a>
+								<a href="index.contracts.html#beacon" class="tsd-kind-icon">beacon</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#includehandles" class="tsd-kind-icon">include<wbr>Handles</a>
+								<a href="index.contracts.html#beaconfactory" class="tsd-kind-icon">beacon<wbr>Factory</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="index.basefilters.html#types" class="tsd-kind-icon">types</a>
+								<a href="index.contracts.html#identityclonefactory" class="tsd-kind-icon">identity<wbr>Clone<wbr>Factory</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="index.contracts.html#identitylogic" class="tsd-kind-icon">identity<wbr>Logic</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="index.contracts.html#registry" class="tsd-kind-icon">registry</a>
 							</li>
 						</ul>
 					</li>

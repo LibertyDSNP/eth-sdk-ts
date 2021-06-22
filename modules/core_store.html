@@ -71,12 +71,10 @@
 							<h3>References</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#content" class="tsd-kind-icon">Content</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#file" class="tsd-kind-icon">File</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#s3credentials" class="tsd-kind-icon">S3<wbr>Credentials</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#s3node" class="tsd-kind-icon">S3<wbr>Node</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#readstream" class="tsd-kind-icon">Read<wbr>Stream</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#storeinterface" class="tsd-kind-icon">Store<wbr>Interface</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#put" class="tsd-kind-icon">put</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#writestream" class="tsd-kind-icon">Write<wbr>Stream</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_store.html#writestreamcallback" class="tsd-kind-icon">Write<wbr>Stream<wbr>Callback</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,19 +88,9 @@
 					Re-exports <a href="core_store_interface.html#content">Content</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="file" class="tsd-anchor"></a>
-					<h3>File</h3>
-					Re-exports <a href="core_store_interface.html#file">File</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="s3credentials" class="tsd-anchor"></a>
-					<h3>S3<wbr>Credentials</h3>
-					Re-exports <a href="../interfaces/core_store_s3node.s3credentials.html">S3Credentials</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="s3node" class="tsd-anchor"></a>
-					<h3>S3<wbr>Node</h3>
-					Re-exports <a href="../classes/core_store_s3node.s3node.html">S3Node</a>
+					<a name="readstream" class="tsd-anchor"></a>
+					<h3>Read<wbr>Stream</h3>
+					Re-exports <a href="../interfaces/core_store_interface.readstream.html">ReadStream</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="storeinterface" class="tsd-anchor"></a>
@@ -110,14 +98,14 @@
 					Re-exports <a href="../interfaces/core_store_interface.storeinterface.html">StoreInterface</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="get" class="tsd-anchor"></a>
-					<h3>get</h3>
-					Re-exports <a href="core_store_interface.html#get">get</a>
+					<a name="writestream" class="tsd-anchor"></a>
+					<h3>Write<wbr>Stream</h3>
+					Re-exports <a href="../interfaces/core_store_interface.writestream.html">WriteStream</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="put" class="tsd-anchor"></a>
-					<h3>put</h3>
-					Re-exports <a href="core_store_interface.html#put">put</a>
+					<a name="writestreamcallback" class="tsd-anchor"></a>
+					<h3>Write<wbr>Stream<wbr>Callback</h3>
+					Re-exports <a href="../interfaces/core_store_interface.writestreamcallback.html">WriteStreamCallback</a>
 				</section>
 			</section>
 		</div>
@@ -138,22 +126,16 @@
 						<a href="core_store.html#content" class="tsd-kind-icon">Content</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_store.html#file" class="tsd-kind-icon">File</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_store.html#s3credentials" class="tsd-kind-icon">S3<wbr>Credentials</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_store.html#s3node" class="tsd-kind-icon">S3<wbr>Node</a>
+						<a href="core_store.html#readstream" class="tsd-kind-icon">Read<wbr>Stream</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_store.html#storeinterface" class="tsd-kind-icon">Store<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_store.html#get" class="tsd-kind-icon">get</a>
+						<a href="core_store.html#writestream" class="tsd-kind-icon">Write<wbr>Stream</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_store.html#put" class="tsd-kind-icon">put</a>
+						<a href="core_store.html#writestreamcallback" class="tsd-kind-icon">Write<wbr>Stream<wbr>Callback</a>
 					</li>
 				</ul>
 			</nav>
@@ -169,6 +151,7 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

@@ -85,12 +85,21 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#broadcastbloomfilteroptions" class="tsd-kind-icon">Broadcast<wbr>Bloom<wbr>Filter<wbr>Options</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#broadcastschema" class="tsd-kind-icon">Broadcast<wbr>Schema</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#graphchangebloomfilteroptions" class="tsd-kind-icon">Graph<wbr>Change<wbr>Bloom<wbr>Filter<wbr>Options</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#graphchangeschema" class="tsd-kind-icon">Graph<wbr>Change<wbr>Schema</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#profilebloomfilteroptions" class="tsd-kind-icon">Profile<wbr>Bloom<wbr>Filter<wbr>Options</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#profileschema" class="tsd-kind-icon">Profile<wbr>Schema</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#reactionbloomfilteroptions" class="tsd-kind-icon">Reaction<wbr>Bloom<wbr>Filter<wbr>Options</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#reactionschema" class="tsd-kind-icon">Reaction<wbr>Schema</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#replybloomfilteroptions" class="tsd-kind-icon">Reply<wbr>Bloom<wbr>Filter<wbr>Options</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_batch_parquetschema.html#replyschema" class="tsd-kind-icon">Reply<wbr>Schema</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_parquetschema.html#getbloomfilteroptionsfor" class="tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_parquetschema.html#getschemafor" class="tsd-kind-icon">get<wbr>Schema<wbr>For</a></li>
 							</ul>
 						</section>
 					</div>
@@ -114,6 +123,11 @@
 					<div class="tsd-signature tsd-kind-icon">Broadcast<wbr>Bloom<wbr>Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/core_batch_parquetschema.bloomfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>BroadcastBloomFilter: bloom filter options for batching broadcast messages</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="broadcastschema" class="tsd-anchor"></a>
@@ -173,6 +187,26 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="graphchangebloomfilteroptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Graph<wbr>Change<wbr>Bloom<wbr>Filter<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">Graph<wbr>Change<wbr>Bloom<wbr>Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>bloomFilters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>GraphChangeBloomFilter: bloom filter options for batching graph changes messages</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>bloom<wbr>Filters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="graphchangeschema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Graph<wbr>Change<wbr>Schema</h3>
 					<div class="tsd-signature tsd-kind-icon">Graph<wbr>Change<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>changeType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>dsnpType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
@@ -218,6 +252,26 @@
 										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 									</li>
 								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="profilebloomfilteroptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> Profile<wbr>Bloom<wbr>Filter<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">Profile<wbr>Bloom<wbr>Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>bloomFilters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ProfileBloomFilter: bloom filter options for batching profile messages</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>bloom<wbr>Filters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></h5>
 							</li>
 						</ul>
 					</div>
@@ -277,6 +331,11 @@
 					<div class="tsd-signature tsd-kind-icon">Reaction<wbr>Bloom<wbr>Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>bloomFilters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ReactionBloomFilter: bloom filter options for batching reaction messages</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -349,6 +408,11 @@
 					<div class="tsd-signature tsd-kind-icon">Reply<wbr>Bloom<wbr>Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>bloomFilters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ReplyBloomBloomFilter: bloom filter options for batching reply messages</p>
+						</div>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -424,6 +488,67 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getbloomfilteroptionsfor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For<span class="tsd-signature-symbol">(</span>dsnpType<span class="tsd-signature-symbol">: </span><a href="../enums/core_messages_messages.dsnptype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DSNPType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/core_batch_parquetschema.bloomfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dsnpType: <a href="../enums/core_messages_messages.dsnptype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DSNPType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a dsnpType</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/core_batch_parquetschema.bloomfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></h4>
+							<p>The corresponding parquet bloom filter options</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getschemafor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Schema<wbr>For</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Schema<wbr>For<span class="tsd-signature-symbol">(</span>dsnpType<span class="tsd-signature-symbol">: </span><a href="../enums/core_messages_messages.dsnptype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DSNPType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_batch_parquetschema.html#schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>getSchemaFor() takes DSNPType and returns its corresponding parquet schema</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dsnpType: <a href="../enums/core_messages_messages.dsnptype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DSNPType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a dsnpType</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="core_batch_parquetschema.html#schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></h4>
+							<p>The corresponding parquet schema</p>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -454,7 +579,13 @@
 						<a href="core_batch_parquetschema.html#broadcastschema" class="tsd-kind-icon">Broadcast<wbr>Schema</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="core_batch_parquetschema.html#graphchangebloomfilteroptions" class="tsd-kind-icon">Graph<wbr>Change<wbr>Bloom<wbr>Filter<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="core_batch_parquetschema.html#graphchangeschema" class="tsd-kind-icon">Graph<wbr>Change<wbr>Schema</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="core_batch_parquetschema.html#profilebloomfilteroptions" class="tsd-kind-icon">Profile<wbr>Bloom<wbr>Filter<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="core_batch_parquetschema.html#profileschema" class="tsd-kind-icon">Profile<wbr>Schema</a>
@@ -471,6 +602,12 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="core_batch_parquetschema.html#replyschema" class="tsd-kind-icon">Reply<wbr>Schema</a>
 					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_batch_parquetschema.html#getbloomfilteroptionsfor" class="tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_batch_parquetschema.html#getschemafor" class="tsd-kind-icon">get<wbr>Schema<wbr>For</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -485,6 +622,7 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

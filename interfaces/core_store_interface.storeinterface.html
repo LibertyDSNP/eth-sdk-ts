@@ -83,12 +83,6 @@
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/core_store_s3node.s3node.html" class="tsd-signature-type" data-tsd-kind="Class">S3Node</a></li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -96,8 +90,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_store_interface.storeinterface.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_store_interface.storeinterface.html#put" class="tsd-kind-icon">put</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_store_interface.storeinterface.html#putstream" class="tsd-kind-icon">put<wbr>Stream</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,39 +100,28 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="get" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> get</h3>
-					<div class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core_store_interface.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core_store_interface.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>targetPath: <span class="tsd-signature-type">string</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/core_store_interface.html#file" class="tsd-signature-type" data-tsd-kind="Type alias">File</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="put" class="tsd-anchor"></a>
 					<h3>put</h3>
 					<div class="tsd-signature tsd-kind-icon">put<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, content<span class="tsd-signature-symbol">: </span><a href="../modules/core_store_interface.html#content" class="tsd-signature-type" data-tsd-kind="Type alias">Content</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>put() takes a batch file to store with the chosen hosting solution and
+							returns the URL of the file once stored.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>The path to and name of file</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>The file object to store on the chosen hosting solution</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p>The URI of the hosted file</p>
+							</dd>
+						</dl>
+					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
@@ -164,6 +147,54 @@
 						</ul>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="putstream" class="tsd-anchor"></a>
+					<h3>put<wbr>Stream</h3>
+					<div class="tsd-signature tsd-kind-icon">put<wbr>Stream<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, doWriteToStream<span class="tsd-signature-symbol">: </span><a href="core_store_interface.writestreamcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStreamCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>putStream() takes a pass-through stream to upload data to chosen hosting solution and
+							returns the URL of the file once stored.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>The path to and name of file</p>
+							</dd>
+							<dt>param</dt>
+							<dd><p>A callback function that receives a writable to stream data to the chosen hosting solution</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p>The URI of the hosted file</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, doWriteToStream<span class="tsd-signature-symbol">: </span><a href="core_store_interface.writestreamcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStreamCallback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>targetPath: <span class="tsd-signature-type">string</span></h5>
+											</li>
+											<li>
+												<h5>doWriteToStream: <a href="core_store_interface.writestreamcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStreamCallback</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -179,32 +210,32 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="core_store_interface.readstream.html" class="tsd-kind-icon">Read<wbr>Stream</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
 						<a href="core_store_interface.storeinterface.html" class="tsd-kind-icon">Store<wbr>Interface</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="core_store_interface.storeinterface.html#get" class="tsd-kind-icon">get</a>
+								<a href="core_store_interface.storeinterface.html#put" class="tsd-kind-icon">put</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="core_store_interface.storeinterface.html#put" class="tsd-kind-icon">put</a>
+								<a href="core_store_interface.storeinterface.html#putstream" class="tsd-kind-icon">put<wbr>Stream</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="core_store_interface.writestream.html" class="tsd-kind-icon">Write<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="core_store_interface.writestreamcallback.html" class="tsd-kind-icon">Write<wbr>Stream<wbr>Callback</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/core_store_interface.html#content" class="tsd-kind-icon">Content</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/core_store_interface.html#file" class="tsd-kind-icon">File</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/core_store_interface.html#get" class="tsd-kind-icon">get</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/core_store_interface.html#put" class="tsd-kind-icon">put</a>
 					</li>
 				</ul>
 			</nav>
@@ -220,6 +251,7 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>

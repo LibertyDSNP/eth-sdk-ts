@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DSNPBatchMessage | @dsnp/sdk</title>
+	<title>WriteStreamCallback | @dsnp/sdk</title>
 	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,63 +53,57 @@
 					<a href="../modules.html">@dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/core_batch_batchmesssages.html">core/batch/batchMesssages</a>
+					<a href="../modules/core_store_interface.html">core/store/interface</a>
 				</li>
 				<li>
-					<a href="core_batch_batchmesssages.dsnpbatchmessage.html">DSNPBatchMessage</a>
+					<a href="core_store_interface.writestreamcallback.html">WriteStreamCallback</a>
 				</li>
 			</ul>
-			<h1>Interface DSNPBatchMessage</h1>
+			<h1>Interface WriteStreamCallback</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>PassThroughCallback: a callback intended for receiving a write stream to create a batch file</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="core_messages_messages.dsnpmessage.html" class="tsd-signature-type" data-tsd-kind="Interface">DSNPMessage</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">DSNPBatchMessage</span>
-							</li>
-						</ul>
+						<span class="target">WriteStreamCallback</span>
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel-group tsd-index-group">
-				<h2>Index</h2>
-				<section class="tsd-panel tsd-index-panel">
-					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="core_batch_batchmesssages.dsnpbatchmessage.html#dsnptype" class="tsd-kind-icon">dsnp<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_batch_batchmesssages.dsnpbatchmessage.html#signature" class="tsd-kind-icon">signature</a></li>
-							</ul>
-						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="dsnptype" class="tsd-anchor"></a>
-					<h3>dsnp<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">dsnp<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../enums/core_messages_messages.dsnptype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DSNPType</a></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="core_messages_messages.dsnpmessage.html">DSNPMessage</a>.<a href="core_messages_messages.dsnpmessage.html#dsnptype">dsnpType</a></p>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="signature" class="tsd-anchor"></a>
-					<h3>signature</h3>
-					<div class="tsd-signature tsd-kind-icon">signature<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-					</aside>
-				</section>
+			<section class="tsd-panel">
+				<h3 class="tsd-before-signature">Callable</h3>
+				<ul class="tsd-signatures tsd-kind-interface tsd-parent-kind-module">
+					<li class="tsd-signature tsd-kind-icon">Write<wbr>Stream<wbr>Callback<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><a href="core_store_interface.writestream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>PassThroughCallback: a callback intended for receiving a write stream to create a batch file</p>
+							</div>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>stream: <a href="core_store_interface.writestream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+					</li>
+				</ul>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -119,36 +113,31 @@
 						<a href="../modules.html">Modules</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/core_batch_batchmesssages.html">core/batch/batch<wbr>Messsages</a>
+						<a href="../modules/core_store_interface.html">core/store/interface</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_batch_batchmesssages.batchbroadcastmessage.html" class="tsd-kind-icon">Batch<wbr>Broadcast<wbr>Message</a>
+						<a href="core_store_interface.readstream.html" class="tsd-kind-icon">Read<wbr>Stream</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_batch_batchmesssages.batchreactionmessage.html" class="tsd-kind-icon">Batch<wbr>Reaction<wbr>Message</a>
+						<a href="core_store_interface.storeinterface.html" class="tsd-kind-icon">Store<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_batch_batchmesssages.batchreplymessage.html" class="tsd-kind-icon">Batch<wbr>Reply<wbr>Message</a>
+						<a href="core_store_interface.writestream.html" class="tsd-kind-icon">Write<wbr>Stream</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_batch_batchmesssages.dsnpbatchmessage.html" class="tsd-kind-icon">DSNPBatch<wbr>Message</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="core_batch_batchmesssages.dsnpbatchmessage.html#dsnptype" class="tsd-kind-icon">dsnp<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="core_batch_batchmesssages.dsnpbatchmessage.html#signature" class="tsd-kind-icon">signature</a>
-							</li>
-						</ul>
+						<a href="core_store_interface.writestreamcallback.html" class="tsd-kind-icon">Write<wbr>Stream<wbr>Callback</a>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/core_store_interface.html#content" class="tsd-kind-icon">Content</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -163,13 +152,13 @@
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
