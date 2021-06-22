@@ -1,6 +1,6 @@
 import { setConfig } from "../../config";
-import { DSNPType } from "../messages/messages";
-import { dequeueBatch, enqueue, remove } from "./queue";
+import { DSNPType } from "../messages";
+import { dequeueBatch } from "./queue";
 import { BatchBroadcastMessage } from "../batch/batchMesssages";
 
 describe("queue", () => {
@@ -40,28 +40,10 @@ describe("queue", () => {
     });
   });
 
-  describe("#enqueue", () => {
-    it("calls the enqueue method of the configured queue adapter", async () => {
-      const result = await enqueue(testMsg);
-
-      expect(fakeQueue.enqueue).toHaveBeenCalledWith(testMsg);
-      expect(result).toEqual(testId);
-    });
-  });
-
-  describe("#remove", () => {
-    it("calls the dequeue method of the configured queue adapter", async () => {
-      const result = await remove(testId);
-
-      expect(fakeQueue.remove).toHaveBeenCalledWith(testId);
-      expect(result).toEqual(testMsg);
-    });
-  });
-
   describe("#dequeueBatch", () => {
     beforeEach(async () => {
       for (let i = 0; i < 5; i++) {
-        await enqueue(testMsg);
+        await fakeQueue.enqueue(testMsg);
       }
     });
 
