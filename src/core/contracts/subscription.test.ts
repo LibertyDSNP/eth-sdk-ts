@@ -110,7 +110,7 @@ describe("subscription", () => {
   });
 
   describe("get past events from start block", () => {
-    it("retreives past events based on given start block", async () => {
+    it("retrieves past events based on given start block", async () => {
       const provider = requireGetProvider();
       const mock = jest.fn();
 

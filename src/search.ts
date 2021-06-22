@@ -35,7 +35,7 @@ type SubscriptionId = string;
  * implemented.
  *
  * @param filters -  Any filter options for including or excluding certain events
- * @param callback - The callback function to be called when an event is receieved
+ * @param callback - The callback function to be called when an event is received
  * @returns        A subscription id to unsubscribe later if needed
  */
 export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallbackFn): SubscriptionId => {

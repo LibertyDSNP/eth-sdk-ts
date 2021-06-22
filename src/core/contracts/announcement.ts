@@ -16,7 +16,7 @@ export interface Announcement {
  * batch() allows users call the batch smart contract and post the URI and hash
  * of a generated batch to the blockchain.
  *
- * @param announcements - array of announcments to batch.
+ * @param announcements - array of announcements to batch.
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns    A contract receipt promise
  */
