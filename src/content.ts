@@ -4,7 +4,7 @@ import * as activityPub from "./core/activityPub/activityPub";
 import * as batchMessages from "./core/batch/batchMessages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
-import { validateDSNPId } from "./core/utilities";
+import { validateDSNPMessageId } from "./core/utilities";
 import { requireGetStore } from "./config";
 
 /**
@@ -14,10 +14,10 @@ import { requireGetStore } from "./config";
 export const InvalidActivityPubOpts = new Error("Invalid activity pub options.");
 
 /**
- * InvalidInReplyTo represents an error in the DSNP Id provided for the
+ * InvalidInReplyTo represents an error in the DSNP Message Id provided for the
  * inReplyTo parameter.
  */
-export const InvalidInReplyTo = new Error("Invalid DSNP Id for inReplyTo");
+export const InvalidInReplyTo = new Error("Invalid DSNP Message Id for inReplyTo");
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -56,7 +56,7 @@ export const broadcast = async (
  * creates a DSNP reply message for the hosted file for later announcement.
  *
  * @param contentOptions - Options for the activity pub content to generate
- * @param inReplyTo - The DSNP Id of the message that this message is in reply to
+ * @param inReplyTo - The DSNP Message Id of the message that this message is in reply to
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed DSNP Reply message ready for inclusion in a batch
  */
@@ -65,7 +65,7 @@ export const reply = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReplyMessage> => {
-  if (!validateDSNPId(inReplyTo)) throw InvalidInReplyTo;
+  if (!validateDSNPMessageId(inReplyTo)) throw InvalidInReplyTo;
 
   const contentObj = activityPub.create(contentOptions);
   if (!activityPub.isValidReply(contentObj)) throw InvalidActivityPubOpts;
@@ -87,7 +87,7 @@ export const reply = async (
  * react() creates a DSNP reaction message for later announcement.
  *
  * @param emoji - The emoji with which to react
- * @param inReplyTo - The DSNP Id of the message to which to react
+ * @param inReplyTo - The DSNP Message Id of the message to which to react
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed DSNP Reaction message ready for inclusion in a batch
  */

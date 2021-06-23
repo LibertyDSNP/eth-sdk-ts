@@ -90,7 +90,7 @@ export const createBeaconProxyWithOwner = async (
 };
 
 /**
- * Create a new identity and register it to a handle to get a new DSNP Id.
+ * Create a new identity and register it to a handle to get a new DSNP Message Id.
  * This will create and register a new beacon proxy identity.
  *
  * @param userAddress - User's public key address
