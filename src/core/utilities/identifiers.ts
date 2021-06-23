@@ -14,7 +14,8 @@ export type DSNPMessageId = string;
  * @param id - The string to validate
  * @returns True of false depending on whether the string is a valid DSNPMessageId
  */
-export const validateDSNPMessageId = (id: string): id is DSNPMessageId => id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
+export const validateDSNPMessageId = (id: string): id is DSNPMessageId =>
+  id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
 
 /**
  * DSNPUserId represents a DSNP user id following the DSNP
