@@ -21,11 +21,11 @@ export interface Registration {
 export type Handle = string;
 
 /**
- * resolveRegistration() Try to resolve a handle into a DSNP Message Id
+ * resolveRegistration() Try to resolve a handle into a DSNP User Id
  *
  * @param handle - String handle to resolve
  * @param opts - (optional) any config overrides.
- * @returns The Hex for the DSNP Message Id or null if not found
+ * @returns The Hex for the DSNP User Id or null if not found
  */
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
   const contract = await getContract(opts);
@@ -47,7 +47,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
 };
 
 /**
- * register() registers a handle to get a new DSNP Message Id
+ * register() registers a handle to get a new DSNP User Id
  *
  * @param identityContractAddress - Address of the identity contract to use
  * @param handle - The string handle to register
@@ -66,7 +66,7 @@ export const register = async (
 };
 
 /**
- * changeAddress() changes the identity contract address of a DSNP Message Id
+ * changeAddress() changes the identity contract address of a DSNP User Id
  *
  * @param handle - The string handle to alter
  * @param identityContractAddress - Address of the new identity contract to use
@@ -84,7 +84,7 @@ export const changeAddress = async (
 };
 
 /**
- * changeHandle() changes the handle of a DSNP Message Id
+ * changeHandle() changes the handle of a DSNP User Id
  *
  * @param oldHandle - The string handle to alter
  * @param newHandle - The new handle to use instead

@@ -127,10 +127,10 @@ export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
 };
 
 /**
- * Parses a DSNP Message Id in a contract transaction log event.
+ * Parses a DSNP User Id in a contract transaction log event.
  *
  * @param transaction - The transaction to parse
- * @returns the DSNP Message Id
+ * @returns the DSNP User Id
  */
 export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<DSNPUserId> => {
   const receipt = await transaction.wait(1);
@@ -140,7 +140,7 @@ export const getIdFromRegisterTransaction = async (transaction: ContractTransact
 };
 
 /**
- * Creates a new DSNP Message Identity Proxy contract using the specified test account, and registers the
+ * Creates a new DSNP Identity Proxy contract using the specified test account, and registers the
  * provided handle. Callers must keep track of what accounts have already been used.
  *
  * @param acctIdx - the index in TESTACCOUNTS to use.

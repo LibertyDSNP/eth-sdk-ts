@@ -85,7 +85,7 @@ describe("registry", () => {
       await expect(pendingTx).transactionRejectsWith(/Handle already exists/);
     });
 
-    it("returns a Contract Transaction that can be resolved into a DSNP Message Id", async () => {
+    it("returns a Contract Transaction that can be resolved into a DSNP User Id", async () => {
       const transaction = await register(idContractAddr, "new-handle");
 
       expect(await getIdFromRegisterTransaction(transaction)).toEqual("dsnp://00000000000003e9"); // 1001

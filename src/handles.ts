@@ -51,13 +51,13 @@ export const updateRegistration = async (
  *
  * @param handle - The Registry Handle
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns The Registration object with Handle, DSNP Message Id, and Identity contract address
+ * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
  */
 export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise<Registration | null> =>
   resolveRegistration(handle, opts);
 
 /**
- * Get the current registration from a DSNP Message Id
+ * Get the current registration from a DSNP User Id
  *
  * @param dsnpUserId - The DSNP User Id
  * @param opts - Optional. Configuration overrides, such as from address, if any

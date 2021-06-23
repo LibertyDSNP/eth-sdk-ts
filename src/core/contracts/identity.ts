@@ -30,7 +30,7 @@ export enum Permission {
   DELEGATE_REMOVE,
 }
 /**
- * createCloneProxy(logic?: Ethereum Address ) Creates a new identity with the message sender as the owner
+ * createCloneProxy(logic?: Ethereum Address) Creates a new identity with the message sender as the owner
  *
  * @param logic - The address to use for the logic contract
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -90,7 +90,7 @@ export const createBeaconProxyWithOwner = async (
 };
 
 /**
- * Create a new identity and register it to a handle to get a new DSNP Message Id.
+ * Create a new identity and register it to a handle to get a new DSNP User Id.
  * This will create and register a new beacon proxy identity.
  *
  * @param userAddress - User's public key address

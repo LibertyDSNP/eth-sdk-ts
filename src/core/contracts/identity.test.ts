@@ -125,7 +125,7 @@ describe("identity", () => {
     const handle = "flarp";
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
 
-    it("returns a Contract Transaction that can be resolved into a DSNP Message Id", async () => {
+    it("returns a Contract Transaction that can be resolved into a DSNP User Id", async () => {
       const transaction = await createAndRegisterBeaconProxy(fakeAddress, handle);
 
       const receipt = await transaction.wait(1);
