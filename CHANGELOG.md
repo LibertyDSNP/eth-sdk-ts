@@ -2,19 +2,19 @@
 
 ## Unreleased
 ### Changes
-- 
+- Renamed DSNPId to DSNPMessageId to avoid confusion with DSNPUserId
 ### Added
-- 
+-
 ### Removed
 -
 ### Fixed
-- 
+-
 
 ## [1.0.0] - 2021-06-22
 ### Changes
 - Lots of updates and cleanups
 - Removed `requireGetConfig`: Use specific getters
-- Moved S3Node into examples 
+- Moved S3Node into examples
 ### Added
 - Reading and writing a batch file
 - Creating Announcement Messages
