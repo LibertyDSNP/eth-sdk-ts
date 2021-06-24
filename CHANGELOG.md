@@ -3,6 +3,7 @@
 ## Unreleased
 ### Changes
 - Renamed DSNPId to DSNPMessageId to avoid confusion with DSNPUserId
+- Renamed validateDSNPId to validateDSNPMessageId (breaking change)
 ### Added
 -
 ### Removed
