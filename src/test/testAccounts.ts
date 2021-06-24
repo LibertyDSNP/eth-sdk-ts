@@ -127,10 +127,10 @@ export const getSignerForAccount = (accountIndex: number): ethers.Signer => {
 };
 
 /**
- * Parses a DSNP Id in a contract transaction log event.
+ * Parses a DSNP User Id in a contract transaction log event.
  *
  * @param transaction - The transaction to parse
- * @returns the DSNP Id
+ * @returns the DSNP User Id
  */
 export const getIdFromRegisterTransaction = async (transaction: ContractTransaction): Promise<DSNPUserId> => {
   const receipt = await transaction.wait(1);
