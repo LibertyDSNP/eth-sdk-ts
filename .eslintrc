@@ -29,7 +29,7 @@
     "id-length": [
       "error",
       {
-        "exceptionPatterns": ["[i-k]", "e", "c", "x", "y"],
+        "exceptionPatterns": ["[i-k]","e","c","x","y", "r", "s", "v"],
         "properties": "never"
       }
     ],

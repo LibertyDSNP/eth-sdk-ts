@@ -1,7 +1,10 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
-import {
+import { DelegateAddParams } from "./identity";
+
+import * as identity from "./identity";
+const {
   createCloneProxy,
   createCloneProxyWithOwner,
   createBeaconProxy,
@@ -10,12 +13,17 @@ import {
   isAuthorizedTo,
   Permission,
   upsertDelegate,
-} from "./identity";
+  createAddDelegateEip712TypedData,
+  upsertDelegateBySignature,
+  getDomainSeparator,
+} = identity;
+
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { MissingContract } from "../../config";
 import { Identity__factory } from "../../types/typechain";
+import { signEIP712Message } from "../../test/helpers/EIP712";
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
@@ -143,6 +151,21 @@ describe("identity", () => {
     });
   });
 
+  describe("#getDomainSeparator", () => {
+    it("returns a EIP712 domain separator", async () => {
+      const fakeContractAddress = "0xfake";
+      const expected = {
+        chainId: expect.any(Number),
+        name: "Identity",
+        salt: "0xa0bec69846cdcc8c1ba1eb93be1c5728385a9e26062a73e238b1beda189ac4c9",
+        verifyingContract: "0xfake",
+        version: "1",
+      };
+
+      expect(await getDomainSeparator(fakeContractAddress)).toEqual(expected);
+    });
+  });
+
   describe("#upsertDelegate", () => {
     let contractAddress: EthereumAddress;
     let contractOwner: EthereumAddress;
@@ -164,6 +187,128 @@ describe("identity", () => {
       await upsertDelegate(contractAddress, NON_OWNER, 0x2);
 
       expect(await isAuthorizedTo(NON_OWNER, contractAddress, 1, 60)).toBeTruthy();
+    });
+  });
+
+  describe("#createAddDelegateEip712TypedData", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+    let typedData: Record<string, unknown>;
+
+    beforeAll(async () => {
+      contractOwner = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+      await identityContract.deployed();
+      contractAddress = identityContract.address;
+      typedData = {
+        types: {
+          EIP712Domain: [
+            { name: "name", type: "string" },
+            { name: "version", type: "string" },
+            { name: "chainId", type: "uint256" },
+            { name: "verifyingContract", type: "address" },
+            { name: "salt", type: "bytes32" },
+          ],
+          DelegateAdd: [
+            { name: "nonce", type: "uint32" },
+            { name: "delegateAddr", type: "address" },
+            { name: "role", type: "uint8" },
+          ],
+        },
+        primaryType: "DelegateAdd",
+        domain: {
+          chainId: expect.any(Number),
+          name: "Identity",
+          salt: "0xa0bec69846cdcc8c1ba1eb93be1c5728385a9e26062a73e238b1beda189ac4c9",
+          verifyingContract: contractAddress,
+          version: "1",
+        },
+      };
+    });
+
+    describe("when nonce is included in message", () => {
+      const message: DelegateAddParams = {
+        delegateAddr: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+        nonce: 3,
+        role: 0x1,
+      };
+
+      it("creates an EIP712 data type with the nonce included", async () => {
+        const expected = { ...typedData, message };
+
+        expect(await createAddDelegateEip712TypedData(contractAddress, message)).toEqual(expected);
+      });
+
+      it("does not call #getNonceForDelegate", async () => {
+        jest.spyOn(identity, "getNonceForDelegate");
+        await createAddDelegateEip712TypedData(contractAddress, message);
+        expect(identity.getNonceForDelegate).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("when nonce is not included in message", () => {
+      const message = {
+        delegateAddr: "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc",
+        role: 0x1,
+      };
+
+      it("creates an EIP-712 data type and resolves the nonce", async () => {
+        const expected = { ...typedData, message: { ...message, nonce: 0 } };
+        expect(await createAddDelegateEip712TypedData(contractAddress, message)).toEqual(expected);
+      });
+
+      it("calls #getNonceForDelegate", async () => {
+        jest.spyOn(identity, "getNonceForDelegate");
+        await createAddDelegateEip712TypedData(contractAddress, message);
+        expect(identity.getNonceForDelegate).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe("#upsertDelegateBySignature", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+    const message: DelegateAddParams = {
+      delegateAddr: NON_OWNER,
+      role: 0x1,
+    };
+
+    beforeAll(async () => {
+      contractOwner = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+      await identityContract.deployed();
+      contractAddress = identityContract.address;
+    });
+
+    describe("when signature is valid", () => {
+      it("adds a delegate", async () => {
+        const typedData = await createAddDelegateEip712TypedData(contractAddress, message);
+        const { r, s, v } = await signEIP712Message(contractOwner, provider, typedData);
+
+        //eslint-disable-next-line
+        await upsertDelegateBySignature(contractAddress, { r, s, v }, (typedData as any).message);
+
+        expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, 60)).toBeTruthy();
+      });
+    });
+
+    describe("when signature is not valid", () => {
+      it("throws error", async () => {
+        const typedData = await createAddDelegateEip712TypedData(contractAddress, message);
+        const { r, s, v } = await signEIP712Message(contractOwner, provider, typedData);
+
+        const addDelegatePendingTx = upsertDelegateBySignature(
+          contractAddress,
+          { r, s, v },
+          {
+            nonce: 777,
+            role: 1,
+            delegateAddr: NON_OWNER,
+          }
+        );
+
+        await expect(addDelegatePendingTx).transactionRejectsWith(/Signer does not have the DELEGATE_ADD permission/);
+      });
     });
   });
 });
