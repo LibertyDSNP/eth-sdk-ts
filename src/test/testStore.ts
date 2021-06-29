@@ -1,5 +1,4 @@
 import { Content, StoreInterface, WriteStreamCallback } from "../core/store";
-import { ParquetReader } from "@dsnp/parquetjs";
 
 type ParquetContent = { type: string; rowCount: number };
 
@@ -36,11 +35,6 @@ export default class TestStore implements StoreInterface {
       },
     };
     await callback(writeStream);
-    const read = await ParquetReader.openBuffer(Buffer.concat(buffers));
-    this.store[targetPath] = {
-      type: "parquet",
-      rowCount: parseInt(read.metadata.num_rows.buffer.toString("hex"), 16),
-    };
     return new URL(`http://fakestore.org/${targetPath}`);
   }
 

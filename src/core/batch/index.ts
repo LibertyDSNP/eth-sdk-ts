@@ -17,8 +17,6 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-export * from "./batch";
-
 import * as batchMessagesImport from "./batchMessages";
 export const batchMessages = batchMessagesImport;
 
