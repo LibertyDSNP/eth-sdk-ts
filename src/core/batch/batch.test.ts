@@ -83,13 +83,11 @@ describe("batch", () => {
       const mockStore = new TestStore();
       await createFile("batch.parquet", messages, { store: mockStore });
 
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+
       expect(batch.writeBatch).toHaveBeenCalled();
-      expect(mockStore.store).toEqual({
-        "batch.parquet": {
-          rowCount: 1,
-          type: "parquet",
-        },
-      });
+      expect(reader.metadata.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
     });
 
     describe("when messages argument is empty", () => {
