@@ -9,20 +9,25 @@ import {
   createAndRegisterBeaconProxy,
   isAuthorizedTo,
   Permission,
+  upsertDelegate,
 } from "./identity";
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { MissingContract } from "../../config";
+import { Identity__factory } from "../../types/typechain";
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
 
 describe("identity", () => {
   let provider: ethers.providers.JsonRpcProvider;
+  let signer: ethers.Signer;
+
   setupSnapshot();
+
   beforeAll(() => {
-    ({ provider } = setupConfig());
+    ({ provider, signer } = setupConfig());
   });
 
   const getBeacon = async (): Promise<string> => {
@@ -135,6 +140,30 @@ describe("identity", () => {
 
       const address = getAddressFromReceipt(receipt);
       expect(ethers.utils.isAddress(address)).toBeTruthy();
+    });
+  });
+
+  describe("#upsertDelegate", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+
+    beforeAll(async () => {
+      contractOwner = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+      await identityContract.deployed();
+      contractAddress = identityContract.address;
+    });
+
+    it("adds a new delegate", async () => {
+      await upsertDelegate(contractAddress, NON_OWNER, 0x1);
+
+      expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, 60)).toBeTruthy();
+    });
+
+    it("updates a delegate's role", async () => {
+      await upsertDelegate(contractAddress, NON_OWNER, 0x2);
+
+      expect(await isAuthorizedTo(NON_OWNER, contractAddress, 1, 60)).toBeTruthy();
     });
   });
 });
