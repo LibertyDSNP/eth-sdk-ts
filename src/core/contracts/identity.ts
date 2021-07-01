@@ -22,6 +22,15 @@ const IDENTITY_CONTRACT = "Identity";
 const BEACON_FACTORY_CONTRACT = "BeaconFactory";
 const BEACON_CONTRACT = "Beacon";
 
+/**
+ * DelegationRole represents a struct for adding roles delegates
+ */
+export enum DelegationRole {
+  NONE = 0x0,
+  OWNER = 0x1,
+  ANNOUNCER = 0x2,
+}
+
 export enum Permission {
   NONE,
   ANNOUNCE,
@@ -29,6 +38,7 @@ export enum Permission {
   DELEGATE_ADD,
   DELEGATE_REMOVE,
 }
+
 /**
  * createCloneProxy(logic?: Ethereum Address) Creates a new identity with the message sender as the owner
  *
@@ -171,4 +181,25 @@ const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => 
 
   if (!address) throw MissingContract;
   return address;
+};
+
+/**
+ * upsertDelegate() Add or change permissions for delegate
+ *
+ * @param contractAddress - Address of the identity contract to use
+ * @param address - Address of delegate to add permissions to
+ * @param role - The role to give delegate
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const upsertDelegate = async (
+  contractAddress: EthereumAddress,
+  address: EthereumAddress,
+  role: DelegationRole,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const signer = requireGetSigner(opts);
+  const provider = requireGetProvider(opts);
+  const contract = await Identity__factory.connect(contractAddress, provider);
+
+  return contract.connect(signer).delegate(address, role);
 };
