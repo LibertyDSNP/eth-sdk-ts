@@ -1,4 +1,3 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { ethers } from "ethers";
 
 import * as config from "./config";
@@ -7,8 +6,6 @@ import { createAnnouncements } from "./createAnnouncements";
 import { generateDSNPStream } from "./generators/dsnpGenerators";
 import TestStore from "./test/testStore";
 
-enableFetchMocks();
-
 describe("createAnnouncements", () => {
   let store: TestStore;
 
@@ -16,8 +13,6 @@ describe("createAnnouncements", () => {
     jest.setTimeout(12000);
 
     store = new TestStore();
-
-    fetchMock.mockResponse("fakeFile");
 
     config.setConfig({
       currentFromId: "dsnp://0123456789ABCDEF",

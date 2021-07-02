@@ -1,6 +1,3 @@
-import fetch from "cross-fetch";
-import { keccak256 } from "js-sha3";
-
 import { ConfigOpts } from "./config";
 import { createFile } from "./core/batch";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
@@ -37,13 +34,11 @@ export const createAnnouncements = async (
       async (dsnpType: string): Promise<Announcement> => {
         const filename = getRandomString();
 
-        const uri = await createFile(filename, messagesByType[dsnpType], opts);
-        const fileBody = await fetch(uri.toString()).then((response) => response.text());
-        const hash = keccak256(fileBody);
+        const { url, hash } = await createFile(filename, messagesByType[dsnpType], opts);
 
         return {
           dsnpType: parseInt(dsnpType),
-          uri: uri.toString(),
+          uri: url.toString(),
           hash,
         };
       }

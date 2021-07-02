@@ -1,10 +1,14 @@
-import { DSNPMessage, DSNPType } from "../messages/messages";
 import parquet from "@dsnp/parquetjs";
-const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
-import { WriteStream } from "../store";
-import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
-import { EmptyArrayError } from "../utilities";
+import { keccak256 } from "js-sha3";
+
 import { ConfigOpts, requireGetStore } from "../../config";
+import { DSNPMessage, DSNPType } from "../messages/messages";
+import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
+import { WriteStream } from "../store";
+import { HexString } from "../../types/Strings";
+import { EmptyArrayError } from "../utilities";
+
+const { ParquetReader, ParquetWriter, ParquetSchema } = parquet;
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -20,6 +24,11 @@ interface BloomFilterData {
   RowGroupIndex: number;
 }
 
+interface BatchFileData {
+  url: URL;
+  hash: HexString;
+}
+
 /**
  * createFile() takes a series of DSNP messages and returns a URL
  * for storage location.
@@ -30,16 +39,34 @@ interface BloomFilterData {
  * @returns A URL of the storage location
  * @throws error if messages argument is empty.
  */
-export const createFile = async (targetPath: string, messages: DSNPMessage[], opts?: ConfigOpts): Promise<URL> => {
+export const createFile = async (
+  targetPath: string,
+  messages: DSNPMessage[],
+  opts?: ConfigOpts
+): Promise<BatchFileData> => {
   if (messages.length === 0) throw EmptyArrayError;
 
   const schema = new ParquetSchema(getSchemaFor(messages[0].dsnpType));
   const bloomFilterOptions = getBloomFilterOptionsFor(messages[0].dsnpType);
 
   const store = requireGetStore(opts);
-  return store.putStream(targetPath, async (writeStream: WriteStream) => {
-    await writeBatch(writeStream, schema, messages, bloomFilterOptions);
+  const hashGenerator = keccak256.create();
+  const url = await store.putStream(targetPath, async (writeStream: WriteStream) => {
+    const hashingWriteStream = {
+      ...writeStream,
+      write: (chunk: Uint8Array, ...args: unknown[]): boolean => {
+        hashGenerator.update(chunk);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return writeStream.write(chunk, ...(args as any[]));
+      },
+    };
+    await writeBatch(hashingWriteStream, schema, messages, bloomFilterOptions);
   });
+
+  return {
+    url,
+    hash: hashGenerator.hex(),
+  };
 };
 
 /**
