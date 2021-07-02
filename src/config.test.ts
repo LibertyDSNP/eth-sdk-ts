@@ -3,14 +3,14 @@ import {
   getConfig,
   setConfig,
   Config,
-  MissingStore,
-  MissingSigner,
-  MissingProvider,
+  MISSING_STORE,
+  MISSING_SIGNER,
+  MISSING_PROVIDER,
   requireGetCurrentFromId,
   requireGetProvider,
   requireGetSigner,
   requireGetStore,
-  MissingUser,
+  MISSING_USER,
 } from "./config";
 import TestStore from "./test/testStore";
 
@@ -82,28 +82,28 @@ describe("config", () => {
     const badConfig = getConfig();
 
     it("requireGetSigner works", () => {
-      expect(() => requireGetSigner(badConfig)).toThrow(MissingSigner);
+      expect(() => requireGetSigner(badConfig)).toThrow(MISSING_SIGNER);
 
       const signer = Wallet.createRandom();
       expect(requireGetSigner({ signer: signer })).toBeInstanceOf(Object);
     });
 
     it("requireGetProvider works", () => {
-      expect(() => requireGetProvider(badConfig)).toThrow(MissingProvider);
+      expect(() => requireGetProvider(badConfig)).toThrow(MISSING_PROVIDER);
 
       const testProvider = new providers.JsonRpcProvider("http://localhost:8383");
       expect(requireGetProvider({ provider: testProvider })).toBeInstanceOf(Object);
     });
 
     it("requireGetStore works", () => {
-      expect(() => requireGetStore(badConfig)).toThrow(MissingStore);
+      expect(() => requireGetStore(badConfig)).toThrow(MISSING_STORE);
 
       const testStore = new TestStore();
       expect(requireGetStore({ store: testStore })).toBeInstanceOf(Object);
     });
 
     it("requireGetCurrentFromId", () => {
-      expect(() => requireGetCurrentFromId(badConfig)).toThrow(MissingUser);
+      expect(() => requireGetCurrentFromId(badConfig)).toThrow(MISSING_USER);
 
       const testRegistration = "0xabcd1234";
       expect(requireGetCurrentFromId({ currentFromId: testRegistration })).toEqual(testRegistration);

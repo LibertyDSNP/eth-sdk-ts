@@ -2,8 +2,8 @@ import { ContractTransaction } from "ethers";
 import {
   ConfigOpts,
   requireGetProvider,
-  MissingProvider,
-  MissingContract,
+  MISSING_PROVIDER,
+  MISSING_CONTRACT,
   requireGetSigner,
   getContracts,
 } from "../../config";
@@ -114,7 +114,7 @@ const getIdentityLogicContractAddress = async (opts?: ConfigOpts): Promise<Ether
 
   const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
 
-  if (!address) throw MissingContract;
+  if (!address) throw MISSING_CONTRACT;
   return address;
 };
 
@@ -124,7 +124,7 @@ const getIdentityCloneFactoryContract = async (opts?: ConfigOpts): Promise<Ident
   const provider = requireGetProvider(opts);
 
   const address = identityCloneFactory || (await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT));
-  if (!address) throw MissingContract;
+  if (!address) throw MISSING_CONTRACT;
 
   return IdentityCloneFactory__factory.connect(address, signer);
 };
@@ -135,7 +135,7 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
   const provider = requireGetProvider(opts);
 
   const address = beaconFactory || (await getContractAddress(provider, BEACON_FACTORY_CONTRACT));
-  if (!address) throw MissingContract;
+  if (!address) throw MISSING_CONTRACT;
 
   return BeaconFactory__factory.connect(address, signer);
 };
@@ -159,7 +159,7 @@ export const isAuthorizedTo = async (
   opts?: ConfigOpts
 ): Promise<boolean> => {
   const provider = requireGetProvider(opts);
-  if (!provider) throw MissingProvider;
+  if (!provider) throw MISSING_PROVIDER;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
 };
@@ -169,6 +169,6 @@ const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => 
   const provider = requireGetProvider(opts);
   const address = beacon || (await getContractAddress(provider as Provider, BEACON_CONTRACT));
 
-  if (!address) throw MissingContract;
+  if (!address) throw MISSING_CONTRACT;
   return address;
 };

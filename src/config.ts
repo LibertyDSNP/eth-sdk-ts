@@ -5,11 +5,11 @@ import { QueueInterface } from "./core/queue";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
-export const MissingContract = new Error("Contract was not found");
-export const MissingSigner = new Error("Signer is not set.");
-export const MissingProvider = new Error("Blockchain provider is not set.");
-export const MissingStore = new Error("Store adapter was not found");
-export const MissingUser = new Error("No user id found. Please authenticate a handle.");
+export const MISSING_CONTRACT = "Contract was not found";
+export const MISSING_SIGNER = "Signer is not set.";
+export const MISSING_PROVIDER = "Blockchain provider is not set.";
+export const MISSING_STORE = "Store adapter was not found";
+export const MISSING_USER = "No user id found. Please authenticate a handle.";
 
 export interface Contracts {
   /** The Address of the Batch Announce contract */
@@ -98,7 +98,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
  */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
   const c = getConfig(opts);
-  if (!c.provider) throw MissingProvider;
+  if (!c.provider) throw MISSING_PROVIDER;
   return c.provider;
 };
 
@@ -110,7 +110,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
  */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
   const c = getConfig(opts);
-  if (!c.signer) throw MissingSigner;
+  if (!c.signer) throw MISSING_SIGNER;
   return c.signer;
 };
 
@@ -122,7 +122,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
  */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
   const c = getConfig(opts);
-  if (!c.store) throw MissingStore;
+  if (!c.store) throw MISSING_STORE;
   return c.store;
 };
 
@@ -134,7 +134,7 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
  */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
-  if (!c.currentFromId) throw MissingUser;
+  if (!c.currentFromId) throw MISSING_USER;
   return c.currentFromId;
 };
 

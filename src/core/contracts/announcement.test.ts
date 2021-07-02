@@ -2,19 +2,19 @@ import { keccak256 } from "js-sha3";
 
 import { batch, Announcement } from "./announcement";
 import { setupConfig } from "../../test/sdkTestConfig";
-import { setupSnapshot } from "../../test/hardhatRPC";
+// import { setupSnapshot } from "../../test/hardhatRPC";
 import { requireGetProvider } from "../../config";
 
 describe("#batch", () => {
-  setupSnapshot();
+  // setupSnapshot();
 
   beforeAll(setupConfig);
 
   it("successfully posts a batch to the chain", async () => {
     jest.setTimeout(12000);
 
-    const testUri = "http://www.testconst.com";
-    const hash = "0x" + keccak256("test");
+    const testUri = "http://www.testconst4.com";
+    const hash = "0x" + keccak256("test4");
 
     const announcements: Announcement[] = [{ dsnpType: 0, uri: testUri, hash: hash }];
 

@@ -1,5 +1,5 @@
-import { ContractTransaction, EventFilter } from "ethers";
-import { ConfigOpts, requireGetProvider, MissingContract, getContracts, requireGetSigner } from "../../config";
+import { ContractTransaction, ethers, EventFilter } from "ethers";
+import { getConfig, ConfigOpts, getContracts, MISSING_CONTRACT, requireGetProvider, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { Announcer, Announcer__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
@@ -20,7 +20,7 @@ export interface Announcement {
  * @returns A contract receipt promise
  */
 export const batch = async (announcements: Announcement[]): Promise<ContractTransaction> => {
-  const contract = await getAnnouncerContract();
+  const contract = await getAnnouncerContractWithSigner();
   return contract.batch(announcements);
 };
 
@@ -34,13 +34,18 @@ export const dsnpBatchFilter = async (): Promise<EventFilter> => {
   return contract.filters.DSNPBatch();
 };
 
-const getAnnouncerContract = async (opts?: ConfigOpts): Promise<Announcer> => {
-  const { announcer } = getContracts(opts);
+const getAnnouncerContractWithSigner = async (opts?: ConfigOpts): Promise<Announcer> => {
   const signer = requireGetSigner(opts);
+  return getAnnouncerContract(signer, opts);
+};
+
+const getAnnouncerContract = async (signer?: ethers.Signer, opts?: ConfigOpts): Promise<Announcer> => {
+  const { announcer } = getContracts(opts);
+  console.log("getAnnouncerContract: ", getConfig());
   const provider = requireGetProvider(opts);
 
   const address = announcer || (await getContractAddress(provider, CONTRACT_NAME));
 
-  if (!address) throw MissingContract;
-  return Announcer__factory.connect(address, signer);
+  if (!address) throw MISSING_CONTRACT;
+  return Announcer__factory.connect(address, signer || provider);
 };

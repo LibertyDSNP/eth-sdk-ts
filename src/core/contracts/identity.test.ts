@@ -13,7 +13,7 @@ import {
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
-import { MissingContract } from "../../config";
+import { MISSING_CONTRACT } from "../../config";
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
@@ -27,7 +27,7 @@ describe("identity", () => {
 
   const getBeacon = async (): Promise<string> => {
     const addr = await getContractAddress(provider, "Beacon");
-    if (!addr) throw MissingContract;
+    if (!addr) throw MISSING_CONTRACT;
     return addr;
   };
 

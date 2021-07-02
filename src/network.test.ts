@@ -62,7 +62,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.follow(registerId)).rejects.toThrow(config.MISSING_SIGNER);
       });
     });
 
@@ -74,7 +74,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(config.MissingUser);
+        await expect(network.follow("dril")).rejects.toThrow(config.MISSING_USER);
       });
     });
   });
@@ -109,7 +109,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.unfollow(registerId)).rejects.toThrow(config.MISSING_SIGNER);
       });
     });
 
@@ -121,7 +121,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingUser);
+        await expect(network.unfollow(registerId)).rejects.toThrow(config.MISSING_USER);
       });
     });
   });
