@@ -19,4 +19,5 @@
 
 export * from "./errors";
 export * from "./identifiers";
+export * from "./iterator";
 export * from "./random";

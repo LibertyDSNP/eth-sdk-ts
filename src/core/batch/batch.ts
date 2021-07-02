@@ -7,8 +7,7 @@ import { DSNPType, DSNPTypedMessage } from "../messages/messages";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-
-type AsyncOrSyncIterable<T> = AsyncIterable<T> | Iterable<T>;
+import { AsyncOrSyncIterable } from "../utilities";
 
 type ReadRowFunction = {
   (row: DSNPType): void;

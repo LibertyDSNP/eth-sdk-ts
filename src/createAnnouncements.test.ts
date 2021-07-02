@@ -24,9 +24,8 @@ describe("createAnnouncements", () => {
   it("returns an array of valid announcements for each message type", async () => {
     const messages = await generateDSNPStream(100);
     const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-    const messageIterator = signedMessages[Symbol.iterator]();
 
-    const announcements = await createAnnouncements(messageIterator);
+    const announcements = await createAnnouncements(signedMessages);
 
     expect(announcements).toMatchObject([
       {
@@ -56,9 +55,8 @@ describe("createAnnouncements", () => {
       ),
     ];
     const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-    const messageIterator = signedMessages[Symbol.iterator]();
 
-    const announcements = await createAnnouncements(messageIterator);
+    const announcements = await createAnnouncements(signedMessages);
     const url = announcements[0].uri;
     const filename = url.split(".org/")[1];
 
