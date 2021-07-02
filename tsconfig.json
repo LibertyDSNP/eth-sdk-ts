@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "outDir": "dist/cjs",
     "rootDir": "src",
     "moduleResolution": "node",
@@ -33,7 +33,7 @@
   /* Tell Typescript compiler what version(s) of JS libs to include when compiling.
    * See https://www.typescriptlang.org/tsconfig#lib
    */
-  "lib": ["es2017", "esnext"],
+  "lib": ["es2017", "es2018", "esnext"],
   "exclude": ["node_modules/**", "./*.ts", "./src/test/importTest/**", "./examples/**"],
   "compileOnSave": false,
   "typedocOptions": {

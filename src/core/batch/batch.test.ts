@@ -1,8 +1,9 @@
+import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
+
 import * as batch from "./batch";
 import { generateBroadcast } from "../../generators/dsnpGenerators";
-import { EmptyArrayError } from "../utilities/errors";
+import { DSNPType } from "../messages";
 import { BroadcastSchema } from "./parquetSchema";
-import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 import TestStore from "../../test/testStore";
 
 describe("batch", () => {
@@ -74,26 +75,20 @@ describe("batch", () => {
     it("calls putStream to start streaming", async () => {
       const mockStore = new TestStore();
       jest.spyOn(mockStore, "putStream");
-      await createFile("batch.parquet", messages, { store: mockStore });
+      await createFile("batch.parquet", DSNPType.Broadcast, messages, { store: mockStore });
       expect(mockStore.putStream).toHaveBeenCalled();
     });
 
     it("calls #writeBatch to stream write parquet", async () => {
       jest.spyOn(batch, "writeBatch");
       const mockStore = new TestStore();
-      await createFile("batch.parquet", messages, { store: mockStore });
+      await createFile("batch.parquet", DSNPType.Broadcast, messages, { store: mockStore });
 
       const file = mockStore.getStore()["batch.parquet"];
       const reader = await ParquetReader.openBuffer(file);
 
       expect(batch.writeBatch).toHaveBeenCalled();
       expect(reader.metadata.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
-    });
-
-    describe("when messages argument is empty", () => {
-      it("throws an EmptyArrayError", async () => {
-        await expect(batch.createFile("batch.parquet", [])).rejects.toThrow(EmptyArrayError);
-      });
     });
   });
 });
