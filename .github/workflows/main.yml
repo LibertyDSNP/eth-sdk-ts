@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       ganache:
-        image: dsnp/ganache:v0.1.0
+        image: dsnp/hardhat:v0.1.0
         ports:
           - 8545:8545
     steps:
