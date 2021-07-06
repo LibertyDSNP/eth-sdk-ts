@@ -325,3 +325,7 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,vim,emacs,vscode,git,node
 
 junit.xml
+
+# for testing browser capability
+examples/server/package-lock.json
+examples/server/files

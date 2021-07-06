@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= title %></title>
+    <script src="http://localhost:8000/main.js"></script>
+    <link rel="icon" href="data:,">
+</head>
+<body>
+<script type="module">
+    const port = "<%= port %>"
+    const readit = function (filename) {
+        parquetjs.ParquetReader
+            .openUrl(`http://localhost:${port}/files/${filename}`)
+            .then(async (reader) => {
+                let cursor = await reader.getCursor();
+
+                let record = null;
+                while (record = await cursor.next()) {
+                    console.log("record", record);
+                }
+                return reader;
+            })
+            .then((reader) => reader.close())
+            .catch((e) => {
+                console.log("error", e);
+            })
+
+    }
+
+    const search = async function (filename, columnName, searchTerm) {
+        const rdr = await parquetjs.ParquetReader.openUrl(`http://localhost:${port}/files/${filename}`)
+        const bfs = await rdr.getBloomFiltersFor([columnName])
+        if (!bfs[columnName]) return false
+        Promise.all(bfs[columnName].map(async item => item.sbbf.check(searchTerm)))
+            .then(values => {
+                const res = values.some((el) => (el === true));
+                console.log("res: ", res)
+                return res
+            })
+            .then(res => {
+                alert(`found: ${res.toString()}`)
+            })
+        rdr.close()
+    }
+</script>
+<h3>Be sure you are serving the dsnp library at the repo root with:</h3>
+        <code>npm run serve</code></b>
+
+</body>
+</html>
