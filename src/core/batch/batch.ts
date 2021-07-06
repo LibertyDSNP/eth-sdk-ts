@@ -28,6 +28,14 @@ interface BatchFileData {
   hash: HexString;
 }
 
+/**
+ * MixedDSNPTypeError indicates that more than one type of DSNP message was
+ * passed in attempting to create batch file which is not allowed.
+ */
+export const MixedDSNPTypeError = new Error(
+  "Invalid message iterator for batch. Batch files must only contain DSNP type."
+);
+
 type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
 
 /**
@@ -86,8 +94,11 @@ export const writeBatch = async <T extends DSNPType>(
   opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);
+  let firstDsnpType;
 
   for await (const message of messages) {
+    if (firstDsnpType === undefined) firstDsnpType = message.dsnpType;
+    if (message.dsnpType != firstDsnpType) throw MixedDSNPTypeError;
     writer.appendRow(message);
   }
 

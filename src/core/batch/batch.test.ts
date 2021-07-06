@@ -1,7 +1,7 @@
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 import * as batch from "./batch";
-import { generateBroadcast } from "../../generators/dsnpGenerators";
+import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { DSNPType } from "../messages";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
@@ -36,14 +36,13 @@ describe("batch", () => {
   });
 
   describe("#writeBatch", () => {
-    const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
-    const writeStream = { write: jest.fn(), end: jest.fn() };
     const parquetWriterInstance = {
       appendRow: jest.fn().mockImplementation(async (message) => message),
       close: jest.fn(),
     };
+    const writeStream = { write: jest.fn(), end: jest.fn() };
 
-    const { writeBatch } = batch;
+    const { writeBatch, MixedDSNPTypeError } = batch;
 
     beforeAll(() => {
       jest.spyOn(ParquetWriter, "openStream").mockResolvedValue(parquetWriterInstance);
@@ -52,19 +51,34 @@ describe("batch", () => {
     beforeEach(jest.clearAllMocks);
     afterAll(jest.restoreAllMocks);
 
-    it("calls ParquetWriter#openStream to start a writable stream", async () => {
-      await writeBatch(writeStream, BroadcastSchema, messages);
-      expect(ParquetWriter.openStream).toHaveBeenCalled();
+    describe("when passed a valid message iterator", () => {
+      const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
+
+      it("calls ParquetWriter#openStream to start a writable stream", async () => {
+        await writeBatch(writeStream, BroadcastSchema, messages);
+        expect(ParquetWriter.openStream).toHaveBeenCalled();
+      });
+
+      it("calls ParquetWriter#appendRow to add a row to parquet stream", async () => {
+        await writeBatch(writeStream, BroadcastSchema, messages);
+        expect(parquetWriterInstance.appendRow).toHaveBeenCalledTimes(1);
+      });
+
+      it("calls ParquetWriter#close to end the stream", async () => {
+        await writeBatch(writeStream, BroadcastSchema, messages);
+        expect(parquetWriterInstance.close).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it("calls ParquetWriter#appendRow to add a row to parquet stream", async () => {
-      await writeBatch(writeStream, BroadcastSchema, messages);
-      expect(parquetWriterInstance.appendRow).toHaveBeenCalledTimes(1);
-    });
+    describe("when passed a message iterator containing multiple DSNP types", () => {
+      const badMessages = [
+        { ...generateBroadcast(), signature: "0xfa1ce" },
+        { ...generateReply(), signature: "0xfa1ce" },
+      ];
 
-    it("calls ParquetWriter#close to end the stream", async () => {
-      await writeBatch(writeStream, BroadcastSchema, messages);
-      expect(parquetWriterInstance.close).toHaveBeenCalledTimes(1);
+      it("throws MixedDSNPTypeError", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(MixedDSNPTypeError);
+      });
     });
   });
 
