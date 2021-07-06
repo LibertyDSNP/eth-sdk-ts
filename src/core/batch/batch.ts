@@ -29,18 +29,41 @@ interface BatchFileData {
 }
 
 /**
+ * BatchError indicates that something went wrong in generating a batch file.
+ * This error object will include a fileHandle field containing the un-closed
+ * write stream of the batch.
+ */
+export class BatchError extends Error {
+  fileHandle: WriteStream;
+
+  constructor(message: string, fileHandle: WriteStream) {
+    super(message);
+    this.name = "BatchError";
+    this.fileHandle = fileHandle;
+  }
+}
+
+/**
  * EmptyBatchError indicates that no messages were passed in attempting to
  * create a batch file which is not allowed.
  */
-export const EmptyBatchError = new Error("Invalid message iterator for batch: iterator contains no messages");
+export class EmptyBatchError extends BatchError {
+  constructor(fileHandle: WriteStream) {
+    super("Invalid message iterator for batch: iterator contains no messages", fileHandle);
+    this.name = "EmptyBatchError";
+  }
+}
 
 /**
  * MixedDSNPTypeError indicates that more than one type of DSNP message was
  * passed in attempting to create batch file which is not allowed.
  */
-export const MixedTypeBatchError = new Error(
-  "Invalid message iterator for batch: iterator contains multiple DSNP types"
-);
+export class MixedTypeBatchError extends BatchError {
+  constructor(fileHandle: WriteStream) {
+    super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
+    this.name = "MixedTypeBatchError";
+  }
+}
 
 type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
 
@@ -104,11 +127,11 @@ export const writeBatch = async <T extends DSNPType>(
 
   for await (const message of messages) {
     if (firstDsnpType === undefined) firstDsnpType = message.dsnpType;
-    if (message.dsnpType != firstDsnpType) throw MixedTypeBatchError;
+    if (message.dsnpType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
     writer.appendRow(message);
   }
 
-  if (firstDsnpType === undefined) throw EmptyBatchError;
+  if (firstDsnpType === undefined) throw new EmptyBatchError(writeStream);
 
   await writer.close();
 };

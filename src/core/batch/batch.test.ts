@@ -78,7 +78,13 @@ describe("batch", () => {
       ];
 
       it("throws MixedDSNPTypeError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(MixedTypeBatchError);
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toBeInstanceOf(MixedTypeBatchError);
+      });
+
+      it("includes the write stream handle in the thrown error", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toMatchObject({
+          fileHandle: writeStream,
+        });
       });
     });
 
@@ -86,7 +92,13 @@ describe("batch", () => {
       const badMessages: Array<DSNPBatchMessage> = [];
 
       it("throws MixedDSNPTypeError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(EmptyBatchError);
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
+      });
+
+      it("includes the write stream handle in the thrown error", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toMatchObject({
+          fileHandle: writeStream,
+        });
       });
     });
   });
