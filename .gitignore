@@ -16,6 +16,7 @@ dist
 *.js
 *.d.ts
 !esbuild*.js
+!examples/server/app.js
 docs
 /core
 /generators
