@@ -3,7 +3,8 @@ import { createFile } from "./core/batch";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
 import { Announcement } from "./core/contracts/announcement";
 import { DSNPType } from "./core/messages";
-import { filterIterable, getRandomString, AsyncOrSyncIterable } from "./core/utilities";
+import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
+import { getRandomString } from "./core/utilities/random";
 
 /**
  * createAnnouncement takes a DSNP type and an array of messages of the given
