@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "build": "npm run clean && npm run build:types && npm run build:multimodules && npm run build:cjs && npm run build:esm",
+    "build": "npm run clean && npm run build:types && npm run build:multimodules && npm run build:cjs && npm run build:esm && npm run build:browser",
     "build:browser": "node esbuild.js",
     "build:cjs": "tsc -p tsconfig.json",
     "build:types": "tsc -p tsconfig.types.json && mkdir -p ./dist/types/types && rsync -a --filter='+ */' --filter='-! **/*.d.ts' ./src/types/* ./dist/types/types",

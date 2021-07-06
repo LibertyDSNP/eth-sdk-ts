@@ -15,6 +15,7 @@ dist
 /**/*.js
 *.js
 *.d.ts
+!esbuild*.js
 docs
 /core
 /generators
@@ -328,4 +329,4 @@ junit.xml
 
 # for testing browser capability
 examples/server/package-lock.json
-examples/server/files
+examples/server/files/*
