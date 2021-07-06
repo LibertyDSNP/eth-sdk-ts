@@ -1,8 +1,8 @@
 import { ConfigOpts } from "./config";
 import { createFile } from "./core/batch";
-import { DSNPBatchMessage } from "./core/batch/batchMessages";
+import { DSNPBatchMessage, DSNPMessageSigned } from "./core/batch/batchMessages";
 import { Announcement } from "./core/contracts/announcement";
-import { DSNPType } from "./core/messages";
+import { DSNPType, DSNPTypedMessage } from "./core/messages";
 import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { getRandomString } from "./core/utilities/random";
 
@@ -16,9 +16,9 @@ import { getRandomString } from "./core/utilities/random";
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A promise of the generated annoucement
  */
-export const createAnnoucement = async (
-  dsnpType: DSNPType,
-  messages: AsyncOrSyncIterable<DSNPBatchMessage>,
+export const createAnnoucement = async <T extends DSNPType>(
+  dsnpType: T,
+  messages: AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>,
   opts?: ConfigOpts
 ): Promise<Announcement> => {
   const filename = getRandomString();
@@ -53,7 +53,7 @@ export const createAnnouncements = async (
     if (!announcements[dsnpType]) {
       const filteredMessages = filterIterable<DSNPBatchMessage>(messages, (message) => message.dsnpType == dsnpType);
 
-      announcements[dsnpType] = createAnnoucement(dsnpType, filteredMessages, opts);
+      announcements[dsnpType] = createAnnoucement<DSNPType>(dsnpType, filteredMessages, opts);
     }
   }
 
