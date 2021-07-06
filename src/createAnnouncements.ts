@@ -3,7 +3,33 @@ import { createFile } from "./core/batch";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
 import { Announcement } from "./core/contracts/announcement";
 import { DSNPType } from "./core/messages";
-import { getRandomString, AsyncOrSyncIterable } from "./core/utilities";
+import { filterIterable, getRandomString, AsyncOrSyncIterable } from "./core/utilities";
+
+/**
+ * createAnnouncement takes a DSNP type and an array of messages of the given
+ * type, generates a batch file from the messages, stores them and returns an
+ * annoucement linking to the file.
+ *
+ * @param dsnpType - The DSNPType of the messages passed in
+ * @param messages - The DSNPBatchMessages to publish
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A promise of the generated annoucement
+ */
+export const createAnnoucement = async (
+  dsnpType: DSNPType,
+  messages: AsyncOrSyncIterable<DSNPBatchMessage>,
+  opts?: ConfigOpts
+): Promise<Announcement> => {
+  const filename = getRandomString();
+
+  const { url, hash } = await createFile(filename, dsnpType, messages, opts);
+
+  return {
+    dsnpType,
+    uri: url.toString(),
+    hash,
+  };
+};
 
 /**
  * createAnnouncements takes an array of DSNP messages to announce, creates a
@@ -18,33 +44,17 @@ export const createAnnouncements = async (
   messages: AsyncOrSyncIterable<DSNPBatchMessage>,
   opts?: ConfigOpts
 ): Promise<Announcement[]> => {
-  const messagesByType: { [key in DSNPType]?: DSNPBatchMessage[] } = {};
+  const announcements: Record<string, Promise<Announcement>> = {};
 
   for await (const message of messages) {
     const dsnpType = message.dsnpType;
 
-    if (!messagesByType[dsnpType]) {
-      messagesByType[dsnpType] = [];
-    }
+    if (!announcements[dsnpType]) {
+      const filteredMessages = filterIterable<DSNPBatchMessage>(messages, (message) => message.dsnpType == dsnpType);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    messagesByType[dsnpType]!.push(message);
+      announcements[dsnpType] = createAnnoucement(dsnpType, filteredMessages, opts);
+    }
   }
 
-  return Promise.all(
-    Object.entries(messagesByType).map(
-      async ([dsnpTypeString, messages]: [string, Array<DSNPBatchMessage> | undefined]): Promise<Announcement> => {
-        const filename = getRandomString();
-        const dsnpType = parseInt(dsnpTypeString) as DSNPType;
-
-        const { url, hash } = await createFile(filename, dsnpType, messages as Array<DSNPBatchMessage>, opts);
-
-        return {
-          dsnpType,
-          uri: url.toString(),
-          hash,
-        };
-      }
-    )
-  );
+  return Promise.all(Object.values(announcements));
 };

@@ -28,7 +28,7 @@ interface BatchFileData {
   hash: HexString;
 }
 
-type BatchMessage<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
+type BatchIterator<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
 
 /**
  * createFile() takes a series of Batch DSNP messages, writes them to a file at
@@ -43,7 +43,7 @@ type BatchMessage<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DS
 export const createFile = async <T extends DSNPType>(
   targetPath: string,
   dsnpType: T,
-  messages: BatchMessage<T>,
+  messages: BatchIterator<T>,
   opts?: ConfigOpts
 ): Promise<BatchFileData> => {
   const schema = new ParquetSchema(getSchemaFor(dsnpType));
@@ -82,7 +82,7 @@ export const createFile = async <T extends DSNPType>(
 export const writeBatch = async <T extends DSNPType>(
   writeStream: WriteStream,
   schema: Schema,
-  messages: BatchMessage<T>,
+  messages: BatchIterator<T>,
   opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);

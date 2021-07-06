@@ -66,5 +66,6 @@
     "jsdoc/require-param-type": "off",
     "jsdoc/require-returns-type": "off",
     "jsdoc/require-returns-check": "off",
+    "jsdoc/require-yields": "off",
   }
 }
