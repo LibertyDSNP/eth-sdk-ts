@@ -1,6 +1,7 @@
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 import * as batch from "./batch";
+import { DSNPBatchMessage } from "./batchMessages";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { DSNPType } from "../messages";
 import { BroadcastSchema } from "./parquetSchema";
@@ -42,7 +43,7 @@ describe("batch", () => {
     };
     const writeStream = { write: jest.fn(), end: jest.fn() };
 
-    const { writeBatch, MixedDSNPTypeError } = batch;
+    const { EmptyBatchError, MixedTypeBatchError, writeBatch } = batch;
 
     beforeAll(() => {
       jest.spyOn(ParquetWriter, "openStream").mockResolvedValue(parquetWriterInstance);
@@ -77,7 +78,15 @@ describe("batch", () => {
       ];
 
       it("throws MixedDSNPTypeError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(MixedDSNPTypeError);
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(MixedTypeBatchError);
+      });
+    });
+
+    describe("when passed a message iterator containing no messages", () => {
+      const badMessages: Array<DSNPBatchMessage> = [];
+
+      it("throws MixedDSNPTypeError", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toEqual(EmptyBatchError);
       });
     });
   });

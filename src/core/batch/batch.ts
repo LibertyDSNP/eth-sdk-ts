@@ -29,11 +29,17 @@ interface BatchFileData {
 }
 
 /**
+ * EmptyBatchError indicates that no messages were passed in attempting to
+ * create a batch file which is not allowed.
+ */
+export const EmptyBatchError = new Error("Invalid message iterator for batch: iterator contains no messages");
+
+/**
  * MixedDSNPTypeError indicates that more than one type of DSNP message was
  * passed in attempting to create batch file which is not allowed.
  */
-export const MixedDSNPTypeError = new Error(
-  "Invalid message iterator for batch. Batch files must only contain DSNP type."
+export const MixedTypeBatchError = new Error(
+  "Invalid message iterator for batch: iterator contains multiple DSNP types"
 );
 
 type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
@@ -98,9 +104,11 @@ export const writeBatch = async <T extends DSNPType>(
 
   for await (const message of messages) {
     if (firstDsnpType === undefined) firstDsnpType = message.dsnpType;
-    if (message.dsnpType != firstDsnpType) throw MixedDSNPTypeError;
+    if (message.dsnpType != firstDsnpType) throw MixedTypeBatchError;
     writer.appendRow(message);
   }
+
+  if (firstDsnpType === undefined) throw EmptyBatchError;
 
   await writer.close();
 };
