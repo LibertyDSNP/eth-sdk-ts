@@ -6,6 +6,7 @@ import { generateBroadcast, generateReply } from "../../generators/dsnpGenerator
 import { DSNPType } from "../messages";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
+import { MixedTypeBatchError, EmptyBatchError } from "../utilities";
 
 describe("batch", () => {
   describe("includes", () => {
@@ -43,7 +44,7 @@ describe("batch", () => {
     };
     const writeStream = { write: jest.fn(), end: jest.fn() };
 
-    const { EmptyBatchError, MixedTypeBatchError, writeBatch } = batch;
+    const { writeBatch } = batch;
 
     beforeAll(() => {
       jest.spyOn(ParquetWriter, "openStream").mockResolvedValue(parquetWriterInstance);

@@ -7,7 +7,7 @@ import { DSNPType, DSNPTypedMessage } from "../messages/messages";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-import { AsyncOrSyncIterable } from "../utilities";
+import { AsyncOrSyncIterable, MixedTypeBatchError, EmptyBatchError } from "../utilities";
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -26,43 +26,6 @@ interface BloomFilterData {
 interface BatchFileData {
   url: URL;
   hash: HexString;
-}
-
-/**
- * BatchError indicates that something went wrong in generating a batch file.
- * This error object will include a fileHandle field containing the un-closed
- * write stream of the batch.
- */
-export class BatchError extends Error {
-  fileHandle: WriteStream;
-
-  constructor(message: string, fileHandle: WriteStream) {
-    super(message);
-    this.name = "BatchError";
-    this.fileHandle = fileHandle;
-  }
-}
-
-/**
- * EmptyBatchError indicates that no messages were passed in attempting to
- * create a batch file which is not allowed.
- */
-export class EmptyBatchError extends BatchError {
-  constructor(fileHandle: WriteStream) {
-    super("Invalid message iterator for batch: iterator contains no messages", fileHandle);
-    this.name = "EmptyBatchError";
-  }
-}
-
-/**
- * MixedDSNPTypeError indicates that more than one type of DSNP message was
- * passed in attempting to create batch file which is not allowed.
- */
-export class MixedTypeBatchError extends BatchError {
-  constructor(fileHandle: WriteStream) {
-    super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
-    this.name = "MixedTypeBatchError";
-  }
 }
 
 type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
