@@ -12,11 +12,16 @@ export type AsyncOrSyncIterable<T> = AsyncIterable<T> | Iterable<T>;
  * @param filterFunc - The function with which to filter
  * @returns A new async iterable over all items in the original iterable satisfying the filter function
  */
-export async function* filterIterable<T>(
-  iterable: AsyncOrSyncIterable<T>,
-  filterFunc: (obj: T) => boolean
-): AsyncIterable<T> {
-  for await (const item of iterable) {
-    if (filterFunc(item)) yield item;
+export function filterIterable<T>(iterable: AsyncOrSyncIterable<T>, filterFunc: (obj: T) => boolean): AsyncIterable<T> {
+  /**
+   * iterator() is an AsyncGenerator to be used as an AsyncIterator in the
+   * returned AsyncIterable
+   */
+  async function* iterator() {
+    for await (const item of iterable) {
+      if (filterFunc(item)) yield item;
+    }
   }
+
+  return { [Symbol.asyncIterator]: iterator };
 }

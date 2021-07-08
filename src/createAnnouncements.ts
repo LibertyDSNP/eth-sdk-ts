@@ -11,25 +11,28 @@ import { getRandomString } from "./core/utilities/random";
  * type, generates a batch file from the messages, stores them and returns an
  * annoucement linking to the file.
  *
- * @param dsnpType - The DSNPType of the messages passed in
  * @param messages - The DSNPBatchMessages to publish
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A promise of the generated annoucement
  */
 export const createAnnouncement = async <T extends DSNPType>(
-  dsnpType: T,
   messages: AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>,
   opts?: ConfigOpts
 ): Promise<Announcement> => {
   const filename = getRandomString();
+  const { url, hash } = await createFile(filename, messages, opts);
+  let dsnpType;
 
-  const { url, hash } = await createFile(filename, dsnpType, messages, opts);
+  for await (const message of messages) {
+    dsnpType = message.dsnpType;
+    break;
+  }
 
   return {
     dsnpType,
     uri: url.toString(),
     hash,
-  };
+  } as Announcement;
 };
 
 /**
@@ -50,10 +53,13 @@ export const createAnnouncements = async (
   for await (const message of messages) {
     const dsnpType = message.dsnpType;
 
-    if (!announcements[dsnpType]) {
-      const filteredMessages = filterIterable<DSNPBatchMessage>(messages, (message) => message.dsnpType == dsnpType);
+    if (announcements[dsnpType] === undefined) {
+      const filteredMessageIterables = filterIterable<DSNPBatchMessage>(
+        messages,
+        (message) => message.dsnpType == dsnpType
+      );
 
-      announcements[dsnpType] = createAnnouncement<DSNPType>(dsnpType, filteredMessages, opts);
+      announcements[dsnpType] = createAnnouncement<DSNPType>(filteredMessageIterables, opts);
     }
   }
 

@@ -3,7 +3,6 @@ import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 import * as batch from "./batch";
 import { DSNPBatchMessage } from "./batchMessages";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
-import { DSNPType } from "../messages";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
 import { MixedTypeBatchError, EmptyBatchError } from "../utilities";
@@ -111,14 +110,14 @@ describe("batch", () => {
     it("calls putStream to start streaming", async () => {
       const mockStore = new TestStore();
       jest.spyOn(mockStore, "putStream");
-      await createFile("batch.parquet", DSNPType.Broadcast, messages, { store: mockStore });
+      await createFile("batch.parquet", messages, { store: mockStore });
       expect(mockStore.putStream).toHaveBeenCalled();
     });
 
     it("calls #writeBatch to stream write parquet", async () => {
       jest.spyOn(batch, "writeBatch");
       const mockStore = new TestStore();
-      await createFile("batch.parquet", DSNPType.Broadcast, messages, { store: mockStore });
+      await createFile("batch.parquet", messages, { store: mockStore });
 
       const file = mockStore.getStore()["batch.parquet"];
       const reader = await ParquetReader.openBuffer(file);

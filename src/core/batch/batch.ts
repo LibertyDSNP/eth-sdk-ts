@@ -35,19 +35,24 @@ type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<D
  * specified target path and returns a BatchFileData object.
  *
  * @param targetPath - The path to and name of file
- * @param dsnpType - The DSNPType of the messages provided
  * @param messages - An array of DSNPMessage to include in the batch file
  * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns A BatchFileData object including a URL and keccak hash of the file
  */
 export const createFile = async <T extends DSNPType>(
   targetPath: string,
-  dsnpType: T,
   messages: BatchIterable<T>,
   opts?: ConfigOpts
 ): Promise<BatchFileData> => {
-  const schema = new ParquetSchema(getSchemaFor(dsnpType));
-  const bloomFilterOptions = getBloomFilterOptionsFor(dsnpType);
+  let dsnpType;
+
+  for await (const message of messages) {
+    dsnpType = message.dsnpType;
+    break;
+  }
+
+  const schema = new ParquetSchema(getSchemaFor(dsnpType as DSNPType));
+  const bloomFilterOptions = getBloomFilterOptionsFor(dsnpType as DSNPType);
 
   const store = requireGetStore(opts);
   const hashGenerator = keccak256.create();
