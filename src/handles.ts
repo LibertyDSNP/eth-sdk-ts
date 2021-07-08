@@ -1,11 +1,9 @@
 import * as config from "./config";
-import { HexString } from "./types/Strings";
-import { NotImplementedError } from "./core/utilities";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
-import { ContractTransaction } from "ethers";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
 import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { HexString } from "./types/Strings";
 
 /**
  * createRegistration() creates a new identity for a public key and registers a handle to it.
@@ -26,24 +24,6 @@ export const createRegistration = async (
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
   return convertBigNumberToDSNPUserId(registerEvent.args[0]);
-};
-
-/**
- * updateRegistration() updates registry data for a handle. This method
- * will only work if the given handle has already been authenticated. This
- * method is not yet implemented.
- *
- * @param _id - The Handle of the user for which to fetch profile data
- * @param _registration - Any updates to be merged into the current profile data
- * @param _opts - Optional. Configuration overrides, such as from address, if any
- * @returns The pending transaction
- */
-export const updateRegistration = async (
-  _id: Handle,
-  _registration: Registration,
-  _opts?: config.ConfigOpts
-): Promise<ContractTransaction> => {
-  throw NotImplementedError;
 };
 
 /**
