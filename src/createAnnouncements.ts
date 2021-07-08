@@ -7,7 +7,7 @@ import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { getRandomString } from "./core/utilities/random";
 
 /**
- * createAnnouncement takes a DSNP type and an array of messages of the given
+ * createAnnouncement() takes a DSNP type and an array of messages of the given
  * type, generates a batch file from the messages, stores them and returns an
  * annoucement linking to the file.
  *
@@ -33,7 +33,7 @@ export const createAnnoucement = async <T extends DSNPType>(
 };
 
 /**
- * createAnnouncements takes an array of DSNP messages to announce, creates a
+ * createAnnouncements() takes an array of DSNP messages to announce, creates a
  * batch file for each DSNP type in the array, uploads the files and returns an
  * array of Announcements for publishing to the chain.
  *
