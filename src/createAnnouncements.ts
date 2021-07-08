@@ -16,7 +16,7 @@ import { getRandomString } from "./core/utilities/random";
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A promise of the generated annoucement
  */
-export const createAnnoucement = async <T extends DSNPType>(
+export const createAnnouncement = async <T extends DSNPType>(
   dsnpType: T,
   messages: AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>,
   opts?: ConfigOpts
@@ -53,7 +53,7 @@ export const createAnnouncements = async (
     if (!announcements[dsnpType]) {
       const filteredMessages = filterIterable<DSNPBatchMessage>(messages, (message) => message.dsnpType == dsnpType);
 
-      announcements[dsnpType] = createAnnoucement<DSNPType>(dsnpType, filteredMessages, opts);
+      announcements[dsnpType] = createAnnouncement<DSNPType>(dsnpType, filteredMessages, opts);
     }
   }
 
