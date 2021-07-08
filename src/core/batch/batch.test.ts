@@ -107,23 +107,36 @@ describe("batch", () => {
     const { createFile } = batch;
     const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
 
-    it("calls putStream to start streaming", async () => {
-      const mockStore = new TestStore();
-      jest.spyOn(mockStore, "putStream");
-      await createFile("batch.parquet", messages, { store: mockStore });
-      expect(mockStore.putStream).toHaveBeenCalled();
+    describe("when passed a valid message iterator", () => {
+      it("calls putStream to start streaming", async () => {
+        const mockStore = new TestStore();
+        jest.spyOn(mockStore, "putStream");
+        await createFile("batch.parquet", messages, { store: mockStore });
+        expect(mockStore.putStream).toHaveBeenCalled();
+      });
+
+      it("calls #writeBatch to stream write parquet", async () => {
+        jest.spyOn(batch, "writeBatch");
+        const mockStore = new TestStore();
+        await createFile("batch.parquet", messages, { store: mockStore });
+
+        const file = mockStore.getStore()["batch.parquet"];
+        const reader = await ParquetReader.openBuffer(file);
+
+        expect(batch.writeBatch).toHaveBeenCalled();
+        expect(reader.metadata.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
+      });
     });
 
-    it("calls #writeBatch to stream write parquet", async () => {
-      jest.spyOn(batch, "writeBatch");
-      const mockStore = new TestStore();
-      await createFile("batch.parquet", messages, { store: mockStore });
+    describe("when passed a message iterator containing no messages", () => {
+      const badMessages: Array<DSNPBatchMessage> = [];
 
-      const file = mockStore.getStore()["batch.parquet"];
-      const reader = await ParquetReader.openBuffer(file);
-
-      expect(batch.writeBatch).toHaveBeenCalled();
-      expect(reader.metadata.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
+      it("throws MixedDSNPTypeError", async () => {
+        const mockStore = new TestStore();
+        await expect(createFile("batch.parquet", badMessages, { store: mockStore })).rejects.toBeInstanceOf(
+          EmptyBatchError
+        );
+      });
     });
   });
 });

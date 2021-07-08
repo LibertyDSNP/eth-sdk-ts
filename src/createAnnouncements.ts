@@ -3,7 +3,7 @@ import { createFile } from "./core/batch";
 import { DSNPBatchMessage, DSNPMessageSigned } from "./core/batch/batchMessages";
 import { Announcement } from "./core/contracts/announcement";
 import { DSNPType, DSNPTypedMessage } from "./core/messages";
-import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
+import { filterIterable, AsyncOrSyncIterable, EmptyBatchError } from "./core/utilities";
 import { getRandomString } from "./core/utilities/random";
 
 /**
@@ -28,11 +28,13 @@ export const createAnnouncement = async <T extends DSNPType>(
     break;
   }
 
+  if (dsnpType === undefined) throw new EmptyBatchError();
+
   return {
     dsnpType,
     uri: url.toString(),
     hash,
-  } as Announcement;
+  };
 };
 
 /**

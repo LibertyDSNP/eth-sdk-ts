@@ -51,8 +51,10 @@ export const createFile = async <T extends DSNPType>(
     break;
   }
 
-  const schema = new ParquetSchema(getSchemaFor(dsnpType as DSNPType));
-  const bloomFilterOptions = getBloomFilterOptionsFor(dsnpType as DSNPType);
+  if (dsnpType === undefined) throw new EmptyBatchError();
+
+  const schema = new ParquetSchema(getSchemaFor(dsnpType));
+  const bloomFilterOptions = getBloomFilterOptionsFor(dsnpType);
 
   const store = requireGetStore(opts);
   const hashGenerator = keccak256.create();

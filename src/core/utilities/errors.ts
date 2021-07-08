@@ -12,9 +12,9 @@ export const NotImplementedError = new Error("This method is not yet implemented
  * write stream of the batch.
  */
 export class BatchError extends Error {
-  fileHandle: WriteStream;
+  fileHandle?: WriteStream;
 
-  constructor(message: string, fileHandle: WriteStream) {
+  constructor(message: string, fileHandle?: WriteStream) {
     super(message);
     this.name = "BatchError";
     this.fileHandle = fileHandle;
@@ -26,9 +26,10 @@ export class BatchError extends Error {
  * create a batch file which is not allowed.
  */
 export class EmptyBatchError extends BatchError {
-  constructor(fileHandle: WriteStream) {
-    super("Invalid message iterator for batch: iterator contains no messages", fileHandle);
+  constructor(fileHandle?: WriteStream) {
+    super("Invalid message iterator for batch: iterator contains no messages");
     this.name = "EmptyBatchError";
+    this.fileHandle = fileHandle;
   }
 }
 
