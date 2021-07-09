@@ -21,7 +21,7 @@ const {
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
-import { MissingContract } from "../../config";
+import { DSNPError } from "../errors";
 import { Identity__factory } from "../../types/typechain";
 import { signEIP712Message } from "../../test/helpers/EIP712";
 
@@ -40,7 +40,7 @@ describe("identity", () => {
 
   const getBeacon = async (): Promise<string> => {
     const addr = await getContractAddress(provider, "Beacon");
-    if (!addr) throw MissingContract;
+    if (!addr) throw new DSNPError("Missing contract!");
     return addr;
   };
 

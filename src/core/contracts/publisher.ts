@@ -1,5 +1,5 @@
 import { ContractTransaction, EventFilter } from "ethers";
-import { ConfigOpts, requireGetProvider, MissingContract, getContracts, requireGetSigner } from "../../config";
+import { ConfigOpts, requireGetProvider, getContracts, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { Publisher, Publisher__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
@@ -41,6 +41,6 @@ const getPublisherContract = async (opts?: ConfigOpts): Promise<Publisher> => {
 
   const address = publisher || (await getContractAddress(provider, CONTRACT_NAME));
 
-  if (!address) throw MissingContract;
+  if (!address) throw new DSNPError("Missing contract!");
   return Publisher__factory.connect(address, signer);
 };

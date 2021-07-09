@@ -3,6 +3,11 @@ import { keccak256 } from "js-sha3";
 
 import * as config from "./config";
 import * as content from "./content";
+import {
+  MissingSignerConfigError,
+  MissingStoreConfigError,
+  MissingFromIdConfigError,
+} from "./core/config/configErrors";
 import { DSNPType } from "./core/messages/messages";
 import TestStore from "./test/testStore";
 
@@ -86,7 +91,7 @@ describe("content", () => {
             content: "Lorem ipsum delor blah blah blah",
             name: "Lorem Ipsum",
           })
-        ).rejects.toThrow(config.MissingSigner);
+        ).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -104,7 +109,7 @@ describe("content", () => {
             content: "Lorem ipsum delor blah blah blah",
             name: "Lorem Ipsum",
           })
-        ).rejects.toThrow(config.MissingStore);
+        ).rejects.toThrow(MissingStoreConfigError);
       });
     });
 
@@ -122,7 +127,7 @@ describe("content", () => {
             content: "Lorem ipsum delor blah blah blah",
             name: "Lorem Ipsum",
           })
-        ).rejects.toThrow(config.MissingUser);
+        ).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -237,7 +242,7 @@ describe("content", () => {
             },
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(config.MissingSigner);
+        ).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -259,7 +264,7 @@ describe("content", () => {
             },
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(config.MissingStore);
+        ).rejects.toThrow(MissingStoreConfigError);
       });
     });
 
@@ -281,7 +286,7 @@ describe("content", () => {
             },
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(config.MissingUser);
+        ).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -322,7 +327,7 @@ describe("content", () => {
             "🏴‍☠️",
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(config.MissingSigner);
+        ).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -338,7 +343,7 @@ describe("content", () => {
             "🏴‍☠️",
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
-        ).rejects.toThrow(config.MissingUser);
+        ).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -421,7 +426,7 @@ describe("content", () => {
             name: "Rose Karr",
             preferredUsername: "rosalinekarr",
           })
-        ).rejects.toThrow(config.MissingSigner);
+        ).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -439,7 +444,7 @@ describe("content", () => {
             name: "Rose Karr",
             preferredUsername: "rosalinekarr",
           })
-        ).rejects.toThrow(config.MissingStore);
+        ).rejects.toThrow(MissingStoreConfigError);
       });
     });
 
@@ -457,7 +462,7 @@ describe("content", () => {
             name: "Rose Karr",
             preferredUsername: "rosalinekarr",
           })
-        ).rejects.toThrow(config.MissingUser);
+        ).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });

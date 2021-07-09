@@ -1,5 +1,6 @@
 import * as config from "./config";
 import * as network from "./network";
+import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config/configErrors";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
@@ -62,7 +63,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.follow(registerId)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -74,7 +75,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(config.MissingUser);
+        await expect(network.follow("dril")).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -109,7 +110,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.unfollow(registerId)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -121,7 +122,7 @@ describe("network", () => {
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingUser);
+        await expect(network.unfollow(registerId)).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });

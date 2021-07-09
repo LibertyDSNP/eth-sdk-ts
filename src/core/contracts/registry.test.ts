@@ -1,5 +1,6 @@
 import { Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
+import { DSNPError } from "../errors";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import {
   changeAddress,
@@ -308,7 +309,7 @@ describe("registry", () => {
 
     it("throws if id cannot be resolved", async () => {
       await expect(isMessageSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
-        "Contract was not found"
+        DSNPError
       );
     });
     it("throws if signature is garbage", async () => {

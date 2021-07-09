@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 import { getContractAddress, getVmError, VmError } from "./contract";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { ConfigOpts, MissingContract, requireGetSigner, requireGetProvider, getContracts } from "../../config";
+import { ConfigOpts, requireGetSigner, requireGetProvider, getContracts } from "../../config";
+import { DSNPError } from "../errors";
 import { ContractTransaction } from "ethers";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
@@ -146,7 +147,7 @@ export const isMessageSignatureAuthorizedTo = async (
   opts?: ConfigOpts
 ): Promise<boolean> => {
   const reg = await resolveId(dsnpUserId);
-  if (!reg) throw MissingContract;
+  if (!reg) throw new DSNPError("Missing contract!");
 
   const provider = requireGetProvider(opts);
   let blockNumber = 0x0;
@@ -165,6 +166,6 @@ const getContract = async (opts?: ConfigOpts) => {
   const provider = requireGetProvider(opts);
   const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
 
-  if (!address) throw MissingContract;
+  if (!address) throw new DSNPError("Missing contract!");
   return Registry__factory.connect(address, provider);
 };
