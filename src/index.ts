@@ -18,6 +18,7 @@ export const generators = generatorsImport;
 // Porcelain
 export * from "./config";
 export * from "./content";
+export * from "./createAnnouncements";
 export * from "./handles";
 export * from "./network";
 export * from "./search";
@@ -26,6 +27,8 @@ import * as configImport from "./config";
 export const config = configImport;
 import * as contentImport from "./content";
 export const content = contentImport;
+import * as createAnnouncementsImport from "./createAnnouncements";
+export const createAnnouncements = createAnnouncementsImport;
 import * as handlesImport from "./handles";
 export const handles = handlesImport;
 import * as networkImport from "./network";
@@ -36,6 +39,7 @@ export const search = searchImport;
 export default {
   ...config,
   ...content,
+  ...createAnnouncements,
   ...handles,
   ...network,
   ...search,

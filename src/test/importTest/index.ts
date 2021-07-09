@@ -15,3 +15,4 @@ Object.entries({
 });
 
 assert(sdk.setConfig({}));
+assert(sdk.createAnnouncements);
