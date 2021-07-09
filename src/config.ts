@@ -9,21 +9,6 @@ import {
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
-export interface Contracts {
-  /** The Address of the Batch Publisher contract */
-  publisher?: HexString;
-  /** The Address of the Beacon contract */
-  beacon?: HexString;
-  /** The Address of the Beacon Proxy Factory contract */
-  beaconFactory?: HexString;
-  /** The Address of the Identity Logic contract */
-  identityLogic?: HexString;
-  /** The Address of the Identity Clone Proxy Factory contract */
-  identityCloneFactory?: HexString;
-  /** The Address of the Registry contract */
-  registry?: HexString;
-}
-
 /**
  * The Config Interface provides for various settings and plugable modules.
  */
@@ -35,7 +20,7 @@ export interface Config {
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
-  contracts: Contracts;
+  contracts: Record<string, HexString>;
   /** currentFromId stores the id of the currently authenticated user */
   currentFromId?: string;
   /** to allow access of keys by name */
@@ -137,9 +122,9 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
  * Get the contracts
  *
  * @param opts - overrides for the current configuration.
- * @returns a potentially undefined contracts
+ * @returns potentially undefined contract addresses
  */
-export const getContracts = (opts?: ConfigOpts): Contracts => {
+export const getContracts = (opts?: ConfigOpts): Record<string, HexString> => {
   const c = getConfig(opts);
   return c.contracts;
 };

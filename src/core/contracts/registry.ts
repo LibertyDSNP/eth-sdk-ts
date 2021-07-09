@@ -1,12 +1,11 @@
-import { ethers } from "ethers";
+import { ethers, ContractTransaction } from "ethers";
+
 import { getContractAddress, getVmError, VmError } from "./contract";
+import { MissingRegistrationContractError } from "./contractErrors";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { ConfigOpts, requireGetSigner, requireGetProvider, getContracts } from "../../config";
-import { DSNPError } from "../errors";
-import { ContractTransaction } from "ethers";
+import { ConfigOpts, requireGetSigner, requireGetProvider } from "../../config";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
-import { resolveId } from "../../handles";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
 import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
@@ -146,8 +145,14 @@ export const isMessageSignatureAuthorizedTo = async (
   blockTag?: ethers.providers.BlockTag,
   opts?: ConfigOpts
 ): Promise<boolean> => {
-  const reg = await resolveId(dsnpUserId);
-  if (!reg) throw new DSNPError("Missing contract!");
+  const registrations = await getDSNPRegistryUpdateEvents(
+    {
+      dsnpUserId,
+    },
+    opts
+  );
+  if (registrations.length === 0) throw new MissingRegistrationContractError(dsnpUserId);
+  const reg = registrations[registrations.length - 1];
 
   const provider = requireGetProvider(opts);
   let blockNumber = 0x0;
@@ -162,10 +167,8 @@ export const isMessageSignatureAuthorizedTo = async (
 };
 
 const getContract = async (opts?: ConfigOpts) => {
-  const { registry } = getContracts(opts);
   const provider = requireGetProvider(opts);
-  const address = registry || (await getContractAddress(provider, CONTRACT_NAME));
+  const address = await getContractAddress(provider, CONTRACT_NAME, opts);
 
-  if (!address) throw new DSNPError("Missing contract!");
   return Registry__factory.connect(address, provider);
 };

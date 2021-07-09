@@ -1,7 +1,6 @@
 import { ContractTransaction } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetSigner, getContracts } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
 import { MissingProviderConfigError } from "../config/configErrors";
-import { DSNPError } from "../errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -123,33 +122,23 @@ export const createAndRegisterBeaconProxy = async (
 };
 
 const getIdentityLogicContractAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
-  const { identityLogic } = getContracts(opts);
   const provider = requireGetProvider(opts);
-
-  const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
-
-  if (!address) throw new DSNPError("Missing contract!");
+  const address = await getContractAddress(provider, IDENTITY_CONTRACT, opts);
   return address;
 };
 
 const getIdentityCloneFactoryContract = async (opts?: ConfigOpts): Promise<IdentityCloneFactory> => {
-  const { identityCloneFactory } = getContracts(opts);
   const signer = requireGetSigner(opts);
   const provider = requireGetProvider(opts);
-
-  const address = identityCloneFactory || (await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT));
-  if (!address) throw new DSNPError("Missing contract!");
+  const address = await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT, opts);
 
   return IdentityCloneFactory__factory.connect(address, signer);
 };
 
 const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactory> => {
-  const { beaconFactory } = getContracts(opts);
   const signer = requireGetSigner(opts);
   const provider = requireGetProvider(opts);
-
-  const address = beaconFactory || (await getContractAddress(provider, BEACON_FACTORY_CONTRACT));
-  if (!address) throw new DSNPError("Missing contract!");
+  const address = await getContractAddress(provider, BEACON_FACTORY_CONTRACT, opts);
 
   return BeaconFactory__factory.connect(address, signer);
 };
@@ -179,11 +168,8 @@ export const isAuthorizedTo = async (
 };
 
 const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
-  const { beacon } = getContracts(opts);
   const provider = requireGetProvider(opts);
-  const address = beacon || (await getContractAddress(provider as Provider, BEACON_CONTRACT));
-
-  if (!address) throw new DSNPError("Missing contract!");
+  const address = await getContractAddress(provider as Provider, BEACON_CONTRACT, opts);
   return address;
 };
 

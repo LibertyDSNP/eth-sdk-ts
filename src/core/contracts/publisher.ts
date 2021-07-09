@@ -1,5 +1,5 @@
 import { ContractTransaction, EventFilter } from "ethers";
-import { ConfigOpts, requireGetProvider, getContracts, requireGetSigner } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
 import { HexString } from "../../types/Strings";
 import { Publisher, Publisher__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
@@ -35,12 +35,9 @@ export const dsnpBatchFilter = async (): Promise<EventFilter> => {
 };
 
 const getPublisherContract = async (opts?: ConfigOpts): Promise<Publisher> => {
-  const { publisher } = getContracts(opts);
   const signer = requireGetSigner(opts);
   const provider = requireGetProvider(opts);
+  const address = await getContractAddress(provider, CONTRACT_NAME, opts);
 
-  const address = publisher || (await getContractAddress(provider, CONTRACT_NAME));
-
-  if (!address) throw new DSNPError("Missing contract!");
   return Publisher__factory.connect(address, signer);
 };

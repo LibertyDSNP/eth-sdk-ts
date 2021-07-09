@@ -1,8 +1,11 @@
-import { HexString } from "../../types/Strings";
-import { keccak256 } from "js-sha3";
-import * as types from "../../types/typechain";
-import { ethers } from "ethers";
 import { JsonFragment } from "@ethersproject/abi";
+import { ethers } from "ethers";
+import { keccak256 } from "js-sha3";
+
+import { getContracts, ConfigOpts } from "../../config";
+import { MissingContractAddressError } from "./contractErrors";
+import { HexString } from "../../types/Strings";
+import * as types from "../../types/typechain";
 
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 
@@ -73,16 +76,27 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
 };
 
 /**
- * getContractAddress() uses DSNP Migrations to retrieve the most recently deployed contract address
+ * getContractAddress() fetches the address for a given contract. If a contract
+ * address override is available in the configuration, it will be returned. If
+ * no override exists, the latest migration ABI will be fetched from the chain,
+ * parsed and the appropriate contract address will be returned. If the contract
+ * address is missing from the chain as well, a MissingContractAddressError will be
+ * thrown.
  *
+ * @throws {@link MissingContractAddressError}
  * @param provider - initialized provider
  * @param contractName - Name of contract to find address for
- * @returns HexString A hexadecimal string representing the contract address
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns HexString A hexidecimal string representing the contract address
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
-  contractName: string
-): Promise<HexString | null> => {
+  contractName: string,
+  opts?: ConfigOpts
+): Promise<HexString> => {
+  const contractOverrides = getContracts(opts);
+  if (contractOverrides[contractName]) return contractOverrides[contractName];
+
   const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
   const logs: ethers.providers.Log[] = await provider.getLogs({
@@ -91,7 +105,10 @@ export const getContractAddress = async (
   });
   const decodedValues = decodeReturnValues(DSNP_MIGRATION_ABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
-  return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
+
+  if (filteredResults.length == 0) throw new MissingContractAddressError(contractName);
+
+  return filteredResults[filteredResults.length - 1].contractAddr;
 };
 
 /**
