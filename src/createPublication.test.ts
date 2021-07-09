@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
 
 import * as config from "./config";
+import { EmptyBatchError } from "./core/batch";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
 import { createBroadcastMessage, createReplyMessage, createReactionMessage, sign } from "./core/messages";
 import { createPublication, createPublications } from "./createPublication";
 import TestStore from "./test/testStore";
-import { EmptyBatchError } from "./core/utilities";
 
 describe("createPublication", () => {
   let store: TestStore;

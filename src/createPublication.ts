@@ -1,9 +1,9 @@
 import { ConfigOpts } from "./config";
-import { createFile } from "./core/batch";
+import { createFile, EmptyBatchError } from "./core/batch";
 import { DSNPBatchMessage, DSNPMessageSigned } from "./core/batch/batchMessages";
 import { Publication } from "./core/contracts/publisher";
 import { DSNPType, DSNPTypedMessage } from "./core/messages";
-import { filterIterable, AsyncOrSyncIterable, EmptyBatchError } from "./core/utilities";
+import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { getRandomString } from "./core/utilities/random";
 
 /**

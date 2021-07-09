@@ -1,7 +1,7 @@
 import { Handle } from "./core/contracts/registry";
 import { DSNPType } from "./core/messages/messages";
 import { HexString } from "./types/Strings";
-import { NotImplementedError } from "./core/utilities/errors";
+import { NotImplementedError } from "./core/errors";
 
 type BlockNumber = number;
 
@@ -39,7 +39,7 @@ type SubscriptionId = string;
  * @returns A subscription id to unsubscribe later if needed
  */
 export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallbackFn): SubscriptionId => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };
 
 /**
@@ -50,7 +50,7 @@ export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallback
  * @param _id - The ID of the subscription to close
  */
 export const unsubscribe = (_id: SubscriptionId): void => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };
 
 /**
@@ -61,5 +61,5 @@ export const unsubscribe = (_id: SubscriptionId): void => {
  * @returns An array of events
  */
 export const fetchEvents = async (_filters: FetchFilters): Promise<DSNPType[]> => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };

@@ -1,13 +1,14 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 import { keccak256 } from "js-sha3";
 
-import { DSNPMessageSigned } from "../batch/batchMessages";
+import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
+import { DSNPMessageSigned } from "./batchMessages";
 import { ConfigOpts, requireGetStore } from "../../config";
 import { DSNPType, DSNPTypedMessage } from "../messages/messages";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-import { AsyncOrSyncIterable, MixedTypeBatchError, EmptyBatchError } from "../utilities";
+import { AsyncOrSyncIterable } from "../utilities";
 
 type ReadRowFunction = {
   (row: DSNPType): void;

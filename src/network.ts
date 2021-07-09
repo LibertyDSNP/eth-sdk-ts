@@ -1,9 +1,9 @@
 import { Registration } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
 import * as config from "./config";
-import { NotImplementedError } from "./core/utilities";
 import { DSNPUserId } from "./core/utilities/identifiers";
 import { BatchGraphChangeMessage } from "./core/batch/batchMessages";
+import { NotImplementedError } from "./core/errors";
 
 /**
  * follow() creates a follow event and returns it.
@@ -52,7 +52,7 @@ export const isFollowing = async (
   _followee?: DSNPUserId,
   _opts?: config.ConfigOpts
 ): Promise<boolean> => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };
 
 /**
@@ -65,7 +65,7 @@ export const isFollowing = async (
  * @returns An array of all users following the followee
  */
 export const getFollowers = async (_followee?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };
 
 /**
@@ -78,5 +78,5 @@ export const getFollowers = async (_followee?: DSNPUserId, _opts?: config.Config
  * @returns An array of all users followed by the follower user
  */
 export const getFollowees = (_follower?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
-  throw NotImplementedError;
+  throw new NotImplementedError();
 };
