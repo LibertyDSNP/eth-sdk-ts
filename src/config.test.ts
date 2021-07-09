@@ -16,14 +16,6 @@ import TestStore from "./test/testStore";
 
 describe("config", () => {
   describe("#getConfig", () => {
-    it("returns the default settings when the config hasn't been set yet", () => {
-      const { queue } = getConfig();
-
-      // We have to test keys here because #toMatchObject doesn't work with
-      // object instances
-      expect(queue).toBeInstanceOf(Object);
-    });
-
     it("fetches the current config settings", () => {
       const testConfig = ({
         test: "object",

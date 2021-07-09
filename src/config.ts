@@ -1,7 +1,5 @@
 import { ethers } from "ethers";
 
-import MemoryQueue from "./core/queue/memoryQueue";
-import { QueueInterface } from "./core/queue";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
@@ -34,8 +32,6 @@ export interface Config {
   provider?: ethers.providers.Provider;
   /** An [Ethers.js Signer](https://docs.ethers.io/v5/api/signer/) */
   signer?: ethers.Signer;
-  /** The queue manages Announcements waiting to be batched */
-  queue: QueueInterface;
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
@@ -53,7 +49,6 @@ export type ConfigOpts = Partial<Config>;
 
 let config: Config = {
   contracts: {},
-  queue: new MemoryQueue(),
 };
 
 /**
@@ -136,16 +131,6 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
   if (!c.currentFromId) throw MissingUser;
   return c.currentFromId;
-};
-
-/**
- * Get the queue.  Since this is a required field, this is a plain getter.
- *
- * @param opts - overrides for the current configuration.
- */
-export const getQueue = (opts?: ConfigOpts): QueueInterface => {
-  const c = getConfig(opts);
-  return c.queue;
 };
 
 /**

@@ -21,9 +21,6 @@ export const contracts = contractsImport;
 import * as messagesImport from "./messages";
 export const messages = messagesImport;
 
-import * as queueImport from "./queue";
-export const queue = queueImport;
-
 import * as storeImport from "./store";
 export const store = storeImport;
 

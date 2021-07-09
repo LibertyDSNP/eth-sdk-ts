@@ -19,15 +19,19 @@ export enum DSNPType {
 /**
  * DSNPMessage: a message intended for inclusion in a batch file
  */
-export interface DSNPMessage {
-  dsnpType: DSNPType;
+export type DSNPMessage = DSNPTypedMessage<DSNPType>;
+
+/**
+ * DSNPTypedMessage: a DSNP message with a particular DSNPType
+ */
+export interface DSNPTypedMessage<T extends DSNPType> {
+  dsnpType: T;
 }
 
 /**
  * BroadcastMessage: a DSNP message of type Broadcast
  */
-export interface BroadcastMessage extends DSNPMessage {
-  dsnpType: DSNPType.Broadcast;
+export interface BroadcastMessage extends DSNPTypedMessage<DSNPType.Broadcast> {
   contentHash: string;
   fromId: string;
   uri: string;
@@ -52,8 +56,7 @@ export const createBroadcastMessage = (fromId: string, uri: string, hash: HexStr
 /**
  * ReplyMessage: a DSNP message of type Reply
  */
-export interface ReplyMessage extends DSNPMessage {
-  dsnpType: DSNPType.Reply;
+export interface ReplyMessage extends DSNPTypedMessage<DSNPType.Reply> {
   contentHash: HexString;
   fromId: string;
   inReplyTo: string;
@@ -81,8 +84,7 @@ export const createReplyMessage = (fromId: string, uri: string, hash: HexString,
 /**
  * ReactionMessage: a DSNP message of type Reaction
  */
-export interface ReactionMessage extends DSNPMessage {
-  dsnpType: DSNPType.Reaction;
+export interface ReactionMessage extends DSNPTypedMessage<DSNPType.Reaction> {
   emoji: string;
   fromId: string;
   inReplyTo: string;
@@ -115,9 +117,8 @@ export enum DSNPGraphChangeType {
 /**
  * GraphChangeMessage: a DSNP message of type GraphChange
  */
-export interface GraphChangeMessage extends DSNPMessage {
+export interface GraphChangeMessage extends DSNPTypedMessage<DSNPType.GraphChange> {
   fromId: string;
-  dsnpType: DSNPType.GraphChange;
   changeType: DSNPGraphChangeType;
   objectId: string;
 }
@@ -172,8 +173,7 @@ export const serialize = (message: DSNPMessage): string => {
 /**
  * ProfileMessage: a DSNP message of type Profile
  */
-export interface ProfileMessage extends DSNPMessage {
-  dsnpType: DSNPType.Profile;
+export interface ProfileMessage extends DSNPTypedMessage<DSNPType.Profile> {
   contentHash: string;
   fromId: string;
   uri: string;
