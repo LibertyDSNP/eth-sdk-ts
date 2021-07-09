@@ -1,17 +1,19 @@
 import { keccak256 } from "js-sha3";
 
-import * as activityPub from "./core/activityPub/activityPub";
+import {
+  create,
+  isValid,
+  isValidProfile,
+  isValidReply,
+  serialize,
+  ActivityPubOpts,
+  InvalidActivityPubError,
+} from "./core/activityPub";
 import * as batchMessages from "./core/batch/batchMessages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
 import { validateDSNPMessageId } from "./core/utilities";
 import { requireGetStore } from "./config";
-
-/**
- * InvalidActivityPubOpts represents an error in the activity pub options
- * provided to a method.
- */
-export const InvalidActivityPubOpts = new Error("Invalid activity pub options.");
 
 /**
  * InvalidInReplyTo represents an error in the DSNP Message Id provided for the
@@ -31,12 +33,12 @@ export const InvalidInReplyTo = new Error("Invalid DSNP Message Id for inReplyTo
  * @returns A Signed DSNP Broadcast message ready for inclusion in a batch
  */
 export const broadcast = async (
-  contentOptions: activityPub.ActivityPubOpts,
+  contentOptions: ActivityPubOpts,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchBroadcastMessage> => {
-  const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.isValid(contentObj)) throw InvalidActivityPubOpts;
-  const content = activityPub.serialize(contentObj);
+  const contentObj = create(contentOptions);
+  if (!isValid(contentObj)) throw new InvalidActivityPubError();
+  const content = serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
 
@@ -61,15 +63,15 @@ export const broadcast = async (
  * @returns A Signed DSNP Reply message ready for inclusion in a batch
  */
 export const reply = async (
-  contentOptions: activityPub.ActivityPubOpts,
+  contentOptions: ActivityPubOpts,
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReplyMessage> => {
   if (!validateDSNPMessageId(inReplyTo)) throw InvalidInReplyTo;
 
-  const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.isValidReply(contentObj)) throw InvalidActivityPubOpts;
-  const content = activityPub.serialize(contentObj);
+  const contentObj = create(contentOptions);
+  if (!isValidReply(contentObj)) throw new InvalidActivityPubError();
+  const content = serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
 
@@ -116,12 +118,12 @@ export const react = async (
  * @returns A Signed DSNP Profile message ready for inclusion in a batch
  */
 export const profile = async (
-  contentOptions: activityPub.ActivityPubOpts,
+  contentOptions: ActivityPubOpts,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchProfileMessage> => {
-  const contentObj = activityPub.create(contentOptions);
-  if (!activityPub.isValidProfile(contentObj)) throw InvalidActivityPubOpts;
-  const content = activityPub.serialize(contentObj);
+  const contentObj = create(contentOptions);
+  if (!isValidProfile(contentObj)) throw new InvalidActivityPubError();
+  const content = serialize(contentObj);
 
   const currentFromId = config.requireGetCurrentFromId(opts);
 

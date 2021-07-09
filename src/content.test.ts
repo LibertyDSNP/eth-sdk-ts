@@ -3,6 +3,7 @@ import { keccak256 } from "js-sha3";
 
 import * as config from "./config";
 import * as content from "./content";
+import { InvalidActivityPubError } from "./core/activityPub";
 import {
   MissingSignerConfigError,
   MissingStoreConfigError,
@@ -72,7 +73,7 @@ describe("content", () => {
               name: "Lorem Ipsum",
               published: "Yesterday",
             })
-          ).rejects.toThrow(content.InvalidActivityPubOpts);
+          ).rejects.toThrow(InvalidActivityPubError);
         });
       });
     });
@@ -219,7 +220,7 @@ describe("content", () => {
               },
               "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
             )
-          ).rejects.toThrow(content.InvalidActivityPubOpts);
+          ).rejects.toThrow(InvalidActivityPubError);
         });
       });
     });
@@ -407,7 +408,7 @@ describe("content", () => {
               name: "Rose Karr",
               preferredUsername: "rosalinekarr",
             })
-          ).rejects.toThrow(content.InvalidActivityPubOpts);
+          ).rejects.toThrow(InvalidActivityPubError);
         });
       });
     });
