@@ -1,3 +1,4 @@
+import { DSNPType } from "./messages";
 import { DSNPError } from "../errors";
 
 /**
@@ -14,9 +15,9 @@ export class MessageError extends DSNPError {
  * InvalidMessageTypeError indicates an invalid DSNP message type.
  */
 export class InvalidMessageTypeError extends MessageError {
-  dsnpType: number;
+  dsnpType: DSNPType;
 
-  constructor(dsnpType: number) {
+  constructor(dsnpType: DSNPType) {
     super(`Invalid DSNP Type: ${dsnpType}`);
     this.name = "InvalidMessageTypeError";
     this.dsnpType = dsnpType;

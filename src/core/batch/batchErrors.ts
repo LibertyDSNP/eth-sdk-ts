@@ -36,5 +36,6 @@ export class MixedTypeBatchError extends BatchError {
   constructor(fileHandle: WriteStream) {
     super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
     this.name = "MixedTypeBatchError";
+    this.fileHandle = fileHandle;
   }
 }

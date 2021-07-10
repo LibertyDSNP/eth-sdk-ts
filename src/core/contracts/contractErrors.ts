@@ -1,3 +1,4 @@
+import { DSNPUserId } from "../identifiers";
 import { DSNPError } from "../errors";
 
 /**
@@ -15,9 +16,12 @@ export class ContractError extends DSNPError {
  * found either on the chain or in the configuration overrides.
  */
 export class MissingContractAddressError extends ContractError {
+  contractName: string;
+
   constructor(contractName: string) {
     super(`Could not find address for ${contractName} contract.`);
     this.name = "MissingContractAddressError";
+    this.contractName = contractName;
   }
 }
 
@@ -26,9 +30,12 @@ export class MissingContractAddressError extends ContractError {
  * DSNP User Id could not be found.
  */
 export class MissingRegistrationContractError extends ContractError {
-  constructor(dsnpUserId: string) {
+  dsnpUserId: DSNPUserId;
+
+  constructor(dsnpUserId: DSNPUserId) {
     super(`Could not find registration for user id ${dsnpUserId}.`);
     this.name = "MissingRegistrationContractError";
+    this.dsnpUserId = dsnpUserId;
   }
 }
 
