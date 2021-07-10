@@ -80,7 +80,7 @@ describe("registry", () => {
       await revertHardhat(provider);
     });
 
-    it("Should throw for an already registered handle", async () => {
+    it("throws for an already registered handle", async () => {
       // Second time for handle
       const pendingTx = register(idContractAddr, handle);
       await expect(pendingTx).transactionRejectsWith(/Handle already exists/);
@@ -109,18 +109,18 @@ describe("registry", () => {
       await revertHardhat(provider);
     });
 
-    it("Should succeed with an unregistered handle", async () => {
+    it("Succeeds with an unregistered handle", async () => {
       const otherHandle = "completely new";
       const pendingTx = changeHandle(handle, otherHandle);
       await expect(pendingTx).resolves.toBeTruthy();
     });
 
-    it("Should throw for the same handle", async () => {
+    it("Throws for the same handle", async () => {
       const pendingTx = changeHandle(handle, handle);
       await expect(pendingTx).transactionRejectsWith(/New handle already exists/);
     });
 
-    it("Should throw for an already registered handle", async () => {
+    it("Throws for an already registered handle", async () => {
       const otherHandle = "reg2";
       await register(idContractAddr, otherHandle);
 

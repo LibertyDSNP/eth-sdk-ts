@@ -119,6 +119,8 @@ export const ReactionBloomFilterOptions = {
 /**
  * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
  *
+ * @throws {@link InvalidMessageTypeError}
+ * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet schema
  */
@@ -142,6 +144,8 @@ export const getSchemaFor = (dsnpType: DSNPType): Schema => {
 /**
  * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
  *
+ * @throws {@link InvalidMessageTypeError}
+ * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet bloom filter options
  */

@@ -11,6 +11,12 @@ import { getRandomString } from "./core/utilities/random";
  * type, generates a batch file from the messages, stores them and returns an
  * annoucement linking to the file.
  *
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link EmptyBatchError}
+ * Thrown if the message iterator provided is empty.
+ * @throws {@link MixedTypeBatchError}
+ * Thrown if the message iterator provided contains multiple DSNP message types.
  * @param messages - The DSNPBatchMessages to publish
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A promise of the generated publication
@@ -42,6 +48,10 @@ export const createPublication = async <T extends DSNPType>(
  * batch file for each DSNP type in the array, uploads the files and returns an
  * array of Publications for publishing to the chain.
  *
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link EmptyBatchError}
+ * Thrown if the message iterator provided is empty.
  * @param messages - The DSNPBatchMessages to publish
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns An array of publications to post on chain

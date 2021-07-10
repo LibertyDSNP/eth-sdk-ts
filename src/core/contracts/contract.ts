@@ -84,6 +84,7 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  * thrown.
  *
  * @throws {@link MissingContractAddressError}
+ * Thrown if the requested contract address cannot be found.
  * @param provider - initialized provider
  * @param contractName - Name of contract to find address for
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -137,9 +138,9 @@ export const getVmError = (e: VmError): string | undefined => {
  * Parse all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
  *
+ * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  * @param logs - raw logs from a transaction
  * @returns parsed logs excluding any logs that cannot be parsed by the interface.
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescription> => {
   return logs.map((log) => EVENTS_ABI.parseLog(log)) as Array<ethers.utils.LogDescription>;
@@ -148,11 +149,11 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
 /**
  * Find event with given name.
  *
+ * @throws error if no matching events were found
+ * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  * @param name - name of event to find.
  * @param logs - raw logs from a transaction
  * @returns First event in log that matches name
- * @throws error if no matching events were found
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const findEvent = (name: string, logs: Array<RawLog>): ethers.utils.LogDescription => {
   const event = parseLogs(logs).find((e) => e.name === name);

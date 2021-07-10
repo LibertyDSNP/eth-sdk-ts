@@ -20,8 +20,14 @@ import { requireGetStore } from "./config";
  * uploads it with a random filename using the configured storage adapter and
  * creates a DSNP broadcast message for the hosted file for later announcement.
  *
- * @throws {@link MissingSigner}
+ * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
+ * @throws {@link InvalidActivityPubError}
+ * Thrown if the provided activity pub object is not valid.
  * @param contentOptions - Options for the activity pub content to generate
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed DSNP Broadcast message ready for inclusion in a batch
@@ -51,6 +57,16 @@ export const broadcast = async (
  * uploads it with a random filename using the configured storage adapter and
  * creates a DSNP reply message for the hosted file for later announcement.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
+ * @throws {@link InvalidActivityPubError}
+ * Thrown if the provided activity pub object is not valid.
+ * @throws {@link InvalidMessageIdentifierError}
+ * Thrown if the provided inReplyTo DSNP Message Id is invalid.
  * @param contentOptions - Options for the activity pub content to generate
  * @param inReplyTo - The DSNP Message Id of the message that this message is in reply to
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -82,6 +98,12 @@ export const reply = async (
 /**
  * react() creates a DSNP reaction message for later announcement.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
+ * @throws {@link InvalidMessageIdentifierError}
+ * Thrown if the provided inReplyTo DSNP Message Id is invalid.
  * @param emoji - The emoji with which to react
  * @param inReplyTo - The DSNP Message Id of the message to which to react
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -105,8 +127,14 @@ export const react = async (
  * uploads it with a random filename using the configured storage adapter and
  * creates a DSNP profile message for the hosted file for later announcement.
  *
- * @throws {@link MissingSigner}
+ * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
+ * @throws {@link InvalidActivityPubError}
+ * Thrown if the provided activity pub object is not valid.
  * @param contentOptions - Options for the activity pub content to generate
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed DSNP Profile message ready for inclusion in a batch

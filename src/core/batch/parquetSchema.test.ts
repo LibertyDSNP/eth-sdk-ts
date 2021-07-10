@@ -61,7 +61,7 @@ describe("#getSchemaFor", () => {
     });
   });
 
-  it("throws an error for invalid DSNP type", () => {
+  it("throws InvalidMessageTypeError", () => {
     expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
   });
 });
@@ -105,7 +105,7 @@ describe("#getBloomFilterOptionsFor", () => {
     });
   });
 
-  it("throws an error for invalid DSNP type", () => {
+  it("throws InvalidMessageTypeError", () => {
     expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
   });
 });

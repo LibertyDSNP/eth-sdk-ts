@@ -77,8 +77,8 @@ describe("batch", () => {
         { ...generateReply(), signature: "0xfa1ce" },
       ];
 
-      it("throws MixedDSNPTypeError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toBeInstanceOf(MixedTypeBatchError);
+      it("throws MixedTypeBatchError", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toThrow(MixedTypeBatchError);
       });
 
       it("includes the write stream handle in the thrown error", async () => {
@@ -91,8 +91,8 @@ describe("batch", () => {
     describe("when passed a message iterator containing no messages", () => {
       const badMessages: Array<DSNPBatchMessage> = [];
 
-      it("throws MixedDSNPTypeError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
+      it("throws EmptyBatchError", async () => {
+        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toThrow(EmptyBatchError);
       });
 
       it("includes the write stream handle in the thrown error", async () => {
@@ -131,11 +131,9 @@ describe("batch", () => {
     describe("when passed a message iterator containing no messages", () => {
       const badMessages: Array<DSNPBatchMessage> = [];
 
-      it("throws MixedDSNPTypeError", async () => {
+      it("throws EmptyBatchError", async () => {
         const mockStore = new TestStore();
-        await expect(createFile("batch.parquet", badMessages, { store: mockStore })).rejects.toBeInstanceOf(
-          EmptyBatchError
-        );
+        await expect(createFile("batch.parquet", badMessages, { store: mockStore })).rejects.toThrow(EmptyBatchError);
       });
     });
   });

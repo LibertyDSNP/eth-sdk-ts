@@ -23,6 +23,7 @@ export type Handle = string;
 /**
  * resolveRegistration() Try to resolve a handle into a DSNP User Id
  *
+ * @throws a VMError if contract fails
  * @param handle - String handle to resolve
  * @param opts - (optional) any config overrides.
  * @returns The Hex for the DSNP User Id or null if not found
@@ -128,6 +129,8 @@ export const getDSNPRegistryUpdateEvents = async (
  * signer has the permissions specified.  DSNPMessages should be passed as is,
  * without serializing, to guarantee consistent results.
  *
+ * @throws {@link MissingRegistrationContractError}
+ * Thrown if a registration cannot be found for the given DSNP User Id.
  * @param signature - the signature for the message
  * @param message - the signed message
  * @param dsnpUserId - the DSNP User Id of the supposed signer

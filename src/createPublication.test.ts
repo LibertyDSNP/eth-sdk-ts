@@ -54,8 +54,8 @@ describe("createPublication", () => {
   describe("when passed a message iterator containing no messages", () => {
     const badMessages: Array<DSNPBatchMessage> = [];
 
-    it("throws MixedDSNPTypeError", async () => {
-      await expect(createPublication(badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
+    it("throws EmptyBatchError", async () => {
+      await expect(createPublication(badMessages)).rejects.toThrow(EmptyBatchError);
     });
   });
 });

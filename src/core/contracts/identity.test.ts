@@ -291,7 +291,7 @@ describe("identity", () => {
     });
 
     describe("when signature is not valid", () => {
-      it("throws error", async () => {
+      it("throws a contract level error", async () => {
         const typedData = await createAddDelegateEip712TypedData(contractAddress, message);
         const { r, s, v } = await signEIP712Message(contractOwner, provider, typedData);
 

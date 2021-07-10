@@ -56,7 +56,7 @@ describe("network", () => {
     });
 
     describe("without a signer", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingSignerConfigError", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
           signer: undefined,
@@ -68,7 +68,7 @@ describe("network", () => {
     });
 
     describe("without a user id", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingFromIdConfigError", async () => {
         config.setConfig({
           currentFromId: undefined,
           signer,
@@ -103,7 +103,7 @@ describe("network", () => {
     });
 
     describe("without a signer", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingSignerConfigError", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
           signer: undefined,
@@ -115,7 +115,7 @@ describe("network", () => {
     });
 
     describe("without a user id", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingFromIdConfigError", async () => {
         config.setConfig({
           currentFromId: undefined,
           signer,

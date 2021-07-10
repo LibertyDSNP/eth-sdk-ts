@@ -1,6 +1,5 @@
 import { ContractTransaction } from "ethers";
 import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
-import { MissingProviderConfigError } from "../config/configErrors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -146,6 +145,8 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
 /**
  * isAuthorizedTo() Checks to see if address is authorized with the given permission
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param address - Address that is used to test permission
  * @param contractAddress - Address of contract to check against
  * @param permission - Level of permission check. See Permission for details
@@ -162,7 +163,6 @@ export const isAuthorizedTo = async (
   opts?: ConfigOpts
 ): Promise<boolean> => {
   const provider = requireGetProvider(opts);
-  if (!provider) throw new MissingProviderConfigError();
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
 };
