@@ -31,3 +31,16 @@ export class MissingRegistrationContractError extends ContractError {
     this.name = "MissingRegistrationContractError";
   }
 }
+
+/**
+ * NoLogsFoundContractError indicates that a log event could not be found.
+ */
+export class NoLogsFoundContractError extends ContractError {
+  eventName: string;
+
+  constructor(eventName: string) {
+    super(`Could not find log event: ${eventName}.`);
+    this.name = "NoLogsFoundContractError";
+    this.eventName = eventName;
+  }
+}

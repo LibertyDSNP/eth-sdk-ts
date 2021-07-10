@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
 
 import { getContracts, ConfigOpts } from "../../config";
-import { MissingContractAddressError } from "./contractErrors";
+import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
 import { HexString } from "../../types/Strings";
 import * as types from "../../types/typechain";
 
@@ -138,7 +138,6 @@ export const getVmError = (e: VmError): string | undefined => {
  * Parse all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
  *
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  * @param logs - raw logs from a transaction
  * @returns parsed logs excluding any logs that cannot be parsed by the interface.
  */
@@ -149,8 +148,8 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
 /**
  * Find event with given name.
  *
- * @throws error if no matching events were found
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
+ * @throws {@link NoLogsFoundContractError}
+ * Thrown if the requested log event could not be found.
  * @param name - name of event to find.
  * @param logs - raw logs from a transaction
  * @returns First event in log that matches name
@@ -158,7 +157,7 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
 export const findEvent = (name: string, logs: Array<RawLog>): ethers.utils.LogDescription => {
   const event = parseLogs(logs).find((e) => e.name === name);
   if (event === undefined) {
-    throw `no ${name} logs found`;
+    throw new NoLogsFoundContractError(name);
   }
   return event;
 };
