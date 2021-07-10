@@ -9,6 +9,12 @@ import { HexString } from "./types/Strings";
  * createRegistration() creates a new identity for a public key and registers a handle to it.
  * This function will wait for the identity to land on chain before resolving.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link NoLogsFoundContractError}
+ * Thrown if the DSNPRegistryUpdate event could not be found.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param addr - public key address that will be used to control identity delegate
  * @param handle - name of identity (must be globally unique)
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -29,6 +35,10 @@ export const createRegistration = async (
 /**
  * Get the current registration from a handle
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param handle - The Registry Handle
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
@@ -39,6 +49,10 @@ export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise
 /**
  * Get the current registration from a DSNP User Id
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param dsnpUserId - The DSNP User Id
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
@@ -57,6 +71,10 @@ export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts
 /**
  * availabilityFilter() takes a list of handles returning a filtered list of just the ones that are available
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param handles - A list of handles to check for availability
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The filtered list of handles that are currently available
@@ -69,6 +87,10 @@ export const availabilityFilter = async (handles: Handle[], opts?: config.Config
 /**
  * isAvailable() checks to see if the given handle is available
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param handle - The handle to test for availability
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns boolean If the handle is available

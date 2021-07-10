@@ -83,6 +83,8 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  * address is missing from the chain as well, a MissingContractAddressError will be
  * thrown.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
  * @param provider - initialized provider
@@ -135,7 +137,7 @@ export const getVmError = (e: VmError): string | undefined => {
 };
 
 /**
- * Parse all transaction logs.
+ * parseLogs() parses all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
  *
  * @param logs - raw logs from a transaction
@@ -146,7 +148,7 @@ export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescriptio
 };
 
 /**
- * Find event with given name.
+ * findEvent() finds event with given name.
  *
  * @throws {@link NoLogsFoundContractError}
  * Thrown if the requested log event could not be found.

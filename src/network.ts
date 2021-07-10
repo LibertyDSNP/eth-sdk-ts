@@ -8,6 +8,10 @@ import { NotImplementedError } from "./core/errors";
 /**
  * follow() creates a follow event and returns it.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
  * @param followeeId - The id of the user to follow
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed DSNP Graph Change message
@@ -24,6 +28,10 @@ export const follow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): 
 /**
  * unfollow() creates an unfollow event and returns it.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
  * @param followeeId - The id of the user to unfollow
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed DSNP Graph Change message

@@ -23,6 +23,10 @@ export type Handle = string;
 /**
  * resolveRegistration() Try to resolve a handle into a DSNP User Id
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @throws a VMError if contract fails
  * @param handle - String handle to resolve
  * @param opts - (optional) any config overrides.
@@ -50,6 +54,10 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
 /**
  * register() registers a handle to get a new DSNP User Id
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param identityContractAddress - Address of the identity contract to use
  * @param handle - The string handle to register
  * @param opts - (optional) any config overrides.
@@ -69,6 +77,10 @@ export const register = async (
 /**
  * changeAddress() changes the identity contract address of a DSNP User Id
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param handle - The string handle to alter
  * @param identityContractAddress - Address of the new identity contract to use
  * @param opts - (optional) any config overrides.
@@ -87,6 +99,10 @@ export const changeAddress = async (
 /**
  * changeHandle() changes the handle of a DSNP User Id
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param oldHandle - The string handle to alter
  * @param newHandle - The new handle to use instead
  * @param opts - (optional) any config overrides.
@@ -105,6 +121,10 @@ export const changeHandle = async (
 /**
  * getDSNPRegistryUpdateEvents() Get all the DSNPRegistryUpdate events
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the registration contract address cannot be found.
  * @param filter - By dsnpUserId or Contract Address
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
@@ -129,8 +149,12 @@ export const getDSNPRegistryUpdateEvents = async (
  * signer has the permissions specified.  DSNPMessages should be passed as is,
  * without serializing, to guarantee consistent results.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @throws {@link MissingRegistrationContractError}
  * Thrown if a registration cannot be found for the given DSNP User Id.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the requested contract address cannot be found.
  * @param signature - the signature for the message
  * @param message - the signed message
  * @param dsnpUserId - the DSNP User Id of the supposed signer

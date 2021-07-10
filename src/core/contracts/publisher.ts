@@ -16,6 +16,12 @@ export interface Publication {
  * publish() calls the publisher smart contract and publishes the URLs and hashes
  * of a generated batch publications to the blockchain.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the batch contract address cannot be found.
  * @param publications - array of publications to publish.
  * @returns A contract receipt promise
  */
@@ -27,6 +33,12 @@ export const publish = async (publications: Publication[]): Promise<ContractTran
 /**
  * Retrieves event filter for DSNPBatch event
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the batch contract address cannot be found.
  * @returns DSNPBatch event filter
  */
 export const dsnpBatchFilter = async (): Promise<EventFilter> => {

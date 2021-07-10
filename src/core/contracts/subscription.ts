@@ -33,6 +33,8 @@ type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackA
  * It takes a callback and a filter. The filter is used to filter events that come through.
  * The callback is invoked for each correctly filtered event.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param doReceivePublication - The callback function to be called when an event is received
  * @param filter - Any filter options for including or excluding certain events
  * @returns A function that can be called to remove listener for this type of event
