@@ -12,14 +12,8 @@ import {
 import * as batchMessages from "./core/batch/batchMessages";
 import * as config from "./config";
 import * as messages from "./core/messages/messages";
-import { validateDSNPMessageId } from "./core/utilities";
+import { validateDSNPMessageId, InvalidMessageIdentifierError } from "./core/identifiers";
 import { requireGetStore } from "./config";
-
-/**
- * InvalidInReplyTo represents an error in the DSNP Message Id provided for the
- * inReplyTo parameter.
- */
-export const InvalidInReplyTo = new Error("Invalid DSNP Message Id for inReplyTo");
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -67,7 +61,7 @@ export const reply = async (
   inReplyTo: string,
   opts?: config.ConfigOpts
 ): Promise<batchMessages.BatchReplyMessage> => {
-  if (!validateDSNPMessageId(inReplyTo)) throw InvalidInReplyTo;
+  if (!validateDSNPMessageId(inReplyTo)) throw new InvalidMessageIdentifierError(inReplyTo);
 
   const contentObj = create(contentOptions);
   if (!isValidReply(contentObj)) throw new InvalidActivityPubError();

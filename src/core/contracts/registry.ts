@@ -8,7 +8,7 @@ import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { DSNPMessage, serialize } from "../messages";
-import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../utilities/identifiers";
+import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../identifiers";
 
 const CONTRACT_NAME = "Registry";
 

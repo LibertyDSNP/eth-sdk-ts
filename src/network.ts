@@ -1,7 +1,7 @@
 import { Registration } from "./core/contracts/registry";
 import * as messages from "./core/messages/messages";
 import * as config from "./config";
-import { DSNPUserId } from "./core/utilities/identifiers";
+import { DSNPUserId } from "./core/identifiers";
 import { BatchGraphChangeMessage } from "./core/batch/batchMessages";
 import { NotImplementedError } from "./core/errors";
 

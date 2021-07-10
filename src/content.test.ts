@@ -4,6 +4,7 @@ import { keccak256 } from "js-sha3";
 import * as config from "./config";
 import * as content from "./content";
 import { InvalidActivityPubError } from "./core/activityPub";
+import { InvalidMessageIdentifierError } from "./core/identifiers";
 import {
   MissingSignerConfigError,
   MissingStoreConfigError,
@@ -205,7 +206,7 @@ describe("content", () => {
               },
               "dsnp://badbadbad/badbadbad"
             )
-          ).rejects.toThrow(content.InvalidInReplyTo);
+          ).rejects.toThrow(InvalidMessageIdentifierError);
         });
       });
 

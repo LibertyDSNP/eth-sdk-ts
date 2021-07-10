@@ -7,7 +7,7 @@ import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;

@@ -2,7 +2,7 @@ import * as config from "./config";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
 import { HexString } from "./types/Strings";
 
 /**

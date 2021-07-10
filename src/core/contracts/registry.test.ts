@@ -21,7 +21,7 @@ import {
   RegistrationWithSigner,
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
-import { DSNPUserId } from "../utilities/identifiers";
+import { DSNPUserId } from "../identifiers";
 
 describe("registry", () => {
   let signer: Signer;
