@@ -3,7 +3,7 @@
  * See DSNP type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
-import { DSNPType } from "../messages/messages";
+import { DSNPType, InvalidMessageTypeError } from "../messages";
 
 /**
  * BloomFilterColumnOptions: bloom filter options for a column intended to be used with when writing a batch file
@@ -136,7 +136,7 @@ export const getSchemaFor = (dsnpType: DSNPType): Schema => {
       return ProfileSchema;
   }
 
-  throw new Error(`Invalid DSNP type: ${dsnpType}`);
+  throw new InvalidMessageTypeError(dsnpType);
 };
 
 /**
@@ -159,5 +159,5 @@ export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions
       return ProfileBloomFilterOptions;
   }
 
-  throw new Error(`Invalid DSNP type: ${dsnpType}`);
+  throw new InvalidMessageTypeError(dsnpType);
 };

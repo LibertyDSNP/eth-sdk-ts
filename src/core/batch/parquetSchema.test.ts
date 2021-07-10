@@ -1,4 +1,5 @@
 import { getSchemaFor, getBloomFilterOptionsFor } from "./parquetSchema";
+import { InvalidMessageTypeError } from "../messages";
 
 describe("#getSchemaFor", () => {
   it("returns the schema for dsnpType GraphChange", () => {
@@ -61,7 +62,7 @@ describe("#getSchemaFor", () => {
   });
 
   it("throws an error for invalid DSNP type", () => {
-    expect(() => getSchemaFor(0)).toThrow("Invalid DSNP type: 0");
+    expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
   });
 });
 
@@ -105,6 +106,6 @@ describe("#getBloomFilterOptionsFor", () => {
   });
 
   it("throws an error for invalid DSNP type", () => {
-    expect(() => getSchemaFor(0)).toThrow("Invalid DSNP type: 0");
+    expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
   });
 });
