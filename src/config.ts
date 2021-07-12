@@ -9,6 +9,27 @@ import {
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
+/* The name of the Batch Announce contract */
+type AnnouncerContractName = "Announcer";
+/* The name of the Beacon contract */
+type BeaconContractName = "Beacon";
+/* The name of the Beacon Proxy Factory contract */
+type BeaconFactoryContractName = "BeaconFactory";
+/* The name of the Identity Logic contract */
+type IdentityLogicContractName = "Identity";
+/* The name of the Identity Clone Proxy Factory contract */
+type IdentityCloneFactoryContractName = "IdentityCloneFactory";
+/* The name of the Registry contract */
+type RegistryContractName = "Registry";
+/* Any valid contract name */
+type ContractName =
+  | AnnouncerContractName
+  | BeaconContractName
+  | BeaconFactoryContractName
+  | IdentityLogicContractName
+  | IdentityCloneFactoryContractName
+  | RegistryContractName;
+
 /**
  * The Config Interface provides for various settings and plugable modules.
  */
@@ -20,7 +41,7 @@ export interface Config {
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
-  contracts: Record<string, HexString>;
+  contracts: { [key in ContractName]?: HexString };
   /** currentFromId stores the id of the currently authenticated user */
   currentFromId?: string;
   /** to allow access of keys by name */
