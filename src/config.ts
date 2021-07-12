@@ -5,7 +5,7 @@ import {
   MissingProviderConfigError,
   MissingStoreConfigError,
   MissingFromIdConfigError,
-} from "./core/config/configErrors";
+} from "./core/config";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 

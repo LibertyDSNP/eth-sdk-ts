@@ -1,6 +1,6 @@
 import * as config from "./config";
 import * as network from "./network";
-import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config/configErrors";
+import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";

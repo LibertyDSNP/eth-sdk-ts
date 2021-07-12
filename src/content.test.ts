@@ -5,11 +5,7 @@ import * as config from "./config";
 import * as content from "./content";
 import { InvalidActivityPubError } from "./core/activityPub";
 import { InvalidMessageIdentifierError } from "./core/identifiers";
-import {
-  MissingSignerConfigError,
-  MissingStoreConfigError,
-  MissingFromIdConfigError,
-} from "./core/config/configErrors";
+import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
 import { DSNPType } from "./core/messages/messages";
 import TestStore from "./test/testStore";
 
