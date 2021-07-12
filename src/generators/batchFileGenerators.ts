@@ -1,7 +1,6 @@
 import * as fs from "fs";
 import path from "path";
 import parquet from "@dsnp/parquetjs";
-import { times } from "lodash";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
 import * as pq from "../core/batch/parquetSchema";
 import { EthereumAddress } from "../types/Strings";
@@ -88,7 +87,7 @@ const writeBatchFileWithOptions = async (opts: writeBatchOptions): Promise<DSNPB
   let itemsWritten = 0;
 
   try {
-    const data = times(opts.numMessages, () => opts.generator());
+    const data = Array.from({ length: opts.numMessages }, () => opts.generator());
     const pSchema = new parquet.ParquetSchema(opts.schema);
     const writer = await parquet.ParquetWriter.openFile(pSchema, fname, opts.bloomOptions);
     for (let i = 0; i < data.length; i++) {

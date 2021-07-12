@@ -1,12 +1,21 @@
 import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./dsnpGenerators";
-import { countBy } from "lodash";
 import { DSNPType } from "../core/messages/messages";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {
     const numMsgs = 100;
     const data = generateDSNPStream(numMsgs);
-    const counts = countBy(data, "dsnpType");
+    const counts = data.reduce(
+      (acc: { [key in number]: number }, current) => {
+        acc[current["dsnpType"]]++;
+        return acc;
+      },
+      {
+        [DSNPType.Broadcast]: 0,
+        [DSNPType.Reply]: 0,
+        [DSNPType.Reaction]: 0,
+      }
+    );
 
     expect(data.length).toEqual(numMsgs);
 

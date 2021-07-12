@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import { times } from "lodash";
 
 import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "../core/messages/messages";
 import { EthereumAddress } from "../types/Strings";
@@ -27,8 +26,7 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
   // this sets the frequency of generated types to approximately the ratios above
   const maxInt = reactionReplyMax * 10;
 
-  const data: Array<DSNPMessage> = [];
-  times(messageCount, () => {
+  return Array.from({ length: messageCount }, () => {
     const value = randInt(maxInt);
     let msg: DSNPMessage;
     if (value > reactionReplyMax) {
@@ -37,9 +35,8 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
     } else {
       msg = generateBroadcast();
     }
-    data.push(msg);
+    return msg;
   });
-  return data;
 };
 
 /**
