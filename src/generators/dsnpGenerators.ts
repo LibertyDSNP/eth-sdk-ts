@@ -72,7 +72,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
     dsnpType: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
-    uri: sample(PREFAB_URLS),
+    url: sample(PREFAB_URLS),
   };
 };
 
@@ -87,7 +87,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
-    uri: sample(PREFAB_URLS),
+    url: sample(PREFAB_URLS),
   };
 };
 

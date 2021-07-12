@@ -1,19 +1,19 @@
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import { requireGetProvider } from "../../config";
-import { dsnpBatchFilter } from "./announcement";
+import { dsnpBatchFilter } from "./publisher";
 import { Filter } from "@ethersproject/abstract-provider";
-import { Announcer__factory } from "../../types/typechain";
-const ANNOUNCER_DECODER = new ethers.utils.Interface(Announcer__factory.abi);
+import { Publisher__factory } from "../../types/typechain";
+const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
- * BatchAnnounceCallbackArgs: interface for callback function that is passed to subscribeToBatchAnnounceEvents
+ * subscribeToBatchPublications: interface for callback function that is passed to subscribeToBatchPublications
  */
-export interface BatchAnnounceCallbackArgs {
+export interface BatchPublicationCallbackArgs {
   blockNumber: number;
   transactionHash: HexString;
   dsnpType: number;
-  dsnpUri: string;
+  dsnpUrl: string;
   dsnpHash: HexString;
 }
 
@@ -26,23 +26,23 @@ export interface BatchFilterOptions {
   dsnpType?: number;
   fromBlock?: number;
 }
-type BatchAnnounceCallback = (doReceiveAnnouncement: BatchAnnounceCallbackArgs) => void;
+type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackArgs) => void;
 
 /**
- * subscribeToBatchAnnounceEvents() sets up a listener to listen to retrieve Batch Announce events from the chain.
+ * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch Announce events from the chain.
  * It takes a callback and a filter. The filter is used to filter events that come through.
  * The callback is invoked for each correctly filtered event.
  *
- * @param doReceiveAnnouncement - The callback function to be called when an event is received
+ * @param doReceivePublication - The callback function to be called when an event is received
  * @param filter - Any filter options for including or excluding certain events
  * @returns A function that can be called to remove listener for this type of event
  */
-export const subscribeToBatchAnnounceEvents = async (
-  doReceiveAnnouncement: BatchAnnounceCallback,
+export const subscribeToBatchPublications = async (
+  doReceivePublication: BatchPublicationCallback,
   filter?: BatchFilterOptions
 ): Promise<() => void> => {
-  let pastLogs: BatchAnnounceCallbackArgs[] = [];
-  const currentLogQueue: BatchAnnounceCallbackArgs[] = [];
+  let pastLogs: BatchPublicationCallbackArgs[] = [];
+  const currentLogQueue: BatchPublicationCallbackArgs[] = [];
   const batchFilter: ethers.EventFilter = await dsnpBatchFilter();
   const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
 
@@ -51,12 +51,12 @@ export const subscribeToBatchAnnounceEvents = async (
   let useQueue = filter?.fromBlock != undefined;
 
   provider.on(batchFilterWithOptions, (log: ethers.providers.Log) => {
-    const logItem = decodeLogsForBatchAnnounce([log])[0];
+    const logItem = decodeLogsForBatchPublication([log])[0];
 
     if (useQueue) {
       currentLogQueue.push(logItem);
     } else if (logItem.blockNumber > maxBlockNumberForPastLogs) {
-      doReceiveAnnouncement(logItem);
+      doReceivePublication(logItem);
     }
   });
 
@@ -66,12 +66,12 @@ export const subscribeToBatchAnnounceEvents = async (
 
     while (pastLogs.length > 0) {
       const batchItem = pastLogs.shift();
-      if (batchItem) doReceiveAnnouncement(batchItem);
+      if (batchItem) doReceivePublication(batchItem);
     }
 
     while (currentLogQueue.length > 0) {
       const batchItem = currentLogQueue.shift();
-      if (batchItem && batchItem.blockNumber > maxBlockNumberForPastLogs) doReceiveAnnouncement(batchItem);
+      if (batchItem && batchItem.blockNumber > maxBlockNumberForPastLogs) doReceivePublication(batchItem);
     }
 
     useQueue = false;
@@ -98,23 +98,23 @@ const createFilter = (batchFilter: ethers.EventFilter, filterOptions: BatchFilte
 const getPastLogs = async (
   provider: ethers.providers.Provider,
   filter: Filter
-): Promise<BatchAnnounceCallbackArgs[]> => {
+): Promise<BatchPublicationCallbackArgs[]> => {
   const logs = await provider.getLogs(filter);
-  return decodeLogsForBatchAnnounce(logs);
+  return decodeLogsForBatchPublication(logs);
 };
 
-const decodeLogsForBatchAnnounce = (logs: ethers.providers.Log[]): BatchAnnounceCallbackArgs[] => {
+const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationCallbackArgs[] => {
   return logs
     .map((log: ethers.providers.Log) => {
-      const fragment = ANNOUNCER_DECODER.parseLog(log);
+      const fragment = PUBLISHER_DECODER.parseLog(log);
       return { fragment, log: log };
     })
-    .filter((desc: ParsedLog) => desc.fragment.name === "DSNPBatch")
+    .filter((desc: ParsedLog) => desc.fragment.name === "DSNPBatchPublication")
     .map((item: ParsedLog) => {
       return {
         dsnpType: item.fragment.args.dsnpType,
         dsnpHash: item.fragment.args.dsnpHash,
-        dsnpUri: item.fragment.args.dsnpUri,
+        dsnpUrl: item.fragment.args.dsnpUrl,
         blockNumber: item.log.blockNumber,
         transactionHash: item.log.transactionHash,
       };

@@ -1,6 +1,6 @@
 import { keccak256 } from "js-sha3";
 
-import { batch, Announcement } from "./announcement";
+import { publish, Publication } from "./publisher";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { requireGetProvider } from "../../config";
@@ -10,15 +10,15 @@ describe("#batch", () => {
 
   beforeAll(setupConfig);
 
-  it("successfully posts a batch to the chain", async () => {
+  it("successfully publishes a batch to the chain", async () => {
     jest.setTimeout(12000);
 
-    const testUri = "http://www.testconst.com";
+    const testUrl = "http://www.testconst.com";
     const hash = "0x" + keccak256("test");
 
-    const announcements: Announcement[] = [{ dsnpType: 0, uri: testUri, hash: hash }];
+    const publications: Publication[] = [{ dsnpType: 0, url: testUrl, hash: hash }];
 
-    await batch(announcements);
+    await publish(publications);
     const provider = requireGetProvider();
     const logs = await provider.getLogs({ fromBlock: "latest" });
     expect(logs).toHaveLength(1);

@@ -10,8 +10,8 @@ export const MissingStore = new Error("Store adapter was not found");
 export const MissingUser = new Error("No user id found. Please authenticate a handle.");
 
 export interface Contracts {
-  /** The Address of the Batch Announce contract */
-  announcer?: HexString;
+  /** The Address of the Batch Publisher contract */
+  publisher?: HexString;
   /** The Address of the Beacon contract */
   beacon?: HexString;
   /** The Address of the Beacon Proxy Factory contract */

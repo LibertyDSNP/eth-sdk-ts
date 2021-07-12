@@ -52,7 +52,7 @@ describe("content", () => {
           expect(message).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Broadcast,
-            uri: `http://fakestore.org/${keys[0]}`,
+            url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
           });
         });
@@ -180,7 +180,7 @@ describe("content", () => {
           expect(message).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Reply,
-            uri: `http://fakestore.org/${keys[0]}`,
+            url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
             inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
           });
@@ -388,7 +388,7 @@ describe("content", () => {
           expect(message).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Profile,
-            uri: `http://fakestore.org/${keys[0]}`,
+            url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
           });
         });

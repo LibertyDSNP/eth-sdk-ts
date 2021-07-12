@@ -3,11 +3,11 @@ import { ethers } from "ethers";
 import * as config from "./config";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
 import { createBroadcastMessage, createReplyMessage, createReactionMessage, sign } from "./core/messages";
-import { createAnnouncement, createAnnouncements } from "./createAnnouncements";
+import { createPublication, createPublications } from "./createPublication";
 import TestStore from "./test/testStore";
 import { EmptyBatchError } from "./core/utilities";
 
-describe("createAnnouncement", () => {
+describe("createPublication", () => {
   let store: TestStore;
   const messages = [
     createBroadcastMessage(
@@ -30,21 +30,21 @@ describe("createAnnouncement", () => {
   });
 
   describe("when passed a valid message iterator", () => {
-    it("returns an announcements for the passed in messages", async () => {
+    it("returns an publications for the passed in messages", async () => {
       const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-      const announcements = await createAnnouncement(signedMessages);
+      const publications = await createPublication(signedMessages);
 
-      expect(announcements).toMatchObject({
+      expect(publications).toMatchObject({
         dsnpType: 2,
         hash: expect.stringMatching(/[a-z0-9]{64}/),
-        uri: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       });
     });
 
     it("stores the messages provided at the returned URL", async () => {
       const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-      const announcement = await createAnnouncement(signedMessages);
-      const filename = announcement.uri.split(".org/")[1];
+      const publication = await createPublication(signedMessages);
+      const filename = publication.url.split(".org/")[1];
       const files = store.getStore();
 
       expect(files[filename].toString()).toMatchSnapshot();
@@ -55,12 +55,12 @@ describe("createAnnouncement", () => {
     const badMessages: Array<DSNPBatchMessage> = [];
 
     it("throws MixedDSNPTypeError", async () => {
-      await expect(createAnnouncement(badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
+      await expect(createPublication(badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
     });
   });
 });
 
-describe("createAnnouncements", () => {
+describe("createPublications", () => {
   let store: TestStore;
   const messages = [
     createBroadcastMessage(
@@ -103,35 +103,35 @@ describe("createAnnouncements", () => {
     });
   });
 
-  it("returns an array of valid announcements for each message type", async () => {
+  it("returns an array of valid publications for each message type", async () => {
     const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-    const announcements = await createAnnouncements(signedMessages);
+    const publications = await createPublications(signedMessages);
 
-    expect(announcements).toMatchObject([
+    expect(publications).toMatchObject([
       {
         dsnpType: 2,
         hash: expect.stringMatching(/[a-z0-9]{64}/),
-        uri: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
       {
         dsnpType: 3,
         hash: expect.stringMatching(/[a-z0-9]{64}/),
-        uri: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
       {
         dsnpType: 4,
         hash: expect.stringMatching(/[a-z0-9]{64}/),
-        uri: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
     ]);
   });
 
   it("stores the messages provided at the returned URL", async () => {
     const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
-    const announcements = await createAnnouncements(signedMessages);
+    const publications = await createPublications(signedMessages);
 
-    for (const announcement of announcements) {
-      const filename = announcement.uri.split(".org/")[1];
+    for (const publication of publications) {
+      const filename = publication.url.split(".org/")[1];
       const files = store.getStore();
 
       expect(files[filename].toString()).toMatchSnapshot();

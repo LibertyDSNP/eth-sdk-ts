@@ -33,7 +33,7 @@ export const BroadcastSchema = {
   dsnpType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
+  url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
 };
 
@@ -52,7 +52,7 @@ export const ReplySchema = {
   contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
+  url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
 };
 
@@ -87,7 +87,7 @@ export const GraphChangeBloomFilterOptions = {
 export const ProfileSchema = {
   dsnpType: { type: "INT32" },
   fromId: { type: "BYTE_ARRAY" },
-  uri: { type: "BYTE_ARRAY" },
+  url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
 };
 

@@ -109,7 +109,7 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "@dsnp/contracts": "^0.1.0",
+    "@dsnp/contracts": "0.0.0-622366",
     "@dsnp/parquetjs": "^1.1.0",
     "@dsnp/test-generators": "^0.1.0",
     "@ethersproject/abi": "^5.3.0",

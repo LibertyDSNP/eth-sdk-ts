@@ -42,9 +42,9 @@ export const broadcast = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const uri = await store.put(contentHash, content);
+  const url = await store.put(contentHash, content);
 
-  const message = messages.createBroadcastMessage(currentFromId, uri.toString(), contentHash);
+  const message = messages.createBroadcastMessage(currentFromId, url.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
   return signedMessage;
@@ -75,9 +75,9 @@ export const reply = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const uri = await store.put(contentHash, content);
+  const url = await store.put(contentHash, content);
 
-  const message = messages.createReplyMessage(currentFromId, uri.toString(), contentHash, inReplyTo);
+  const message = messages.createReplyMessage(currentFromId, url.toString(), contentHash, inReplyTo);
 
   const signedMessage = await messages.sign(message, opts);
   return signedMessage;
@@ -127,9 +127,9 @@ export const profile = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const uri = await store.put(contentHash, content);
+  const url = await store.put(contentHash, content);
 
-  const message = messages.createProfileMessage(currentFromId, uri.toString(), contentHash);
+  const message = messages.createProfileMessage(currentFromId, url.toString(), contentHash);
 
   const signedMessage = await messages.sign(message, opts);
   return signedMessage;

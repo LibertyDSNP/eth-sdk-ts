@@ -4,8 +4,13 @@
 ### Changes
 - Renamed DSNPId to DSNPMessageId to avoid confusion with DSNPUserId
 - Renamed validateDSNPId to validateDSNPMessageId (breaking change)
+- Renamed uri -> url everywhere
+- Renamed subscribeToBatchAnnounceEvents -> subscribeToBatchPublications
+- Renamed sdk.core.contracts.announcer -> sdk.core.contracts.publisher
+- Renamed sdk.core.contracts.announcer.batch -> sdk.core.contracts.publisher.publish
+- Updated @dsnp/contracts to 0.0.0-622366
 ### Added
--
+- sdk.createPublication
 ### Removed
 -
 ### Fixed
