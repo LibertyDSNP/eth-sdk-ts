@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       ganache:
-        image: dsnp/hardhat:v0.1.0
+        image: dsnp/hardhat:v0.0.0-622366
         ports:
           - 8545:8545
     steps:
@@ -57,9 +57,9 @@ jobs:
         working-directory: ./main
 
       - name: Pack up for testing project import
-        run: | 
+        run: |
           npm run build
-          npm pack 
+          npm pack
           mv dsnp-sdk-*.tgz dsnp-sdk.tgz
         working-directory: ./main
 
