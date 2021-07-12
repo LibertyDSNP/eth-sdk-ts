@@ -6,7 +6,6 @@ import { DSNPError } from "../errors";
 export class IdentifierError extends DSNPError {
   constructor(message: string) {
     super(message);
-    this.name = "IdentifierError";
   }
 }
 
@@ -19,7 +18,6 @@ export class InvalidMessageIdentifierError extends IdentifierError {
 
   constructor(dsnpMessageId: string) {
     super(`Invalid DSNP Message Id: ${dsnpMessageId}`);
-    this.name = "InvalidMessageIdentifierError";
     this.dsnpMessageId = dsnpMessageId;
   }
 }

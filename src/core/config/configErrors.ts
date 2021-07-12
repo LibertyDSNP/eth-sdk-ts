@@ -7,7 +7,6 @@ import { DSNPError } from "../errors";
 export class ConfigError extends DSNPError {
   constructor(message: string) {
     super(message);
-    this.name = "ConfigError";
   }
 }
 
@@ -17,7 +16,6 @@ export class ConfigError extends DSNPError {
 export class MissingSignerConfigError extends ConfigError {
   constructor() {
     super("Signer is not set.");
-    this.name = "MissingSignerConfigError";
   }
 }
 
@@ -27,7 +25,6 @@ export class MissingSignerConfigError extends ConfigError {
 export class MissingProviderConfigError extends ConfigError {
   constructor() {
     super("Blockchain provider is not set.");
-    this.name = "MissingProviderConfigError";
   }
 }
 
@@ -37,7 +34,6 @@ export class MissingProviderConfigError extends ConfigError {
 export class MissingStoreConfigError extends ConfigError {
   constructor() {
     super("Store adapter was not found");
-    this.name = "MissingStoreConfigError";
   }
 }
 
@@ -47,6 +43,5 @@ export class MissingStoreConfigError extends ConfigError {
 export class MissingFromIdConfigError extends ConfigError {
   constructor() {
     super("No from id found. Please authenticate a handle.");
-    this.name = "MissingUFromIdConfigError";
   }
 }

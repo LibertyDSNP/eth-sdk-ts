@@ -6,7 +6,6 @@ import { DSNPError } from "../errors";
 export class ActivityPubError extends DSNPError {
   constructor(message: string) {
     super(message);
-    this.name = "ActivityPubError";
   }
 }
 
@@ -17,6 +16,5 @@ export class ActivityPubError extends DSNPError {
 export class InvalidActivityPubError extends ActivityPubError {
   constructor() {
     super("The activity pub object provided is invalid.");
-    this.name = "InvalidActivityPubError";
   }
 }

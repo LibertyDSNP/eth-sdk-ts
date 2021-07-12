@@ -11,7 +11,6 @@ export class BatchError extends DSNPError {
 
   constructor(message: string, fileHandle?: WriteStream) {
     super(message);
-    this.name = "BatchError";
     this.fileHandle = fileHandle;
   }
 }
@@ -23,7 +22,6 @@ export class BatchError extends DSNPError {
 export class EmptyBatchError extends BatchError {
   constructor(fileHandle?: WriteStream) {
     super("Invalid message iterator for batch: iterator contains no messages");
-    this.name = "EmptyBatchError";
     this.fileHandle = fileHandle;
   }
 }
@@ -35,7 +33,6 @@ export class EmptyBatchError extends BatchError {
 export class MixedTypeBatchError extends BatchError {
   constructor(fileHandle: WriteStream) {
     super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
-    this.name = "MixedTypeBatchError";
     this.fileHandle = fileHandle;
   }
 }

@@ -6,7 +6,7 @@
 export class DSNPError extends Error {
   constructor(message: string) {
     super(`DSNPError: ${message}`);
-    this.name = "DSNPError";
+    this.name = this.constructor.name;
   }
 }
 
@@ -18,6 +18,5 @@ export class DSNPError extends Error {
 export class NotImplementedError extends DSNPError {
   constructor() {
     super("This feature is not implemented in the current SDK version.");
-    this.name = "NotImplementedError";
   }
 }

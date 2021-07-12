@@ -7,7 +7,6 @@ import { DSNPError } from "../errors";
 export class ContractError extends DSNPError {
   constructor(message: string) {
     super(message);
-    this.name = "ContractError";
   }
 }
 
@@ -20,7 +19,6 @@ export class MissingContractAddressError extends ContractError {
 
   constructor(contractName: string) {
     super(`Could not find address for ${contractName} contract.`);
-    this.name = "MissingContractAddressError";
     this.contractName = contractName;
   }
 }
@@ -34,7 +32,6 @@ export class MissingRegistrationContractError extends ContractError {
 
   constructor(dsnpUserId: DSNPUserId) {
     super(`Could not find registration for user id ${dsnpUserId}.`);
-    this.name = "MissingRegistrationContractError";
     this.dsnpUserId = dsnpUserId;
   }
 }
@@ -47,7 +44,6 @@ export class NoLogsFoundContractError extends ContractError {
 
   constructor(eventName: string) {
     super(`Could not find log event: ${eventName}.`);
-    this.name = "NoLogsFoundContractError";
     this.eventName = eventName;
   }
 }
