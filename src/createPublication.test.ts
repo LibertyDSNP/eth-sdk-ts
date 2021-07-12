@@ -2,15 +2,14 @@ import { ethers } from "ethers";
 
 import * as config from "./config";
 import { EmptyBatchError } from "./core/batch";
-import { DSNPBatchMessage } from "./core/batch/batchMessages";
-import { createBroadcastMessage, createReplyMessage, createReactionMessage, sign } from "./core/messages";
+import { createBroadcast, createReply, createReaction, sign, SignedAnnouncement } from "./core/announcements";
 import { createPublication, createPublications } from "./createPublication";
 import TestStore from "./test/testStore";
 
 describe("createPublication", () => {
   let store: TestStore;
   const messages = [
-    createBroadcastMessage(
+    createBroadcast(
       "dsnp://0123456789ABCDEF",
       "https://dsnp.org",
       "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
@@ -52,7 +51,7 @@ describe("createPublication", () => {
   });
 
   describe("when passed a message iterator containing no messages", () => {
-    const badMessages: Array<DSNPBatchMessage> = [];
+    const badMessages: Array<SignedAnnouncement> = [];
 
     it("throws EmptyBatchError", async () => {
       await expect(createPublication(badMessages)).rejects.toThrow(EmptyBatchError);
@@ -63,28 +62,28 @@ describe("createPublication", () => {
 describe("createPublications", () => {
   let store: TestStore;
   const messages = [
-    createBroadcastMessage(
+    createBroadcast(
       "dsnp://0123456789ABCDEF",
       "https://dsnp.org",
       "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
     ),
-    createBroadcastMessage(
+    createBroadcast(
       "dsnp://0123456789ABCDE0",
       "https://dsnp.org",
       "0x1123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
     ),
-    createReplyMessage(
+    createReply(
       "dsnp://0123456789ABCDEF",
       "https://dsnp.org",
       "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
       "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
     ),
-    createReactionMessage(
+    createReaction(
       "dsnp://0123456789ABCDEF",
       "🏳️‍🌈",
       "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
     ),
-    createReactionMessage(
+    createReaction(
       "dsnp://0123456789ABCDEF",
       "🏳️‍🌈",
       "dsnp://0123456789ABCDE0/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"

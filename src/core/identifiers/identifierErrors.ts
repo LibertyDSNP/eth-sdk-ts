@@ -10,14 +10,14 @@ export class IdentifierError extends DSNPError {
 }
 
 /**
- * InvalidMessageIdentifierError indicates an improperly formatted DSNP message
+ * InvalidAnnouncementIdentifierError indicates an improperly formatted DSNP announcement
  * identifier.
  */
-export class InvalidMessageIdentifierError extends IdentifierError {
-  dsnpMessageId: string;
+export class InvalidAnnouncementIdentifierError extends IdentifierError {
+  announcementId: string;
 
-  constructor(dsnpMessageId: string) {
-    super(`Invalid DSNP Message Id: ${dsnpMessageId}`);
-    this.dsnpMessageId = dsnpMessageId;
+  constructor(announcementId: string) {
+    super(`Invalid Announcement Id: ${announcementId}`);
+    this.announcementId = announcementId;
   }
 }

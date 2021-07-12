@@ -2,10 +2,10 @@ import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 import * as batch from "./batch";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
-import { DSNPBatchMessage } from "./batchMessages";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
+import { SignedAnnouncement } from "../announcements";
 
 describe("batch", () => {
   describe("includes", () => {
@@ -38,7 +38,7 @@ describe("batch", () => {
 
   describe("#writeBatch", () => {
     const parquetWriterInstance = {
-      appendRow: jest.fn().mockImplementation(async (message) => message),
+      appendRow: jest.fn().mockImplementation(async (x) => x),
       close: jest.fn(),
     };
     const writeStream = { write: jest.fn(), end: jest.fn() };
@@ -52,21 +52,21 @@ describe("batch", () => {
     beforeEach(jest.clearAllMocks);
     afterAll(jest.restoreAllMocks);
 
-    describe("when passed a valid message iterator", () => {
-      const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
+    describe("when passed a valid announcement iterator", () => {
+      const announcements = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
 
       it("calls ParquetWriter#openStream to start a writable stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, messages);
+        await writeBatch(writeStream, BroadcastSchema, announcements);
         expect(ParquetWriter.openStream).toHaveBeenCalled();
       });
 
       it("calls ParquetWriter#appendRow to add a row to parquet stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, messages);
+        await writeBatch(writeStream, BroadcastSchema, announcements);
         expect(parquetWriterInstance.appendRow).toHaveBeenCalledTimes(1);
       });
 
       it("calls ParquetWriter#close to end the stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, messages);
+        await writeBatch(writeStream, BroadcastSchema, announcements);
         expect(parquetWriterInstance.close).toHaveBeenCalledTimes(1);
       });
     });
@@ -88,8 +88,8 @@ describe("batch", () => {
       });
     });
 
-    describe("when passed a message iterator containing no messages", () => {
-      const badMessages: Array<DSNPBatchMessage> = [];
+    describe("when passed a message iterator containing no announcements", () => {
+      const badMessages: Array<SignedAnnouncement> = [];
 
       it("throws EmptyBatchError", async () => {
         await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toThrow(EmptyBatchError);
@@ -105,20 +105,20 @@ describe("batch", () => {
 
   describe("#createFile", () => {
     const { createFile } = batch;
-    const messages = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
+    const announcements = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
 
     describe("when passed a valid message iterator", () => {
       it("calls putStream to start streaming", async () => {
         const mockStore = new TestStore();
         jest.spyOn(mockStore, "putStream");
-        await createFile("batch.parquet", messages, { store: mockStore });
+        await createFile("batch.parquet", announcements, { store: mockStore });
         expect(mockStore.putStream).toHaveBeenCalled();
       });
 
       it("calls #writeBatch to stream write parquet", async () => {
         jest.spyOn(batch, "writeBatch");
         const mockStore = new TestStore();
-        await createFile("batch.parquet", messages, { store: mockStore });
+        await createFile("batch.parquet", announcements, { store: mockStore });
 
         const file = mockStore.getStore()["batch.parquet"];
         const reader = await ParquetReader.openBuffer(file);
@@ -128,8 +128,8 @@ describe("batch", () => {
       });
     });
 
-    describe("when passed a message iterator containing no messages", () => {
-      const badMessages: Array<DSNPBatchMessage> = [];
+    describe("when passed a message iterator containing no announcements", () => {
+      const badMessages: Array<SignedAnnouncement> = [];
 
       it("throws EmptyBatchError", async () => {
         const mockStore = new TestStore();

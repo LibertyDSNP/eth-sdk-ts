@@ -1,12 +1,12 @@
-import { validateDSNPMessageId } from "./identifiers";
+import { validateDSNPAnnouncementId } from "./identifiers";
 
-describe("validateDSNPMessageId", () => {
-  const validDSNPMessageIds = [
+describe("validatedsnpAnnouncementId", () => {
+  const validdsnpAnnouncementIds = [
     "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Uppercase
     "dsnp://0123456789abcdef/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // Lowercase
   ];
 
-  const invalidDSNPMessageIds = [
+  const invaliddsnpAnnouncementIds = [
     "dsnp://badbadbad/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Bad user id
     "dsnp://0123456789ABCDEF/badbadbad", // Bad message id
     "dsnp://0123456789ABCDE/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // User id too short
@@ -14,15 +14,15 @@ describe("validateDSNPMessageId", () => {
     "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDE", // Message id too short
   ];
 
-  for (const id of validDSNPMessageIds) {
+  for (const id of validdsnpAnnouncementIds) {
     it(`returns true for "${id}"`, () => {
-      expect(validateDSNPMessageId(id)).toEqual(true);
+      expect(validateDSNPAnnouncementId(id)).toEqual(true);
     });
   }
 
-  for (const id of invalidDSNPMessageIds) {
+  for (const id of invaliddsnpAnnouncementIds) {
     it(`returns false for "${id}"`, () => {
-      expect(validateDSNPMessageId(id)).toEqual(false);
+      expect(validateDSNPAnnouncementId(id)).toEqual(false);
     });
   }
 });

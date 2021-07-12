@@ -7,7 +7,7 @@ import { ConfigOpts, requireGetSigner, requireGetProvider } from "../../config";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
-import { DSNPMessage, serialize } from "../messages";
+import { Announcement, serialize } from "../announcements";
 import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../identifiers";
 
 const CONTRACT_NAME = "Registry";
@@ -145,8 +145,8 @@ export const getDSNPRegistryUpdateEvents = async (
 };
 
 /**
- * isMessageSignatureAuthorizedTo() validates a serialized message or DSNPMessage against a signature and then checks that the
- * signer has the permissions specified.  DSNPMessages should be passed as is,
+ * isSignatureAuthorizedTo() validates a serialized message or announcement against a signature and then checks that the
+ * signer has the permissions specified. Announcements should be passed as is,
  * without serializing, to guarantee consistent results.
  *
  * @throws {@link MissingProviderConfigError}
@@ -156,7 +156,7 @@ export const getDSNPRegistryUpdateEvents = async (
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
  * @param signature - the signature for the message
- * @param message - the signed message
+ * @param message - the signed announcement or string
  * @param dsnpUserId - the DSNP User Id of the supposed signer
  * @param permission - the permissions to check for
  * @param blockTag - (optional). A block number or string BlockTag
@@ -164,9 +164,9 @@ export const getDSNPRegistryUpdateEvents = async (
  *    Defaults to 0x0, which checks for "forever" permissions.
  * @param opts - (optional) any config overrides.
  */
-export const isMessageSignatureAuthorizedTo = async (
+export const isSignatureAuthorizedTo = async (
   signature: HexString,
-  message: DSNPMessage | string,
+  message: Announcement | string,
   dsnpUserId: DSNPUserId,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
@@ -187,9 +187,9 @@ export const isMessageSignatureAuthorizedTo = async (
     const bn = (await provider?.getBlock(blockNumber))?.number;
     if (bn) blockNumber = bn;
   }
-  const messageString = typeof message === "string" ? (message as string) : serialize(message);
+  const signedString = typeof message === "string" ? (message as string) : serialize(message);
 
-  const signerAddr = ethers.utils.verifyMessage(messageString, signature);
+  const signerAddr = ethers.utils.verifyMessage(signedString, signature);
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 

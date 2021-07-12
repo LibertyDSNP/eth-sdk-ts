@@ -1,5 +1,5 @@
 import { Handle } from "./core/contracts/registry";
-import { DSNPType } from "./core/messages/messages";
+import { DSNPType } from "./core/announcements";
 import { HexString } from "./types/Strings";
 import { NotImplementedError } from "./core/errors";
 

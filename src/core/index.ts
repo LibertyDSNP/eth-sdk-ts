@@ -21,8 +21,8 @@ export const contracts = contractsImport;
 import * as configImport from "./config";
 export const config = configImport;
 
-import * as messagesImport from "./messages";
-export const messages = messagesImport;
+import * as announcementsImport from "./announcements";
+export const announcements = announcementsImport;
 
 import * as storeImport from "./store";
 export const store = storeImport;

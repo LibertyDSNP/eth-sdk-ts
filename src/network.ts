@@ -1,9 +1,13 @@
 import { Registration } from "./core/contracts/registry";
-import * as messages from "./core/messages/messages";
-import * as config from "./config";
+import { ConfigOpts, requireGetCurrentFromId } from "./config";
 import { DSNPUserId } from "./core/identifiers";
-import { BatchGraphChangeMessage } from "./core/batch/batchMessages";
 import { NotImplementedError } from "./core/errors";
+import {
+  createFollowGraphChange,
+  createUnfollowGraphChange,
+  sign,
+  SignedGraphChangeAnnouncement,
+} from "./core/announcements";
 
 /**
  * follow() creates a follow event and returns it.
@@ -14,15 +18,15 @@ import { NotImplementedError } from "./core/errors";
  * Thrown if the from id is not configured.
  * @param followeeId - The id of the user to follow
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns The signed DSNP Graph Change message
+ * @returns The signed Graph Change Announcement
  */
-export const follow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): Promise<BatchGraphChangeMessage> => {
-  const currentFromId = config.requireGetCurrentFromId(opts);
+export const follow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
+  const currentFromId = requireGetCurrentFromId(opts);
 
-  const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
+  const announcement = createFollowGraphChange(currentFromId, followeeId);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await sign(announcement, opts);
+  return signedAnnouncement;
 };
 
 /**
@@ -34,15 +38,15 @@ export const follow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): 
  * Thrown if the from id is not configured.
  * @param followeeId - The id of the user to unfollow
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns The signed DSNP Graph Change message
+ * @returns The signed Graph Change Announcement
  */
-export const unfollow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts): Promise<BatchGraphChangeMessage> => {
-  const currentFromId = config.requireGetCurrentFromId(opts);
+export const unfollow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
+  const currentFromId = requireGetCurrentFromId(opts);
 
-  const message = messages.createFollowGraphChangeMessage(currentFromId, followeeId);
+  const announcement = createUnfollowGraphChange(currentFromId, followeeId);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await sign(announcement, opts);
+  return signedAnnouncement;
 };
 
 /**
@@ -58,7 +62,7 @@ export const unfollow = async (followeeId: DSNPUserId, opts?: config.ConfigOpts)
 export const isFollowing = async (
   _follower: DSNPUserId,
   _followee?: DSNPUserId,
-  _opts?: config.ConfigOpts
+  _opts?: ConfigOpts
 ): Promise<boolean> => {
   throw new NotImplementedError();
 };
@@ -72,7 +76,7 @@ export const isFollowing = async (
  * @param _opts - Optional. Configuration overrides, such as from address, if any
  * @returns An array of all users following the followee
  */
-export const getFollowers = async (_followee?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
+export const getFollowers = async (_followee?: DSNPUserId, _opts?: ConfigOpts): Promise<Registration[]> => {
   throw new NotImplementedError();
 };
 
@@ -85,6 +89,6 @@ export const getFollowers = async (_followee?: DSNPUserId, _opts?: config.Config
  * @param _opts -     Optional. Configuration overrides, such as from address, if any
  * @returns An array of all users followed by the follower user
  */
-export const getFollowees = (_follower?: DSNPUserId, _opts?: config.ConfigOpts): Promise<Registration[]> => {
+export const getFollowees = (_follower?: DSNPUserId, _opts?: ConfigOpts): Promise<Registration[]> => {
   throw new NotImplementedError();
 };

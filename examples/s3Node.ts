@@ -19,7 +19,7 @@ export interface S3Credentials extends S3ClientConfig {
   region: string;
 }
 /**
- * S3Node provides an example storage solution for saving DSNP messages on Amazon S3
+ * S3Node provides an example storage solution for saving files on Amazon S3
  * This adapter is provided for convenience can be used in other applications configuration.
  * This can be configured on the SDK like so:
  * ```typescript

@@ -1,5 +1,5 @@
 import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./dsnpGenerators";
-import { DSNPType } from "../core/messages/messages";
+import { DSNPType } from "../core/announcements";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {

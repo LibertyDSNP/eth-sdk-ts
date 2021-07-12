@@ -17,9 +17,9 @@ describe("batchFileGenerators", () => {
   ].forEach((testCase) => {
     it(`${testCase.name} can be written and read with bloom filters`, async () => {
       const dir = os.tmpdir();
-      const numMessages = 10;
+      const numRows = 10;
 
-      const res: DSNPBatchWriteResult = await testCase.gen(dir, numMessages);
+      const res: DSNPBatchWriteResult = await testCase.gen(dir, numRows);
       expect(res.error).toEqual("");
       expect(res.path).toMatch(dir);
       expect(res.records).toEqual(10);
@@ -35,7 +35,7 @@ describe("batchFileGenerators", () => {
           expect(record).toHaveProperty(field);
         });
       }
-      expect(numRecords).toEqual(numMessages);
+      expect(numRecords).toEqual(numRows);
 
       // some sanity checking of the bloom filters.
       const bloomFilters = await reader.getBloomFiltersFor(testCase.bloom);

@@ -3,7 +3,7 @@ import * as network from "./network";
 import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
-import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
+import { DSNPGraphChangeType, DSNPType } from "./core/announcements";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
@@ -43,10 +43,10 @@ describe("network", () => {
         });
       });
 
-      it("returns a follow graph change DSNP message", async () => {
-        const message = await network.follow(registerId);
+      it("returns a follow graph change announcement", async () => {
+        const announcement = await network.follow(registerId);
 
-        expect(message).toMatchObject({
+        expect(announcement).toMatchObject({
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
@@ -90,13 +90,13 @@ describe("network", () => {
         });
       });
 
-      it("returns a follow graph change DSNP message", async () => {
-        const message = await network.unfollow(registerId);
+      it("returns a follow graph change announcement", async () => {
+        const announcement = await network.unfollow(registerId);
 
-        expect(message).toMatchObject({
+        expect(announcement).toMatchObject({
           fromId: "dsnp://0000000000000000",
           dsnpType: DSNPType.GraphChange,
-          changeType: DSNPGraphChangeType.Follow,
+          changeType: DSNPGraphChangeType.Unfollow,
           objectId: registerId,
         });
       });

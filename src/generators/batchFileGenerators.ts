@@ -4,8 +4,12 @@ import parquet from "@dsnp/parquetjs";
 import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
 import * as pq from "../core/batch/parquetSchema";
 import { EthereumAddress } from "../types/Strings";
-import { BatchBroadcastMessage, BatchReactionMessage, BatchReplyMessage } from "../core/batch/batchMessages";
 import { generateHexString } from "@dsnp/test-generators";
+import {
+  SignedBroadcastAnnouncement,
+  SignedReactionAnnouncement,
+  SignedReplyAnnouncement,
+} from "../core/announcements";
 
 export type DSNPBatchWriteResult = {
   records: number;
@@ -13,56 +17,50 @@ export type DSNPBatchWriteResult = {
   error: string;
 };
 
-export type BatchMessageType = BatchBroadcastMessage | BatchReactionMessage | BatchReplyMessage;
-type BatchGenerator = { (): BatchMessageType };
+export type BatchAnnouncementType = SignedBroadcastAnnouncement | SignedReactionAnnouncement | SignedReplyAnnouncement;
+type BatchGenerator = { (): BatchAnnouncementType };
 
 /**
  * generateBatchBroadcast
  *
  * @param from - a desired fromID (optional)
  */
-export const generateBatchBroadcast = (from?: EthereumAddress): BatchBroadcastMessage => {
+export const generateBatchBroadcast = (from?: EthereumAddress): SignedBroadcastAnnouncement => {
   return { signature: generateHexString(256), ...generateBroadcast(from) };
 };
 
-export const generateBatchReaction = (from?: EthereumAddress): BatchReactionMessage => {
+export const generateBatchReaction = (from?: EthereumAddress): SignedReactionAnnouncement => {
   return { signature: generateHexString(256), ...generateReaction(from) };
 };
 
-export const generateBatchReply = (from?: EthereumAddress): BatchReplyMessage => {
+export const generateBatchReply = (from?: EthereumAddress): SignedReplyAnnouncement => {
   return { signature: generateHexString(256), ...generateReply(from) };
 };
 
-export const generateBroadcastBatchFile = async (
-  rootDir: string,
-  numMessages: number
-): Promise<DSNPBatchWriteResult> => {
+export const generateBroadcastBatchFile = async (rootDir: string, numRows: number): Promise<DSNPBatchWriteResult> => {
   return await writeBatchFileWithOptions({
     rootDir: rootDir,
-    numMessages: numMessages,
+    numRows: numRows,
     schema: pq.BroadcastSchema,
     generator: generateBatchBroadcast,
     bloomOptions: pq.BroadcastBloomFilterOptions,
   });
 };
 
-export const generateReplyBatchFile = async (rootDir: string, numMessages: number): Promise<DSNPBatchWriteResult> => {
+export const generateReplyBatchFile = async (rootDir: string, numRows: number): Promise<DSNPBatchWriteResult> => {
   return await writeBatchFileWithOptions({
     rootDir: rootDir,
-    numMessages: numMessages,
+    numRows: numRows,
     schema: pq.ReplySchema,
     generator: generateBatchReply,
     bloomOptions: pq.ReplyBloomFilterOptions,
   });
 };
 
-export const generateReactionBatchFile = async (
-  rootDir: string,
-  numMessages: number
-): Promise<DSNPBatchWriteResult> => {
+export const generateReactionBatchFile = async (rootDir: string, numRows: number): Promise<DSNPBatchWriteResult> => {
   return await writeBatchFileWithOptions({
     rootDir: rootDir,
-    numMessages: numMessages,
+    numRows: numRows,
     schema: pq.ReactionSchema,
     generator: generateBatchReaction,
     bloomOptions: pq.ReactionBloomFilterOptions,
@@ -71,7 +69,7 @@ export const generateReactionBatchFile = async (
 
 type writeBatchOptions = {
   rootDir: string;
-  numMessages: number;
+  numRows: number;
   schema: pq.Schema;
   generator: BatchGenerator;
   bloomOptions?: pq.BloomFilterOptions;
@@ -82,12 +80,12 @@ const writeBatchFileWithOptions = async (opts: writeBatchOptions): Promise<DSNPB
     throw new Error("rootDir can't be blank");
   }
   ensureDir(opts.rootDir);
-  const parquetFileName = ["replies", opts.numMessages, timestamp()].join("-") + ".parquet";
+  const parquetFileName = ["replies", opts.numRows, timestamp()].join("-") + ".parquet";
   const fname = path.join(opts.rootDir, parquetFileName);
   let itemsWritten = 0;
 
   try {
-    const data = Array.from({ length: opts.numMessages }, () => opts.generator());
+    const data = Array.from({ length: opts.numRows }, () => opts.generator());
     const pSchema = new parquet.ParquetSchema(opts.schema);
     const writer = await parquet.ParquetWriter.openFile(pSchema, fname, opts.bloomOptions);
     for (let i = 0; i < data.length; i++) {

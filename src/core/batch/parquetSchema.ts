@@ -1,9 +1,9 @@
 /**
- * Parquet Schemas for DNSP Message Types
+ * Parquet Schemas for DSNP Announcement Types
  * See DSNP type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
-import { DSNPType, InvalidMessageTypeError } from "../messages";
+import { DSNPType, InvalidAnnouncementTypeError } from "../announcements";
 
 /**
  * BloomFilterColumnOptions: bloom filter options for a column intended to be used with when writing a batch file
@@ -38,7 +38,7 @@ export const BroadcastSchema = {
 };
 
 /**
- * BroadcastBloomFilter: bloom filter options for batching broadcast messages
+ * BroadcastBloomFilter: bloom filter options for batching broadcast announcements
  */
 export const BroadcastBloomFilterOptions: BloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }],
@@ -57,7 +57,7 @@ export const ReplySchema = {
 };
 
 /**
- * ReplyBloomBloomFilter: bloom filter options for batching reply messages
+ * ReplyBloomBloomFilter: bloom filter options for batching reply announcements
  */
 export const ReplyBloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }, { column: "inReplyTo" }],
@@ -75,7 +75,7 @@ export const GraphChangeSchema = {
 };
 
 /**
- * GraphChangeBloomFilter: bloom filter options for batching graph changes messages
+ * GraphChangeBloomFilter: bloom filter options for batching graph changes announcements
  */
 export const GraphChangeBloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }],
@@ -92,7 +92,7 @@ export const ProfileSchema = {
 };
 
 /**
- * ProfileBloomFilter: bloom filter options for batching profile messages
+ * ProfileBloomFilter: bloom filter options for batching profile announcements
  */
 export const ProfileBloomFilterOptions = {
   bloomFilters: [{ column: "fromId" }],
@@ -110,7 +110,7 @@ export const ReactionSchema = {
 };
 
 /**
- * ReactionBloomFilter: bloom filter options for batching reaction messages
+ * ReactionBloomFilter: bloom filter options for batching reaction announcements
  */
 export const ReactionBloomFilterOptions = {
   bloomFilters: [{ column: "emoji" }, { column: "fromId" }, { column: "inReplyTo" }],
@@ -119,7 +119,7 @@ export const ReactionBloomFilterOptions = {
 /**
  * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
  *
- * @throws {@link InvalidMessageTypeError}
+ * @throws {@link InvalidAnnouncementTypeError}
  * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet schema
@@ -138,13 +138,13 @@ export const getSchemaFor = (dsnpType: DSNPType): Schema => {
       return ProfileSchema;
   }
 
-  throw new InvalidMessageTypeError(dsnpType);
+  throw new InvalidAnnouncementTypeError(dsnpType);
 };
 
 /**
  * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
  *
- * @throws {@link InvalidMessageTypeError}
+ * @throws {@link InvalidAnnouncementTypeError}
  * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet bloom filter options
@@ -163,5 +163,5 @@ export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions
       return ProfileBloomFilterOptions;
   }
 
-  throw new InvalidMessageTypeError(dsnpType);
+  throw new InvalidAnnouncementTypeError(dsnpType);
 };
