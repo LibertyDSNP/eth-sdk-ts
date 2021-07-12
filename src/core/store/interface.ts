@@ -38,7 +38,7 @@ export interface StoreInterface {
    *
    * @param targetPath - The path to and name of file
    * @param content - The file object to store on the chosen hosting solution
-   * @returns The URI of the hosted file
+   * @returns The URL of the hosted file
    */
   put: (targetPath: string, content: Content) => Promise<URL>;
 
@@ -48,7 +48,7 @@ export interface StoreInterface {
    *
    * @param targetPath - The path to and name of file
    * @param doWriteToStream - A callback function that receives a writable to stream data to the chosen hosting solution
-   * @returns The URI of the hosted file
+   * @returns The URL of the hosted file
    */
   putStream: (targetPath: string, doWriteToStream: WriteStreamCallback) => Promise<URL>;
 }

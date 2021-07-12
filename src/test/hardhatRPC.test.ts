@@ -2,7 +2,7 @@
 require("dotenv").config();
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
-import { batch, dsnpBatchFilter } from "../core/contracts/announcement";
+import { publish, dsnpBatchFilter } from "../core/contracts/publisher";
 import { setConfig, getConfig } from "../config";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";
 
@@ -29,13 +29,13 @@ describe("snapshot and revert", () => {
     // snapshot
     await snapshotHardhat(provider);
 
-    const testUri = "http://www.testconst.com";
+    const testUrl = "http://www.testconst.com";
     const hash = "0x" + keccak256("test");
 
-    const announcements = [{ dsnpType: 0, uri: testUri, hash: hash }];
+    const publications = [{ dsnpType: 0, url: testUrl, hash: hash }];
 
     // create a batch
-    await batch(announcements);
+    await publish(publications);
 
     const batchEventLogs1 = await provider.getLogs(filter);
     // confirm batch event exists

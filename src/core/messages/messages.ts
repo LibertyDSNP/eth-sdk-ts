@@ -34,23 +34,23 @@ export interface DSNPTypedMessage<T extends DSNPType> {
 export interface BroadcastMessage extends DSNPTypedMessage<DSNPType.Broadcast> {
   contentHash: string;
   fromId: string;
-  uri: string;
+  url: string;
 }
 
 /**
- * createBroadcastMessage() generates a broadcast message from a given URI and
+ * createBroadcastMessage() generates a broadcast message from a given URL and
  * hash.
  *
  * @param fromId - The id of the user from whom the message is posted
- * @param uri - The URI of the activity pub content to reference
- * @param hash - The hash of the content at the URI
+ * @param url - The URL of the activity content to reference
+ * @param hash - The hash of the content at the URL
  * @returns A BroadcastMessage
  */
-export const createBroadcastMessage = (fromId: string, uri: string, hash: HexString): BroadcastMessage => ({
+export const createBroadcastMessage = (fromId: string, url: string, hash: HexString): BroadcastMessage => ({
   dsnpType: DSNPType.Broadcast,
   contentHash: hash,
   fromId,
-  uri,
+  url,
 });
 
 /**
@@ -60,25 +60,25 @@ export interface ReplyMessage extends DSNPTypedMessage<DSNPType.Reply> {
   contentHash: HexString;
   fromId: string;
   inReplyTo: string;
-  uri: string;
+  url: string;
 }
 
 /**
- * createReplyMessage() generates a reply message from a given URI, hash and
+ * createReplyMessage() generates a reply message from a given URL, hash and
  * message identifier.
  *
  * @param fromId    - The id of the user from whom the message is posted
- * @param uri       - The URI of the activity pub content to reference
- * @param hash      - The hash of the content at the URI
+ * @param url       - The URL of the activity content to reference
+ * @param hash      - The hash of the content at the URL
  * @param inReplyTo - The message id of the parent message
  * @returns A ReplyMessage
  */
-export const createReplyMessage = (fromId: string, uri: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
+export const createReplyMessage = (fromId: string, url: string, hash: HexString, inReplyTo: string): ReplyMessage => ({
   dsnpType: DSNPType.Reply,
   contentHash: hash,
   fromId,
   inReplyTo,
-  uri,
+  url,
 });
 
 /**
@@ -91,7 +91,7 @@ export interface ReactionMessage extends DSNPTypedMessage<DSNPType.Reaction> {
 }
 
 /**
- * createReactionMessage() generates a reply message from a given URI, hash and
+ * createReactionMessage() generates a reply message from a given URL, hash and
  * message identifier.
  *
  * @param   fromId    - The id of the user from whom the message is posted
@@ -176,22 +176,22 @@ export const serialize = (message: DSNPMessage): string => {
 export interface ProfileMessage extends DSNPTypedMessage<DSNPType.Profile> {
   contentHash: string;
   fromId: string;
-  uri: string;
+  url: string;
 }
 
 /**
- * createProfileMessage() generates a profile message from a given URI and hash.
+ * createProfileMessage() generates a profile message from a given URL and hash.
  *
  * @param   fromId - The id of the user from whom the message is posted
- * @param   uri    - The URI of the activity pub content to reference
- * @param   hash   - The hash of the content at the URI
+ * @param   url    - The URL of the activity content to reference
+ * @param   hash   - The hash of the content at the URL
  * @returns A ProfileMessage
  */
-export const createProfileMessage = (fromId: string, uri: string, hash: HexString): ProfileMessage => ({
+export const createProfileMessage = (fromId: string, url: string, hash: HexString): ProfileMessage => ({
   dsnpType: DSNPType.Profile,
   contentHash: hash,
   fromId,
-  uri,
+  url,
 });
 
 /**

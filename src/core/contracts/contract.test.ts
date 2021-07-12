@@ -12,7 +12,7 @@ describe("Contracts", () => {
 
   describe("getContractAddress", () => {
     it("returns latest address for contract", async () => {
-      const contractAddress = await getContractAddress(provider, "Announcer");
+      const contractAddress = await getContractAddress(provider, "Publisher");
       expect(contractAddress).not.toBeNull();
     });
 

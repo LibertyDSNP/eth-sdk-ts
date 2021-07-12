@@ -71,16 +71,16 @@ Once the SDK is installed and configured, the following code can be used to post
 
 ```js
 // Node
-const announcement = require("@dsnp/sdk/core/contracts/announcement");
+const publisher = require("@dsnp/sdk/core/contracts/publisher");
 
-announcement.batch([{ hash, uri, dsnpType }]);
+publisher.publish([{ hash, url, dsnpType }]);
 ```
 
 ```typescript
 // TypeScript
-import announcement from "@dsnp/sdk/core/contracts/announcement";
+import publisher from "@dsnp/sdk/core/contracts/publisher";
 
-announcement.batch([{ hash, uri, dsnpType }]);
+publisher.publish([{ hash, url, dsnpType }]);
 ```
 
 ## Documentation
@@ -108,7 +108,6 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
 | Name                   | Description                                                                         |
 | ---------------------- | ----------------------------------------------------------------------------------- |
 | RPC_URL                | url of node to make calls to                                                        |
-| BATCH_CONTRACT_ADDRESS | Address of contract on chain you are calling to                                     |
 | TESTING_PRIVATE_KEY    | **Only used in testing** - private key of account you are sending transactions from |
 
 ## Testing
@@ -121,9 +120,11 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
     RPC_URL=http://localhost:8545
     TESTING_PRIVATE_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
     ```
-1.  Replace the value of TESTING_PRIVATE_KEY with the value of `LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY` in the .env from the contracts repo, or use what is in .github/workflows/main.yml. It may be same as above. 
-1. Ensure that the contracts version you would like to use is the correct version. The version of the `@dsnp/contracts` package is specified in the `package.json` 
-1. Run `npm run test`
+1. Replace the value of TESTING_PRIVATE_KEY with the value of `LOCAL_NETWORK_ACCOUNT_PRIVATE_KEY` in the .env from the contracts repo, or use what is in .github/workflows/main.yml. It may be same as above. 
+1. Ensure that the contracts version you would like to use is the correct version. The version of the `@dsnp/contracts` package is specified in the `package.json`
+1. In the contracts repo run: `npm run hardhat -- node`
+1. In the contracts repo run: `npm run deploy:localhost`
+1. In the sdk repo run: `npm run test`
 
 ### Test Writing Utilities
 

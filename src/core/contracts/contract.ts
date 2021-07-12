@@ -12,7 +12,7 @@ type RawLog = { topics: Array<string>; data: string };
 
 const EVENTS_ABI = new ethers.utils.Interface(
   [
-    types.Announcer__factory,
+    types.Publisher__factory,
     types.BeaconFactory__factory,
     types.Identity__factory,
     types.Migrations__factory,
@@ -73,12 +73,11 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
 };
 
 /**
- * getContractAddress() allows users call the batch smart contract and post the URI and hash
- * of a generated batch to the blockchain.
+ * getContractAddress() uses DSNP Migrations to retrieve the most recently deployed contract address
  *
  * @param provider - initialized provider
  * @param contractName - Name of contract to find address for
- * @returns HexString A hexidecimal string representing the contract address
+ * @returns HexString A hexadecimal string representing the contract address
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,

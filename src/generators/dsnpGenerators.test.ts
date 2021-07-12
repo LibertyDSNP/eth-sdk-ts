@@ -24,7 +24,7 @@ describe("dsnp functions", () => {
     expect(dsnpMsg.fromId.length).toBeGreaterThan(0);
 
     // validates that it gets a parseable URL and not garbage.
-    const url = new URL(dsnpMsg.uri);
+    const url = new URL(dsnpMsg.url);
     expect(url.protocol).toMatch(/^http/);
   });
 

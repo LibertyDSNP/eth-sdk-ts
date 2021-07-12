@@ -17,8 +17,8 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-import * as announcementImport from "./announcement";
-export const announcement = announcementImport;
+import * as publisherImport from "./publisher";
+export const publisher = publisherImport;
 
 import * as registryImport from "./registry";
 export const registry = registryImport;
