@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 
+import { ContractName } from "../../config";
 import { getContractAddress } from "./contract";
 import { MissingContractAddressError } from "./contractErrors";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -19,7 +20,7 @@ describe("Contracts", () => {
     });
 
     it("throws MissingContractAddressError if no values found", async () => {
-      await expect(getContractAddress(provider, "Test")).rejects.toThrow(MissingContractAddressError);
+      await expect(getContractAddress(provider, "Test" as ContractName)).rejects.toThrow(MissingContractAddressError);
     });
   });
 });

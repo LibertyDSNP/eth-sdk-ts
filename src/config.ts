@@ -21,14 +21,16 @@ type IdentityLogicContractName = "Identity";
 type IdentityCloneFactoryContractName = "IdentityCloneFactory";
 /* The name of the Registry contract */
 type RegistryContractName = "Registry";
-/* Any valid contract name */
-type ContractName =
+/** Any valid contract name */
+export type ContractName =
   | PublisherContractName
   | BeaconContractName
   | BeaconFactoryContractName
   | IdentityLogicContractName
   | IdentityCloneFactoryContractName
   | RegistryContractName;
+
+type Contracts = { [key in ContractName]?: HexString };
 
 /**
  * The Config Interface provides for various settings and plugable modules.
@@ -41,7 +43,7 @@ export interface Config {
   /** The Storage handles storing batch, content, and other media files at a publicly accessible location */
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
-  contracts: { [key in ContractName]?: HexString };
+  contracts: Contracts;
   /** currentFromId stores the id of the currently authenticated user */
   currentFromId?: string;
   /** to allow access of keys by name */
@@ -145,7 +147,7 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
  * @param opts - overrides for the current configuration.
  * @returns potentially undefined contract addresses
  */
-export const getContracts = (opts?: ConfigOpts): Record<string, HexString> => {
+export const getContracts = (opts?: ConfigOpts): Contracts => {
   const c = getConfig(opts);
   return c.contracts;
 };

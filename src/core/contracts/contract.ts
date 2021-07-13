@@ -2,7 +2,7 @@ import { JsonFragment } from "@ethersproject/abi";
 import { ethers } from "ethers";
 import { keccak256 } from "js-sha3";
 
-import { getContracts, ConfigOpts } from "../../config";
+import { getContracts, ContractName, ConfigOpts } from "../../config";
 import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
 import { HexString } from "../../types/Strings";
 import * as types from "../../types/typechain";
@@ -94,11 +94,12 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
-  contractName: string,
+  contractName: ContractName,
   opts?: ConfigOpts
 ): Promise<HexString> => {
   const contractOverrides = getContracts(opts);
-  if (contractOverrides[contractName]) return contractOverrides[contractName];
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  if (contractOverrides[contractName] !== undefined) return contractOverrides[contractName]!;
 
   const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
