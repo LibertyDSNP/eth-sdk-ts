@@ -7,7 +7,8 @@ import { Publisher__factory } from "../../types/typechain";
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
- * subscribeToBatchPublications: interface for callback function that is passed to subscribeToBatchPublications
+ * subscribeToBatchPublications: interface for callback function that is passed
+ * to subscribeToBatchPublications
  */
 export interface BatchPublicationCallbackArgs {
   blockNumber: number;
@@ -29,9 +30,10 @@ export interface BatchFilterOptions {
 type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackArgs) => void;
 
 /**
- * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch Publish events from the chain.
- * It takes a callback and a filter. The filter is used to filter events that come through.
- * The callback is invoked for each correctly filtered event.
+ * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch
+ * Publication events from the chain. It takes a callback and a filter. The
+ * filter is used to filter events that come through. The callback is invoked
+ * for each correctly filtered event.
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
