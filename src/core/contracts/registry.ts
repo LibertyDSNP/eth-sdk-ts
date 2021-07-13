@@ -1,7 +1,7 @@
 import { ethers, ContractTransaction } from "ethers";
 
 import { getContractAddress, getVmError, VmError } from "./contract";
-import { MissingRegistrationContractError } from "./contractErrors";
+import { MissingRegistrationError } from "./contractErrors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../../config";
 import { Registry__factory } from "../../types/typechain";
@@ -151,7 +151,7 @@ export const getDSNPRegistryUpdateEvents = async (
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
- * @throws {@link MissingRegistrationContractError}
+ * @throws {@link MissingRegistrationError}
  * Thrown if a registration cannot be found for the given DSNP User Id.
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
@@ -178,7 +178,7 @@ export const isMessageSignatureAuthorizedTo = async (
     },
     opts
   );
-  if (registrations.length === 0) throw new MissingRegistrationContractError(dsnpUserId);
+  if (registrations.length === 0) throw new MissingRegistrationError(dsnpUserId);
   const reg = registrations[registrations.length - 1];
 
   const provider = requireGetProvider(opts);

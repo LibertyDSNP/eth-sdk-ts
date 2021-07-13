@@ -24,10 +24,10 @@ export class MissingContractAddressError extends ContractError {
 }
 
 /**
- * MissingRegistrationContractError indicates that the registration for a given
+ * MissingRegistrationError indicates that the registration for a given
  * DSNP User Id could not be found.
  */
-export class MissingRegistrationContractError extends ContractError {
+export class MissingRegistrationError extends ContractError {
   dsnpUserId: DSNPUserId;
 
   constructor(dsnpUserId: DSNPUserId) {
