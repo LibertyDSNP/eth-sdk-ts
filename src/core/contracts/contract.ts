@@ -12,7 +12,7 @@ type RawLog = { topics: Array<string>; data: string };
 
 const EVENTS_ABI = new ethers.utils.Interface(
   [
-    types.Announcer__factory,
+    types.Publisher__factory,
     types.BeaconFactory__factory,
     types.Identity__factory,
     types.Migrations__factory,
@@ -52,7 +52,10 @@ export const DSNP_MIGRATION_ABI: ethers.utils.ParamType[] = [
   }),
 ];
 
-const decodeReturnValues = (inputs: ethers.utils.ParamType[], logs: ethers.providers.Log[]): ContractResult[] => {
+export const decodeReturnValues = (
+  inputs: ethers.utils.ParamType[],
+  logs: ethers.providers.Log[]
+): ContractResult[] => {
   const decoder = new ethers.utils.AbiCoder();
   return logs.map((log: ethers.providers.Log) => {
     const { contractAddr, contractName } = decoder.decode(inputs, log.data);
@@ -66,7 +69,7 @@ const decodeReturnValues = (inputs: ethers.utils.ParamType[], logs: ethers.provi
   });
 };
 
-const filterValues = (values: ContractResult[], contractName: string): ContractResult[] => {
+export const filterValues = (values: ContractResult[], contractName: string): ContractResult[] => {
   return values.filter((result: ContractResult) => {
     return result.contractName == contractName;
   });

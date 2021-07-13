@@ -1,4 +1,4 @@
-import { ContractTransaction } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 import {
   ConfigOpts,
   requireGetProvider,
@@ -23,8 +23,11 @@ import {
   EIP712Signature,
   TypedDomainData,
 } from "./utilities";
-import { getContractAddress } from "./contract";
+import { getContractAddress, getKeccakTopic } from "./contract";
 import { Provider } from "@ethersproject/providers";
+import { ParsedLog } from "./subscription";
+import { getDSNPRegistryUpdateEvents, Handle, Registration, resolveRegistration } from "./registry";
+// import { ParsedLog } from "./subscription";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
 const BEACON_FACTORY_CONTRACT = "BeaconFactory";
@@ -322,4 +325,195 @@ export const upsertDelegate = async (
   const contract = await Identity__factory.connect(contractAddress, provider);
 
   return contract.connect(signer).delegate(address, role);
+};
+
+/**
+ * removeDelegate() Add or change permissions for delegate
+ *
+ * @param contractAddress - Address of the identity contract to use
+ * @param address - Address of delegate to add permissions to
+ * @param endBlock - The block number to remove delegate
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const removeDelegate = async (
+  contractAddress: EthereumAddress,
+  address: EthereumAddress,
+  endBlock: DelegationRole,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const signer = requireGetSigner(opts);
+  const provider = requireGetProvider(opts);
+  const contract = await Identity__factory.connect(contractAddress, provider);
+
+  return contract.connect(signer).delegateRemove(address, endBlock);
+};
+
+const IDENTITY_DECODER = new ethers.utils.Interface(Identity__factory.abi);
+
+export const siftDelegateLogs = (logs: ParsedLog[]): DelegateLogData[] => {
+  return logs.map((item: ParsedLog) => {
+    const {
+      fragment: {
+        args: { delegate, endBlock },
+        name,
+      },
+      log: { address, blockNumber },
+    } = item;
+
+    const eventData: DelegateLogData = {
+      name,
+      identityAddress: address,
+      delegate: delegate,
+      blockNumber,
+    };
+
+    if (name === "DSNPRemoveDelegate") {
+      eventData.endBlock = endBlock.toNumber();
+    }
+
+    return eventData;
+  });
+};
+
+const groupByIdentityAddress = (delegateLogs: DelegateLogData[]): Record<string, DelegateLogData[]> => {
+  return delegateLogs.reduce((acc: unknown | any, current: DelegateLogData) => {
+    if (!acc[current.identityAddress]) {
+      acc[current.identityAddress] = [];
+    }
+
+    acc[current.identityAddress].push(current);
+
+    return acc;
+  }, {});
+};
+
+/**
+ * dsnpAddDelegateFilter() Retrieves event filter for DSNPAddDelegate event
+ *
+ * @param publicAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getDelegateIdentitiesFrom = async (
+  publicAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<EthereumAddress[]> => {
+  const provider = requireGetProvider(opts);
+
+  const delegateLogs: DelegateLogData[] = [
+    ...siftDelegateLogs(await getAddDelegateLogs(publicAddress, opts)),
+    ...siftDelegateLogs(await getRemoveDelegateLogs(publicAddress, opts)),
+  ];
+
+  const groupedByIdentityAddress = groupByIdentityAddress(delegateLogs);
+
+  const currentBlockNumber = await provider.getBlockNumber();
+
+  const filterLogs = <EthereumAddress[]>Object.values(groupedByIdentityAddress)
+    .map((log: DelegateLogData[]) => log.pop())
+    .filter((data: DelegateLogData | undefined) => {
+      if (data?.delegate != publicAddress) return false;
+      if (data == undefined) return false;
+      if (data.name === "DSNPAddDelegate") return true;
+      if (!data.endBlock) return false; // FIX THIS so that its not needed
+      if (data.name === "DSNPRemoveDelegate" && currentBlockNumber >= data.endBlock) return false;
+      return true;
+    })
+    .map((data: DelegateLogData | undefined) => data?.identityAddress);
+
+  return filterLogs;
+};
+
+export interface DelegateLogData {
+  name: string;
+  identityAddress: HexString;
+  delegate: HexString;
+  blockNumber: number;
+  endBlock?: number;
+}
+
+export const getRegistrationsByIdentity = async (identityAddr: HexString): Promise<Registration[]> => {
+  const registrations: Registration[] = await getDSNPRegistryUpdateEvents({ contractAddr: identityAddr });
+
+  const registrationsGroupedByRegistrationId = registrations.reduce<Record<string, Registration[]>>((acc, r) => {
+    if (!acc[r.dsnpUserId]) {
+      acc[r.dsnpUserId] = [];
+    }
+    acc[r.dsnpUserId].push(r);
+
+    return acc;
+  }, {});
+
+  const isHandle = (handle: Handle | null | undefined): handle is Handle => !!handle;
+
+  const registrationsHandles: Handle[] = Object.values(registrationsGroupedByRegistrationId)
+    .map((registrations: Registration[]) => registrations.pop()?.handle)
+    .filter(isHandle);
+
+  if (registrationsHandles.length === 0) return [];
+
+  const allRegistrations = await Promise.all(registrationsHandles.map((handle: Handle) => resolveRegistration(handle)));
+
+  const isRegistration = (r: Registration | null): r is Registration => !!r && r.contractAddr === identityAddr;
+
+  return allRegistrations.filter(isRegistration);
+};
+
+export const getRegistratiosByPublicAddress = async (publicKey: EthereumAddress): Promise<Registration[]> => {
+  const identitieAddresses: EthereumAddress[] = await getDelegateIdentitiesFrom(publicKey);
+
+  const registrations: Registration[][] = await Promise.all(
+    identitieAddresses.map((identitieAddress) => getRegistrationsByIdentity(identitieAddress))
+  );
+
+  return ([] as Registration[]).concat(...registrations);
+};
+
+/**
+ * getAddDelegateLogs() Retrieves event filter for DSNPAddDelegate event
+ *
+ * @param publicAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getAddDelegateLogs = async (publicAddress: EthereumAddress, opts?: ConfigOpts): Promise<ParsedLog[]> => {
+  const provider = requireGetProvider(opts);
+  const topic = getKeccakTopic("DSNPAddDelegate(address,uint8)");
+
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    topics: [topic, ethers.utils.hexZeroPad(publicAddress, 32)],
+    fromBlock: 0,
+  });
+
+  return logs.map((log: ethers.providers.Log) => {
+    const fragment = IDENTITY_DECODER.parseLog(log);
+    return { fragment, log: log };
+  });
+};
+
+/**
+ * getRemoveDelegateLogs() Retrieves event filter for DSNPRemoveDelegate event
+ *
+ * @param publicAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getRemoveDelegateLogs = async (
+  publicAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<ParsedLog[]> => {
+  const provider = requireGetProvider(opts);
+  const topic = getKeccakTopic("DSNPRemoveDelegate(address,uint64)");
+  //0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 public
+  //0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc non_owner
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    // topics: [topic],
+    topics: [topic, ethers.utils.hexZeroPad(ethers.utils.getAddress(publicAddress), 32)],
+    fromBlock: 0,
+  });
+
+  return logs.map((log: ethers.providers.Log) => {
+    const fragment = IDENTITY_DECODER.parseLog(log);
+    return { fragment, log: log };
+  });
 };
