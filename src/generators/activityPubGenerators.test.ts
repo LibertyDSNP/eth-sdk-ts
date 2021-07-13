@@ -17,13 +17,15 @@ describe("activityPubGenerators", () => {
     expect(res.attributedTo).toEqual(from);
     expect(res.inReplyTo).toEqual(to);
     expect(res.type).toEqual("Note");
+    expect(res.published).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
   });
 
-  it("activityPubGenerators does", () => {
+  it("generateNote does", () => {
     let res: ActivityPub = apg.generateNote(from, opText);
     expect(res.attachments).toEqual([]);
     expect(res.type).toEqual("Note");
     expect(res.inReplyTo).toBeUndefined();
+    expect(res.published).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
 
     res = apg.generateNote(from, opText, true);
     expect(res.attachments).not.toEqual("");
@@ -33,6 +35,7 @@ describe("activityPubGenerators", () => {
     const res: ActivityPub = apg.generatePerson(from);
     expect(res.name).not.toEqual("");
     expect(res.type).toEqual("Person");
+    expect(res.published).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
   });
 
   it("generateImageAttachment works", () => {

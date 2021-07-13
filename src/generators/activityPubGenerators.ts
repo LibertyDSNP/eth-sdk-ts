@@ -1,4 +1,4 @@
-import { ActivityPub, ActivityPubAttachment } from "../core/activityPub/activityPub";
+import { create, ActivityPub, ActivityPubAttachment } from "../core/activityPub/activityPub";
 import { HexString } from "../types/Strings";
 
 import { sample, sampleText } from "@dsnp/test-generators";
@@ -28,13 +28,13 @@ export const generateReply = (address: HexString, reply: string, inReplyTo: HexS
  * @param hasAttachment - the NoteAttachments for pictures and videos in this Note.
  */
 export const generateNote = (address: HexString, message: string, hasAttachment?: boolean): ActivityPub => {
-  return {
+  return create({
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
     content: message,
     attachments: hasAttachment ? [generateImageAttachment()] : [],
     type: "Note",
-  };
+  });
 };
 
 /**
@@ -45,13 +45,13 @@ export const generateNote = (address: HexString, message: string, hasAttachment?
  */
 export const generatePerson = (address: HexString, name?: string): ActivityPub => {
   const newName = name ? name : [sample(PREFAB_FIRST_NAMES), sample(PREFAB_LAST_NAMES)].join(" ");
-  return {
+  return create({
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
     name: newName,
     url: "",
     type: "Person",
-  };
+  });
 };
 
 /**
