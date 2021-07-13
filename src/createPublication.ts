@@ -1,14 +1,14 @@
 import { ConfigOpts } from "./config";
-import { createFile, EmptyBatchError } from "./core/batch";
-import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
-import { Publication } from "./core/contracts/publisher";
-import { getRandomString } from "./core/utilities/random";
 import {
   AnnouncementWithSignature,
   AnnouncementType,
   SignedAnnouncement,
   TypedAnnouncement,
 } from "./core/announcements";
+import { createFile, EmptyBatchError } from "./core/batch";
+import { Publication } from "./core/contracts/publisher";
+import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
+import { getRandomString } from "./core/utilities/random";
 
 /**
  * createPublication() takes an Announcement type and an array of announcements of the given

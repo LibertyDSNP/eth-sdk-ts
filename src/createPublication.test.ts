@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 
 import * as config from "./config";
-import { EmptyBatchError } from "./core/batch";
 import { createBroadcast, createReply, createReaction, sign, SignedAnnouncement } from "./core/announcements";
+import { EmptyBatchError } from "./core/batch";
 import { createPublication, createPublications } from "./createPublication";
 import TestStore from "./test/testStore";
 

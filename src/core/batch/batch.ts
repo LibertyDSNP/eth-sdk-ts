@@ -1,9 +1,9 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 import { keccak256 } from "js-sha3";
 
+import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
 import { ConfigOpts, requireGetStore } from "../../config";
-import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";

@@ -1,11 +1,11 @@
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
+import { SignedAnnouncement } from "../announcements";
 import * as batch from "./batch";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
-import { SignedAnnouncement } from "../announcements";
 
 describe("batch", () => {
   describe("includes", () => {

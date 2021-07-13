@@ -4,9 +4,9 @@ import { keccak256 } from "js-sha3";
 import * as config from "./config";
 import * as content from "./content";
 import { InvalidActivityPubError } from "./core/activityPub";
+import { AnnouncementType } from "./core/announcements";
 import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
-import { AnnouncementType } from "./core/announcements";
 import TestStore from "./test/testStore";
 
 describe("content", () => {

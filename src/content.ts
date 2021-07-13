@@ -1,6 +1,17 @@
 import { keccak256 } from "js-sha3";
 
 import {
+  createBroadcast,
+  createProfile,
+  createReaction,
+  createReply,
+  sign,
+  SignedBroadcastAnnouncement,
+  SignedProfileAnnouncement,
+  SignedReactionAnnouncement,
+  SignedReplyAnnouncement,
+} from "./core/announcements";
+import {
   create,
   isValid,
   isValidProfile,
@@ -12,13 +23,6 @@ import {
 import * as config from "./config";
 import { validateDSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { requireGetStore } from "./config";
-import * as announcements from "./core/announcements";
-import {
-  SignedBroadcastAnnouncement,
-  SignedProfileAnnouncement,
-  SignedReactionAnnouncement,
-  SignedReplyAnnouncement,
-} from "./core/announcements";
 
 /**
  * broadcast() creates an activity pub file with the given content options,
@@ -54,9 +58,9 @@ export const broadcast = async (
     end();
   });
 
-  const announcement = announcements.createBroadcast(currentFromId, url.toString(), contentHash);
+  const announcement = createBroadcast(currentFromId, url.toString(), contentHash);
 
-  const signedAnnouncement = await announcements.sign(announcement, opts);
+  const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
 };
 
@@ -100,9 +104,9 @@ export const reply = async (
     end();
   });
 
-  const announcement = announcements.createReply(currentFromId, url.toString(), contentHash, inReplyTo);
+  const announcement = createReply(currentFromId, url.toString(), contentHash, inReplyTo);
 
-  const signedAnnouncement = await announcements.sign(announcement, opts);
+  const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
 };
 
@@ -127,9 +131,9 @@ export const react = async (
 ): Promise<SignedReactionAnnouncement> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
 
-  const announcement = announcements.createReaction(currentFromId, emoji, inReplyTo);
+  const announcement = createReaction(currentFromId, emoji, inReplyTo);
 
-  const signedAnnouncement = await announcements.sign(announcement, opts);
+  const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
 };
 
@@ -167,8 +171,8 @@ export const profile = async (
     end();
   });
 
-  const announcement = announcements.createProfile(currentFromId, url.toString(), contentHash);
+  const announcement = createProfile(currentFromId, url.toString(), contentHash);
 
-  const signedAnnouncement = await announcements.sign(announcement, opts);
+  const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
 };
