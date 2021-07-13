@@ -29,7 +29,7 @@ export interface BatchFilterOptions {
 type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackArgs) => void;
 
 /**
- * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch Announce events from the chain.
+ * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch Publish events from the chain.
  * It takes a callback and a filter. The filter is used to filter events that come through.
  * The callback is invoked for each correctly filtered event.
  *

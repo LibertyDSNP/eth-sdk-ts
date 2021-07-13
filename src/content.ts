@@ -18,7 +18,7 @@ import { requireGetStore } from "./config";
 /**
  * broadcast() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP broadcast message for the hosted file for later announcement.
+ * creates a DSNP broadcast message for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -55,7 +55,7 @@ export const broadcast = async (
 /**
  * reply() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP reply message for the hosted file for later announcement.
+ * creates a DSNP reply message for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -96,7 +96,7 @@ export const reply = async (
 };
 
 /**
- * react() creates a DSNP reaction message for later announcement.
+ * react() creates a DSNP reaction message for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -125,7 +125,7 @@ export const react = async (
 /**
  * profile() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP profile message for the hosted file for later announcement.
+ * creates a DSNP profile message for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.

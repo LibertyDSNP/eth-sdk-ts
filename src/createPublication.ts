@@ -44,7 +44,7 @@ export const createPublication = async <T extends DSNPType>(
 };
 
 /**
- * createPublications() takes an array of DSNP messages to announce, creates a
+ * createPublications() takes an array of DSNP messages to publish, creates a
  * batch file for each DSNP type in the array, uploads the files and returns an
  * array of Publications for publishing to the chain.
  *

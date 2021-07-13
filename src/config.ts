@@ -9,8 +9,8 @@ import {
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
-/* The name of the Batch Announce contract */
-type AnnouncerContractName = "Announcer";
+/* The name of the Batch Publisher contract */
+type PublisherContractName = "Publisher";
 /* The name of the Beacon contract */
 type BeaconContractName = "Beacon";
 /* The name of the Beacon Proxy Factory contract */
@@ -23,7 +23,7 @@ type IdentityCloneFactoryContractName = "IdentityCloneFactory";
 type RegistryContractName = "Registry";
 /* Any valid contract name */
 type ContractName =
-  | AnnouncerContractName
+  | PublisherContractName
   | BeaconContractName
   | BeaconFactoryContractName
   | IdentityLogicContractName
