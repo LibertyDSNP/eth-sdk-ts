@@ -16,23 +16,23 @@ export class BatchError extends DSNPError {
 }
 
 /**
- * EmptyBatchError indicates that no messages were passed in attempting to
+ * EmptyBatchError indicates that no announcements were passed in attempting to
  * create a batch file which is not allowed.
  */
 export class EmptyBatchError extends BatchError {
   constructor(fileHandle?: WriteStream) {
-    super("Invalid message iterator for batch: iterator contains no messages");
+    super("Invalid announcement iterator for batch: iterator contains no announcements");
     this.fileHandle = fileHandle;
   }
 }
 
 /**
- * MixedDSNPTypeError indicates that more than one type of DSNP message was
+ * MixedDSNPTypeError indicates that more than one type of announcement was
  * passed in attempting to create batch file which is not allowed.
  */
 export class MixedTypeBatchError extends BatchError {
   constructor(fileHandle: WriteStream) {
-    super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
+    super("Invalid signed announcement iterator for batch: iterator contains multiple DSNP types", fileHandle);
     this.fileHandle = fileHandle;
   }
 }

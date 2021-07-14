@@ -2,12 +2,19 @@
 
 ## Unreleased
 ### Changes
-- Renamed DSNPId to DSNPMessageId to avoid confusion with DSNPUserId
-- Renamed validateDSNPId to validateDSNPMessageId (breaking change)
+- Renamed DSNPId to DSNPAnnouncementId to avoid confusion with DSNPUserId
 - Renamed uri -> url everywhere
-- Renamed subscribeToBatchAnnounceEvents -> subscribeToBatchPublications
+- Renamed sdk.subscribeToBatchAnnounceEvents -> sdk.subscribeToBatchPublications
 - Renamed sdk.core.contracts.announcer -> sdk.core.contracts.publisher
 - Renamed sdk.core.contracts.announcer.batch -> sdk.core.contracts.publisher.publish
+- Renamed sdk.core.messages -> sdk.core.announcement
+- Renamed sdk.core.messages.createBroadcastMessage -> sdk.core.announcement.createBroadcast
+- Renamed sdk.core.messages.createReplyMessage -> sdk.core.announcement.createReply
+- Renamed sdk.core.messages.createReactionMessage -> sdk.core.announcement.createReaction
+- Renamed sdk.core.messages.createGraphChangeMessage -> sdk.core.announcement.createGraphChange
+- Renamed sdk.core.messages.createProfileMessage -> sdk.core.announcement.createProfile
+- Renamed sdk.core.contracts.registry.isMessageSignatureAuthorizedTo -> sdk.core.contracts.registry.isSignatureAuthorizedTo
+- Renamed sdk.core.identifiers.validateDSNPMessageId -> sdk.core.identifiers.validateDSNPAnnouncementId
 - Updated @dsnp/contracts to 0.0.0-622366
 ### Added
 - sdk.createPublication

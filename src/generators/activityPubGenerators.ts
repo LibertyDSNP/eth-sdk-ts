@@ -1,4 +1,4 @@
-import { create, ActivityPub, ActivityPubAttachment } from "../core/activityPub/activityPub";
+import { create, ActivityPub, ActivityPubAttachment } from "../core/activityPub";
 import { HexString } from "../types/Strings";
 
 import { sample, sampleText } from "@dsnp/test-generators";
@@ -12,7 +12,7 @@ const PREFAB_VIDEOS = sampleText.prefabVideos;
  *
  * @param address - the HexString socialAddress to associate with making this note
  * @param reply - The message string to display in the note
- * @param inReplyTo - the message ID of the original note.
+ * @param inReplyTo - the DSNP Announcement ID of the original note.
  */
 export const generateReply = (address: HexString, reply: string, inReplyTo: HexString): ActivityPub => {
   const note = generateNote(address, reply, true);
@@ -24,14 +24,14 @@ export const generateReply = (address: HexString, reply: string, inReplyTo: HexS
  * Generate a Note type ActivityPub
  *
  * @param address - the HexString socialAddress to associate with making this note
- * @param message - The message string to display in the note
+ * @param content - The message string to display in the note
  * @param hasAttachment - the NoteAttachments for pictures and videos in this Note.
  */
-export const generateNote = (address: HexString, message: string, hasAttachment?: boolean): ActivityPub => {
+export const generateNote = (address: HexString, content: string, hasAttachment?: boolean): ActivityPub => {
   return create({
     attributedTo: address,
     "@context": "https://www.w3.org/ns/activitystreams",
-    content: message,
+    content,
     attachments: hasAttachment ? [generateImageAttachment()] : [],
     type: "Note",
   });

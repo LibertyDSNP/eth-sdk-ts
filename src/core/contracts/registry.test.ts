@@ -8,12 +8,12 @@ import {
   getDSNPRegistryUpdateEvents,
   register,
   resolveRegistration,
-  isMessageSignatureAuthorizedTo,
+  isSignatureAuthorizedTo,
 } from "./registry";
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { Permission } from "./identity";
-import { DSNPMessage, sign } from "../messages";
+import { Announcement, sign } from "../announcements";
 import { generateBroadcast } from "../../generators/dsnpGenerators";
 import {
   getIdFromRegisterTransaction,
@@ -247,7 +247,7 @@ describe("registry", () => {
   });
 
   describe("validateMessage", () => {
-    const msg: DSNPMessage = generateBroadcast();
+    const msg: Announcement = generateBroadcast();
 
     const permAllowed = Permission.ANNOUNCE;
     const permDenied = Permission.OWNERSHIP_TRANSFER;
@@ -273,12 +273,12 @@ describe("registry", () => {
     });
 
     it("returns true if the signer is authorized for the given permissions", async () => {
-      await expect(isMessageSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed)).toBeTruthy();
+      await expect(isSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed)).toBeTruthy();
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
       const regSigner: RegistrationWithSigner = await newRegistrationForAccountIndex(2, "Handel");
-      const res = await isMessageSignatureAuthorizedTo(sig, msg, regSigner.dsnpUserId, permDenied);
+      const res = await isSignatureAuthorizedTo(sig, msg, regSigner.dsnpUserId, permDenied);
       expect(res).toBeFalsy();
     });
 
@@ -286,7 +286,7 @@ describe("registry", () => {
       const otherMsg = generateBroadcast();
       const signedMessage = await sign(otherMsg);
       const badSig = signedMessage.signature;
-      const res = await isMessageSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed);
+      const res = await isSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed);
       expect(res).toBeFalsy();
     });
 
@@ -301,20 +301,18 @@ describe("registry", () => {
         { name: "0x1", value: 0x1, expected: true },
       ].forEach((tc) => {
         it(`${tc.name} returns ${tc.expected}`, async () => {
-          const actual = await isMessageSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed, 1);
+          const actual = await isSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed, 1);
           expect(actual).toEqual(tc.expected);
         });
       });
     });
 
     it("throws if id cannot be resolved", async () => {
-      await expect(isMessageSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
-        DSNPError
-      );
+      await expect(isSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(DSNPError);
     });
     it("throws if signature is garbage", async () => {
       const badSig = generateHexString(65);
-      await expect(isMessageSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed)).rejects.toThrow(
+      await expect(isSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed)).rejects.toThrow(
         /signature missing v and recoveryParam/
       );
     });

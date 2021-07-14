@@ -2,9 +2,8 @@ import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 import { keccak256 } from "js-sha3";
 
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
-import { DSNPMessageSigned } from "./batchMessages";
 import { ConfigOpts, requireGetStore } from "../../config";
-import { DSNPType, DSNPTypedMessage } from "../messages/messages";
+import { AnnouncementWithSignature, DSNPType, TypedAnnouncement } from "../announcements";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
@@ -29,32 +28,34 @@ interface BatchFileData {
   hash: HexString;
 }
 
-type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<DSNPTypedMessage<T>>>;
+type SignedAnnouncementIterable<T extends DSNPType> = AsyncOrSyncIterable<
+  AnnouncementWithSignature<TypedAnnouncement<T>>
+>;
 
 /**
- * createFile() takes a series of Batch DSNP messages, writes them to a file at
+ * createFile() takes a series of Signed Announcements, writes them to a file at
  * specified target path and returns a BatchFileData object.
  *
  * @throws {@link MissingStoreConfigError}
  * Thrown if the store is not configured.
  * @throws {@link EmptyBatchError}
- * Thrown if the message iterator provided is empty.
+ * Thrown if the announcement iterator provided is empty.
  * @throws {@link MixedTypeBatchError}
- * Thrown if the message iterator provided contains multiple DSNP types.
+ * Thrown if the announcement iterator provided contains multiple DSNP types.
  * @param targetPath - The path to and name of file
- * @param messages - An array of DSNPMessage to include in the batch file
+ * @param announcements - An array of Announcements to include in the batch file
  * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns A BatchFileData object including a URL and keccak hash of the file
  */
 export const createFile = async <T extends DSNPType>(
   targetPath: string,
-  messages: BatchIterable<T>,
+  announcements: SignedAnnouncementIterable<T>,
   opts?: ConfigOpts
 ): Promise<BatchFileData> => {
   let dsnpType;
 
-  for await (const message of messages) {
-    dsnpType = message.dsnpType;
+  for await (const announcement of announcements) {
+    dsnpType = announcement.dsnpType;
     break;
   }
 
@@ -82,7 +83,7 @@ export const createFile = async <T extends DSNPType>(
         return writeStream.end(...(args as any[]));
       },
     };
-    await writeBatch(hashingWriteStream, schema, messages, bloomFilterOptions);
+    await writeBatch(hashingWriteStream, schema, announcements, bloomFilterOptions);
   });
 
   return {
@@ -92,32 +93,32 @@ export const createFile = async <T extends DSNPType>(
 };
 
 /**
- * writeBatch() takes a series of Batch DSNP messages, writes them to the given
+ * writeBatch() takes a series of Signed Announcements, writes them to the given
  * stream and returns a void promise which resolves when done.
  *
  * @throws {@link EmptyBatchError}
- * Thrown if the message iterator provided is empty.
+ * Thrown if the announcement iterator provided is empty.
  * @throws {@link MixedTypeBatchError}
- * Thrown if the message iterator provided contains multiple DSNP types.
+ * Thrown if the announcement iterator provided contains multiple DSNP types.
  * @param writeStream - A writable stream
- * @param schema - The ParquetJS schema for the messages DSNP type
- * @param messages - An array of DSNPMessage to include in the batch file
+ * @param schema - The ParquetJS schema for the announcements DSNP type
+ * @param announcements - An array of signed announcements to include in the batch file
  * @param opts - Options for creating a Parquet file
  * @returns A void promise which will either resolve or reject
  */
 export const writeBatch = async <T extends DSNPType>(
   writeStream: WriteStream,
   schema: Schema,
-  messages: BatchIterable<T>,
+  announcements: SignedAnnouncementIterable<T>,
   opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);
   let firstDsnpType;
 
-  for await (const message of messages) {
-    if (firstDsnpType === undefined) firstDsnpType = message.dsnpType;
-    if (message.dsnpType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
-    await writer.appendRow(message);
+  for await (const announcement of announcements) {
+    if (firstDsnpType === undefined) firstDsnpType = announcement.dsnpType;
+    if (announcement.dsnpType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
+    await writer.appendRow(announcement);
   }
 
   if (firstDsnpType === undefined) throw new EmptyBatchError(writeStream);

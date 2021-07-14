@@ -1,6 +1,12 @@
 import * as fs from "fs";
 
-import { BroadcastMessage, DSNPMessage, DSNPType, ReactionMessage, ReplyMessage } from "../core/messages/messages";
+import {
+  BroadcastAnnouncement,
+  Announcement,
+  DSNPType,
+  ReactionAnnouncement,
+  ReplyAnnouncement,
+} from "../core/announcements";
 import { EthereumAddress } from "../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
 import { addresses, sampleText } from "@dsnp/test-generators/";
@@ -9,14 +15,14 @@ const PREFAB_URLS = sampleText.prefabURLs;
 const generateEthereumAddress = addresses.generateEthereumAddress;
 
 /**
- * generateDSNPStream is meant to simulate incoming DSNP Messages of all kinds.
- * It generates a randomized list of DSNP messages at an estimated frequency for each type.
+ * generateDSNPStream is meant to simulate incoming Announcements of all kinds.
+ * It generates a randomized list of Announcements at an estimated frequency for each type.
  *
- * @param messageCount -
- * @returns an array of Messages.
+ * @param count - number of Announcements to stream
+ * @returns an array of Announcements.
  */
-export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => {
-  // A WAG of the ratios of message types
+export const generateDSNPStream = (count: number): Array<Announcement> => {
+  // A WAG of the ratios of Announcement types
   const reactionReplyMax = 1000;
   // TODO leave these here for when other types are implemented
   // const broadcastMax = Math.ceil(reactionReplyMax / 3);
@@ -26,9 +32,9 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
   // this sets the frequency of generated types to approximately the ratios above
   const maxInt = reactionReplyMax * 10;
 
-  return Array.from({ length: messageCount }, () => {
+  return Array.from({ length: count }, () => {
     const value = randInt(maxInt);
-    let msg: DSNPMessage;
+    let msg: Announcement;
     if (value > reactionReplyMax) {
       // estimate reactions and replies average about the same
       msg = value % 2 === 0 ? generateReaction() : generateReply();
@@ -40,13 +46,13 @@ export const generateDSNPStream = (messageCount: number): Array<DSNPMessage> => 
 };
 
 /**
- * writeFixture writes messages as JSON to provided jsonFilePath
+ * writeFixture writes Announcements as JSON to provided jsonFilePath
  *
  * @param data - the data to write out
  * @param jsonFilePath - where to write the output file
  * @returns number of bytes written
  */
-export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): number => {
+export const writeFixture = (data: Array<Announcement>, jsonFilePath: string): number => {
   const ws = fs.createWriteStream(jsonFilePath).on("error", (e: Error) => {
     throw new Error("createWriteStream failed: \n" + e.toString());
   });
@@ -64,7 +70,7 @@ export const writeFixture = (data: Array<DSNPMessage>, jsonFilePath: string): nu
   return ws.bytesWritten;
 };
 
-export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
+export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement => {
   return {
     dsnpType: DSNPType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
@@ -78,7 +84,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastMessage => {
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReply = (from?: EthereumAddress): ReplyMessage => {
+export const generateReply = (from?: EthereumAddress): ReplyAnnouncement => {
   return {
     dsnpType: DSNPType.Reply,
     fromId: from ? from : generateEthereumAddress(),
@@ -93,7 +99,7 @@ export const generateReply = (from?: EthereumAddress): ReplyMessage => {
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReaction = (from?: EthereumAddress): ReactionMessage => {
+export const generateReaction = (from?: EthereumAddress): ReactionAnnouncement => {
   return {
     dsnpType: DSNPType.Reaction,
     fromId: from ? from : generateEthereumAddress(),

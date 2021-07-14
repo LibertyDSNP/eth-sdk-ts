@@ -40,7 +40,7 @@ setConfig({
 // Do something with the SDK
 ```
 
-#### Storing Messages and Batches
+#### Storing Activity Content and Batch Files
 
 Storage solutions can be added so as long it matches the [StoreInterface](https://github.com/LibertyDSNP/sdk-ts/blob/main/src/core/store/interface.ts).
 ```typescript

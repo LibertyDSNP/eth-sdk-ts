@@ -9,16 +9,21 @@ import {
   ActivityPubOpts,
   InvalidActivityPubError,
 } from "./core/activityPub";
-import * as batchMessages from "./core/batch/batchMessages";
 import * as config from "./config";
-import * as messages from "./core/messages/messages";
-import { validateDSNPMessageId, InvalidMessageIdentifierError } from "./core/identifiers";
+import { validateDSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { requireGetStore } from "./config";
+import * as announcements from "./core/announcements";
+import {
+  SignedBroadcastAnnouncement,
+  SignedProfileAnnouncement,
+  SignedReactionAnnouncement,
+  SignedReplyAnnouncement,
+} from "./core/announcements";
 
 /**
  * broadcast() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP broadcast message for the hosted file for later publishing.
+ * creates a broadcast announcement for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -30,12 +35,12 @@ import { requireGetStore } from "./config";
  * Thrown if the provided activity pub object is not valid.
  * @param contentOptions - Options for the activity pub content to generate
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns A Signed DSNP Broadcast message ready for inclusion in a batch
+ * @returns A Signed Broadcast announcement ready for inclusion in a batch
  */
 export const broadcast = async (
   contentOptions: ActivityPubOpts,
   opts?: config.ConfigOpts
-): Promise<batchMessages.BatchBroadcastMessage> => {
+): Promise<SignedBroadcastAnnouncement> => {
   const contentObj = create(contentOptions);
   if (!isValid(contentObj)) throw new InvalidActivityPubError();
   const content = serialize(contentObj);
@@ -46,16 +51,16 @@ export const broadcast = async (
   const store = requireGetStore(opts);
   const url = await store.put(contentHash, content);
 
-  const message = messages.createBroadcastMessage(currentFromId, url.toString(), contentHash);
+  const announcement = announcements.createBroadcast(currentFromId, url.toString(), contentHash);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await announcements.sign(announcement, opts);
+  return signedAnnouncement;
 };
 
 /**
  * reply() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP reply message for the hosted file for later publishing.
+ * creates a reply announcement for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -65,19 +70,19 @@ export const broadcast = async (
  * Thrown if the from id is not configured.
  * @throws {@link InvalidActivityPubError}
  * Thrown if the provided activity pub object is not valid.
- * @throws {@link InvalidMessageIdentifierError}
- * Thrown if the provided inReplyTo DSNP Message Id is invalid.
+ * @throws {@link InvalidAnnouncementIdentifierError}
+ * Thrown if the provided inReplyTo Announcement Id is invalid.
  * @param contentOptions - Options for the activity pub content to generate
- * @param inReplyTo - The DSNP Message Id of the message that this message is in reply to
+ * @param inReplyTo - The DSNP Announcement Id of the announcement that this announcement is in reply to
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns A Signed DSNP Reply message ready for inclusion in a batch
+ * @returns A Signed Reply Announcement ready for inclusion in a batch
  */
 export const reply = async (
   contentOptions: ActivityPubOpts,
   inReplyTo: string,
   opts?: config.ConfigOpts
-): Promise<batchMessages.BatchReplyMessage> => {
-  if (!validateDSNPMessageId(inReplyTo)) throw new InvalidMessageIdentifierError(inReplyTo);
+): Promise<SignedReplyAnnouncement> => {
+  if (!validateDSNPAnnouncementId(inReplyTo)) throw new InvalidAnnouncementIdentifierError(inReplyTo);
 
   const contentObj = create(contentOptions);
   if (!isValidReply(contentObj)) throw new InvalidActivityPubError();
@@ -89,43 +94,43 @@ export const reply = async (
   const store = requireGetStore(opts);
   const url = await store.put(contentHash, content);
 
-  const message = messages.createReplyMessage(currentFromId, url.toString(), contentHash, inReplyTo);
+  const announcement = announcements.createReply(currentFromId, url.toString(), contentHash, inReplyTo);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await announcements.sign(announcement, opts);
+  return signedAnnouncement;
 };
 
 /**
- * react() creates a DSNP reaction message for later publishing.
+ * react() creates a reaction announcement for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
  * @throws {@link MissingFromIdConfigError}
  * Thrown if the from id is not configured.
- * @throws {@link InvalidMessageIdentifierError}
+ * @throws {@link InvalidAnnouncementIdentifierError}
  * Thrown if the provided inReplyTo DSNP Message Id is invalid.
  * @param emoji - The emoji with which to react
- * @param inReplyTo - The DSNP Message Id of the message to which to react
+ * @param inReplyTo - The DSNP Announcement Id of the announcement to which to react
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns A Signed DSNP Reaction message ready for inclusion in a batch
+ * @returns A Signed Reaction Announcement ready for inclusion in a batch
  */
 export const react = async (
   emoji: string,
   inReplyTo: string,
   opts?: config.ConfigOpts
-): Promise<batchMessages.BatchReactionMessage> => {
+): Promise<SignedReactionAnnouncement> => {
   const currentFromId = config.requireGetCurrentFromId(opts);
 
-  const message = messages.createReactionMessage(currentFromId, emoji, inReplyTo);
+  const announcement = announcements.createReaction(currentFromId, emoji, inReplyTo);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await announcements.sign(announcement, opts);
+  return signedAnnouncement;
 };
 
 /**
  * profile() creates an activity pub file with the given content options,
  * uploads it with a random filename using the configured storage adapter and
- * creates a DSNP profile message for the hosted file for later publishing.
+ * creates a profile announcement for the hosted file for later publishing.
  *
  * @throws {@link MissingSignerConfigError}
  * Thrown if the signer is not configured.
@@ -137,12 +142,12 @@ export const react = async (
  * Thrown if the provided activity pub object is not valid.
  * @param contentOptions - Options for the activity pub content to generate
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns A Signed DSNP Profile message ready for inclusion in a batch
+ * @returns A Signed Profile Announcement ready for inclusion in a batch
  */
 export const profile = async (
   contentOptions: ActivityPubOpts,
   opts?: config.ConfigOpts
-): Promise<batchMessages.BatchProfileMessage> => {
+): Promise<SignedProfileAnnouncement> => {
   const contentObj = create(contentOptions);
   if (!isValidProfile(contentObj)) throw new InvalidActivityPubError();
   const content = serialize(contentObj);
@@ -153,8 +158,8 @@ export const profile = async (
   const store = requireGetStore(opts);
   const url = await store.put(contentHash, content);
 
-  const message = messages.createProfileMessage(currentFromId, url.toString(), contentHash);
+  const announcement = announcements.createProfile(currentFromId, url.toString(), contentHash);
 
-  const signedMessage = await messages.sign(message, opts);
-  return signedMessage;
+  const signedAnnouncement = await announcements.sign(announcement, opts);
+  return signedAnnouncement;
 };

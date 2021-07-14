@@ -4,9 +4,9 @@ import { keccak256 } from "js-sha3";
 import * as config from "./config";
 import * as content from "./content";
 import { InvalidActivityPubError } from "./core/activityPub";
-import { InvalidMessageIdentifierError } from "./core/identifiers";
+import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
-import { DSNPType } from "./core/messages/messages";
+import { DSNPType } from "./core/announcements";
 import TestStore from "./test/testStore";
 
 describe("content", () => {
@@ -41,8 +41,8 @@ describe("content", () => {
           );
         });
 
-        it("returns a broadcast DSNP message linking to the activity pub object", async () => {
-          const message = await content.broadcast({
+        it("returns a broadcast announcement linking to the activity pub object", async () => {
+          const announcement = await content.broadcast({
             attributedTo: "John Doe <johndoe@sample.org>",
             content: "Lorem ipsum delor blah blah blah",
             name: "Lorem Ipsum",
@@ -52,7 +52,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(message).toMatchObject({
+          expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Broadcast,
             url: `http://fakestore.org/${keys[0]}`,
@@ -165,8 +165,8 @@ describe("content", () => {
           );
         });
 
-        it("returns a reply DSNP message linking to the activity pub object", async () => {
-          const message = await content.reply(
+        it("returns a reply announcement linking to the activity pub object", async () => {
+          const announcement = await content.reply(
             {
               attributedTo: "John Doe <johndoe@sample.org>",
               content: "Lorem ipsum delor blah blah blah",
@@ -180,7 +180,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(message).toMatchObject({
+          expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Reply,
             url: `http://fakestore.org/${keys[0]}`,
@@ -191,7 +191,7 @@ describe("content", () => {
       });
 
       describe("with an invalid inReplyTo Id", () => {
-        it("throws InvalidMessageIdentifierError", async () => {
+        it("throws InvalidAnnouncementIdentifierError", async () => {
           await expect(
             content.reply(
               {
@@ -202,7 +202,7 @@ describe("content", () => {
               },
               "dsnp://badbadbad/badbadbad"
             )
-          ).rejects.toThrow(InvalidMessageIdentifierError);
+          ).rejects.toThrow(InvalidAnnouncementIdentifierError);
         });
       });
 
@@ -298,13 +298,13 @@ describe("content", () => {
         });
       });
 
-      it("returns a reaction DSNP message", async () => {
-        const message = await content.react(
+      it("returns a reaction announcement", async () => {
+        const announcement = await content.react(
           "🏳️‍🌈",
           "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
         );
 
-        expect(message).toMatchObject({
+        expect(announcement).toMatchObject({
           fromId: "dsnp://0123456789ABCDEF",
           dsnpType: DSNPType.Reaction,
           emoji: "🏳️‍🌈",
@@ -377,8 +377,8 @@ describe("content", () => {
           );
         });
 
-        it("returns a profile DSNP message linking to the activity pub object", async () => {
-          const message = await content.profile({
+        it("returns a profile announcement linking to the activity pub object", async () => {
+          const announcement = await content.profile({
             type: "Person",
             name: "Rose Karr",
             preferredUsername: "rosalinekarr",
@@ -388,7 +388,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(message).toMatchObject({
+          expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
             dsnpType: DSNPType.Profile,
             url: `http://fakestore.org/${keys[0]}`,

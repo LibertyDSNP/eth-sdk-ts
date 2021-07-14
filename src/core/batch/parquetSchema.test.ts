@@ -1,5 +1,5 @@
 import { getSchemaFor, getBloomFilterOptionsFor } from "./parquetSchema";
-import { InvalidMessageTypeError } from "../messages";
+import { InvalidAnnouncementTypeError } from "../announcements";
 
 describe("#getSchemaFor", () => {
   it("returns the schema for dsnpType GraphChange", () => {
@@ -61,8 +61,8 @@ describe("#getSchemaFor", () => {
     });
   });
 
-  it("throws InvalidMessageTypeError", () => {
-    expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
+  it("throws InvalidAnnouncementTypeError", () => {
+    expect(() => getSchemaFor(0)).toThrow(InvalidAnnouncementTypeError);
   });
 });
 
@@ -105,7 +105,7 @@ describe("#getBloomFilterOptionsFor", () => {
     });
   });
 
-  it("throws InvalidMessageTypeError", () => {
-    expect(() => getSchemaFor(0)).toThrow(InvalidMessageTypeError);
+  it("throws InvalidAnnouncementTypeError", () => {
+    expect(() => getSchemaFor(0)).toThrow(InvalidAnnouncementTypeError);
   });
 });
