@@ -27,12 +27,12 @@ export class EmptyBatchError extends BatchError {
 }
 
 /**
- * MixedDSNPTypeError indicates that more than one type of announcement was
+ * MixedTypeBatchError indicates that more than one type of announcement was
  * passed in attempting to create batch file which is not allowed.
  */
 export class MixedTypeBatchError extends BatchError {
   constructor(fileHandle: WriteStream) {
-    super("Invalid signed announcement iterator for batch: iterator contains multiple DSNP types", fileHandle);
+    super("Invalid signed announcement iterator for batch: iterator contains multiple announcement types", fileHandle);
     this.fileHandle = fileHandle;
   }
 }

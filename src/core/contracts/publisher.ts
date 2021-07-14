@@ -7,9 +7,9 @@ import { getContractAddress } from "./contract";
 const CONTRACT_NAME = "Publisher";
 
 export interface Publication {
-  dsnpType: number;
-  url: string;
-  hash: HexString;
+  announcementType: number;
+  fileUrl: string;
+  fileHash: HexString;
 }
 
 /**

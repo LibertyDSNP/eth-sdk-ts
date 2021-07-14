@@ -32,7 +32,7 @@ describe("snapshot and revert", () => {
     const testUrl = "http://www.testconst.com";
     const hash = "0x" + keccak256("test");
 
-    const publications = [{ dsnpType: 0, url: testUrl, hash: hash }];
+    const publications = [{ announcementType: 0, fileUrl: testUrl, fileHash: hash }];
 
     // create a batch
     await publish(publications);

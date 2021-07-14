@@ -3,14 +3,14 @@ import { keccak256 } from "js-sha3";
 
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
 import { ConfigOpts, requireGetStore } from "../../config";
-import { AnnouncementWithSignature, DSNPType, TypedAnnouncement } from "../announcements";
+import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
 import { AsyncOrSyncIterable } from "../utilities";
 
 type ReadRowFunction = {
-  (row: DSNPType): void;
+  (row: AnnouncementType): void;
 };
 
 interface SplitBlockBloomFilter {
@@ -28,7 +28,7 @@ interface BatchFileData {
   hash: HexString;
 }
 
-type SignedAnnouncementIterable<T extends DSNPType> = AsyncOrSyncIterable<
+type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterable<
   AnnouncementWithSignature<TypedAnnouncement<T>>
 >;
 
@@ -41,28 +41,28 @@ type SignedAnnouncementIterable<T extends DSNPType> = AsyncOrSyncIterable<
  * @throws {@link EmptyBatchError}
  * Thrown if the announcement iterator provided is empty.
  * @throws {@link MixedTypeBatchError}
- * Thrown if the announcement iterator provided contains multiple DSNP types.
+ * Thrown if the announcement iterator provided contains multiple announcement types.
  * @param targetPath - The path to and name of file
  * @param announcements - An array of Announcements to include in the batch file
  * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns A BatchFileData object including a URL and keccak hash of the file
  */
-export const createFile = async <T extends DSNPType>(
+export const createFile = async <T extends AnnouncementType>(
   targetPath: string,
   announcements: SignedAnnouncementIterable<T>,
   opts?: ConfigOpts
 ): Promise<BatchFileData> => {
-  let dsnpType;
+  let announcementType;
 
   for await (const announcement of announcements) {
-    dsnpType = announcement.dsnpType;
+    announcementType = announcement.announcementType;
     break;
   }
 
-  if (dsnpType === undefined) throw new EmptyBatchError();
+  if (announcementType === undefined) throw new EmptyBatchError();
 
-  const schema = new ParquetSchema(getSchemaFor(dsnpType));
-  const bloomFilterOptions = getBloomFilterOptionsFor(dsnpType);
+  const schema = new ParquetSchema(getSchemaFor(announcementType));
+  const bloomFilterOptions = getBloomFilterOptionsFor(announcementType);
 
   const store = requireGetStore(opts);
   const hashGenerator = keccak256.create();
@@ -99,14 +99,14 @@ export const createFile = async <T extends DSNPType>(
  * @throws {@link EmptyBatchError}
  * Thrown if the announcement iterator provided is empty.
  * @throws {@link MixedTypeBatchError}
- * Thrown if the announcement iterator provided contains multiple DSNP types.
+ * Thrown if the announcement iterator provided contains multiple announcement types.
  * @param writeStream - A writable stream
- * @param schema - The ParquetJS schema for the announcements DSNP type
+ * @param schema - The ParquetJS schema for the announcements announcement type
  * @param announcements - An array of signed announcements to include in the batch file
  * @param opts - Options for creating a Parquet file
  * @returns A void promise which will either resolve or reject
  */
-export const writeBatch = async <T extends DSNPType>(
+export const writeBatch = async <T extends AnnouncementType>(
   writeStream: WriteStream,
   schema: Schema,
   announcements: SignedAnnouncementIterable<T>,
@@ -116,8 +116,8 @@ export const writeBatch = async <T extends DSNPType>(
   let firstDsnpType;
 
   for await (const announcement of announcements) {
-    if (firstDsnpType === undefined) firstDsnpType = announcement.dsnpType;
-    if (announcement.dsnpType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
+    if (firstDsnpType === undefined) firstDsnpType = announcement.announcementType;
+    if (announcement.announcementType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
     await writer.appendRow(announcement);
   }
 

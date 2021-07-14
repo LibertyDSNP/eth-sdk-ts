@@ -15,7 +15,10 @@
 - Renamed sdk.core.messages.createProfileMessage -> sdk.core.announcement.createProfile
 - Renamed sdk.core.contracts.registry.isMessageSignatureAuthorizedTo -> sdk.core.contracts.registry.isSignatureAuthorizedTo
 - Renamed sdk.core.identifiers.validateDSNPMessageId -> sdk.core.identifiers.validateDSNPAnnouncementId
-- Updated @dsnp/contracts to 0.0.0-622366
+- Updated @dsnp/contracts to 1.0.0
+- Updated Publication interface: dsnpType -> announcementType, dsnpUrl -> fileUrl, dsnpHash -> fileHash
+- Renamed DSNPType -> AnnouncementType
+- Updated Parquet Schema
 ### Added
 - sdk.createPublication
 ### Removed

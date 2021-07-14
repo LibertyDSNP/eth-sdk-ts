@@ -1,5 +1,5 @@
 import { generateBroadcast, generateReply, generateReaction, generateDSNPStream } from "./dsnpGenerators";
-import { DSNPType } from "../core/announcements";
+import { AnnouncementType } from "../core/announcements";
 
 describe("dsnp functions", () => {
   it("generateDSNPStream works", () => {
@@ -7,21 +7,21 @@ describe("dsnp functions", () => {
     const data = generateDSNPStream(numMsgs);
     const counts = data.reduce(
       (acc: { [key in number]: number }, current) => {
-        acc[current["dsnpType"]]++;
+        acc[current["announcementType"]]++;
         return acc;
       },
       {
-        [DSNPType.Broadcast]: 0,
-        [DSNPType.Reply]: 0,
-        [DSNPType.Reaction]: 0,
+        [AnnouncementType.Broadcast]: 0,
+        [AnnouncementType.Reply]: 0,
+        [AnnouncementType.Reaction]: 0,
       }
     );
 
     expect(data.length).toEqual(numMsgs);
 
-    const bcasts = counts[DSNPType.Broadcast];
-    const replies = counts[DSNPType.Reply];
-    const reactions = counts[DSNPType.Reaction];
+    const bcasts = counts[AnnouncementType.Broadcast];
+    const replies = counts[AnnouncementType.Reply];
+    const reactions = counts[AnnouncementType.Reaction];
     expect(replies).toBeGreaterThan(bcasts);
     expect(reactions).toBeGreaterThan(bcasts);
   });
@@ -29,7 +29,7 @@ describe("dsnp functions", () => {
   it("generateBroadcast works", () => {
     const dsnpMsg = generateBroadcast();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Broadcast);
+    expect(dsnpMsg.announcementType).toEqual(AnnouncementType.Broadcast);
     expect(dsnpMsg.fromId.length).toBeGreaterThan(0);
 
     // validates that it gets a parseable URL and not garbage.
@@ -40,11 +40,11 @@ describe("dsnp functions", () => {
   it("generateReply works", () => {
     const dsnpMsg = generateReply();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Reply);
+    expect(dsnpMsg.announcementType).toEqual(AnnouncementType.Reply);
   });
   it("generateReaction works", () => {
     const dsnpMsg = generateReaction();
     expect(dsnpMsg).not.toBeUndefined();
-    expect(dsnpMsg.dsnpType).toEqual(DSNPType.Reaction);
+    expect(dsnpMsg.announcementType).toEqual(AnnouncementType.Reaction);
   });
 });

@@ -7,7 +7,7 @@ describe("serialization", () => {
       const announcement = createBroadcast("1", "https://dsnp.org", "0x12345");
       const serializeAnnouncement = await serialize(announcement);
 
-      expect(serializeAnnouncement).toEqual("contentHash0x12345dsnpType2fromId1urlhttps://dsnp.org");
+      expect(serializeAnnouncement).toEqual("announcementType2contentHash0x12345fromId1urlhttps://dsnp.org");
     });
   });
 });

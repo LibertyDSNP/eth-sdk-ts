@@ -16,7 +16,7 @@ describe("#batch", () => {
     const testUrl = "http://www.testconst.com";
     const hash = "0x" + keccak256("test");
 
-    const publications: Publication[] = [{ dsnpType: 0, url: testUrl, hash: hash }];
+    const publications: Publication[] = [{ announcementType: 0, fileUrl: testUrl, fileHash: hash }];
 
     await publish(publications);
     const provider = requireGetProvider();

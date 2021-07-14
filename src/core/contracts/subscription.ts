@@ -13,9 +13,9 @@ const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 export interface BatchPublicationCallbackArgs {
   blockNumber: number;
   transactionHash: HexString;
-  dsnpType: number;
-  dsnpUrl: string;
-  dsnpHash: HexString;
+  announcementType: number;
+  fileUrl: string;
+  fileHash: HexString;
 }
 
 interface ParsedLog {
@@ -24,7 +24,7 @@ interface ParsedLog {
 }
 
 export interface BatchFilterOptions {
-  dsnpType?: number;
+  announcementType?: number;
   fromBlock?: number;
 }
 type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackArgs) => void;
@@ -88,9 +88,11 @@ export const subscribeToBatchPublications = async (
 
 const createFilter = (batchFilter: ethers.EventFilter, filterOptions: BatchFilterOptions) => {
   const topics = batchFilter.topics ? batchFilter.topics : [];
-  const dsnpTypeTopic = filterOptions?.dsnpType ? "0x" + filterOptions.dsnpType.toString(16).padStart(64, "0") : null;
-  if (dsnpTypeTopic) {
-    topics.push(dsnpTypeTopic);
+  const announcementTypeTopic = filterOptions?.announcementType
+    ? "0x" + filterOptions.announcementType.toString(16).padStart(64, "0")
+    : null;
+  if (announcementTypeTopic) {
+    topics.push(announcementTypeTopic);
   }
 
   const finalFilter: ethers.providers.EventType = {
@@ -116,9 +118,9 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
     .filter((desc: ParsedLog) => desc.fragment.name === "DSNPBatchPublication")
     .map((item: ParsedLog) => {
       return {
-        dsnpType: item.fragment.args.dsnpType,
-        dsnpHash: item.fragment.args.dsnpHash,
-        dsnpUrl: item.fragment.args.dsnpUrl,
+        announcementType: item.fragment.args.announcementType,
+        fileHash: item.fragment.args.fileHash,
+        fileUrl: item.fragment.args.fileUrl,
         blockNumber: item.log.blockNumber,
         transactionHash: item.log.transactionHash,
       };

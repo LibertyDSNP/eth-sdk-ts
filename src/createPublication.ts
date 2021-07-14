@@ -3,10 +3,15 @@ import { createFile, EmptyBatchError } from "./core/batch";
 import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { Publication } from "./core/contracts/publisher";
 import { getRandomString } from "./core/utilities/random";
-import { AnnouncementWithSignature, DSNPType, SignedAnnouncement, TypedAnnouncement } from "./core/announcements";
+import {
+  AnnouncementWithSignature,
+  AnnouncementType,
+  SignedAnnouncement,
+  TypedAnnouncement,
+} from "./core/announcements";
 
 /**
- * createPublication() takes a DSNP type and an array of announcements of the given
+ * createPublication() takes an Announcement type and an array of announcements of the given
  * type, generates a batch file from the announcements, stores them and returns an
  * publication linking to the file.
  *
@@ -20,31 +25,31 @@ import { AnnouncementWithSignature, DSNPType, SignedAnnouncement, TypedAnnouncem
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A promise of the generated publication
  */
-export const createPublication = async <T extends DSNPType>(
+export const createPublication = async <T extends AnnouncementType>(
   announcements: AsyncOrSyncIterable<AnnouncementWithSignature<TypedAnnouncement<T>>>,
   opts?: ConfigOpts
 ): Promise<Publication> => {
   const filename = getRandomString();
   const { url, hash } = await createFile(filename, announcements, opts);
-  let dsnpType;
+  let announcementType;
 
   for await (const announcement of announcements) {
-    dsnpType = announcement.dsnpType;
+    announcementType = announcement.announcementType;
     break;
   }
 
-  if (dsnpType === undefined) throw new EmptyBatchError();
+  if (announcementType === undefined) throw new EmptyBatchError();
 
   return {
-    dsnpType,
-    url: url.toString(),
-    hash,
+    announcementType,
+    fileUrl: url.toString(),
+    fileHash: hash,
   };
 };
 
 /**
  * createPublications() takes an array of announcements to publish, creates a
- * batch file for each DSNP type in the array, uploads the files and returns an
+ * batch file for each Announcement type in the array, uploads the files and returns an
  * array of Publications for publishing to the chain.
  *
  * @throws {@link MissingStoreConfigError}
@@ -62,15 +67,15 @@ export const createPublications = async (
   const publications: Record<string, Promise<Publication>> = {};
 
   for await (const announcement of announcements) {
-    const dsnpType = announcement.dsnpType;
+    const announcementType = announcement.announcementType;
 
-    if (publications[dsnpType] === undefined) {
+    if (publications[announcementType] === undefined) {
       const filteredIterables = filterIterable<SignedAnnouncement>(
         announcements,
-        (announcement) => announcement.dsnpType == dsnpType
+        (announcement) => announcement.announcementType == announcementType
       );
 
-      publications[dsnpType] = createPublication<DSNPType>(filteredIterables, opts);
+      publications[announcementType] = createPublication<AnnouncementType>(filteredIterables, opts);
     }
   }
 

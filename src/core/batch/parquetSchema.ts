@@ -1,9 +1,9 @@
 /**
  * Parquet Schemas for DSNP Announcement Types
- * See DSNP type definitions in DSNP.d.ts for additional documentation of fields.
+ * See Announcement type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
-import { DSNPType, InvalidAnnouncementTypeError } from "../announcements";
+import { AnnouncementType, InvalidAnnouncementTypeError } from "../announcements";
 
 /**
  * BloomFilterColumnOptions: bloom filter options for a column intended to be used with when writing a batch file
@@ -30,7 +30,7 @@ export type Schema = Record<columnName, typing>;
  * Broadcast: a public post
  */
 export const BroadcastSchema = {
-  dsnpType: { type: "INT32" },
+  announcementType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
@@ -48,7 +48,7 @@ export const BroadcastBloomFilterOptions: BloomFilterOptions = {
  * Reply: A public reply post
  */
 export const ReplySchema = {
-  dsnpType: { type: "INT32" },
+  announcementType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
@@ -68,7 +68,7 @@ export const ReplyBloomFilterOptions = {
  * Note followType will be only 0 or 1; other values are invalid
  */
 export const GraphChangeSchema = {
-  dsnpType: { type: "INT32" },
+  announcementType: { type: "INT32" },
   fromId: { type: "BYTE_ARRAY" },
   changeType: { type: "INT32" },
   signature: { type: "BYTE_ARRAY" },
@@ -85,7 +85,7 @@ export const GraphChangeBloomFilterOptions = {
  * Profile - a profile change message
  */
 export const ProfileSchema = {
-  dsnpType: { type: "INT32" },
+  announcementType: { type: "INT32" },
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
@@ -102,7 +102,7 @@ export const ProfileBloomFilterOptions = {
  * Reaction: a visual reply to a Broadcast message (aka post)
  */
 export const ReactionSchema = {
-  dsnpType: { type: "INT32" },
+  announcementType: { type: "INT32" },
   emoji: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
@@ -117,51 +117,51 @@ export const ReactionBloomFilterOptions = {
 };
 
 /**
- * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
+ * getSchemaFor() takes AnnouncementType and returns its corresponding parquet schema
  *
  * @throws {@link InvalidAnnouncementTypeError}
- * Thrown if the provided dsnpType enum is not a valid value.
- * @param dsnpType - a dsnpType
+ * Thrown if the provided announcementType enum is not a valid value.
+ * @param announcementType - a announcementType
  * @returns The corresponding parquet schema
  */
-export const getSchemaFor = (dsnpType: DSNPType): Schema => {
-  switch (dsnpType) {
-    case DSNPType.GraphChange:
+export const getSchemaFor = (announcementType: AnnouncementType): Schema => {
+  switch (announcementType) {
+    case AnnouncementType.GraphChange:
       return GraphChangeSchema;
-    case DSNPType.Broadcast:
+    case AnnouncementType.Broadcast:
       return BroadcastSchema;
-    case DSNPType.Reply:
+    case AnnouncementType.Reply:
       return ReplySchema;
-    case DSNPType.Reaction:
+    case AnnouncementType.Reaction:
       return ReactionSchema;
-    case DSNPType.Profile:
+    case AnnouncementType.Profile:
       return ProfileSchema;
   }
 
-  throw new InvalidAnnouncementTypeError(dsnpType);
+  throw new InvalidAnnouncementTypeError(announcementType);
 };
 
 /**
- * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
+ * getBloomFilterOptionsFor() takes AnnouncementType and returns its bloom filter options
  *
  * @throws {@link InvalidAnnouncementTypeError}
- * Thrown if the provided dsnpType enum is not a valid value.
- * @param dsnpType - a dsnpType
+ * Thrown if the provided announcementType enum is not a valid value.
+ * @param announcementType - a announcementType
  * @returns The corresponding parquet bloom filter options
  */
-export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions => {
-  switch (dsnpType) {
-    case DSNPType.GraphChange:
+export const getBloomFilterOptionsFor = (announcementType: AnnouncementType): BloomFilterOptions => {
+  switch (announcementType) {
+    case AnnouncementType.GraphChange:
       return GraphChangeBloomFilterOptions;
-    case DSNPType.Broadcast:
+    case AnnouncementType.Broadcast:
       return BroadcastBloomFilterOptions;
-    case DSNPType.Reply:
+    case AnnouncementType.Reply:
       return ReplyBloomFilterOptions;
-    case DSNPType.Reaction:
+    case AnnouncementType.Reaction:
       return ReactionBloomFilterOptions;
-    case DSNPType.Profile:
+    case AnnouncementType.Profile:
       return ProfileBloomFilterOptions;
   }
 
-  throw new InvalidAnnouncementTypeError(dsnpType);
+  throw new InvalidAnnouncementTypeError(announcementType);
 };
