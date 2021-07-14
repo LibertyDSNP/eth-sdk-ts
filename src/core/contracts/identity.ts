@@ -1,12 +1,5 @@
 import { ContractTransaction } from "ethers";
-import {
-  ConfigOpts,
-  requireGetProvider,
-  MissingProvider,
-  MissingContract,
-  requireGetSigner,
-  getContracts,
-} from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -50,6 +43,10 @@ export enum Permission {
 /**
  * createCloneProxy(logic?: Ethereum Address) Creates a new identity with the message sender as the owner
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the clone proxy factory contract address cannot be found.
  * @param logic - The address to use for the logic contract
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A contract receipt promise
@@ -63,6 +60,10 @@ export const createCloneProxy = async (logic?: EthereumAddress, opts?: ConfigOpt
 /**
  * createCloneProxyWithOwner() Creates a new identity with the ecrecover address as the owner
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the clone proxy factory contract address cannot be found.
  * @param owner - The initial owner's address of the new contract
  * @param logic - The address to use for the logic contract
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -81,6 +82,10 @@ export const createCloneProxyWithOwner = async (
 /**
  * createBeaconProxy(beacon: EthereumAddress) Creates a new identity with the message sender as the owner
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the beacon proxy factory contract address cannot be found.
  * @param beacon - The beacon address to use logic contract resolution
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A contract receipt promise
@@ -93,6 +98,10 @@ export const createBeaconProxy = async (beacon: EthereumAddress, opts?: ConfigOp
 /**
  * createBeaconProxyWithOwner(beacon: EthereumAddress, owner: EthereumAddress) Creates a new identity with the ecrecover address as the owner
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the beacon proxy factory contract address cannot be found.
  * @param owner - The initial owner's address of the new contract
  * @param beacon - The beacon address to use logic contract resolution
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -112,6 +121,10 @@ export const createBeaconProxyWithOwner = async (
  * it to a handle to get a new DSNP Id. This will create and register
  * a new beacon proxy identity.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the beacon proxy factory contract address cannot be found.
  * @param userAddress - User's public key address
  * @param handle - The string handle to register
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -128,33 +141,23 @@ export const createAndRegisterBeaconProxy = async (
 };
 
 const getIdentityLogicContractAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
-  const { identityLogic } = getContracts(opts);
   const provider = requireGetProvider(opts);
-
-  const address = identityLogic || (await getContractAddress(provider, IDENTITY_CONTRACT));
-
-  if (!address) throw MissingContract;
+  const address = await getContractAddress(provider, IDENTITY_CONTRACT, opts);
   return address;
 };
 
 const getIdentityCloneFactoryContract = async (opts?: ConfigOpts): Promise<IdentityCloneFactory> => {
-  const { identityCloneFactory } = getContracts(opts);
   const signer = requireGetSigner(opts);
   const provider = requireGetProvider(opts);
-
-  const address = identityCloneFactory || (await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT));
-  if (!address) throw MissingContract;
+  const address = await getContractAddress(provider, IDENTITY_CLONE_FACTORY_CONTRACT, opts);
 
   return IdentityCloneFactory__factory.connect(address, signer);
 };
 
 const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactory> => {
-  const { beaconFactory } = getContracts(opts);
   const signer = requireGetSigner(opts);
   const provider = requireGetProvider(opts);
-
-  const address = beaconFactory || (await getContractAddress(provider, BEACON_FACTORY_CONTRACT));
-  if (!address) throw MissingContract;
+  const address = await getContractAddress(provider, BEACON_FACTORY_CONTRACT, opts);
 
   return BeaconFactory__factory.connect(address, signer);
 };
@@ -162,6 +165,10 @@ const getBeaconFactoryContract = async (opts?: ConfigOpts): Promise<BeaconFactor
 /**
  * isAuthorizedTo() Checks to see if address is authorized with the given permission
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param address - Address that is used to test permission
  * @param contractAddress - Address of contract to check against
  * @param permission - Level of permission check. See Permission for details
@@ -178,17 +185,13 @@ export const isAuthorizedTo = async (
   opts?: ConfigOpts
 ): Promise<boolean> => {
   const provider = requireGetProvider(opts);
-  if (!provider) throw MissingProvider;
 
   return Identity__factory.connect(contractAddress, provider).isAuthorizedTo(address, permission, blockNumber);
 };
 
 const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => {
-  const { beacon } = getContracts(opts);
   const provider = requireGetProvider(opts);
-  const address = beacon || (await getContractAddress(provider as Provider, BEACON_CONTRACT));
-
-  if (!address) throw MissingContract;
+  const address = await getContractAddress(provider as Provider, BEACON_CONTRACT, opts);
   return address;
 };
 
@@ -213,6 +216,8 @@ export interface DelegateAddParams {
 /**
  * getDomainSeparator() Gets unique data that identifies the Identity contract to prevent phishing attacks
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param contractAddress - Address of the identity contract to use
  * @param opts - Optional. Configuration overrides, such as store, if any
  * @returns A EIP-712 domain structure that is unique to the Identity contract
@@ -266,6 +271,8 @@ export const createAddDelegateEip712TypedData = async (
  * getNonceForDelegate() Get a delegate's nonce
  * following the EIP-712 standard.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param contractAddress - Address of the identity contract to use
  * @param delegateAddress - The delegate's address to get the nonce for
  * @param opts - Optional. Configuration overrides, such as store, if any
@@ -284,6 +291,10 @@ export const getNonceForDelegate = async (
 /**
  * upsertDelegateBySignature() Add or change permissions for delegate using EIP-712 signature
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param contractAddress - Address of the identity contract to use
  * @param signature - ECDSA signature r value, s value and EIP-155 calculated Signature v value
  * @param message - DelegateAdd data containing new delegate address, role, and nonce
@@ -306,6 +317,10 @@ export const upsertDelegateBySignature = async (
 /**
  * upsertDelegate() Add or change permissions for delegate
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param contractAddress - Address of the identity contract to use
  * @param address - Address of delegate to add permissions to
  * @param role - The role to give delegate

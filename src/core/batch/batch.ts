@@ -1,13 +1,14 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 import { keccak256 } from "js-sha3";
 
-import { DSNPMessageSigned } from "../batch/batchMessages";
+import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
+import { DSNPMessageSigned } from "./batchMessages";
 import { ConfigOpts, requireGetStore } from "../../config";
 import { DSNPType, DSNPTypedMessage } from "../messages/messages";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-import { AsyncOrSyncIterable, MixedTypeBatchError, EmptyBatchError } from "../utilities";
+import { AsyncOrSyncIterable } from "../utilities";
 
 type ReadRowFunction = {
   (row: DSNPType): void;
@@ -34,6 +35,12 @@ type BatchIterable<T extends DSNPType> = AsyncOrSyncIterable<DSNPMessageSigned<D
  * createFile() takes a series of Batch DSNP messages, writes them to a file at
  * specified target path and returns a BatchFileData object.
  *
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
+ * @throws {@link EmptyBatchError}
+ * Thrown if the message iterator provided is empty.
+ * @throws {@link MixedTypeBatchError}
+ * Thrown if the message iterator provided contains multiple DSNP types.
  * @param targetPath - The path to and name of file
  * @param messages - An array of DSNPMessage to include in the batch file
  * @param opts - Optional. Configuration overrides, such as store, if any
@@ -80,6 +87,10 @@ export const createFile = async <T extends DSNPType>(
  * writeBatch() takes a series of Batch DSNP messages, writes them to the given
  * stream and returns a void promise which resolves when done.
  *
+ * @throws {@link EmptyBatchError}
+ * Thrown if the message iterator provided is empty.
+ * @throws {@link MixedTypeBatchError}
+ * Thrown if the message iterator provided contains multiple DSNP types.
  * @param writeStream - A writable stream
  * @param schema - The ParquetJS schema for the messages DSNP type
  * @param messages - An array of DSNPMessage to include in the batch file

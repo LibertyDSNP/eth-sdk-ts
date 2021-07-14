@@ -18,6 +18,7 @@
  */
 
 export * from "./batch";
+export * from "./batchErrors";
 
 import * as batchMessagesImport from "./batchMessages";
 export const batchMessages = batchMessagesImport;

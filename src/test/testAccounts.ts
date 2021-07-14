@@ -2,7 +2,7 @@ import { ContractTransaction, ethers } from "ethers";
 import { requireGetProvider } from "../config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "../core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "../core/identifiers";
 
 export interface RegistrationWithSigner extends Registration {
   signer: ethers.Signer;

@@ -1,12 +1,13 @@
 import * as config from "./config";
 import * as network from "./network";
+import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
 import { DSNPGraphChangeType, DSNPType } from "./core/messages/messages";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/utilities/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;
@@ -55,26 +56,26 @@ describe("network", () => {
     });
 
     describe("without a signer", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingSignerConfigError", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
           signer: undefined,
           provider,
         });
 
-        await expect(network.follow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.follow(registerId)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
     describe("without a user id", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingFromIdConfigError", async () => {
         config.setConfig({
           currentFromId: undefined,
           signer,
           provider,
         });
 
-        await expect(network.follow("dril")).rejects.toThrow(config.MissingUser);
+        await expect(network.follow("dril")).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -102,26 +103,26 @@ describe("network", () => {
     });
 
     describe("without a signer", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingSignerConfigError", async () => {
         config.setConfig({
           currentFromId: "dsnp://0000000000000000",
           signer: undefined,
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingSigner);
+        await expect(network.unfollow(registerId)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
     describe("without a user id", () => {
-      it("throws MissingUser", async () => {
+      it("throws MissingFromIdConfigError", async () => {
         config.setConfig({
           currentFromId: undefined,
           signer,
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(config.MissingUser);
+        await expect(network.unfollow(registerId)).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });

@@ -1,5 +1,6 @@
 import { Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
+import { DSNPError } from "../errors";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import {
   changeAddress,
@@ -20,7 +21,7 @@ import {
   RegistrationWithSigner,
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
-import { DSNPUserId } from "../utilities/identifiers";
+import { DSNPUserId } from "../identifiers";
 
 describe("registry", () => {
   let signer: Signer;
@@ -79,7 +80,7 @@ describe("registry", () => {
       await revertHardhat(provider);
     });
 
-    it("Should throw for an already registered handle", async () => {
+    it("throws for an already registered handle", async () => {
       // Second time for handle
       const pendingTx = register(idContractAddr, handle);
       await expect(pendingTx).transactionRejectsWith(/Handle already exists/);
@@ -108,18 +109,18 @@ describe("registry", () => {
       await revertHardhat(provider);
     });
 
-    it("Should succeed with an unregistered handle", async () => {
+    it("Succeeds with an unregistered handle", async () => {
       const otherHandle = "completely new";
       const pendingTx = changeHandle(handle, otherHandle);
       await expect(pendingTx).resolves.toBeTruthy();
     });
 
-    it("Should throw for the same handle", async () => {
+    it("Throws for the same handle", async () => {
       const pendingTx = changeHandle(handle, handle);
       await expect(pendingTx).transactionRejectsWith(/New handle already exists/);
     });
 
-    it("Should throw for an already registered handle", async () => {
+    it("Throws for an already registered handle", async () => {
       const otherHandle = "reg2";
       await register(idContractAddr, otherHandle);
 
@@ -308,7 +309,7 @@ describe("registry", () => {
 
     it("throws if id cannot be resolved", async () => {
       await expect(isMessageSignatureAuthorizedTo("0xdeadbeef", msg, "0xabcd1234", permAllowed)).rejects.toThrow(
-        "Contract was not found"
+        DSNPError
       );
     });
     it("throws if signature is garbage", async () => {

@@ -1,5 +1,8 @@
-import { getContractAddress } from "./contract";
 import { ethers } from "ethers";
+
+import { ContractName } from "../../config";
+import { getContractAddress } from "./contract";
+import { MissingContractAddressError } from "./contractErrors";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 
@@ -16,9 +19,8 @@ describe("Contracts", () => {
       expect(contractAddress).not.toBeNull();
     });
 
-    it("returns null if no values found", async () => {
-      const contractAddress = await getContractAddress(provider, "Test");
-      expect(contractAddress).toBeNull();
+    it("throws MissingContractAddressError if no values found", async () => {
+      await expect(getContractAddress(provider, "Test" as ContractName)).rejects.toThrow(MissingContractAddressError);
     });
   });
 });

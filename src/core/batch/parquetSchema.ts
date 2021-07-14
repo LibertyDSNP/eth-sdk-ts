@@ -3,7 +3,7 @@
  * See DSNP type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
-import { DSNPType } from "../messages/messages";
+import { DSNPType, InvalidMessageTypeError } from "../messages";
 
 /**
  * BloomFilterColumnOptions: bloom filter options for a column intended to be used with when writing a batch file
@@ -119,6 +119,8 @@ export const ReactionBloomFilterOptions = {
 /**
  * getSchemaFor() takes DSNPType and returns its corresponding parquet schema
  *
+ * @throws {@link InvalidMessageTypeError}
+ * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet schema
  */
@@ -136,12 +138,14 @@ export const getSchemaFor = (dsnpType: DSNPType): Schema => {
       return ProfileSchema;
   }
 
-  throw new Error(`Invalid DSNP type: ${dsnpType}`);
+  throw new InvalidMessageTypeError(dsnpType);
 };
 
 /**
  * getBloomFilterOptionsFor() takes DSNPType and returns its bloom filter options
  *
+ * @throws {@link InvalidMessageTypeError}
+ * Thrown if the provided dsnpType enum is not a valid value.
  * @param dsnpType - a dsnpType
  * @returns The corresponding parquet bloom filter options
  */
@@ -159,5 +163,5 @@ export const getBloomFilterOptionsFor = (dsnpType: DSNPType): BloomFilterOptions
       return ProfileBloomFilterOptions;
   }
 
-  throw new Error(`Invalid DSNP type: ${dsnpType}`);
+  throw new InvalidMessageTypeError(dsnpType);
 };

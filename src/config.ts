@@ -1,28 +1,36 @@
 import { ethers } from "ethers";
 
+import {
+  MissingSignerConfigError,
+  MissingProviderConfigError,
+  MissingStoreConfigError,
+  MissingFromIdConfigError,
+} from "./core/config";
 import { StoreInterface } from "./core/store";
 import { HexString } from "./types/Strings";
 
-export const MissingContract = new Error("Contract was not found");
-export const MissingSigner = new Error("Signer is not set.");
-export const MissingProvider = new Error("Blockchain provider is not set.");
-export const MissingStore = new Error("Store adapter was not found");
-export const MissingUser = new Error("No user id found. Please authenticate a handle.");
+/* The name of the Batch Publisher contract */
+type PublisherContractName = "Publisher";
+/* The name of the Beacon contract */
+type BeaconContractName = "Beacon";
+/* The name of the Beacon Proxy Factory contract */
+type BeaconFactoryContractName = "BeaconFactory";
+/* The name of the Identity Logic contract */
+type IdentityLogicContractName = "Identity";
+/* The name of the Identity Clone Proxy Factory contract */
+type IdentityCloneFactoryContractName = "IdentityCloneFactory";
+/* The name of the Registry contract */
+type RegistryContractName = "Registry";
+/** Any valid contract name */
+export type ContractName =
+  | PublisherContractName
+  | BeaconContractName
+  | BeaconFactoryContractName
+  | IdentityLogicContractName
+  | IdentityCloneFactoryContractName
+  | RegistryContractName;
 
-export interface Contracts {
-  /** The Address of the Batch Publisher contract */
-  publisher?: HexString;
-  /** The Address of the Beacon contract */
-  beacon?: HexString;
-  /** The Address of the Beacon Proxy Factory contract */
-  beaconFactory?: HexString;
-  /** The Address of the Identity Logic contract */
-  identityLogic?: HexString;
-  /** The Address of the Identity Clone Proxy Factory contract */
-  identityCloneFactory?: HexString;
-  /** The Address of the Registry contract */
-  registry?: HexString;
-}
+type Contracts = { [key in ContractName]?: HexString };
 
 /**
  * The Config Interface provides for various settings and plugable modules.
@@ -93,7 +101,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
  */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
   const c = getConfig(opts);
-  if (!c.provider) throw MissingProvider;
+  if (!c.provider) throw new MissingProviderConfigError();
   return c.provider;
 };
 
@@ -105,7 +113,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
  */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
   const c = getConfig(opts);
-  if (!c.signer) throw MissingSigner;
+  if (!c.signer) throw new MissingSignerConfigError();
   return c.signer;
 };
 
@@ -117,7 +125,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
  */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
   const c = getConfig(opts);
-  if (!c.store) throw MissingStore;
+  if (!c.store) throw new MissingStoreConfigError();
   return c.store;
 };
 
@@ -129,14 +137,15 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
  */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
-  if (!c.currentFromId) throw MissingUser;
+  if (!c.currentFromId) throw new MissingFromIdConfigError();
   return c.currentFromId;
 };
 
 /**
- * Get the contracts.  Since this is a required field, this is a plain getter.
+ * Get the contracts
  *
  * @param opts - overrides for the current configuration.
+ * @returns potentially undefined contract addresses
  */
 export const getContracts = (opts?: ConfigOpts): Contracts => {
   const c = getConfig(opts);

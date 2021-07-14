@@ -1,22 +1,16 @@
 import { WriteStream } from "../store";
-
-/**
- * NotImplementedError indicates that a particular feature is not available for
- * use in the current version of the SDK
- */
-export const NotImplementedError = new Error("This method is not yet implemented.");
+import { DSNPError } from "../errors";
 
 /**
  * BatchError indicates that something went wrong in generating a batch file.
- * This error object will include a fileHandle field containing the un-closed
+ * This error object may include a fileHandle field containing the un-closed
  * write stream of the batch.
  */
-export class BatchError extends Error {
+export class BatchError extends DSNPError {
   fileHandle?: WriteStream;
 
   constructor(message: string, fileHandle?: WriteStream) {
     super(message);
-    this.name = "BatchError";
     this.fileHandle = fileHandle;
   }
 }
@@ -28,7 +22,6 @@ export class BatchError extends Error {
 export class EmptyBatchError extends BatchError {
   constructor(fileHandle?: WriteStream) {
     super("Invalid message iterator for batch: iterator contains no messages");
-    this.name = "EmptyBatchError";
     this.fileHandle = fileHandle;
   }
 }
@@ -40,6 +33,6 @@ export class EmptyBatchError extends BatchError {
 export class MixedTypeBatchError extends BatchError {
   constructor(fileHandle: WriteStream) {
     super("Invalid message iterator for batch: iterator contains multiple DSNP types", fileHandle);
-    this.name = "MixedTypeBatchError";
+    this.fileHandle = fileHandle;
   }
 }

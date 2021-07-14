@@ -1,8 +1,11 @@
-import { HexString } from "../../types/Strings";
-import { keccak256 } from "js-sha3";
-import * as types from "../../types/typechain";
-import { ethers } from "ethers";
 import { JsonFragment } from "@ethersproject/abi";
+import { ethers } from "ethers";
+import { keccak256 } from "js-sha3";
+
+import { getContracts, ContractName, ConfigOpts } from "../../config";
+import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
+import { HexString } from "../../types/Strings";
+import * as types from "../../types/typechain";
 
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 
@@ -73,16 +76,31 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
 };
 
 /**
- * getContractAddress() uses DSNP Migrations to retrieve the most recently deployed contract address
+ * getContractAddress() fetches the address for a given contract. If a contract
+ * address override is available in the configuration, it will be returned. If
+ * no override exists, the latest migration ABI will be fetched from the chain,
+ * parsed and the appropriate contract address will be returned. If the contract
+ * address is missing from the chain as well, a MissingContractAddressError will be
+ * thrown.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingContractAddressError}
+ * Thrown if the requested contract address cannot be found.
  * @param provider - initialized provider
  * @param contractName - Name of contract to find address for
- * @returns HexString A hexadecimal string representing the contract address
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns HexString A hexidecimal string representing the contract address
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
-  contractName: string
-): Promise<HexString | null> => {
+  contractName: ContractName,
+  opts?: ConfigOpts
+): Promise<HexString> => {
+  const contractOverrides = getContracts(opts);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  if (contractOverrides[contractName] !== undefined) return contractOverrides[contractName]!;
+
   const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
 
   const logs: ethers.providers.Log[] = await provider.getLogs({
@@ -91,7 +109,10 @@ export const getContractAddress = async (
   });
   const decodedValues = decodeReturnValues(DSNP_MIGRATION_ABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);
-  return filteredResults.length > 0 ? filteredResults[filteredResults.length - 1].contractAddr : null;
+
+  if (filteredResults.length == 0) throw new MissingContractAddressError(contractName);
+
+  return filteredResults[filteredResults.length - 1].contractAddr;
 };
 
 /**
@@ -117,30 +138,29 @@ export const getVmError = (e: VmError): string | undefined => {
 };
 
 /**
- * Parse all transaction logs.
+ * parseLogs() parses all transaction logs.
  * This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.
  *
  * @param logs - raw logs from a transaction
  * @returns parsed logs excluding any logs that cannot be parsed by the interface.
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const parseLogs = (logs: Array<RawLog>): Array<ethers.utils.LogDescription> => {
   return logs.map((log) => EVENTS_ABI.parseLog(log)) as Array<ethers.utils.LogDescription>;
 };
 
 /**
- * Find event with given name.
+ * findEvent() finds event with given name.
  *
+ * @throws {@link NoLogsFoundContractError}
+ * Thrown if the requested log event could not be found.
  * @param name - name of event to find.
  * @param logs - raw logs from a transaction
  * @returns First event in log that matches name
- * @throws error if no matching events were found
- * @throws error if a log is unparsable. This is probably because the event's ABI has not been added to EVENTS_ABI.
  */
 export const findEvent = (name: string, logs: Array<RawLog>): ethers.utils.LogDescription => {
   const event = parseLogs(logs).find((e) => e.name === name);
   if (event === undefined) {
-    throw `no ${name} logs found`;
+    throw new NoLogsFoundContractError(name);
   }
   return event;
 };

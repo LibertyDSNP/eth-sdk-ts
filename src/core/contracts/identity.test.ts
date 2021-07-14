@@ -21,7 +21,6 @@ const {
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
-import { MissingContract } from "../../config";
 import { Identity__factory } from "../../types/typechain";
 import { signEIP712Message } from "../../test/helpers/EIP712";
 
@@ -40,7 +39,6 @@ describe("identity", () => {
 
   const getBeacon = async (): Promise<string> => {
     const addr = await getContractAddress(provider, "Beacon");
-    if (!addr) throw MissingContract;
     return addr;
   };
 
@@ -293,7 +291,7 @@ describe("identity", () => {
     });
 
     describe("when signature is not valid", () => {
-      it("throws error", async () => {
+      it("throws a contract level error", async () => {
         const typedData = await createAddDelegateEip712TypedData(contractAddress, message);
         const { r, s, v } = await signEIP712Message(contractOwner, provider, typedData);
 

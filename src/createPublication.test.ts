@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
 
 import * as config from "./config";
+import { EmptyBatchError } from "./core/batch";
 import { DSNPBatchMessage } from "./core/batch/batchMessages";
 import { createBroadcastMessage, createReplyMessage, createReactionMessage, sign } from "./core/messages";
 import { createPublication, createPublications } from "./createPublication";
 import TestStore from "./test/testStore";
-import { EmptyBatchError } from "./core/utilities";
 
 describe("createPublication", () => {
   let store: TestStore;
@@ -54,8 +54,8 @@ describe("createPublication", () => {
   describe("when passed a message iterator containing no messages", () => {
     const badMessages: Array<DSNPBatchMessage> = [];
 
-    it("throws MixedDSNPTypeError", async () => {
-      await expect(createPublication(badMessages)).rejects.toBeInstanceOf(EmptyBatchError);
+    it("throws EmptyBatchError", async () => {
+      await expect(createPublication(badMessages)).rejects.toThrow(EmptyBatchError);
     });
   });
 });

@@ -17,5 +17,4 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-export * from "./messages";
-export * from "./messageErrors";
+export * from "./configErrors";

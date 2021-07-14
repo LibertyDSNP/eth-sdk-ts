@@ -18,3 +18,4 @@
  */
 
 export * from "./activityPub";
+export * from "./activityPubErrors";

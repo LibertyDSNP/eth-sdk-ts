@@ -198,8 +198,8 @@ export const createProfileMessage = (fromId: string, url: string, hash: HexStrin
  * sign() takes a DSNP message and returns a signed DSNP message ready for
  * inclusion in a batch.
  *
- * @throws {@link MissingSigner}
- * This error is thrown if no Signer is defined in the configuration options.
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
  * @param message - The DSNP message to sign
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed DSNP message

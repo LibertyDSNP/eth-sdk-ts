@@ -7,7 +7,7 @@ import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "./test/matchers";
-import { convertDSNPUserIdToBigNumber } from "./core/utilities/identifiers";
+import { convertDSNPUserIdToBigNumber } from "./core/identifiers";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
