@@ -1,5 +1,5 @@
 import { serialize } from "./serialization";
-import { createBroadcast } from "./announcementTypes";
+import { createBroadcast } from "./factories";
 
 describe("serialization", () => {
   describe("#serialize", () => {

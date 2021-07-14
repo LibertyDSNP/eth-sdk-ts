@@ -1,20 +1,20 @@
 import { BigNumber } from "ethers";
 
 /**
- * dsnpAnnouncementId represents a DSNP Announcement Id following the DSNP
+ * DSNPAnnouncementId represents a DSNP Announcement Id following the DSNP
  * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
  * specification.
  */
-export type dsnpAnnouncementId = string;
+export type DSNPAnnouncementId = string;
 
 /**
- * validateDSNPAnnouncementId() validates a given string as a dsnpAnnouncementId. If the given string is
+ * validateDSNPAnnouncementId() validates a given string as a DSNPAnnouncementId. If the given string is
  * valid, true is returned. Otherwise, false is returned.
  *
  * @param id - The string to validate
- * @returns True of false depending on whether the string is a valid dsnpAnnouncementId
+ * @returns True of false depending on whether the string is a valid DSNPAnnouncementId
  */
-export const validateDSNPAnnouncementId = (id: string): id is dsnpAnnouncementId =>
+export const validateDSNPAnnouncementId = (id: string): id is DSNPAnnouncementId =>
   id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
 
 /**

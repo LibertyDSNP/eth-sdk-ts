@@ -18,6 +18,6 @@
  */
 
 export * from "./errors";
-export * from "./announcementTypes";
+export * from "./factories";
 export * from "./crypto";
 export * from "./serialization";

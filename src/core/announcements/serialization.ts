@@ -1,5 +1,5 @@
 import { sortObject } from "../utilities/json";
-import { Announcement } from "./announcementTypes";
+import { Announcement } from "./factories";
 
 /**
  * serialize() takes an announcement and returns a serialized string.

@@ -2,7 +2,7 @@ import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
 import { getConfig, setConfig } from "../../config";
-import { createBroadcast } from "./announcementTypes";
+import { createBroadcast } from "./factories";
 import { recoverPublicKey, sign } from "./crypto";
 
 describe("announcement crypto", () => {

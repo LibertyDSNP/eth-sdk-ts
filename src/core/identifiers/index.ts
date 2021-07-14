@@ -1,2 +1,2 @@
 export * from "./identifiers";
-export * from "./identifierErrors";
+export * from "./errors";

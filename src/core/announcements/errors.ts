@@ -1,4 +1,4 @@
-import { DSNPType } from "./announcementTypes";
+import { DSNPType } from "./factories";
 import { DSNPError } from "../errors";
 
 /**

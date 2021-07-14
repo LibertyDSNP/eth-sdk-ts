@@ -171,13 +171,3 @@ export const createProfile = (fromId: string, url: string, hash: HexString): Pro
   fromId,
   url,
 });
-
-export type AnnouncementWithSignature<T extends Announcement> = T & { signature: string };
-
-export type SignedAnnouncement = AnnouncementWithSignature<Announcement>;
-
-export type SignedBroadcastAnnouncement = AnnouncementWithSignature<BroadcastAnnouncement>;
-export type SignedReplyAnnouncement = AnnouncementWithSignature<ReplyAnnouncement>;
-export type SignedReactionAnnouncement = AnnouncementWithSignature<ReactionAnnouncement>;
-export type SignedProfileAnnouncement = AnnouncementWithSignature<ProfileAnnouncement>;
-export type SignedGraphChangeAnnouncement = AnnouncementWithSignature<GraphChangeAnnouncement>;
