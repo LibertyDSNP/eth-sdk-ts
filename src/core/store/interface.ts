@@ -6,8 +6,9 @@ export type Content = string | Buffer;
 export interface WriteStream {
   write(chunk: unknown, encoding?: string, callback?: (error: Error | null | undefined) => void): boolean;
   write(chunk: unknown, cb?: (error: Error | null | undefined) => void): boolean;
-  end(chunk: unknown, cb?: () => void): void;
-  end(chunk: unknown, encoding?: string, cb?: () => void): void;
+  end(cb?: () => void): void;
+  end(chunk?: unknown, cb?: () => void): void;
+  end(chunk?: unknown, encoding?: string, cb?: () => void): void;
 }
 
 /**

@@ -70,8 +70,16 @@ export const createFile = async <T extends DSNPType>(
       ...writeStream,
       write: (chunk: Uint8Array, ...args: unknown[]): boolean => {
         hashGenerator.update(chunk);
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return writeStream.write(chunk, ...(args as any[]));
+      },
+      end: (...args: unknown[]): void => {
+        if (typeof args[0] == "object" && Object(args[0]).constructor === Uint8Array)
+          hashGenerator.update(args[0] as Uint8Array);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return writeStream.end(...(args as any[]));
       },
     };
     await writeBatch(hashingWriteStream, schema, messages, bloomFilterOptions);
@@ -109,7 +117,7 @@ export const writeBatch = async <T extends DSNPType>(
   for await (const message of messages) {
     if (firstDsnpType === undefined) firstDsnpType = message.dsnpType;
     if (message.dsnpType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
-    writer.appendRow(message);
+    await writer.appendRow(message);
   }
 
   if (firstDsnpType === undefined) throw new EmptyBatchError(writeStream);
