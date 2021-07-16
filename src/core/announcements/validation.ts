@@ -1,16 +1,7 @@
 import fetch from "cross-fetch";
 import { keccak256 } from "js-sha3";
 
-import {
-  isActivityContentHash,
-  isActivityContentAudio,
-  isActivityContentImage,
-  isActivityContentVideo,
-  isValidActivityContent,
-  ActivityContentAudio,
-  ActivityContentImage,
-  ActivityContentVideo,
-} from "../activityContent";
+import { isValidActivityContent } from "../activityContent";
 import { ConfigOpts } from "../../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
@@ -185,35 +176,12 @@ export const isSignedAnnouncement = (obj: unknown): obj is SignedAnnouncement =>
   return isAnnouncement(obj);
 };
 
-const validateKeccak256FileHash = async (
-  activityContent: ActivityContentAudio | ActivityContentImage | ActivityContentVideo
-): Promise<boolean> => {
-  let keccakHash: string | null = null;
-  if (Array.isArray(activityContent["hash"])) {
-    for (const hash in activityContent["hash"]) {
-      if (!isActivityContentHash(hash)) return false;
-      if (hash["algorithm"] == "keccak256") keccakHash = hash["value"];
-    }
-  } else {
-    if (!isActivityContentHash(activityContent["hash"])) return false;
-    if (activityContent["hash"]["algorithm"] == "keccak256") keccakHash = activityContent["hash"]["value"];
-  }
-
-  if (keccakHash === null) return true;
-
-  let fileUrl: string | null = null;
-  if (typeof activityContent["url"] === "string") {
-    fileUrl = activityContent["url"];
-  } else {
-    fileUrl = activityContent["url"]["href"];
-  }
-
-  const fileContents = await fetch(fileUrl).then((res) => res.text());
-  return keccak256(fileContents) == keccakHash;
-};
-
 /**
  * isValidAnnouncement() validates an announcement and its associated content.
+ * Note that this method only validates an announcement's signature, format and
+ * linked activity content. It **does not** validate any audio, image or video
+ * files linked in the activity content object, so these files should be
+ * validated separately.
  *
  * @param obj - A signed announcement to validate
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -234,20 +202,12 @@ export const isValidAnnouncement = async (obj: unknown, opts?: ConfigOpts): Prom
   )
     return false;
 
-  if (isBroadcastAnnouncement(obj) || isReplyAnnouncement(obj)) {
+  if (isBroadcastAnnouncement(obj) || isReplyAnnouncement(obj) || isProfileAnnouncement(obj)) {
     const content = await fetch(obj["url"]).then((res) => res.text());
     if (keccak256(content) != obj["contentHash"]) return false;
 
     const activityContent = JSON.parse(content);
     if (!isValidActivityContent(activityContent)) return false;
-
-    if (
-      isActivityContentAudio(activityContent) ||
-      isActivityContentImage(activityContent) ||
-      isActivityContentVideo(activityContent)
-    ) {
-      if (!(await validateKeccak256FileHash(activityContent))) return false;
-    }
   }
 
   return true;

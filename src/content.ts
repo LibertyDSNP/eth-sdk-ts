@@ -76,7 +76,7 @@ export const broadcast = async (
  * @throws {@link InvalidAnnouncementIdentifierError}
  * Thrown if the provided inReplyTo Announcement Id is invalid.
  * @param contentObject - The activity content object with which to reply
- * @param inReplyTo - The DSNP Message Id of the message that this message is in reply to
+ * @param inReplyTo - The DSNP Announcement Id of the announcement that this announcement is in reply to
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed Reply Announcement ready for inclusion in a batch
  */
