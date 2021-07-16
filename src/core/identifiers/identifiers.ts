@@ -1,5 +1,7 @@
 import { BigNumber } from "ethers";
 
+import { isString } from "../utilities/validation";
+
 /**
  * DSNPAnnouncementId represents a DSNP Announcement Id following the DSNP
  * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
@@ -8,14 +10,15 @@ import { BigNumber } from "ethers";
 export type DSNPAnnouncementId = string;
 
 /**
- * validateDSNPAnnouncementId() validates a given string as a DSNPAnnouncementId. If the given string is
- * valid, true is returned. Otherwise, false is returned.
+ * isDSNPAnnouncementId() validates a given string as a DSNPAnnouncementId.
  *
- * @param id - The string to validate
+ * @param id - The object to validate
  * @returns True of false depending on whether the string is a valid DSNPAnnouncementId
  */
-export const validateDSNPAnnouncementId = (id: string): id is DSNPAnnouncementId =>
-  id.match(/dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}/i) !== null;
+export const isDSNPAnnouncementId = (id: unknown): id is DSNPAnnouncementId => {
+  if (!isString(id)) return false;
+  return id.match(/^dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}$/i) !== null;
+};
 
 /**
  * DSNPUserId represents a DSNP user id following the DSNP
@@ -23,6 +26,17 @@ export const validateDSNPAnnouncementId = (id: string): id is DSNPAnnouncementId
  * specification.
  */
 export type DSNPUserId = string;
+
+/**
+ * isDSNPUserId validates a given object as a DSNPUserId.
+ *
+ * @param id - The object to validate
+ * @returns True of false depending on whether the string is a valid DSNPUserId
+ */
+export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
+  if (!isString(id)) return false;
+  return id.match(/^dsnp:\/\/[0-9A-F]{16}$/i) !== null;
+};
 
 /**
  * convertBigNumberToDSNPUserId() converts ethers' ridiculous BigNumber implementation

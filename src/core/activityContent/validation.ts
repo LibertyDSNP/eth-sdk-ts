@@ -189,7 +189,7 @@ export const isActivityContent = (obj: unknown): obj is ActivityContent => {
  * @param obj - An obj to be validated
  * @returns True or false depending on whether the given obj is a valid
  */
-export const isValid = (obj: unknown): obj is ActivityContent => {
+export const isValidActivityContent = (obj: unknown): obj is ActivityContent => {
   if (!isActivityContent(obj)) return false;
 
   const validator = {

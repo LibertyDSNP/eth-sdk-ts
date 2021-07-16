@@ -1,5 +1,5 @@
 import { ActivityContent } from "./factories";
-import { isValid } from "./validation";
+import { isValidActivityContent } from "./validation";
 
 describe("activity content validations", () => {
   describe("isValid", () => {
@@ -157,7 +157,7 @@ describe("activity content validations", () => {
 
     for (const key in validActivityContents) {
       it(`returns true for ${key}`, () => {
-        expect(isValid(validActivityContents[key])).toEqual(true);
+        expect(isValidActivityContent(validActivityContents[key])).toEqual(true);
       });
     }
 
@@ -253,7 +253,7 @@ describe("activity content validations", () => {
 
     for (const key in invalidActivityContents) {
       it(`returns false for ${key}`, () => {
-        expect(isValid(invalidActivityContents[key])).toEqual(false);
+        expect(isValidActivityContent(invalidActivityContents[key])).toEqual(false);
       });
     }
   });

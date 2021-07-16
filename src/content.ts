@@ -2,7 +2,7 @@ import { keccak256 } from "js-sha3";
 
 import { requireGetCurrentFromId, requireGetStore, ConfigOpts } from "./config";
 import {
-  isValid,
+  isValidActivityContent,
   serialize,
   ActivityContent,
   ActivityContentProfile,
@@ -19,7 +19,7 @@ import {
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
 } from "./core/announcements";
-import { validateDSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
+import { isDSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
 
 /**
  * broadcast() creates an activity content file with the given content options,
@@ -42,7 +42,7 @@ export const broadcast = async (
   contentObject: ActivityContent,
   opts?: ConfigOpts
 ): Promise<SignedBroadcastAnnouncement> => {
-  if (!isValid(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromId = requireGetCurrentFromId(opts);
@@ -85,9 +85,9 @@ export const reply = async (
   inReplyTo: string,
   opts?: ConfigOpts
 ): Promise<SignedReplyAnnouncement> => {
-  if (!validateDSNPAnnouncementId(inReplyTo)) throw new InvalidAnnouncementIdentifierError(inReplyTo);
+  if (!isDSNPAnnouncementId(inReplyTo)) throw new InvalidAnnouncementIdentifierError(inReplyTo);
 
-  if (!isValid(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromId = requireGetCurrentFromId(opts);
@@ -153,7 +153,7 @@ export const profile = async (
   contentObject: ActivityContentProfile,
   opts?: ConfigOpts
 ): Promise<SignedProfileAnnouncement> => {
-  if (!isValid(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromId = requireGetCurrentFromId(opts);
