@@ -18,7 +18,7 @@ import { SignedAnnouncement } from "./crypto";
 import {
   Announcement,
   DSNPGraphChangeType,
-  DSNPType,
+  AnnouncementType,
   GraphChangeAnnouncement,
   BroadcastAnnouncement,
   ReplyAnnouncement,
@@ -55,19 +55,19 @@ const isGraphChangeType = (obj: unknown): obj is DSNPGraphChangeType => {
 };
 
 /**
- * isAnnouncementType() is a type check for DSNPType
+ * isAnnouncementType() is a type check for AnnouncementType
  *
  * @param obj - The object to check
- * @returns True if the object is a DSNPType, otherwise false
+ * @returns True if the object is a AnnouncementType, otherwise false
  */
-const isAnnouncementType = (obj: unknown): obj is DSNPType => {
+const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
   if (!isNumber(obj)) return false;
   return (
-    obj == DSNPType.GraphChange ||
-    obj == DSNPType.Broadcast ||
-    obj == DSNPType.Reply ||
-    obj == DSNPType.Reaction ||
-    obj == DSNPType.Profile
+    obj == AnnouncementType.GraphChange ||
+    obj == AnnouncementType.Broadcast ||
+    obj == AnnouncementType.Reply ||
+    obj == AnnouncementType.Reaction ||
+    obj == AnnouncementType.Profile
   );
 };
 
@@ -79,7 +79,7 @@ const isAnnouncementType = (obj: unknown): obj is DSNPType => {
  */
 const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["dsnpType"] != DSNPType.GraphChange) return false;
+  if (obj["AnnouncementType"] != AnnouncementType.GraphChange) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isGraphChangeType(obj["changeType"])) return false;
   if (!isDSNPUserId(obj["objectId"])) return false;
@@ -95,7 +95,7 @@ const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement
  */
 const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["dsnpType"] != DSNPType.Broadcast) return false;
+  if (obj["AnnouncementType"] != AnnouncementType.Broadcast) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -111,7 +111,7 @@ const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => 
  */
 const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["dsnpType"] != DSNPType.Reply) return false;
+  if (obj["AnnouncementType"] != AnnouncementType.Reply) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -128,7 +128,7 @@ const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
  */
 const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["dsnpType"] != DSNPType.Reaction) return false;
+  if (obj["AnnouncementType"] != AnnouncementType.Reaction) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isValidEmoji(obj["emoji"])) return false;
   if (!isDSNPAnnouncementId(obj["inReplyTo"])) return false;
@@ -144,7 +144,7 @@ const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
  */
 const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["dsnpType"] != DSNPType.Profile) return false;
+  if (obj["AnnouncementType"] != AnnouncementType.Profile) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -160,17 +160,17 @@ const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
  */
 const isAnnouncement = (obj: unknown): obj is Announcement => {
   if (!isRecord(obj)) return false;
-  if (!isAnnouncementType(obj["dsnpType"])) return false;
+  if (!isAnnouncementType(obj["AnnouncementType"])) return false;
 
   const validators = {
-    [DSNPType.GraphChange]: isGraphChangeAnnouncement,
-    [DSNPType.Broadcast]: isBroadcastAnnouncement,
-    [DSNPType.Reply]: isReplyAnnouncement,
-    [DSNPType.Reaction]: isReactionAnnouncement,
-    [DSNPType.Profile]: isProfileAnnouncement,
+    [AnnouncementType.GraphChange]: isGraphChangeAnnouncement,
+    [AnnouncementType.Broadcast]: isBroadcastAnnouncement,
+    [AnnouncementType.Reply]: isReplyAnnouncement,
+    [AnnouncementType.Reaction]: isReactionAnnouncement,
+    [AnnouncementType.Profile]: isProfileAnnouncement,
   };
 
-  return validators[obj["dsnpType"]](obj);
+  return validators[obj["AnnouncementType"]](obj);
 };
 
 /**
