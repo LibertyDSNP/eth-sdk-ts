@@ -34,16 +34,16 @@ describe("createPublication", () => {
       const publications = await createPublication(signedMessages);
 
       expect(publications).toMatchObject({
-        dsnpType: 2,
-        hash: expect.stringMatching(/[a-z0-9]{64}/),
-        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        announcementType: 2,
+        fileHash: expect.stringMatching(/[a-z0-9]{64}/),
+        fileUrl: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       });
     });
 
     it("stores the messages provided at the returned URL", async () => {
       const signedMessages = await Promise.all(messages.map(async (msg) => await sign(msg)));
       const publication = await createPublication(signedMessages);
-      const filename = publication.url.split(".org/")[1];
+      const filename = publication.fileUrl.split(".org/")[1];
       const files = store.getStore();
 
       expect(files[filename].toString()).toMatchSnapshot();
@@ -108,19 +108,19 @@ describe("createPublications", () => {
 
     expect(publications).toMatchObject([
       {
-        dsnpType: 2,
-        hash: expect.stringMatching(/[a-z0-9]{64}/),
-        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        announcementType: 2,
+        fileHash: expect.stringMatching(/[a-z0-9]{64}/),
+        fileUrl: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
       {
-        dsnpType: 3,
-        hash: expect.stringMatching(/[a-z0-9]{64}/),
-        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        announcementType: 3,
+        fileHash: expect.stringMatching(/[a-z0-9]{64}/),
+        fileUrl: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
       {
-        dsnpType: 4,
-        hash: expect.stringMatching(/[a-z0-9]{64}/),
-        url: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
+        announcementType: 4,
+        fileHash: expect.stringMatching(/[a-z0-9]{64}/),
+        fileUrl: expect.stringMatching(/http:\/\/fakestore\.org\/[a-z0-9]{32}/),
       },
     ]);
   });
@@ -130,7 +130,7 @@ describe("createPublications", () => {
     const publications = await createPublications(signedMessages);
 
     for (const publication of publications) {
-      const filename = publication.url.split(".org/")[1];
+      const filename = publication.fileUrl.split(".org/")[1];
       const files = store.getStore();
 
       expect(files[filename].toString()).toMatchSnapshot();

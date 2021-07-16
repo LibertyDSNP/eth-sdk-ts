@@ -3,7 +3,7 @@ import * as network from "./network";
 import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
-import { DSNPGraphChangeType, DSNPType } from "./core/announcements";
+import { DSNPGraphChangeType, AnnouncementType } from "./core/announcements";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
@@ -48,7 +48,7 @@ describe("network", () => {
 
         expect(announcement).toMatchObject({
           fromId: "dsnp://0000000000000000",
-          dsnpType: DSNPType.GraphChange,
+          announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
           objectId: registerId,
         });
@@ -95,7 +95,7 @@ describe("network", () => {
 
         expect(announcement).toMatchObject({
           fromId: "dsnp://0000000000000000",
-          dsnpType: DSNPType.GraphChange,
+          announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Unfollow,
           objectId: registerId,
         });

@@ -1,5 +1,5 @@
 import { Handle } from "./core/contracts/registry";
-import { DSNPType } from "./core/announcements";
+import { AnnouncementType } from "./core/announcements";
 import { HexString } from "./types/Strings";
 import { NotImplementedError } from "./core/errors";
 
@@ -25,7 +25,7 @@ export interface FetchFilters extends BaseFilters {
   from?: BlockNumber;
 }
 
-type SubscriptionCallbackFn = (event: DSNPType) => void;
+type SubscriptionCallbackFn = (event: AnnouncementType) => void;
 type SubscriptionId = string;
 
 /**
@@ -60,6 +60,6 @@ export const unsubscribe = (_id: SubscriptionId): void => {
  * @param _filters - Any filter options for including or excluding certain events
  * @returns An array of events
  */
-export const fetchEvents = async (_filters: FetchFilters): Promise<DSNPType[]> => {
+export const fetchEvents = async (_filters: FetchFilters): Promise<AnnouncementType[]> => {
   throw new NotImplementedError();
 };

@@ -71,7 +71,7 @@ describe("batch", () => {
       });
     });
 
-    describe("when passed a message iterator containing multiple DSNP types", () => {
+    describe("when passed a message iterator containing multiple announcement types", () => {
       const badMessages = [
         { ...generateBroadcast(), signature: "0xfa1ce" },
         { ...generateReply(), signature: "0xfa1ce" },

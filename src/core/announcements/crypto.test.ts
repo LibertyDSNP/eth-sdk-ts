@@ -20,13 +20,13 @@ describe("announcement crypto", () => {
       const signedAnnouncement = await sign(announcement);
 
       expect(signedAnnouncement.signature).toEqual(
-        "0xdfd1e58a5947e98aa5aa0276e8b0c54bc3cc433ae588d1844755624e33a55cb430f221ae090ac73e890eab9d244c7eebc6b23c76a05e1353c4a7b530a322048c1b"
+        "0x66e9b316924dfd6b36fcc3572e9aec6dd76b66066dd892299a20b992865f71736a7ce823af3f6adbdf4d176613b33bb41a707ed1fb3bf0b821e33a34acd30c0a1c"
       );
     });
   });
 
   describe("#recoverPublicKey", () => {
-    const publicKey = "0x7794b74C1173AAC399e542c74390b3981d92835A";
+    const publicKey = "0xC1e8c5325664679bb6D4A31F4980f15349BE224C";
 
     it("returns the correct public key for a valid signature", () => {
       const announcement = createBroadcast("1", "https://dsnp.org", "0x12345");

@@ -73,14 +73,14 @@ Once the SDK is installed and configured, the following code can be used to post
 // Node
 const publisher = require("@dsnp/sdk/core/contracts/publisher");
 
-publisher.publish([{ hash, url, dsnpType }]);
+publisher.publish([{ fileHash, fileUrl, announcementType }]);
 ```
 
 ```typescript
 // TypeScript
 import publisher from "@dsnp/sdk/core/contracts/publisher";
 
-publisher.publish([{ hash, url, dsnpType }]);
+publisher.publish([{ fileHash, fileUrl, announcementType }]);
 ```
 
 ## Documentation

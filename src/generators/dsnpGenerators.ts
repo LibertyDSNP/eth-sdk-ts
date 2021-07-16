@@ -3,7 +3,7 @@ import * as fs from "fs";
 import {
   BroadcastAnnouncement,
   Announcement,
-  DSNPType,
+  AnnouncementType,
   ReactionAnnouncement,
   ReplyAnnouncement,
 } from "../core/announcements";
@@ -72,7 +72,7 @@ export const writeFixture = (data: Array<Announcement>, jsonFilePath: string): n
 
 export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement => {
   return {
-    dsnpType: DSNPType.Broadcast,
+    announcementType: AnnouncementType.Broadcast,
     fromId: from ? from : generateEthereumAddress(),
     contentHash: generateHexString(64),
     url: sample(PREFAB_URLS),
@@ -86,7 +86,7 @@ export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement
  */
 export const generateReply = (from?: EthereumAddress): ReplyAnnouncement => {
   return {
-    dsnpType: DSNPType.Reply,
+    announcementType: AnnouncementType.Reply,
     fromId: from ? from : generateEthereumAddress(),
     inReplyTo: generateHexString(64),
     contentHash: generateHexString(64),
@@ -101,7 +101,7 @@ export const generateReply = (from?: EthereumAddress): ReplyAnnouncement => {
  */
 export const generateReaction = (from?: EthereumAddress): ReactionAnnouncement => {
   return {
-    dsnpType: DSNPType.Reaction,
+    announcementType: AnnouncementType.Reaction,
     fromId: from ? from : generateEthereumAddress(),
     emoji: generateHexString(20),
     inReplyTo: generateHexString(64),

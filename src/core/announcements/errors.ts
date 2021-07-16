@@ -1,4 +1,4 @@
-import { DSNPType } from "./factories";
+import { AnnouncementType } from "./factories";
 import { DSNPError } from "../errors";
 
 /**
@@ -11,13 +11,13 @@ export class AnnouncementError extends DSNPError {
 }
 
 /**
- * InvalidAnnouncementTypeError indicates an invalid Announcement DSNP type.
+ * InvalidAnnouncementTypeError indicates an invalid Announcement type.
  */
 export class InvalidAnnouncementTypeError extends AnnouncementError {
-  dsnpType: DSNPType;
+  announcementType: AnnouncementType;
 
-  constructor(dsnpType: DSNPType) {
-    super(`Invalid DSNP Type: ${dsnpType}`);
-    this.dsnpType = dsnpType;
+  constructor(announcementType: AnnouncementType) {
+    super(`Invalid DSNP Type: ${announcementType}`);
+    this.announcementType = announcementType;
   }
 }

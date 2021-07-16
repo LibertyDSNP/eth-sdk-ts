@@ -29,16 +29,16 @@ describe("subscription", () => {
       const mock = jest.fn();
 
       const removeListener = await subscribeToBatchPublications(mock);
-      const publications: Publication[] = [{ dsnpType: 2, url: testUrl, hash: hash }];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: hash }];
       await (await publish(publications)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 30, 1);
 
       const filter = await dsnpBatchFilter();
       expect(numberOfCalls).toBeTruthy();
 
-      expect(mock.mock.calls[0][0].dsnpType).toEqual(2);
-      expect(mock.mock.calls[0][0].dsnpUrl).toEqual(testUrl);
-      expect(mock.mock.calls[0][0].dsnpHash).toEqual(hash);
+      expect(mock.mock.calls[0][0].announcementType).toEqual(2);
+      expect(mock.mock.calls[0][0].fileUrl).toEqual(testUrl);
+      expect(mock.mock.calls[0][0].fileHash).toEqual(hash);
       await removeListener();
       expect(provider.listeners(filter).length).toEqual(0);
     });
@@ -54,8 +54,8 @@ describe("subscription", () => {
       const mock = jest.fn();
 
       const removeListener = await subscribeToBatchPublications(mock);
-      const publications: Publication[] = [{ dsnpType: 2, url: testUrl1, hash: hash1 }];
-      const publications1: Publication[] = [{ dsnpType: 2, url: testUrl2, hash: hash2 }];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl1, fileHash: hash1 }];
+      const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl2, fileHash: hash2 }];
       await (await publish(publications)).wait(1);
       await (await publish(publications1)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 10, 2);
@@ -93,17 +93,17 @@ describe("subscription", () => {
       const testUrl4 = "http://www.testconst333.com";
       const hash4 = "0x" + keccak256("test333");
 
-      const removeListener = await subscribeToBatchPublications(mock, { dsnpType: 2 });
-      const publications: Publication[] = [{ dsnpType: 2, url: testUrl3, hash: hash3 }];
-      const publications1: Publication[] = [{ dsnpType: 4, url: testUrl4, hash: hash4 }];
+      const removeListener = await subscribeToBatchPublications(mock, { announcementType: 2 });
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
+      const publications1: Publication[] = [{ announcementType: 4, fileUrl: testUrl4, fileHash: hash4 }];
       await (await publish(publications)).wait(1);
       await (await publish(publications1)).wait(1);
       await checkNumberOfFunctionCalls(mock, 10, 1);
       const filter = await dsnpBatchFilter();
       expect(mock).toHaveBeenCalledTimes(1);
-      expect(mock.mock.calls[0][0].dsnpType).toEqual(2);
-      expect(mock.mock.calls[0][0].dsnpUrl).toEqual(testUrl3);
-      expect(mock.mock.calls[0][0].dsnpHash).toEqual(hash3);
+      expect(mock.mock.calls[0][0].announcementType).toEqual(2);
+      expect(mock.mock.calls[0][0].fileUrl).toEqual(testUrl3);
+      expect(mock.mock.calls[0][0].fileHash).toEqual(hash3);
       await removeListener();
       expect(provider.listeners(filter).length).toEqual(0);
     });
@@ -123,17 +123,17 @@ describe("subscription", () => {
       const testUrl6 = "http://www.testconst666.com";
       const hash6 = "0x" + keccak256("test666");
 
-      const publications: Publication[] = [{ dsnpType: 2, url: testUrl3, hash: hash3 }];
-      const publications1: Publication[] = [{ dsnpType: 2, url: testUrl4, hash: hash4 }];
-      const publications2: Publication[] = [{ dsnpType: 2, url: testUrl5, hash: hash5 }];
-      const publications3: Publication[] = [{ dsnpType: 2, url: testUrl6, hash: hash6 }];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
+      const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl4, fileHash: hash4 }];
+      const publications2: Publication[] = [{ announcementType: 2, fileUrl: testUrl5, fileHash: hash5 }];
+      const publications3: Publication[] = [{ announcementType: 2, fileUrl: testUrl6, fileHash: hash6 }];
 
       await (await publish(publications)).wait(1);
 
       const blockNumber = (await provider.getBlockNumber()) + 1;
       await (await publish(publications1)).wait(1);
 
-      const removeListener = await subscribeToBatchPublications(mock, { dsnpType: 2, fromBlock: blockNumber });
+      const removeListener = await subscribeToBatchPublications(mock, { announcementType: 2, fromBlock: blockNumber });
 
       await (await publish(publications2)).wait(1);
       await (await publish(publications3)).wait(1);
@@ -143,23 +143,23 @@ describe("subscription", () => {
       expect(mock).toHaveBeenCalledTimes(3);
       expect(mock.mock.calls[0][0]).toEqual(
         expect.objectContaining({
-          dsnpUrl: publications1[0].url,
-          dsnpHash: publications1[0].hash,
-          dsnpType: publications1[0].dsnpType,
+          fileUrl: publications1[0].fileUrl,
+          fileHash: publications1[0].fileHash,
+          announcementType: publications1[0].announcementType,
         })
       );
       expect(mock.mock.calls[1][0]).toEqual(
         expect.objectContaining({
-          dsnpUrl: publications2[0].url,
-          dsnpHash: publications2[0].hash,
-          dsnpType: publications2[0].dsnpType,
+          fileUrl: publications2[0].fileUrl,
+          fileHash: publications2[0].fileHash,
+          announcementType: publications2[0].announcementType,
         })
       );
       expect(mock.mock.calls[2][0]).toEqual(
         expect.objectContaining({
-          dsnpUrl: publications3[0].url,
-          dsnpHash: publications3[0].hash,
-          dsnpType: publications3[0].dsnpType,
+          fileUrl: publications3[0].fileUrl,
+          fileHash: publications3[0].fileHash,
+          announcementType: publications3[0].announcementType,
         })
       );
 

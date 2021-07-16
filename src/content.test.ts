@@ -6,7 +6,7 @@ import * as content from "./content";
 import { InvalidActivityPubError } from "./core/activityPub";
 import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
-import { DSNPType } from "./core/announcements";
+import { AnnouncementType } from "./core/announcements";
 import TestStore from "./test/testStore";
 
 describe("content", () => {
@@ -54,7 +54,7 @@ describe("content", () => {
 
           expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
-            dsnpType: DSNPType.Broadcast,
+            announcementType: AnnouncementType.Broadcast,
             url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
           });
@@ -182,7 +182,7 @@ describe("content", () => {
 
           expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
-            dsnpType: DSNPType.Reply,
+            announcementType: AnnouncementType.Reply,
             url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
             inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
@@ -306,7 +306,7 @@ describe("content", () => {
 
         expect(announcement).toMatchObject({
           fromId: "dsnp://0123456789ABCDEF",
-          dsnpType: DSNPType.Reaction,
+          announcementType: AnnouncementType.Reaction,
           emoji: "🏳️‍🌈",
           inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
         });
@@ -390,7 +390,7 @@ describe("content", () => {
 
           expect(announcement).toMatchObject({
             fromId: "dsnp://0123456789ABCDEF",
-            dsnpType: DSNPType.Profile,
+            announcementType: AnnouncementType.Profile,
             url: `http://fakestore.org/${keys[0]}`,
             contentHash: keccak256(storeContents[keys[0]] as string),
           });
