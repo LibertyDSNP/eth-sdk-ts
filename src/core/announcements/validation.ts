@@ -1,8 +1,7 @@
-import fetch from "cross-fetch";
 import { keccak256 } from "js-sha3";
 
 import { isValidActivityContent } from "../activityContent";
-import { ConfigOpts } from "../../config";
+import { requireGetFetchFunc, ConfigOpts } from "../../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
@@ -70,7 +69,7 @@ const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
  */
 const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["AnnouncementType"] != AnnouncementType.GraphChange) return false;
+  if (obj["announcementType"] != AnnouncementType.GraphChange) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isGraphChangeType(obj["changeType"])) return false;
   if (!isDSNPUserId(obj["objectId"])) return false;
@@ -86,7 +85,7 @@ const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement
  */
 const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["AnnouncementType"] != AnnouncementType.Broadcast) return false;
+  if (obj["announcementType"] != AnnouncementType.Broadcast) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -102,7 +101,7 @@ const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => 
  */
 const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["AnnouncementType"] != AnnouncementType.Reply) return false;
+  if (obj["announcementType"] != AnnouncementType.Reply) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -119,7 +118,7 @@ const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
  */
 const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["AnnouncementType"] != AnnouncementType.Reaction) return false;
+  if (obj["announcementType"] != AnnouncementType.Reaction) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isValidEmoji(obj["emoji"])) return false;
   if (!isDSNPAnnouncementId(obj["inReplyTo"])) return false;
@@ -135,7 +134,7 @@ const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
  */
 const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (obj["AnnouncementType"] != AnnouncementType.Profile) return false;
+  if (obj["announcementType"] != AnnouncementType.Profile) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
@@ -151,7 +150,7 @@ const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
  */
 const isAnnouncement = (obj: unknown): obj is Announcement => {
   if (!isRecord(obj)) return false;
-  if (!isAnnouncementType(obj["AnnouncementType"])) return false;
+  if (!isAnnouncementType(obj["announcementType"])) return false;
 
   const validators = {
     [AnnouncementType.GraphChange]: isGraphChangeAnnouncement,
@@ -161,7 +160,7 @@ const isAnnouncement = (obj: unknown): obj is Announcement => {
     [AnnouncementType.Profile]: isProfileAnnouncement,
   };
 
-  return validators[obj["AnnouncementType"]](obj);
+  return validators[obj["announcementType"]](obj);
 };
 
 /**
@@ -188,6 +187,7 @@ export const isSignedAnnouncement = (obj: unknown): obj is SignedAnnouncement =>
  * @returns True if the announcement is valid, otherwise false
  */
 export const isValidAnnouncement = async (obj: unknown, opts?: ConfigOpts): Promise<boolean> => {
+  const fetch = requireGetFetchFunc(opts);
   if (!isSignedAnnouncement(obj)) return false;
 
   if (
