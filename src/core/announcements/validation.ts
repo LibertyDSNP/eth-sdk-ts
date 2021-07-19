@@ -21,16 +21,7 @@ import { isRecord, isString, isNumber } from "../utilities/validation";
 
 const isValidEmoji = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
-  for (let i = 0; i < obj.length; i++) {
-    const charCode = obj.charCodeAt(i);
-    if (
-      !(charCode >= 8192 && charCode <= 11263) &&
-      !(charCode >= 57344 && charCode <= 65535) &&
-      !(charCode >= 126976 && charCode <= 1114111)
-    )
-      return false;
-  }
-  return true;
+  return obj.match(/^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u) !== null;
 };
 
 /**
@@ -172,6 +163,7 @@ const isAnnouncement = (obj: unknown): obj is Announcement => {
 export const isSignedAnnouncement = (obj: unknown): obj is SignedAnnouncement => {
   if (!isRecord(obj)) return false;
   if (!isString(obj["signature"])) return false;
+
   return isAnnouncement(obj);
 };
 
