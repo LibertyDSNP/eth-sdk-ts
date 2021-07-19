@@ -1,4 +1,5 @@
 import { Handle } from "./core/contracts/registry";
+import { HexString } from "./types/Strings";
 
 type BlockNumber = number;
 
