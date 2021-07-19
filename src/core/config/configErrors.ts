@@ -45,12 +45,3 @@ export class MissingFromIdConfigError extends ConfigError {
     super("No from id found. Please authenticate a handle.");
   }
 }
-
-/**
- * MissingFetchFuncConfigError indicates that the fetch function is not set.
- */
-export class MissingFetchFuncConfigError extends ConfigError {
-  constructor() {
-    super("Fetch function is not set.");
-  }
-}

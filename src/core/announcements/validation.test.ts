@@ -1,4 +1,4 @@
-import { createLink, createNote, createProfile, serialize } from "../activityContent";
+import { createLink, createNote, createProfile } from "../activityContent";
 import { setConfig } from "../../config";
 import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
@@ -14,11 +14,9 @@ import { isValidAnnouncement } from "./validation";
 
 describe("validation", () => {
   const { signer, provider } = setupConfig();
-  const fetchMock = jest.fn();
   let userId: DSNPUserId;
 
   setConfig({
-    fetchFunc: fetchMock,
     store: new TestStore(),
   });
   setupSnapshot();
@@ -84,12 +82,6 @@ describe("validation", () => {
     describe("for BroadcastAnnouncement", () => {
       const activityContent = createLink("https://forum.dsnp.org");
 
-      beforeAll(() => {
-        fetchMock.mockResolvedValue({
-          text: () => serialize(activityContent),
-        });
-      });
-
       it("returns true for valid broadcast announcements", async () => {
         const announcement = await broadcast(activityContent);
 
@@ -100,12 +92,6 @@ describe("validation", () => {
     describe("for ReplyAnnouncement", () => {
       const linkContent = createLink("https://spec.dsnp.org");
       const noteContent = createNote("Cool website!");
-
-      beforeAll(() => {
-        fetchMock.mockResolvedValue({
-          text: () => serialize(noteContent),
-        });
-      });
 
       it("returns true for valid reply announcements", async () => {
         const broadcastAnnouncement = await broadcast(linkContent);
@@ -134,12 +120,6 @@ describe("validation", () => {
 
     describe("for ProfileAnnouncement", () => {
       const activityContent = createProfile("🌹🚗");
-
-      beforeAll(() => {
-        fetchMock.mockResolvedValue({
-          text: () => serialize(activityContent),
-        });
-      });
 
       it("returns true for valid broadcast announcements", async () => {
         const announcement = await profile(activityContent);

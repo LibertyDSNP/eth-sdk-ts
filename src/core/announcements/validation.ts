@@ -1,7 +1,4 @@
-import { keccak256 } from "js-sha3";
-
-import { isValidActivityContent } from "../activityContent";
-import { requireGetFetchFunc, ConfigOpts } from "../../config";
+import { ConfigOpts } from "../../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
@@ -169,17 +166,16 @@ export const isSignedAnnouncement = (obj: unknown): obj is SignedAnnouncement =>
 
 /**
  * isValidAnnouncement() validates an announcement and its associated content.
- * Note that this method only validates an announcement's signature, format and
- * linked activity content. It **does not** validate any audio, image or video
- * files linked in the activity content object, so these files should be
- * validated separately.
+ * Note that this method only validates an announcement's signature and format.
+ * It **does not** validate the authenticity of the linked activity content or
+ * any file content linked within the activity content. These pieces of data
+ * should be validated separately.
  *
  * @param obj - A signed announcement to validate
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns True if the announcement is valid, otherwise false
  */
 export const isValidAnnouncement = async (obj: unknown, opts?: ConfigOpts): Promise<boolean> => {
-  const fetch = requireGetFetchFunc(opts);
   if (!isSignedAnnouncement(obj)) return false;
 
   if (
@@ -193,14 +189,6 @@ export const isValidAnnouncement = async (obj: unknown, opts?: ConfigOpts): Prom
     ))
   )
     return false;
-
-  if (isBroadcastAnnouncement(obj) || isReplyAnnouncement(obj) || isProfileAnnouncement(obj)) {
-    const content = await fetch(obj["url"]).then((res) => res.text());
-    if (keccak256(content) != obj["contentHash"]) return false;
-
-    const activityContent = JSON.parse(content);
-    if (!isValidActivityContent(activityContent)) return false;
-  }
 
   return true;
 };

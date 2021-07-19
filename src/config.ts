@@ -1,8 +1,6 @@
-import { fetch } from "cross-fetch";
 import { ethers } from "ethers";
 
 import {
-  MissingFetchFuncConfigError,
   MissingSignerConfigError,
   MissingProviderConfigError,
   MissingStoreConfigError,
@@ -38,8 +36,6 @@ type Contracts = { [key in ContractName]?: HexString };
  * The Config Interface provides for various settings and plugable modules.
  */
 export interface Config {
-  /** A function to fetch URLs for batch files and activity content */
-  fetchFunc?: typeof fetch;
   /** An [Ethers.js Provider](https://docs.ethers.io/v5/api/provider/) */
   provider?: ethers.providers.Provider;
   /** An [Ethers.js Signer](https://docs.ethers.io/v5/api/signer/) */
@@ -60,7 +56,6 @@ export interface Config {
 export type ConfigOpts = Partial<Config>;
 
 let config: Config = {
-  fetchFunc: fetch,
   contracts: {},
 };
 
@@ -144,18 +139,6 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
   const c = getConfig(opts);
   if (!c.currentFromId) throw new MissingFromIdConfigError();
   return c.currentFromId;
-};
-
-/**
- * requireGetFetchFunc() gets the fetch function, and if undefined, throws.
- *
- * @param opts - overrides for the current configuration.
- * @returns a never-undefined fetch function
- */
-export const requireGetFetchFunc = (opts?: ConfigOpts): typeof fetch => {
-  const c = getConfig(opts);
-  if (!c.fetchFunc) throw new MissingFetchFuncConfigError();
-  return c.fetchFunc;
 };
 
 /**
