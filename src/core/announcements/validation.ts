@@ -30,7 +30,7 @@ const isValidEmoji = (obj: unknown): boolean => {
  * @param obj - The object to check
  * @returns True if the object is a DSNPGraphChangeType, otherwise false
  */
-const isGraphChangeType = (obj: unknown): obj is DSNPGraphChangeType => {
+export const isGraphChangeType = (obj: unknown): obj is DSNPGraphChangeType => {
   if (!isNumber(obj)) return false;
   return obj == DSNPGraphChangeType.Follow || obj == DSNPGraphChangeType.Unfollow;
 };
@@ -41,7 +41,7 @@ const isGraphChangeType = (obj: unknown): obj is DSNPGraphChangeType => {
  * @param obj - The object to check
  * @returns True if the object is a AnnouncementType, otherwise false
  */
-const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
+export const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
   if (!isNumber(obj)) return false;
   return (
     obj == AnnouncementType.GraphChange ||
@@ -58,7 +58,7 @@ const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
  * @param obj - The object to check
  * @returns True if the object is a GraphChangeAnnouncement, otherwise false
  */
-const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement => {
+export const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.GraphChange) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
@@ -74,7 +74,7 @@ const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnouncement
  * @param obj - The object to check
  * @returns True if the object is a BroadcastAnnouncement, otherwise false
  */
-const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => {
+export const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Broadcast) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
@@ -90,7 +90,7 @@ const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncement => 
  * @param obj - The object to check
  * @returns True if the object is a ReplyAnnouncement, otherwise false
  */
-const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
+export const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Reply) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
@@ -107,7 +107,7 @@ const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
  * @param obj - The object to check
  * @returns True if the object is a ReactionAnnouncement, otherwise false
  */
-const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
+export const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Reaction) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
@@ -123,7 +123,7 @@ const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncement => {
  * @param obj - The object to check
  * @returns True if the object is a ProfileAnnouncement, otherwise false
  */
-const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
+export const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Profile) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
@@ -139,7 +139,7 @@ const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement => {
  * @param obj - The object to check
  * @returns True if the object is a Announcement, otherwise false
  */
-const isAnnouncement = (obj: unknown): obj is Announcement => {
+export const isAnnouncement = (obj: unknown): obj is Announcement => {
   if (!isRecord(obj)) return false;
   if (!isAnnouncementType(obj["announcementType"])) return false;
 
