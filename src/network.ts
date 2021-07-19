@@ -1,7 +1,5 @@
-import { Registration } from "./core/contracts/registry";
 import { ConfigOpts, requireGetCurrentFromId } from "./config";
 import { DSNPUserId } from "./core/identifiers";
-import { NotImplementedError } from "./core/errors";
 import {
   createFollowGraphChange,
   createUnfollowGraphChange,
@@ -47,48 +45,4 @@ export const unfollow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promi
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
-};
-
-/**
- * isFollowing() scans the current state of the network and returns a boolean
- * representing whether or not a given user is following another given user.
- * This method is not yet implemented.
- *
- * @param _follower - The id of the follower
- * @param _followee - Optional. The id of the following user. Defaults to current user.
- * @param _opts - Optional. Configuration overrides, such as from address, if any
- * @returns A boolean representing whether or not the follower is following the followee
- */
-export const isFollowing = async (
-  _follower: DSNPUserId,
-  _followee?: DSNPUserId,
-  _opts?: ConfigOpts
-): Promise<boolean> => {
-  throw new NotImplementedError();
-};
-
-/**
- * getFollowers() scans the current state of the network and returns an array of
- * all users following the given followee handle. This method is not yet
- * implemented.
- *
- * @param _followee - Optional. The followee id to fetch followers for. Defaults to the current user.
- * @param _opts - Optional. Configuration overrides, such as from address, if any
- * @returns An array of all users following the followee
- */
-export const getFollowers = async (_followee?: DSNPUserId, _opts?: ConfigOpts): Promise<Registration[]> => {
-  throw new NotImplementedError();
-};
-
-/**
- * getFollowees() scans the current state of the network and returns an array of
- * all users being followed by the given follower handle. This method is not yet
- * implemented.
- *
- * @param _follower - Optional. The follower id to fetch followees for. Defaults to the current user.
- * @param _opts -     Optional. Configuration overrides, such as from address, if any
- * @returns An array of all users followed by the follower user
- */
-export const getFollowees = (_follower?: DSNPUserId, _opts?: ConfigOpts): Promise<Registration[]> => {
-  throw new NotImplementedError();
 };
