@@ -143,7 +143,7 @@ const isAnnouncement = (obj: unknown): obj is Announcement => {
   if (!isRecord(obj)) return false;
   if (!isAnnouncementType(obj["announcementType"])) return false;
 
-  const validators = {
+  const validators: Record<AnnouncementType, (obj: unknown) => boolean> = {
     [AnnouncementType.GraphChange]: isGraphChangeAnnouncement,
     [AnnouncementType.Broadcast]: isBroadcastAnnouncement,
     [AnnouncementType.Reply]: isReplyAnnouncement,
