@@ -1,7 +1,5 @@
 import { Handle } from "./core/contracts/registry";
-import { AnnouncementType } from "./core/announcements";
 import { HexString } from "./types/Strings";
-import { NotImplementedError } from "./core/errors";
 
 type BlockNumber = number;
 
@@ -24,42 +22,3 @@ export interface FetchFilters extends BaseFilters {
   // The first block to scan for events. Defaults to genesis.
   from?: BlockNumber;
 }
-
-type SubscriptionCallbackFn = (event: AnnouncementType) => void;
-type SubscriptionId = string;
-
-/**
- * subscribe() takes a callback to invoke upon receiving new activity pub events
- * matching the given criteria. This method only works if the web3 provider set
- * in the configuration is a websocket provider. This method is not yet
- * implemented.
- *
- * @param _filters - Any filter options for including or excluding certain events
- * @param _callback - The callback function to be called when an event is received
- * @returns A subscription id to unsubscribe later if needed
- */
-export const subscribe = (_filters: BaseFilters, _callback: SubscriptionCallbackFn): SubscriptionId => {
-  throw new NotImplementedError();
-};
-
-/**
- * unsubscribe() removes a subscription callback created with the subscribe
- * method. This method only works if the web3 provider set in the configuration
- * is a websocket provider. This method is not yet implemented.
- *
- * @param _id - The ID of the subscription to close
- */
-export const unsubscribe = (_id: SubscriptionId): void => {
-  throw new NotImplementedError();
-};
-
-/**
- * fetchEvents() fetches the most recent activity pub events matching the given
- * search criteria. This method is not yet implemented.
- *
- * @param _filters - Any filter options for including or excluding certain events
- * @returns An array of events
- */
-export const fetchEvents = async (_filters: FetchFilters): Promise<AnnouncementType[]> => {
-  throw new NotImplementedError();
-};
