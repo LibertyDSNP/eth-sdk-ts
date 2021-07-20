@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Changes
+- Removed put method from the store interface in favor of putStream everywhere
 - Renamed DSNPId to DSNPAnnouncementId to avoid confusion with DSNPUserId
 - Renamed uri -> url everywhere
 - Renamed sdk.subscribeToBatchAnnounceEvents -> sdk.subscribeToBatchPublications
