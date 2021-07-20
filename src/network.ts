@@ -1,11 +1,11 @@
 import { ConfigOpts, requireGetCurrentFromId } from "./config";
+import { DSNPUserId } from "./core/identifiers";
 import {
   createFollowGraphChange,
   createUnfollowGraphChange,
   sign,
   SignedGraphChangeAnnouncement,
 } from "./core/announcements";
-import { DSNPUserId } from "./core/identifiers";
 
 /**
  * follow() creates a follow event and returns it.

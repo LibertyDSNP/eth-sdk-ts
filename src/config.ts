@@ -94,7 +94,7 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
 };
 
 /**
- * requireGetProvider() gets the provider, and if undefined, throws.
+ * Get the provider and if undefined, throw.
  *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined provider
@@ -106,7 +106,7 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
 };
 
 /**
- * requireGetSigner() gets the signer, and if undefined, throws.
+ * Get the signer and if undefined, throw.
  *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined signer
@@ -118,7 +118,7 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
 };
 
 /**
- * requireGetStore() gets the store, and if undefined, throws.
+ * Get the store and if undefined, throw.
  *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined store
@@ -130,7 +130,7 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 };
 
 /**
- * requireGetCurrentFromId() gets the currentFromId, and if undefined, throws.
+ * Get the currentFromId and if undefined, throw.
  *
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined currentFromId
@@ -142,7 +142,7 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): string => {
 };
 
 /**
- * getContracts() gets the contracts.
+ * Get the contracts
  *
  * @param opts - overrides for the current configuration.
  * @returns potentially undefined contract addresses

@@ -1,13 +1,13 @@
 import * as config from "./config";
-import { DSNPGraphChangeType, AnnouncementType } from "./core/announcements";
+import * as network from "./network";
 import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
 import { register } from "./core/contracts/registry";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
-import * as network from "./network";
+import { DSNPGraphChangeType, AnnouncementType } from "./core/announcements";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
+import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;

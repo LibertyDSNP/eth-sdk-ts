@@ -1,16 +1,15 @@
-import parquet from "@dsnp/parquetjs";
-import { generateHexString } from "@dsnp/test-generators";
 import * as fs from "fs";
 import path from "path";
-
+import parquet from "@dsnp/parquetjs";
+import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
+import * as pq from "../core/batch/parquetSchema";
+import { EthereumAddress } from "../types/Strings";
+import { generateHexString } from "@dsnp/test-generators";
 import {
   SignedBroadcastAnnouncement,
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
 } from "../core/announcements";
-import * as pq from "../core/batch/parquetSchema";
-import { generateBroadcast, generateReply, generateReaction } from "./dsnpGenerators";
-import { EthereumAddress } from "../types/Strings";
 
 export type DSNPBatchWriteResult = {
   records: number;
