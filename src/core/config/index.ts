@@ -18,4 +18,4 @@
  */
 
 export * from "./config";
-export * from "./configErrors";
+export * from "./errors";

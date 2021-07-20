@@ -13,7 +13,7 @@ import {
   MissingSignerConfigError,
   MissingProviderConfigError,
   MissingFromIdConfigError,
-} from "./configErrors";
+} from "./errors";
 import TestStore from "../../test/testStore";
 
 describe("config", () => {
