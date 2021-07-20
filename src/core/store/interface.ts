@@ -34,16 +34,6 @@ export interface WriteStreamCallback {
  */
 export interface StoreInterface {
   /**
-   * put() takes a batch file to store with the chosen hosting solution and
-   * returns the URL of the file once stored.
-   *
-   * @param targetPath - The path to and name of file
-   * @param content - The file object to store on the chosen hosting solution
-   * @returns The URL of the hosted file
-   */
-  put: (targetPath: string, content: Content) => Promise<URL>;
-
-  /**
    * putStream() takes a pass-through stream to upload data to chosen hosting solution and
    * returns the URL of the file once stored.
    *
