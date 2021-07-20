@@ -13,8 +13,8 @@ import {
   MissingSignerConfigError,
   MissingProviderConfigError,
   MissingFromIdConfigError,
-} from "./core/config";
-import TestStore from "./test/testStore";
+} from "./configErrors";
+import TestStore from "../../test/testStore";
 
 describe("config", () => {
   describe("#getConfig", () => {

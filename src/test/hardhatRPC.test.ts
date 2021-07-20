@@ -3,7 +3,7 @@ require("dotenv").config();
 
 import { ethers } from "ethers";
 
-import { setConfig, getConfig } from "../config";
+import { setConfig, getConfig } from "../core/config";
 import { publish, dsnpBatchFilter } from "../core/contracts/publisher";
 import { hash } from "../core/utilities";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import * as config from "./config";
+import * as config from "./core/config";
 import * as content from "./content";
 import { createNote, createProfile, InvalidActivityContentError } from "./core/activityContent";
 import { AnnouncementType } from "./core/announcements";

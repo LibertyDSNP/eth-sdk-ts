@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
-import { getConfig, setConfig } from "../../config";
+import { getConfig, setConfig } from "../config";
 import { createBroadcast } from "./factories";
 import { recoverPublicKey, sign } from "./crypto";
 

@@ -5,9 +5,9 @@ import {
   MissingProviderConfigError,
   MissingStoreConfigError,
   MissingFromIdConfigError,
-} from "./core/config";
-import { StoreInterface } from "./core/store";
-import { HexString } from "./types/Strings";
+} from "./configErrors";
+import { StoreInterface } from "../store";
+import { HexString } from "../../types/Strings";
 
 /* The name of the Batch Publisher contract */
 type PublisherContractName = "Publisher";

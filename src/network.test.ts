@@ -1,4 +1,4 @@
-import * as config from "./config";
+import * as config from "./core/config";
 import * as network from "./network";
 import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";

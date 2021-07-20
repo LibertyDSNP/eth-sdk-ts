@@ -1,5 +1,5 @@
 import { ContractTransaction } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
   IdentityCloneFactory,

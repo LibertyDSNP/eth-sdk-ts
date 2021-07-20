@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import { ContractName } from "../../config";
+import { ContractName } from "../config";
 import { getContractAddress } from "./contract";
 import { MissingContractAddressError } from "./contractErrors";
 import { setupConfig } from "../../test/sdkTestConfig";

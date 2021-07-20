@@ -1,6 +1,6 @@
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
-import { requireGetProvider } from "../../config";
+import { requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
 import { Filter } from "@ethersproject/abstract-provider";
 import { Publisher__factory } from "../../types/typechain";

@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import * as config from "./config";
+import * as config from "./core/config";
 import { EmptyBatchError } from "./core/batch";
 import { createBroadcast, createReply, createReaction, sign, SignedAnnouncement } from "./core/announcements";
 import { createPublication, createPublications } from "./createPublication";

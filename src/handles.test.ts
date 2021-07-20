@@ -1,5 +1,5 @@
 import { Signer } from "ethers";
-import * as config from "./config";
+import * as config from "./core/config";
 import { isAvailable, availabilityFilter, resolveHandle, resolveId, createRegistration } from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
