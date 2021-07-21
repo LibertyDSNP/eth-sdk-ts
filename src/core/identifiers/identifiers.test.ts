@@ -1,6 +1,6 @@
-import { validateDSNPAnnouncementId } from "./identifiers";
+import { isDSNPAnnouncementId } from "./identifiers";
 
-describe("validateDSNPAnnouncementId", () => {
+describe("isDSNPAnnouncementId", () => {
   const validDSNPAnnouncementIds = [
     "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Uppercase
     "dsnp://0123456789abcdef/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // Lowercase
@@ -16,13 +16,13 @@ describe("validateDSNPAnnouncementId", () => {
 
   for (const id of validDSNPAnnouncementIds) {
     it(`returns true for "${id}"`, () => {
-      expect(validateDSNPAnnouncementId(id)).toEqual(true);
+      expect(isDSNPAnnouncementId(id)).toEqual(true);
     });
   }
 
   for (const id of invalidDSNPAnnouncementIds) {
     it(`returns false for "${id}"`, () => {
-      expect(validateDSNPAnnouncementId(id)).toEqual(false);
+      expect(isDSNPAnnouncementId(id)).toEqual(false);
     });
   }
 });

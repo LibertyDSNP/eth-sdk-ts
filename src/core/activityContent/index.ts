@@ -17,5 +17,7 @@
  *   - `import { foo } from "@dsnp/sdk/contracts"; foo.functionInFoo();`
  */
 
-export * from "./activityPub";
-export * from "./activityPubErrors";
+export * from "./factories";
+export * from "./errors";
+export * from "./serialization";
+export * from "./validation";

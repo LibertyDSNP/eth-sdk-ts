@@ -1,9 +1,9 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 import { keccak256 } from "js-sha3";
 
+import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
 import { ConfigOpts, requireGetStore } from "../../config";
-import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
@@ -113,15 +113,15 @@ export const writeBatch = async <T extends AnnouncementType>(
   opts?: BloomFilterOptions
 ): Promise<void> => {
   const writer = await ParquetWriter.openStream(schema, writeStream, opts);
-  let firstDsnpType;
+  let firstAnnouncementType;
 
   for await (const announcement of announcements) {
-    if (firstDsnpType === undefined) firstDsnpType = announcement.announcementType;
-    if (announcement.announcementType != firstDsnpType) throw new MixedTypeBatchError(writeStream);
+    if (firstAnnouncementType === undefined) firstAnnouncementType = announcement.announcementType;
+    if (announcement.announcementType != firstAnnouncementType) throw new MixedTypeBatchError(writeStream);
     await writer.appendRow(announcement);
   }
 
-  if (firstDsnpType === undefined) throw new EmptyBatchError(writeStream);
+  if (firstAnnouncementType === undefined) throw new EmptyBatchError(writeStream);
 
   await writer.close();
 };

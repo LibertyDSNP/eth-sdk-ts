@@ -3,13 +3,15 @@ import { keccak256 } from "js-sha3";
 
 import * as config from "./config";
 import * as content from "./content";
-import { InvalidActivityPubError } from "./core/activityPub";
+import { createNote, createProfile, InvalidActivityContentError } from "./core/activityContent";
+import { AnnouncementType } from "./core/announcements";
 import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
-import { AnnouncementType } from "./core/announcements";
 import TestStore from "./test/testStore";
 
 describe("content", () => {
+  const noteObject = createNote("Hello world!");
+
   describe("broadcast", () => {
     describe("with a valid signer, storage adapter and user id", () => {
       let store: TestStore;
@@ -24,29 +26,21 @@ describe("content", () => {
         });
       });
 
-      describe("with valid activity pub options", () => {
-        it("uploads an activity pub object matching the provided specifications", async () => {
-          await content.broadcast({
-            attributedTo: "John Doe <johndoe@sample.org>",
-            content: "Lorem ipsum delor blah blah blah",
-            name: "Lorem Ipsum",
-          });
+      describe("with valid activity content options", () => {
+        it("uploads an activity content object matching the provided specifications", async () => {
+          await content.broadcast(noteObject);
 
           const storeContents = store.getStore();
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","attributedTo":"John Doe <johndoe@sample\.org>","content":"Lorem ipsum delor blah blah blah","name":"Lorem Ipsum","published":"[0-9TZ\-:.]+","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","published":"[0-9TZ\-:.]+","type":"Note"\}/
           );
         });
 
-        it("returns a broadcast announcement linking to the activity pub object", async () => {
-          const announcement = await content.broadcast({
-            attributedTo: "John Doe <johndoe@sample.org>",
-            content: "Lorem ipsum delor blah blah blah",
-            name: "Lorem Ipsum",
-          });
+        it("returns a broadcast announcement linking to the activity content object", async () => {
+          const announcement = await content.broadcast(noteObject);
 
           const storeContents = store.getStore();
           const keys = Object.keys(storeContents);
@@ -61,16 +55,14 @@ describe("content", () => {
         });
       });
 
-      describe("with invalid activity pub options", () => {
-        it("throws InvalidActivityPubError", async () => {
+      describe("with invalid activity content options", () => {
+        it("throws InvalidActivityContentError", async () => {
           await expect(
             content.broadcast({
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
+              ...noteObject,
               published: "Yesterday",
             })
-          ).rejects.toThrow(InvalidActivityPubError);
+          ).rejects.toThrow(InvalidActivityContentError);
         });
       });
     });
@@ -83,13 +75,7 @@ describe("content", () => {
           store: new TestStore(),
         });
 
-        await expect(
-          content.broadcast({
-            attributedTo: "John Doe <johndoe@sample.org>",
-            content: "Lorem ipsum delor blah blah blah",
-            name: "Lorem Ipsum",
-          })
-        ).rejects.toThrow(MissingSignerConfigError);
+        await expect(content.broadcast(noteObject)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -101,13 +87,7 @@ describe("content", () => {
           store: undefined,
         });
 
-        await expect(
-          content.broadcast({
-            attributedTo: "John Doe <johndoe@sample.org>",
-            content: "Lorem ipsum delor blah blah blah",
-            name: "Lorem Ipsum",
-          })
-        ).rejects.toThrow(MissingStoreConfigError);
+        await expect(content.broadcast(noteObject)).rejects.toThrow(MissingStoreConfigError);
       });
     });
 
@@ -119,13 +99,7 @@ describe("content", () => {
           store: new TestStore(),
         });
 
-        await expect(
-          content.broadcast({
-            attributedTo: "John Doe <johndoe@sample.org>",
-            content: "Lorem ipsum delor blah blah blah",
-            name: "Lorem Ipsum",
-          })
-        ).rejects.toThrow(MissingFromIdConfigError);
+        await expect(content.broadcast(noteObject)).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });
@@ -144,15 +118,10 @@ describe("content", () => {
         });
       });
 
-      describe("with valid activity pub options and a valid inReplyTo Id", () => {
-        it("uploads an activity pub object matching the provided specifications", async () => {
+      describe("with valid activity content options and a valid inReplyTo Id", () => {
+        it("uploads an activity content object matching the provided specifications", async () => {
           await content.reply(
-            {
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
-              inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-            },
+            noteObject,
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           );
 
@@ -161,18 +130,13 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","attributedTo":"John Doe <johndoe@sample\.org>","content":"Lorem ipsum delor blah blah blah","inReplyTo":"dsnp:\/\/0123456789ABCDEF\/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF","name":"Lorem Ipsum","published":"[0-9TZ\-:.]+","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","published":"[0-9TZ\-:.]+","type":"Note"\}/
           );
         });
 
-        it("returns a reply announcement linking to the activity pub object", async () => {
+        it("returns a reply announcement linking to the activity content object", async () => {
           const announcement = await content.reply(
-            {
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
-              inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-            },
+            noteObject,
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           );
 
@@ -192,32 +156,23 @@ describe("content", () => {
 
       describe("with an invalid inReplyTo Id", () => {
         it("throws InvalidAnnouncementIdentifierError", async () => {
-          await expect(
-            content.reply(
-              {
-                attributedTo: "John Doe <johndoe@sample.org>",
-                content: "Lorem ipsum delor blah blah blah",
-                name: "Lorem Ipsum",
-                inReplyTo: "dsnp://badbadbad/badbadbadk",
-              },
-              "dsnp://badbadbad/badbadbad"
-            )
-          ).rejects.toThrow(InvalidAnnouncementIdentifierError);
+          await expect(content.reply(noteObject, "dsnp://badbadbad/badbadbad")).rejects.toThrow(
+            InvalidAnnouncementIdentifierError
+          );
         });
       });
 
-      describe("with invalid activity pub options", () => {
-        it("throws InvalidActivityPubError", async () => {
+      describe("with invalid activity content options", () => {
+        it("throws InvalidActivityContentError", async () => {
           await expect(
             content.reply(
               {
-                attributedTo: "John Doe <johndoe@sample.org>",
-                content: "Lorem ipsum delor blah blah blah",
-                name: "Lorem Ipsum",
+                ...noteObject,
+                published: "Tomorrow",
               },
               "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
             )
-          ).rejects.toThrow(InvalidActivityPubError);
+          ).rejects.toThrow(InvalidActivityContentError);
         });
       });
     });
@@ -232,12 +187,7 @@ describe("content", () => {
 
         await expect(
           content.reply(
-            {
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
-              inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-            },
+            noteObject,
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingSignerConfigError);
@@ -254,12 +204,7 @@ describe("content", () => {
 
         await expect(
           content.reply(
-            {
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
-              inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-            },
+            noteObject,
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingStoreConfigError);
@@ -276,12 +221,7 @@ describe("content", () => {
 
         await expect(
           content.reply(
-            {
-              attributedTo: "John Doe <johndoe@sample.org>",
-              content: "Lorem ipsum delor blah blah blah",
-              name: "Lorem Ipsum",
-              inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-            },
+            noteObject,
             "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingFromIdConfigError);
@@ -347,6 +287,8 @@ describe("content", () => {
   });
 
   describe("profile", () => {
+    const profileObject = createProfile("🌹🚗");
+
     describe("with a valid signer, storage adapter and user id", () => {
       let store: TestStore;
 
@@ -360,29 +302,21 @@ describe("content", () => {
         });
       });
 
-      describe("with valid activity pub options", () => {
-        it("uploads an activity pub object matching the provided specifications", async () => {
-          await content.profile({
-            type: "Person",
-            name: "Rose Karr",
-            preferredUsername: "rosalinekarr",
-          });
+      describe("with valid activity content options", () => {
+        it("uploads an activity content object matching the provided specifications", async () => {
+          await content.profile(profileObject);
 
           const storeContents = store.getStore();
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"Rose Karr","preferredUsername":"rosalinekarr","published":"[0-9TZ\-:.]+","type":"Person"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","describes":{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"🌹🚗","published":"[0-9TZ\-:.]+","type":"Person"},"published":"[0-9TZ\-:.]+","type":"Profile"}/
           );
         });
 
-        it("returns a profile announcement linking to the activity pub object", async () => {
-          const announcement = await content.profile({
-            type: "Person",
-            name: "Rose Karr",
-            preferredUsername: "rosalinekarr",
-          });
+        it("returns a profile announcement linking to the activity content object", async () => {
+          const announcement = await content.profile(profileObject);
 
           const storeContents = store.getStore();
           const keys = Object.keys(storeContents);
@@ -397,15 +331,14 @@ describe("content", () => {
         });
       });
 
-      describe("with invalid activity pub options", () => {
-        it("throws InvalidActivityPubError", async () => {
+      describe("with invalid activity content options", () => {
+        it("throws InvalidActivityContentError", async () => {
           await expect(
             content.profile({
-              type: "Note",
-              name: "Rose Karr",
-              preferredUsername: "rosalinekarr",
+              ...profileObject,
+              published: "Someday",
             })
-          ).rejects.toThrow(InvalidActivityPubError);
+          ).rejects.toThrow(InvalidActivityContentError);
         });
       });
     });
@@ -418,13 +351,7 @@ describe("content", () => {
           store: new TestStore(),
         });
 
-        await expect(
-          content.profile({
-            type: "Person",
-            name: "Rose Karr",
-            preferredUsername: "rosalinekarr",
-          })
-        ).rejects.toThrow(MissingSignerConfigError);
+        await expect(content.profile(profileObject)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
@@ -436,13 +363,7 @@ describe("content", () => {
           store: undefined,
         });
 
-        await expect(
-          content.profile({
-            type: "Person",
-            name: "Rose Karr",
-            preferredUsername: "rosalinekarr",
-          })
-        ).rejects.toThrow(MissingStoreConfigError);
+        await expect(content.profile(profileObject)).rejects.toThrow(MissingStoreConfigError);
       });
     });
 
@@ -454,13 +375,7 @@ describe("content", () => {
           store: new TestStore(),
         });
 
-        await expect(
-          content.profile({
-            type: "Person",
-            name: "Rose Karr",
-            preferredUsername: "rosalinekarr",
-          })
-        ).rejects.toThrow(MissingFromIdConfigError);
+        await expect(content.profile(profileObject)).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });

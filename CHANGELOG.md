@@ -3,6 +3,12 @@
 ## Unreleased
 ### Changes
 - Removed put method from the store interface in favor of putStream everywhere
+- Updated activityContent types to match spec
+- Updated activityContent generators to match new types
+- Added type check and validation functions to activityContent module
+- Added type check and validation functions to announcements module
+- Updated content porcelain to accept proper activityContent objects and validate them
+- Renamed activityPub -> activityContent
 - Renamed DSNPId to DSNPAnnouncementId to avoid confusion with DSNPUserId
 - Renamed uri -> url everywhere
 - Renamed sdk.subscribeToBatchAnnounceEvents -> sdk.subscribeToBatchPublications

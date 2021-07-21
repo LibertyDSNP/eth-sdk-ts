@@ -21,6 +21,7 @@ export type Announcement = TypedAnnouncement<AnnouncementType>;
  */
 export interface TypedAnnouncement<T extends AnnouncementType> {
   announcementType: T;
+  fromId: string;
 }
 
 /**
@@ -28,7 +29,6 @@ export interface TypedAnnouncement<T extends AnnouncementType> {
  */
 export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementType.Broadcast> {
   contentHash: string;
-  fromId: string;
   url: string;
 }
 
@@ -53,7 +53,6 @@ export const createBroadcast = (fromId: string, url: string, hash: HexString): B
  */
 export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Reply> {
   contentHash: HexString;
-  fromId: string;
   inReplyTo: string;
   url: string;
 }
@@ -81,7 +80,6 @@ export const createReply = (fromId: string, url: string, hash: HexString, inRepl
  */
 export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType.Reaction> {
   emoji: string;
-  fromId: string;
   inReplyTo: string;
 }
 
@@ -113,7 +111,6 @@ export enum DSNPGraphChangeType {
  * GraphChangeAnnouncement: an Announcement of type GraphChange
  */
 export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
-  fromId: string;
   changeType: DSNPGraphChangeType;
   objectId: string;
 }
@@ -153,7 +150,6 @@ export const createUnfollowGraphChange = (fromId: string, followeeId: string): G
  */
 export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.Profile> {
   contentHash: string;
-  fromId: string;
   url: string;
 }
 
