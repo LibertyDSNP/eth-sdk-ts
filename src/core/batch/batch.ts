@@ -1,5 +1,4 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
-import { keccak256 } from "js-sha3";
 
 import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
@@ -7,7 +6,7 @@ import { ConfigOpts, requireGetStore } from "../../config";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-import { AsyncOrSyncIterable } from "../utilities";
+import { getHashGenerator, AsyncOrSyncIterable } from "../utilities";
 
 type ReadRowFunction = {
   (row: AnnouncementType): void;
@@ -65,7 +64,7 @@ export const createFile = async <T extends AnnouncementType>(
   const bloomFilterOptions = getBloomFilterOptionsFor(announcementType);
 
   const store = requireGetStore(opts);
-  const hashGenerator = keccak256.create();
+  const hashGenerator = getHashGenerator();
   const url = await store.putStream(targetPath, async (writeStream: WriteStream) => {
     const hashingWriteStream = {
       ...writeStream,
