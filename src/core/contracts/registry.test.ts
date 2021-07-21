@@ -51,7 +51,7 @@ describe("registry", () => {
     });
 
     it("Returns the correct id", async () => {
-      expect(givenId).toEqual("dsnp://00000000000003e8");
+      expect(givenId).toEqual("dsnp://0x00000000000003e8");
       const result = await resolveRegistration(handle);
 
       expect(result?.dsnpUserId).toEqual(givenId);
@@ -89,7 +89,7 @@ describe("registry", () => {
     it("returns a Contract Transaction that can be resolved into a DSNP User Id", async () => {
       const transaction = await register(idContractAddr, "new-handle");
 
-      expect(await getIdFromRegisterTransaction(transaction)).toEqual("dsnp://00000000000003e9"); // 1001
+      expect(await getIdFromRegisterTransaction(transaction)).toEqual("dsnp://0x00000000000003e9"); // 1001
     });
   });
 
@@ -191,7 +191,7 @@ describe("registry", () => {
       });
       expect(regs[0].contractAddr).toEqual(identityContractAddress);
 
-      expect(regs[0].dsnpUserId).toEqual("dsnp://0000000000000" + Number(1000).toString(16));
+      expect(regs[0].dsnpUserId).toEqual("dsnp://0x0000000000000" + Number(1000).toString(16));
       expect(regs[0].handle).toEqual(handle);
     });
 

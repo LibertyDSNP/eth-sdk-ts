@@ -17,7 +17,7 @@ export type DSNPAnnouncementId = string;
  */
 export const isDSNPAnnouncementId = (id: unknown): id is DSNPAnnouncementId => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/[0-9A-F]{16}\/[0-9A-F]{64}$/i) !== null;
+  return id.match(/^dsnp:\/\/0x[0-9A-F]{16}\/0x[0-9A-F]{64}$/i) !== null;
 };
 
 /**
@@ -35,7 +35,7 @@ export type DSNPUserId = string;
  */
 export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/[0-9A-F]{16}$/i) !== null;
+  return id.match(/^dsnp:\/\/0x[0-9A-F]{16}$/i) !== null;
 };
 
 /**
@@ -50,7 +50,7 @@ export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
   const paddingLength = 16 - hex.length;
   const padding = Array(paddingLength + 1).join("0");
 
-  return `dsnp://${padding}${hex}`;
+  return `dsnp://0x${padding}${hex}`;
 };
 
 /**
@@ -60,6 +60,6 @@ export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
  * @returns A big number representation of the same id
  */
 export const convertDSNPUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {
-  const hex = dsnpUserId.replace("dsnp://", "0x");
+  const hex = dsnpUserId.replace("dsnp://", "");
   return BigNumber.from(hex);
 };

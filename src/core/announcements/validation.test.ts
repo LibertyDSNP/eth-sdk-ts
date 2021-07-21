@@ -97,7 +97,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const replyAnnouncement = await reply(
           noteContent,
-          `${broadcastAnnouncement.fromId}/${broadcastAnnouncement.contentHash}`
+          `${broadcastAnnouncement.fromId}/0x${broadcastAnnouncement.contentHash}`
         );
 
         expect(await isValidAnnouncement(replyAnnouncement)).toEqual(true);
@@ -111,7 +111,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const reactionAnnouncement = await react(
           "🎉",
-          `${broadcastAnnouncement.fromId}/${broadcastAnnouncement.contentHash}`
+          `${broadcastAnnouncement.fromId}/0x${broadcastAnnouncement.contentHash}`
         );
 
         expect(await isValidAnnouncement(reactionAnnouncement)).toEqual(true);
