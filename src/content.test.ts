@@ -36,7 +36,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(storeContents[keys[0]]).toMatch(
+          expect(storeContents[keys[0]].toString()).toMatch(
             /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","attributedTo":"John Doe <johndoe@sample\.org>","content":"Lorem ipsum delor blah blah blah","name":"Lorem Ipsum","published":"[0-9TZ\-:.]+","type":"Note"\}/
           );
         });
@@ -160,7 +160,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(storeContents[keys[0]]).toMatch(
+          expect(storeContents[keys[0]].toString()).toMatch(
             /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","attributedTo":"John Doe <johndoe@sample\.org>","content":"Lorem ipsum delor blah blah blah","inReplyTo":"dsnp:\/\/0123456789ABCDEF\/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF","name":"Lorem Ipsum","published":"[0-9TZ\-:.]+","type":"Note"\}/
           );
         });
@@ -372,7 +372,7 @@ describe("content", () => {
           const keys = Object.keys(storeContents);
           expect(keys.length).toEqual(1);
 
-          expect(storeContents[keys[0]]).toMatch(
+          expect(storeContents[keys[0]].toString()).toMatch(
             /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"Rose Karr","preferredUsername":"rosalinekarr","published":"[0-9TZ\-:.]+","type":"Person"\}/
           );
         });

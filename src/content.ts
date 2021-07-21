@@ -49,7 +49,10 @@ export const broadcast = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const url = await store.put(contentHash, content);
+  const url = await store.putStream(contentHash, async ({ write, end }) => {
+    write(content);
+    end();
+  });
 
   const announcement = announcements.createBroadcast(currentFromId, url.toString(), contentHash);
 
@@ -92,7 +95,10 @@ export const reply = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const url = await store.put(contentHash, content);
+  const url = await store.putStream(contentHash, async ({ write, end }) => {
+    write(content);
+    end();
+  });
 
   const announcement = announcements.createReply(currentFromId, url.toString(), contentHash, inReplyTo);
 
@@ -156,7 +162,10 @@ export const profile = async (
 
   const contentHash = keccak256(content);
   const store = requireGetStore(opts);
-  const url = await store.put(contentHash, content);
+  const url = await store.putStream(contentHash, async ({ write, end }) => {
+    write(content);
+    end();
+  });
 
   const announcement = announcements.createProfile(currentFromId, url.toString(), contentHash);
 
