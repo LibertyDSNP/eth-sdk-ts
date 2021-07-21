@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 import { sign } from "./crypto";
 import { createBroadcast } from "./factories";
-import { convertSignedAnnouncementToAnnouncement } from "./utilities";
+import { convertSignedAnnouncementToAnnouncement } from "./services";
 
 describe("convertSignedAnnouncementToAnnouncement", () => {
   const signer = ethers.Wallet.createRandom();

@@ -13,7 +13,7 @@ import {
   ProfileAnnouncement,
 } from "./factories";
 import { isDSNPUserId, isDSNPAnnouncementId } from "../identifiers";
-import { convertSignedAnnouncementToAnnouncement } from "./utilities";
+import { convertSignedAnnouncementToAnnouncement } from "./services";
 import { isRecord, isString, isNumber } from "../utilities/validation";
 
 const isValidEmoji = (obj: unknown): boolean => {
