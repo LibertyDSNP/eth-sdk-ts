@@ -1,5 +1,11 @@
+import { keccak256 } from "js-sha3";
+
 import { HexString } from "../../types/Strings";
 
-export const hashPrefix = (hash: string): HexString => {
-  return hash.startsWith("0x", 0) ? hash : `0x${hash}`;
-};
+/**
+ * hash() takes a string and returns a keccak256 hash string with a 0x prefix.
+ *
+ * @param content - The string content to hash
+ * @returns A 0x prefixed keccak256 hash
+ */
+export const hash = (content: string): HexString => `0x${keccak256(content)}`;

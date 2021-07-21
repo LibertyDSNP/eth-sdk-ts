@@ -17,4 +17,5 @@
  *   - `import { foo } from "@dsnp/sdk/utilities"; foo.functionInFoo();`
  */
 
+export * from "./hash";
 export * from "./iterator";

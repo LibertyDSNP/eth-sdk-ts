@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
-import { keccak256 } from "js-sha3";
 
 import * as config from "./config";
 import * as content from "./content";
 import { createNote, createProfile, InvalidActivityContentError } from "./core/activityContent";
 import { AnnouncementType } from "./core/announcements";
-import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
+import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
+import { hash } from "./core/utilities";
 import TestStore from "./test/testStore";
 
 describe("content", () => {
@@ -50,7 +50,7 @@ describe("content", () => {
             fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Broadcast,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
+            contentHash: hash(storeContents[keys[0]] as string),
           });
         });
       });
@@ -148,7 +148,7 @@ describe("content", () => {
             fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Reply,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
+            contentHash: hash(storeContents[keys[0]] as string),
             inReplyTo: "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
           });
         });
@@ -326,7 +326,7 @@ describe("content", () => {
             fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Profile,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
+            contentHash: hash(storeContents[keys[0]] as string),
           });
         });
       });
