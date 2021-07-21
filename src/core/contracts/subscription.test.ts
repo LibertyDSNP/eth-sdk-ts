@@ -1,12 +1,10 @@
-import { keccak256 } from "js-sha3";
-
-import { publish, Publication, dsnpBatchFilter } from "./publisher";
-import { subscribeToBatchPublications } from "./subscription";
-import { setupConfig } from "../../test/sdkTestConfig";
-import { setupSnapshot } from "../../test/hardhatRPC";
 import { requireGetProvider } from "../../config";
+import { publish, Publication, dsnpBatchFilter } from "./publisher";
+import { subscribeToBatchPublications, BatchPublicationCallbackArgs } from "./subscription";
+import { setupSnapshot } from "../../test/hardhatRPC";
+import { setupConfig } from "../../test/sdkTestConfig";
 import { checkNumberOfFunctionCalls } from "../../test/utilities";
-import { BatchPublicationCallbackArgs } from "./subscription";
+import { hash } from "../utilities";
 
 describe("subscription", () => {
   setupSnapshot();
@@ -22,14 +20,14 @@ describe("subscription", () => {
   describe("subscribeToBatchPublications", () => {
     jest.setTimeout(70000);
     const testUrl = "http://www.testconst.com";
-    const hash = "0x" + keccak256("test");
+    const fileHash = hash("test");
 
     it("listen and retrieve batch publication events", async () => {
       const provider = requireGetProvider();
       const mock = jest.fn();
 
       const removeListener = await subscribeToBatchPublications(mock);
-      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: hash }];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash }];
       await (await publish(publications)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 30, 1);
 
@@ -38,7 +36,7 @@ describe("subscription", () => {
 
       expect(mock.mock.calls[0][0].announcementType).toEqual(2);
       expect(mock.mock.calls[0][0].fileUrl).toEqual(testUrl);
-      expect(mock.mock.calls[0][0].fileHash).toEqual(hash);
+      expect(mock.mock.calls[0][0].fileHash).toEqual(fileHash);
       await removeListener();
       expect(provider.listeners(filter).length).toEqual(0);
     });
@@ -47,9 +45,9 @@ describe("subscription", () => {
       const provider = requireGetProvider();
 
       const testUrl1 = "http://www.testconst111.com";
-      const hash1 = "0x" + keccak256("test111");
+      const hash1 = hash("test111");
       const testUrl2 = "http://www.testconst222.com";
-      const hash2 = "0x" + keccak256("test222");
+      const hash2 = hash("test222");
 
       const mock = jest.fn();
 
@@ -89,9 +87,9 @@ describe("subscription", () => {
         return opts;
       });
       const testUrl3 = "http://www.testconst333.com";
-      const hash3 = "0x" + keccak256("test333");
+      const hash3 = hash("test333");
       const testUrl4 = "http://www.testconst333.com";
-      const hash4 = "0x" + keccak256("test333");
+      const hash4 = hash("test333");
 
       const removeListener = await subscribeToBatchPublications(mock, { announcementType: 2 });
       const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
@@ -115,13 +113,13 @@ describe("subscription", () => {
       const mock = jest.fn();
 
       const testUrl3 = "http://www.testconst333.com";
-      const hash3 = "0x" + keccak256("test333");
+      const hash3 = hash("test333");
       const testUrl4 = "http://www.testconst444.com";
-      const hash4 = "0x" + keccak256("test444");
+      const hash4 = hash("test444");
       const testUrl5 = "http://www.testconst555.com";
-      const hash5 = "0x" + keccak256("test555");
+      const hash5 = hash("test555");
       const testUrl6 = "http://www.testconst666.com";
-      const hash6 = "0x" + keccak256("test666");
+      const hash6 = hash("test666");
 
       const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
       const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl4, fileHash: hash4 }];

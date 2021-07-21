@@ -1,6 +1,5 @@
-import { keccak256 } from "js-sha3";
-
 import { publish, Publication } from "./publisher";
+import { hash } from "../utilities";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { requireGetProvider } from "../../config";
@@ -14,9 +13,9 @@ describe("#batch", () => {
     jest.setTimeout(12000);
 
     const testUrl = "http://www.testconst.com";
-    const hash = "0x" + keccak256("test");
+    const fileHash = hash("test");
 
-    const publications: Publication[] = [{ announcementType: 0, fileUrl: testUrl, fileHash: hash }];
+    const publications: Publication[] = [{ announcementType: 0, fileUrl: testUrl, fileHash }];
 
     await publish(publications);
     const provider = requireGetProvider();

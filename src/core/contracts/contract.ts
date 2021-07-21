@@ -1,15 +1,13 @@
 import { JsonFragment } from "@ethersproject/abi";
 import { ethers } from "ethers";
-import { keccak256 } from "js-sha3";
 
 import { getContracts, ContractName, ConfigOpts } from "../../config";
 import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
+import { hash } from "../utilities";
 import { HexString } from "../../types/Strings";
 import * as types from "../../types/typechain";
 
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
-
-export const getKeccakTopic = (topic: string): HexString => "0x" + keccak256(topic);
 
 type RawLog = { topics: Array<string>; data: string };
 
@@ -101,7 +99,7 @@ export const getContractAddress = async (
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   if (contractOverrides[contractName] !== undefined) return contractOverrides[contractName]!;
 
-  const topic = getKeccakTopic(DSNP_MIGRATION_TYPE);
+  const topic = hash(DSNP_MIGRATION_TYPE);
 
   const logs: ethers.providers.Log[] = await provider.getLogs({
     topics: [topic],
