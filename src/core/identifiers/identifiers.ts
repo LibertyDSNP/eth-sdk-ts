@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers";
 
 import { isString } from "../utilities/validation";
+import { HexString } from "../../types/Strings";
 
 /**
  * DSNPAnnouncementId represents a DSNP Announcement Id following the DSNP
@@ -63,3 +64,14 @@ export const convertDSNPUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber 
   const hex = dsnpUserId.replace("dsnp://", "");
   return BigNumber.from(hex);
 };
+
+/**
+ * buildDSNPAnnouncementId() takes a DSNP user id and a content hash and returns
+ * a DSNP announcement id.
+ *
+ * @param userId - The DSNP user id of the announcing user
+ * @param contentHash - The content hash of the announcement posted by the user
+ * @returns A DSNP announcement id for the given announcement
+ */
+export const buildDSNPAnnouncementId = (userId: DSNPUserId, contentHash: HexString): DSNPAnnouncementId =>
+  `${userId}/${contentHash}`;
