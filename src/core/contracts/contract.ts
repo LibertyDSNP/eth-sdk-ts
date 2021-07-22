@@ -2,10 +2,10 @@ import { JsonFragment } from "@ethersproject/abi";
 import { ethers } from "ethers";
 
 import { getContracts, ContractName, ConfigOpts } from "../config";
-import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
-import { hash } from "../utilities";
+import { MissingContractAddressError, NoLogsFoundContractError } from "./errors";
 import { HexString } from "../../types/Strings";
 import * as types from "../../types/typechain";
+import { hash } from "../utilities";
 
 const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 

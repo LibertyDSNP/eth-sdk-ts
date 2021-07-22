@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 import { ContractName } from "../config";
 import { getContractAddress } from "./contract";
-import { MissingContractAddressError } from "./contractErrors";
+import { MissingContractAddressError } from "./errors";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
 

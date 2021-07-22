@@ -1,7 +1,7 @@
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 import * as batch from "./batch";
-import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
+import { MixedTypeBatchError, EmptyBatchError } from "./errors";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
