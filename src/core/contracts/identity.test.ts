@@ -1,7 +1,7 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
-import { DelegateAddParams } from "./identity";
+import { DelegateAddParams, removeDelegate } from "./identity";
 
 import * as identity from "./identity";
 const {
@@ -307,6 +307,27 @@ describe("identity", () => {
 
         await expect(addDelegatePendingTx).transactionRejectsWith(/Signer does not have the DELEGATE_ADD permission/);
       });
+    });
+  });
+
+  describe("#removeDelegate", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+
+    beforeAll(async () => {
+      contractOwner = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+      await identityContract.deployed();
+      contractAddress = identityContract.address;
+
+      await upsertDelegate(contractAddress, NON_OWNER, 0x1);
+    });
+
+    it("removes a delegate", async () => {
+      const currentBlockNumber = await provider.getBlockNumber();
+      expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, currentBlockNumber)).toBeTruthy();
+      await removeDelegate(contractAddress, NON_OWNER, currentBlockNumber + 10);
+      expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, currentBlockNumber + 10)).toBeFalsy();
     });
   });
 });
