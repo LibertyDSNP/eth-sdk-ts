@@ -1,7 +1,7 @@
 import { JsonFragment } from "@ethersproject/abi";
 import { ethers } from "ethers";
 
-import { getContracts, ContractName, ConfigOpts } from "../../config";
+import { getContracts, ContractName, ConfigOpts } from "../config";
 import { MissingContractAddressError, NoLogsFoundContractError } from "./contractErrors";
 import { hash } from "../utilities";
 import { HexString } from "../../types/Strings";

@@ -1,5 +1,5 @@
 import { ContractTransaction, EventFilter } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
+import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
 import { HexString } from "../../types/Strings";
 import { Publisher, Publisher__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";

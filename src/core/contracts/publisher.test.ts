@@ -2,7 +2,7 @@ import { publish, Publication } from "./publisher";
 import { hash } from "../utilities";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
-import { requireGetProvider } from "../../config";
+import { requireGetProvider } from "../config";
 
 describe("#batch", () => {
   setupSnapshot();

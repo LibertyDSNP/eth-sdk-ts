@@ -1,5 +1,5 @@
 import { ContractTransaction, ethers } from "ethers";
-import { requireGetProvider } from "../config";
+import { requireGetProvider } from "../core/config";
 import { register, Registration } from "../core/contracts/registry";
 import { Identity__factory, Registry__factory } from "../types/typechain";
 import { convertBigNumberToDSNPUserId, DSNPUserId } from "../core/identifiers";

@@ -1,4 +1,4 @@
-import { ConfigOpts, requireGetSigner } from "../../config";
+import { ConfigOpts, requireGetSigner } from "../config";
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import {

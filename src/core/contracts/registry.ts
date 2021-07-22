@@ -3,7 +3,7 @@ import { ethers, ContractTransaction } from "ethers";
 import { getContractAddress, getVmError, VmError } from "./contract";
 import { MissingRegistrationError } from "./contractErrors";
 import { EthereumAddress, HexString } from "../../types/Strings";
-import { ConfigOpts, requireGetSigner, requireGetProvider } from "../../config";
+import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
 import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";

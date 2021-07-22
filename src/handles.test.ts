@@ -1,5 +1,5 @@
 import { Signer } from "ethers";
-import * as config from "./config";
+import { setConfig } from "./config";
 import { isAvailable, availabilityFilter, resolveHandle, resolveId, createRegistration } from "./handles";
 import * as registry from "./core/contracts/registry";
 import { createCloneProxy } from "./core/contracts/identity";
@@ -27,7 +27,7 @@ describe("handles", () => {
   beforeAll(async () => {
     ({ provider, signer } = setupConfig());
     await snapshotHardhat(provider);
-    config.setConfig({ provider, signer });
+    setConfig({ provider, signer });
     const logicAddress = await createIdentityContract();
     for (const handle of takens) {
       await (await registry.register(logicAddress, handle)).wait();

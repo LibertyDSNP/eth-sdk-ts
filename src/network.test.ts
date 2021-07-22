@@ -1,4 +1,4 @@
-import * as config from "./config";
+import { setConfig } from "./config";
 import * as network from "./network";
 import { MissingSignerConfigError, MissingFromIdConfigError } from "./core/config";
 import { findEvent } from "./core/contracts/contract";
@@ -36,7 +36,7 @@ describe("network", () => {
   describe("follow", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
-        config.setConfig({
+        setConfig({
           currentFromId: "dsnp://0x0000000000000000",
           signer,
           provider,
@@ -57,7 +57,7 @@ describe("network", () => {
 
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
-        config.setConfig({
+        setConfig({
           currentFromId: "dsnp://0x0000000000000000",
           signer: undefined,
           provider,
@@ -69,7 +69,7 @@ describe("network", () => {
 
     describe("without a user id", () => {
       it("throws MissingFromIdConfigError", async () => {
-        config.setConfig({
+        setConfig({
           currentFromId: undefined,
           signer,
           provider,
@@ -83,7 +83,7 @@ describe("network", () => {
   describe("unfollow", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
-        config.setConfig({
+        setConfig({
           currentFromId: "dsnp://0x0000000000000000",
           signer,
           provider,
@@ -104,7 +104,7 @@ describe("network", () => {
 
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
-        config.setConfig({
+        setConfig({
           currentFromId: "dsnp://0x0000000000000000",
           signer: undefined,
           provider,
@@ -116,7 +116,7 @@ describe("network", () => {
 
     describe("without a user id", () => {
       it("throws MissingFromIdConfigError", async () => {
-        config.setConfig({
+        setConfig({
           currentFromId: undefined,
           signer,
           provider,

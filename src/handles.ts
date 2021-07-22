@@ -1,4 +1,4 @@
-import * as config from "./config";
+import * as config from "./core/config";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";

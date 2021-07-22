@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 
-import * as config from "./config";
+import { setConfig } from "./config";
 import { EmptyBatchError } from "./core/batch";
 import { createBroadcast, createReply, createReaction, sign, SignedAnnouncement } from "./core/announcements";
 import { createPublication, createPublications } from "./createPublication";
@@ -21,7 +21,7 @@ describe("createPublication", () => {
 
     store = new TestStore();
 
-    config.setConfig({
+    setConfig({
       currentFromId: "dsnp://0x0123456789ABCDEF",
       signer: new ethers.Wallet("0xd98d551044eb9ef4c9a2afd1d9c95646e22b710da55c8dc95431038d5544d804"),
       store: store,
@@ -95,7 +95,7 @@ describe("createPublications", () => {
 
     store = new TestStore();
 
-    config.setConfig({
+    setConfig({
       currentFromId: "dsnp://0x0123456789ABCDEF",
       signer: new ethers.Wallet("0xd98d551044eb9ef4c9a2afd1d9c95646e22b710da55c8dc95431038d5544d804"),
       store: store,

@@ -1,4 +1,4 @@
-import { requireGetCurrentFromId, requireGetStore, ConfigOpts } from "./config";
+import { requireGetCurrentFromId, requireGetStore, ConfigOpts } from "./core/config";
 import {
   isValidActivityContent,
   serialize,

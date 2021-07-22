@@ -1,4 +1,4 @@
-import { ConfigOpts } from "./config";
+import { ConfigOpts } from "./core/config";
 import { createFile, EmptyBatchError } from "./core/batch";
 import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { Publication } from "./core/contracts/publisher";

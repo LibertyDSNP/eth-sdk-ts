@@ -1,4 +1,4 @@
-import { ConfigOpts, requireGetCurrentFromId } from "./config";
+import { ConfigOpts, requireGetCurrentFromId } from "./core/config";
 import { DSNPUserId } from "./core/identifiers";
 import {
   createFollowGraphChange,
