@@ -28,6 +28,7 @@
 - Updated Parquet Schema
 ### Added
 - sdk.createPublication
+- Ability to remove delegate
 ### Removed
 -
 ### Fixed

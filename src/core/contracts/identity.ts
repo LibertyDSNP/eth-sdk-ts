@@ -338,3 +338,24 @@ export const upsertDelegate = async (
 
   return contract.connect(signer).delegate(address, role);
 };
+
+/**
+ * removeDelegate() Remove all permissions for delegate
+ *
+ * @param contractAddress - Address of the identity contract to use
+ * @param address - Address of delegate to which permissions will be removed
+ * @param endBlock - The block number that permission will be revoked
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const removeDelegate = async (
+  contractAddress: EthereumAddress,
+  address: EthereumAddress,
+  endBlock: DelegationRole,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const signer = requireGetSigner(opts);
+  const provider = requireGetProvider(opts);
+  const contract = await Identity__factory.connect(contractAddress, provider);
+
+  return contract.connect(signer).delegateRemove(address, endBlock);
+};
