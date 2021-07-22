@@ -2,6 +2,10 @@
 
 ## Unreleased
 ### Changes
+- Updated various types to specify DSNP ids instead of string
+- Updated various types to specify HexString instead of string
+- Updated all instances of keccak256 to use hash utilities instead
+- Added hash() and getHashGenerator() utilitiy functions
 - Removed put method from the store interface in favor of putStream everywhere
 - Updated activityContent types to match spec
 - Updated activityContent generators to match new types
