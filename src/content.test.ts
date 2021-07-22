@@ -1,12 +1,12 @@
 import { ethers } from "ethers";
-import { keccak256 } from "js-sha3";
 
 import * as config from "./config";
 import * as content from "./content";
 import { createNote, createProfile, InvalidActivityContentError } from "./core/activityContent";
 import { AnnouncementType } from "./core/announcements";
-import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
+import { InvalidAnnouncementIdentifierError } from "./core/identifiers";
+import { hash } from "./core/utilities";
 import TestStore from "./test/testStore";
 
 describe("content", () => {
@@ -20,7 +20,7 @@ describe("content", () => {
         store = new TestStore();
 
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: store,
         });
@@ -47,10 +47,10 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(announcement).toMatchObject({
-            fromId: "dsnp://0123456789ABCDEF",
+            fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Broadcast,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
+            contentHash: hash(storeContents[keys[0]] as string),
           });
         });
       });
@@ -70,7 +70,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: undefined,
           store: new TestStore(),
         });
@@ -82,7 +82,7 @@ describe("content", () => {
     describe("without a storage adapter", () => {
       it("throws MissingStoreConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: undefined,
         });
@@ -112,7 +112,7 @@ describe("content", () => {
         store = new TestStore();
 
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: store,
         });
@@ -122,7 +122,7 @@ describe("content", () => {
         it("uploads an activity content object matching the provided specifications", async () => {
           await content.reply(
             noteObject,
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           );
 
           const storeContents = store.getStore();
@@ -137,7 +137,7 @@ describe("content", () => {
         it("returns a reply announcement linking to the activity content object", async () => {
           const announcement = await content.reply(
             noteObject,
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           );
 
           const storeContents = store.getStore();
@@ -145,11 +145,11 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(announcement).toMatchObject({
-            fromId: "dsnp://0123456789ABCDEF",
+            fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Reply,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
-            inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+            contentHash: hash(storeContents[keys[0]] as string),
+            inReplyTo: "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
           });
         });
       });
@@ -170,7 +170,7 @@ describe("content", () => {
                 ...noteObject,
                 published: "Tomorrow",
               },
-              "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+              "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
             )
           ).rejects.toThrow(InvalidActivityContentError);
         });
@@ -180,7 +180,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: undefined,
           store: new TestStore(),
         });
@@ -188,7 +188,7 @@ describe("content", () => {
         await expect(
           content.reply(
             noteObject,
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingSignerConfigError);
       });
@@ -197,7 +197,7 @@ describe("content", () => {
     describe("without a storage adapter", () => {
       it("throws MissingStoreConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: undefined,
         });
@@ -205,7 +205,7 @@ describe("content", () => {
         await expect(
           content.reply(
             noteObject,
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingStoreConfigError);
       });
@@ -222,7 +222,7 @@ describe("content", () => {
         await expect(
           content.reply(
             noteObject,
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingFromIdConfigError);
       });
@@ -233,7 +233,7 @@ describe("content", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
         });
       });
@@ -241,14 +241,14 @@ describe("content", () => {
       it("returns a reaction announcement", async () => {
         const announcement = await content.react(
           "🏳️‍🌈",
-          "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+          "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
         );
 
         expect(announcement).toMatchObject({
-          fromId: "dsnp://0123456789ABCDEF",
+          fromId: "dsnp://0x0123456789ABCDEF",
           announcementType: AnnouncementType.Reaction,
           emoji: "🏳️‍🌈",
-          inReplyTo: "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+          inReplyTo: "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
         });
       });
     });
@@ -256,14 +256,14 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: undefined,
         });
 
         await expect(
           content.react(
             "🏴‍☠️",
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingSignerConfigError);
       });
@@ -279,7 +279,7 @@ describe("content", () => {
         await expect(
           content.react(
             "🏴‍☠️",
-            "dsnp://0123456789ABCDEF/0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
+            "dsnp://0x0123456789ABCDEF/0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"
           )
         ).rejects.toThrow(MissingFromIdConfigError);
       });
@@ -296,7 +296,7 @@ describe("content", () => {
         store = new TestStore();
 
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: store,
         });
@@ -323,10 +323,10 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(announcement).toMatchObject({
-            fromId: "dsnp://0123456789ABCDEF",
+            fromId: "dsnp://0x0123456789ABCDEF",
             announcementType: AnnouncementType.Profile,
             url: `http://fakestore.org/${keys[0]}`,
-            contentHash: keccak256(storeContents[keys[0]] as string),
+            contentHash: hash(storeContents[keys[0]] as string),
           });
         });
       });
@@ -346,7 +346,7 @@ describe("content", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: undefined,
           store: new TestStore(),
         });
@@ -358,7 +358,7 @@ describe("content", () => {
     describe("without a storage adapter", () => {
       it("throws MissingStoreConfigError", async () => {
         config.setConfig({
-          currentFromId: "dsnp://0123456789ABCDEF",
+          currentFromId: "dsnp://0x0123456789ABCDEF",
           signer: ethers.Wallet.createRandom(),
           store: undefined,
         });

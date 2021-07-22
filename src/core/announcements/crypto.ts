@@ -15,7 +15,7 @@ import { serialize } from "./serialization";
  * A Generic Signed Announcement ready for inclusion in a Batch File
  * {@link Announcement}
  */
-export type AnnouncementWithSignature<T extends Announcement> = T & { signature: string };
+export type AnnouncementWithSignature<T extends Announcement> = T & { signature: HexString };
 
 /**
  * A Signed Announcement ready for inclusion in a Batch File

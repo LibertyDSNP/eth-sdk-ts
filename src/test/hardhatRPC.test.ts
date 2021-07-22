@@ -1,9 +1,11 @@
 //eslint-disable-next-line
 require("dotenv").config();
+
 import { ethers } from "ethers";
-import { keccak256 } from "js-sha3";
-import { publish, dsnpBatchFilter } from "../core/contracts/publisher";
+
 import { setConfig, getConfig } from "../config";
+import { publish, dsnpBatchFilter } from "../core/contracts/publisher";
+import { hash } from "../core/utilities";
 import { snapshotHardhat, revertHardhat } from "./hardhatRPC";
 
 const TESTING_PRIVATE_KEY = String(process.env.TESTING_PRIVATE_KEY);
@@ -30,9 +32,9 @@ describe("snapshot and revert", () => {
     await snapshotHardhat(provider);
 
     const testUrl = "http://www.testconst.com";
-    const hash = "0x" + keccak256("test");
+    const fileHash = hash("test");
 
-    const publications = [{ announcementType: 0, fileUrl: testUrl, fileHash: hash }];
+    const publications = [{ announcementType: 0, fileUrl: testUrl, fileHash }];
 
     // create a batch
     await publish(publications);
