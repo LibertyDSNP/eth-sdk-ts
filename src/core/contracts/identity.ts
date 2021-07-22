@@ -1,4 +1,4 @@
-import { ContractTransaction } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 import { ConfigOpts, requireGetProvider, requireGetSigner } from "../../config";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
@@ -16,12 +16,14 @@ import {
   EIP712Signature,
   TypedDomainData,
 } from "./utilities";
-import { getContractAddress } from "./contract";
+import { getContractAddress, getKeccakTopic } from "./contract";
 import { Provider } from "@ethersproject/providers";
+import { ParsedLog } from "./subscription";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
 const BEACON_FACTORY_CONTRACT = "BeaconFactory";
 const BEACON_CONTRACT = "Beacon";
+const IDENTITY_DECODER = new ethers.utils.Interface(Identity__factory.abi);
 
 /**
  * DelegationRole represents a struct for adding roles delegates
@@ -195,6 +197,17 @@ const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => 
   return address;
 };
 
+interface DelegateAddLogData {
+  name: string;
+  identityAddress: HexString;
+  delegate: HexString;
+  blockNumber: number;
+}
+
+interface DelegateRemoveLogData extends DelegateAddLogData {
+  endBlock: number;
+}
+
 /**
  * DelegateAdd represents a struct for adding delegates
  */
@@ -337,4 +350,111 @@ export const upsertDelegate = async (
   const contract = await Identity__factory.connect(contractAddress, provider);
 
   return contract.connect(signer).delegate(address, role);
+};
+
+/**
+ * removeDelegate() Remove all permissions for delegate
+ *
+ * @param contractAddress - Address of the identity contract to use
+ * @param address - Address of delegate to which permissions will be removed
+ * @param endBlock - The block number that permission will be revoked
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const removeDelegate = async (
+  contractAddress: EthereumAddress,
+  address: EthereumAddress,
+  endBlock: DelegationRole,
+  opts?: ConfigOpts
+): Promise<ContractTransaction> => {
+  const signer = requireGetSigner(opts);
+  const provider = requireGetProvider(opts);
+  const contract = await Identity__factory.connect(contractAddress, provider);
+
+  return contract.connect(signer).delegateRemove(address, endBlock);
+};
+
+/**
+ * getAddDelegateLogs() Retrieves event filter for DSNPAddDelegate event
+ *
+ * @param ethereumAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getAddDelegateLogData = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<DelegateAddLogData[]> => {
+  const eventSignature = getKeccakTopic("DSNPAddDelegate(address,uint8)");
+  const addDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
+
+  return siftAddDelegateLogs(addDelegateLogs);
+};
+
+/**
+ * getRemoveDelegateLogs() Retrieves event filter for DSNPRemoveDelegate event
+ *
+ * @param ethereumAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getRemoveDelegateLogData = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<DelegateRemoveLogData[]> => {
+  const eventSignature = getKeccakTopic("DSNPRemoveDelegate(address,uint64)");
+  const removeDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
+
+  return siftRemoveDelegateLogs(removeDelegateLogs);
+};
+
+const getDelegateLogs = async (ethereumAddress: EthereumAddress, eventSignature: HexString, opts?: ConfigOpts) => {
+  const provider = requireGetProvider(opts);
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    topics: [eventSignature, ethers.utils.hexZeroPad(ethereumAddress, 32)],
+    fromBlock: 0,
+  });
+
+  return logs.map((log: ethers.providers.Log) => {
+    const fragment = IDENTITY_DECODER.parseLog(log);
+    return { fragment, log: log };
+  });
+};
+
+const siftAddDelegateLogs = (logs: ParsedLog[]): DelegateAddLogData[] => {
+  return logs.map((item: ParsedLog) => {
+    const {
+      fragment: {
+        args: { delegate },
+        name,
+      },
+      log: { address, blockNumber },
+    } = item;
+
+    return {
+      name,
+      identityAddress: address,
+      delegate: delegate,
+      blockNumber,
+    };
+  });
+};
+
+const siftRemoveDelegateLogs = (logs: ParsedLog[]): DelegateRemoveLogData[] => {
+  return logs.map((item: ParsedLog) => {
+    const {
+      fragment: {
+        args: { delegate, endBlock },
+        name,
+      },
+      log: { address, blockNumber },
+    } = item;
+
+    return {
+      name,
+      identityAddress: address,
+      delegate: delegate,
+      blockNumber,
+      endBlock: endBlock.toNumber(),
+    };
+  });
 };
