@@ -1,7 +1,7 @@
 import { ethers, ContractTransaction } from "ethers";
 
 import { getContractAddress, getVmError, VmError } from "./contract";
-import { MissingRegistrationError } from "./contractErrors";
+import { MissingRegistrationError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
 import { Registry__factory } from "../../types/typechain";
