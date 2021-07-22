@@ -1,13 +1,5 @@
 import { providers, Wallet } from "ethers";
-import {
-  getConfig,
-  setConfig,
-  Config,
-  requireGetCurrentFromId,
-  requireGetProvider,
-  requireGetSigner,
-  requireGetStore,
-} from "./config";
+import { getConfig, requireGetCurrentFromId, requireGetProvider, requireGetSigner, requireGetStore } from "./config";
 import {
   MissingStoreConfigError,
   MissingSignerConfigError,
@@ -17,61 +9,6 @@ import {
 import TestStore from "../../test/testStore";
 
 describe("config", () => {
-  describe("#getConfig", () => {
-    it("fetches the current config settings", () => {
-      const testConfig = ({
-        test: "object",
-      } as unknown) as Config;
-
-      setConfig(testConfig);
-
-      expect(getConfig()).toMatchObject({ test: "object" });
-    });
-
-    it("overrides the returned settings with any provided parameters", () => {
-      const testConfig = ({
-        test: "object",
-      } as unknown) as Config;
-
-      setConfig(testConfig);
-
-      expect(
-        getConfig(({
-          otherTest: "differentObject",
-        } as unknown) as Config)
-      ).toMatchObject({
-        test: "object",
-        otherTest: "differentObject",
-      });
-    });
-  });
-
-  describe("#setConfig", () => {
-    it("updates the config settings", async () => {
-      const testConfig = ({
-        test: "object",
-      } as unknown) as Config;
-
-      setConfig(testConfig);
-
-      expect(getConfig()).toMatchObject({ test: "object" });
-    });
-
-    it("does not remove existing keys in the config settings", async () => {
-      setConfig({
-        other_test: "blah blah",
-      });
-
-      const testConfig = ({
-        test: "object",
-      } as unknown) as Config;
-
-      setConfig(testConfig);
-
-      expect(getConfig()).toMatchObject({ other_test: "blah blah", test: "object" });
-    });
-  });
-
   describe("requireGetters", () => {
     const badConfig = getConfig();
 

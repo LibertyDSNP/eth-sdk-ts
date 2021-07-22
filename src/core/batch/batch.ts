@@ -2,7 +2,7 @@ import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 
 import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./batchErrors";
-import { ConfigOpts, requireGetStore } from "../../config";
+import { ConfigOpts, requireGetStore } from "../config";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";

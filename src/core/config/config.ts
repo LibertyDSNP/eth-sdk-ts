@@ -62,35 +62,17 @@ let config: Config = {
 /**
  * getConfig() fetches the current configuration settings and returns them.
  *
- * @param overrides - Config overrides for this request
  * @returns The current configuration settings with ConfigOpts as overrides.
  */
-export const getConfig = (overrides?: ConfigOpts): Config => {
-  if (!overrides) return config;
-
-  return {
-    ...config,
-    ...overrides,
-    contracts: { ...config.contracts, ...overrides.contracts },
-  };
-};
+export const getConfig = (): Config => config;
 
 /**
- * setConfig() sets the current configuration with the given object. Any keys
- * previously set on the config object will not be removed. To remove a config
- * option, this method should be called with undefined passed for the given key
- * to override it.
+ * setConfig() sets the current configuration with the given object.
  *
  * @param newConfig - The configuration settings to set with
- * @returns The newly constructed config
  */
-export const setConfig = (newConfig: ConfigOpts): Config => {
-  const { signer, provider } = newConfig;
-  if (provider && signer && !signer.provider) newConfig.signer = signer.connect(provider);
-  return (config = {
-    ...config,
-    ...newConfig,
-  });
+export const setConfig = (newConfig: Config): void => {
+  config = newConfig;
 };
 
 /**
@@ -100,9 +82,9 @@ export const setConfig = (newConfig: ConfigOpts): Config => {
  * @returns a never-undefined provider
  */
 export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider => {
-  const c = getConfig(opts);
-  if (!c.provider) throw new MissingProviderConfigError();
-  return c.provider;
+  const provider = opts?.provider || getConfig().provider;
+  if (!provider) throw new MissingProviderConfigError();
+  return provider;
 };
 
 /**
@@ -112,9 +94,9 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
  * @returns a never-undefined signer
  */
 export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
-  const c = getConfig(opts);
-  if (!c.signer) throw new MissingSignerConfigError();
-  return c.signer;
+  const signer = opts?.signer || getConfig().signer;
+  if (!signer) throw new MissingSignerConfigError();
+  return signer;
 };
 
 /**
@@ -124,9 +106,9 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
  * @returns a never-undefined store
  */
 export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
-  const c = getConfig(opts);
-  if (!c.store) throw new MissingStoreConfigError();
-  return c.store;
+  const store = opts?.store || getConfig().store;
+  if (!store) throw new MissingStoreConfigError();
+  return store;
 };
 
 /**
@@ -136,9 +118,9 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
  * @returns a never-undefined currentFromId
  */
 export const requireGetCurrentFromId = (opts?: ConfigOpts): HexString => {
-  const c = getConfig(opts);
-  if (!c.currentFromId) throw new MissingFromIdConfigError();
-  return c.currentFromId;
+  const currentFromId = opts?.currentFromId || getConfig().currentFromId;
+  if (!currentFromId) throw new MissingFromIdConfigError();
+  return currentFromId;
 };
 
 /**
@@ -147,7 +129,4 @@ export const requireGetCurrentFromId = (opts?: ConfigOpts): HexString => {
  * @param opts - overrides for the current configuration.
  * @returns potentially undefined contract addresses
  */
-export const getContracts = (opts?: ConfigOpts): Contracts => {
-  const c = getConfig(opts);
-  return c.contracts;
-};
+export const getContracts = (opts?: ConfigOpts): Contracts => ({ ...getConfig().contracts, ...opts?.contracts });

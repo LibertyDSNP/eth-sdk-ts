@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { ethers } from "ethers";
 
-import { getConfig, setConfig } from "../config";
+import { setConfig } from "../../config";
 import { createBroadcast } from "./factories";
 import { recoverPublicKey, sign } from "./crypto";
 
@@ -10,7 +10,6 @@ describe("announcement crypto", () => {
     beforeAll(async () => {
       const privateKey = "0x6dcefd57d921dc570e198f6bd9dffc32954ab071184c780770cf4541dd23f68e";
       await setConfig({
-        ...getConfig(),
         signer: new ethers.Wallet(privateKey),
       });
     });
@@ -52,7 +51,6 @@ describe("announcement crypto", () => {
     const address = await signer.getAddress();
 
     await setConfig({
-      ...getConfig(),
       signer,
     });
 

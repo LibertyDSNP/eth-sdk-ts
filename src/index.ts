@@ -16,12 +16,15 @@ import * as generatorsImport from "./generators";
 export const generators = generatorsImport;
 
 // Porcelain
+export * from "./config";
 export * from "./content";
 export * from "./createPublication";
 export * from "./handles";
 export * from "./network";
 export * from "./search";
 
+import * as configImport from "./config";
+export const config = configImport;
 import * as contentImport from "./content";
 export const content = contentImport;
 import * as createPublicationImport from "./createPublication";
@@ -34,6 +37,7 @@ import * as searchImport from "./search";
 export const search = searchImport;
 
 export default {
+  ...config,
   ...content,
   ...createPublication,
   ...handles,

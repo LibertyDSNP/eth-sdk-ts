@@ -1,4 +1,4 @@
-import { ConfigOpts } from "../../config";
+import { ConfigOpts } from "../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
