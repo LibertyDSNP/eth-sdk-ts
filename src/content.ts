@@ -17,7 +17,7 @@ import {
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
 } from "./core/announcements";
-import { isDSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
+import { isDSNPAnnouncementId, DSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
 import { hash } from "./core/utilities";
 
 /**
@@ -81,7 +81,7 @@ export const broadcast = async (
  */
 export const reply = async (
   contentObject: ActivityContent,
-  inReplyTo: string,
+  inReplyTo: DSNPAnnouncementId,
   opts?: ConfigOpts
 ): Promise<SignedReplyAnnouncement> => {
   if (!isDSNPAnnouncementId(inReplyTo)) throw new InvalidAnnouncementIdentifierError(inReplyTo);
@@ -120,7 +120,7 @@ export const reply = async (
  */
 export const react = async (
   emoji: string,
-  inReplyTo: string,
+  inReplyTo: DSNPAnnouncementId,
   opts?: ConfigOpts
 ): Promise<SignedReactionAnnouncement> => {
   const currentFromId = requireGetCurrentFromId(opts);
