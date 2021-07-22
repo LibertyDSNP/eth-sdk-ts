@@ -34,6 +34,8 @@
 ### Added
 - sdk.createPublication
 - Ability to remove delegate
+- Ability to get DSNPAddDelegate logs
+- Ability to get DSNPRemoveDelegate logs
 ### Removed
 -
 ### Fixed

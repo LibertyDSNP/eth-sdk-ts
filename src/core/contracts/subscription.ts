@@ -18,7 +18,10 @@ export interface BatchPublicationCallbackArgs {
   fileHash: HexString;
 }
 
-interface ParsedLog {
+/**
+ * ParsedLog: interface for parsing log data
+ */
+export interface ParsedLog {
   fragment: ethers.utils.LogDescription;
   log: ethers.providers.Log;
 }
