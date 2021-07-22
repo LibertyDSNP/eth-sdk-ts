@@ -78,6 +78,8 @@ export const setConfig = (newConfig: Config): void => {
 /**
  * Get the provider and if undefined, throw.
  *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined provider
  */
@@ -90,6 +92,8 @@ export const requireGetProvider = (opts?: ConfigOpts): ethers.providers.Provider
 /**
  * Get the signer and if undefined, throw.
  *
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined signer
  */
@@ -102,6 +106,8 @@ export const requireGetSigner = (opts?: ConfigOpts): ethers.Signer => {
 /**
  * Get the store and if undefined, throw.
  *
+ * @throws {@link MissingStoreConfigError}
+ * Thrown if the store is not configured.
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined store
  */
@@ -114,6 +120,8 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 /**
  * Get the currentFromId and if undefined, throw.
  *
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the currentFromId is not configured.
  * @param opts - overrides for the current configuration.
  * @returns a never-undefined currentFromId
  */
