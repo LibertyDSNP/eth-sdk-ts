@@ -1,5 +1,6 @@
 import { DSNPAnnouncementId, DSNPUserId } from "../identifiers";
 import { HexString } from "../../types/Strings";
+import { epochMillisecs } from "../utilities/time";
 
 /**
  * AnnouncementType: an enum representing different types of DSNP announcements
@@ -123,6 +124,7 @@ export enum DSNPGraphChangeType {
 export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
   changeType: DSNPGraphChangeType;
   objectId: DSNPUserId;
+  createdAt: number;
 }
 
 /**
@@ -138,6 +140,7 @@ export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUser
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
   objectId: followeeId,
+  createdAt: epochMillisecs(),
 });
 
 /**
@@ -153,6 +156,7 @@ export const createUnfollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUs
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
   objectId: followeeId,
+  createdAt: epochMillisecs(),
 });
 
 /**
