@@ -1,3 +1,4 @@
+import { DSNPAnnouncementId, DSNPUserId } from "../identifiers";
 import { HexString } from "../../types/Strings";
 
 /**
@@ -21,14 +22,14 @@ export type Announcement = TypedAnnouncement<AnnouncementType>;
  */
 export interface TypedAnnouncement<T extends AnnouncementType> {
   announcementType: T;
-  fromId: string;
+  fromId: DSNPUserId;
 }
 
 /**
  * BroadcastAnnouncement: an Announcement of type Broadcast
  */
 export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementType.Broadcast> {
-  contentHash: string;
+  contentHash: HexString;
   url: string;
 }
 
@@ -41,7 +42,7 @@ export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementTyp
  * @param hash - The hash of the content at the URL
  * @returns A BroadcastAnnouncement
  */
-export const createBroadcast = (fromId: string, url: string, hash: HexString): BroadcastAnnouncement => ({
+export const createBroadcast = (fromId: DSNPUserId, url: string, hash: HexString): BroadcastAnnouncement => ({
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
   fromId,
@@ -53,7 +54,7 @@ export const createBroadcast = (fromId: string, url: string, hash: HexString): B
  */
 export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Reply> {
   contentHash: HexString;
-  inReplyTo: string;
+  inReplyTo: DSNPAnnouncementId;
   url: string;
 }
 
@@ -67,7 +68,12 @@ export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Re
  * @param inReplyTo - The DSNP Announcement Id of the parent announcement
  * @returns A ReplyAnnouncement
  */
-export const createReply = (fromId: string, url: string, hash: HexString, inReplyTo: string): ReplyAnnouncement => ({
+export const createReply = (
+  fromId: DSNPUserId,
+  url: string,
+  hash: HexString,
+  inReplyTo: DSNPAnnouncementId
+): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
   fromId,
@@ -80,7 +86,7 @@ export const createReply = (fromId: string, url: string, hash: HexString, inRepl
  */
 export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType.Reaction> {
   emoji: string;
-  inReplyTo: string;
+  inReplyTo: DSNPAnnouncementId;
 }
 
 /**
@@ -92,7 +98,11 @@ export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType
  * @param   inReplyTo - The DSNP Announcement Id of the parent announcement
  * @returns A ReactionAnnouncement
  */
-export const createReaction = (fromId: string, emoji: string, inReplyTo: string): ReactionAnnouncement => ({
+export const createReaction = (
+  fromId: DSNPUserId,
+  emoji: string,
+  inReplyTo: DSNPAnnouncementId
+): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,
   emoji,
   fromId,
@@ -112,7 +122,7 @@ export enum DSNPGraphChangeType {
  */
 export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
   changeType: DSNPGraphChangeType;
-  objectId: string;
+  objectId: DSNPUserId;
 }
 
 /**
@@ -123,7 +133,7 @@ export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementT
  * @param   followeeId - The id of the user to follow
  * @returns A GraphChangeAnnouncement
  */
-export const createFollowGraphChange = (fromId: string, followeeId: string): GraphChangeAnnouncement => ({
+export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUserId): GraphChangeAnnouncement => ({
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
@@ -138,7 +148,7 @@ export const createFollowGraphChange = (fromId: string, followeeId: string): Gra
  * @param   followeeId - The id of the user to unfollow
  * @returns A GraphChangeAnnouncement
  */
-export const createUnfollowGraphChange = (fromId: string, followeeId: string): GraphChangeAnnouncement => ({
+export const createUnfollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUserId): GraphChangeAnnouncement => ({
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
@@ -149,7 +159,7 @@ export const createUnfollowGraphChange = (fromId: string, followeeId: string): G
  * ProfileAnnouncement: an Announcement of type Profile
  */
 export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.Profile> {
-  contentHash: string;
+  contentHash: HexString;
   url: string;
 }
 
@@ -161,7 +171,7 @@ export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.
  * @param   hash   - The hash of the content at the URL
  * @returns A ProfileAnnouncement
  */
-export const createProfile = (fromId: string, url: string, hash: HexString): ProfileAnnouncement => ({
+export const createProfile = (fromId: DSNPUserId, url: string, hash: HexString): ProfileAnnouncement => ({
   announcementType: AnnouncementType.Profile,
   contentHash: hash,
   fromId,
