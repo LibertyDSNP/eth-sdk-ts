@@ -1,4 +1,4 @@
-import { ContractTransaction } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
@@ -18,10 +18,13 @@ import {
 } from "./utilities";
 import { getContractAddress } from "./contract";
 import { Provider } from "@ethersproject/providers";
+import { ParsedLog } from "./subscription";
+import { hash } from "../utilities";
 const IDENTITY_CLONE_FACTORY_CONTRACT = "IdentityCloneFactory";
 const IDENTITY_CONTRACT = "Identity";
 const BEACON_FACTORY_CONTRACT = "BeaconFactory";
 const BEACON_CONTRACT = "Beacon";
+const IDENTITY_DECODER = new ethers.utils.Interface(Identity__factory.abi);
 
 /**
  * DelegationRole represents a struct for adding roles delegates
@@ -195,6 +198,19 @@ const getBeaconAddress = async (opts?: ConfigOpts): Promise<EthereumAddress> => 
   return address;
 };
 
+interface DelegateAddLogData {
+  name: string;
+  identityAddress: HexString;
+  delegate: HexString;
+  blockNumber: number;
+}
+
+interface DelegateRemoveLogData extends DelegateAddLogData {
+  endBlock: number;
+}
+
+type DelegateLogData = DelegateAddLogData | DelegateRemoveLogData;
+
 /**
  * DelegateAdd represents a struct for adding delegates
  */
@@ -358,4 +374,79 @@ export const removeDelegate = async (
   const contract = await Identity__factory.connect(contractAddress, provider);
 
   return contract.connect(signer).delegateRemove(address, endBlock);
+};
+
+/**
+ * getAddDelegateLogs() Retrieves event filter for DSNPAddDelegate event
+ *
+ * @param ethereumAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getAddDelegateLogData = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<DelegateAddLogData[]> => {
+  const eventSignature = hash("DSNPAddDelegate(address,uint8)");
+  const addDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
+  const addDelegateLogData: DelegateAddLogData[] = siftDelegateLogs(addDelegateLogs);
+
+  return addDelegateLogData;
+};
+
+/**
+ * getRemoveDelegateLogs() Retrieves event filter for DSNPRemoveDelegate event
+ *
+ * @param ethereumAddress - Address to filter on
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns DSNPBatch event filter
+ */
+export const getRemoveDelegateLogData = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<DelegateRemoveLogData[]> => {
+  const eventSignature = hash("DSNPRemoveDelegate(address,uint64)");
+  const removeDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
+  const removeDelegateLogData = siftDelegateLogs(removeDelegateLogs) as DelegateRemoveLogData[];
+
+  return removeDelegateLogData;
+};
+
+const getDelegateLogs = async (ethereumAddress: EthereumAddress, eventSignature: HexString, opts?: ConfigOpts) => {
+  const provider = requireGetProvider(opts);
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    topics: [eventSignature, ethers.utils.hexZeroPad(ethereumAddress, 32)],
+    fromBlock: 0,
+  });
+
+  return logs.map((log: ethers.providers.Log) => {
+    const fragment = IDENTITY_DECODER.parseLog(log);
+    return { fragment, log: log };
+  });
+};
+
+/**
+ * siftDelegateLogs() Sifts data from delegate add and remove logs
+ *
+ * @param logs - delegate event logs
+ * @returns DelegateLogData
+ */
+const siftDelegateLogs = (logs: ParsedLog[]): DelegateLogData[] => {
+  return logs.map((item: ParsedLog) => {
+    const {
+      fragment: {
+        args: { delegate, endBlock },
+        name,
+      },
+      log: { address, blockNumber },
+    } = item;
+
+    return {
+      name,
+      identityAddress: address,
+      delegate: delegate,
+      blockNumber,
+      ...(endBlock !== undefined ? { endBlock: endBlock.toNumber() } : {}),
+    };
+  });
 };

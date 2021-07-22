@@ -1,7 +1,7 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
-import { DelegateAddParams, removeDelegate } from "./identity";
+import { DelegateAddParams, getAddDelegateLogData, getRemoveDelegateLogData, removeDelegate } from "./identity";
 
 import * as identity from "./identity";
 const {
@@ -328,6 +328,78 @@ describe("identity", () => {
       expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, currentBlockNumber)).toBeTruthy();
       await removeDelegate(contractAddress, NON_OWNER, currentBlockNumber + 10);
       expect(await isAuthorizedTo(NON_OWNER, contractAddress, 2, currentBlockNumber + 10)).toBeFalsy();
+    });
+  });
+
+  describe("#getRemoveDelegateLogData", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+    let blockNumberForRemoval: number;
+
+    describe("when no logs have been emitted for delegate", () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+
+      it("return an empty array", async () => {
+        expect(await getRemoveDelegateLogData(fakeAddress)).toEqual([]);
+      });
+    });
+
+    describe("when logs have been emmited for delegate", () => {
+      beforeAll(async () => {
+        contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+        contractAddress = identityContract.address;
+
+        await upsertDelegate(contractAddress, NON_OWNER, 0x1);
+        blockNumberForRemoval = (await provider.getBlockNumber()) + 5;
+        await removeDelegate(contractAddress, NON_OWNER, blockNumberForRemoval);
+      });
+
+      it("returns logs for delegate removal", async () => {
+        const expected = {
+          endBlock: blockNumberForRemoval,
+          delegate: ethers.utils.getAddress(NON_OWNER),
+          name: "DSNPRemoveDelegate",
+          identityAddress: contractAddress,
+          blockNumber: expect.any(Number),
+        };
+
+        expect(await getRemoveDelegateLogData(NON_OWNER)).toContainEqual(expected);
+      });
+    });
+  });
+
+  describe("#getAddDelegateLogData", () => {
+    let contractAddress: EthereumAddress;
+    let contractOwner: EthereumAddress;
+
+    describe("when no logs have been emitted for delegate", () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+
+      it("return an empty array", async () => {
+        expect(await getAddDelegateLogData(fakeAddress)).toEqual([]);
+      });
+    });
+
+    describe("when logs have been emmited for delegate", () => {
+      beforeAll(async () => {
+        contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+        contractAddress = identityContract.address;
+      });
+
+      it("returns logs for delegate add", async () => {
+        const expected = {
+          delegate: ethers.utils.getAddress(contractOwner),
+          name: "DSNPAddDelegate",
+          identityAddress: contractAddress,
+          blockNumber: expect.any(Number),
+        };
+
+        expect(await getAddDelegateLogData(contractOwner)).toContainEqual(expected);
+      });
     });
   });
 });
