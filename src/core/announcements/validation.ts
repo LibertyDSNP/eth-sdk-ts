@@ -61,7 +61,7 @@ export const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnou
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isGraphChangeType(obj["changeType"])) return false;
   if (!isDSNPUserId(obj["objectId"])) return false;
-
+  if (!isNumber(obj["createdAt"])) return false;
   return true;
 };
 

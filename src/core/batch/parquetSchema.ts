@@ -72,6 +72,7 @@ export const GraphChangeSchema = {
   fromId: { type: "BYTE_ARRAY" },
   changeType: { type: "INT32" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**

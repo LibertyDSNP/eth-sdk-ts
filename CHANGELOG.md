@@ -36,6 +36,7 @@
 - Ability to remove delegate
 - Ability to get DSNPAddDelegate logs
 - Ability to get DSNPRemoveDelegate logs
+- createdAt field to GraphChange announcement type, plus update to parquet schema. 
 ### Removed
 -
 ### Fixed
