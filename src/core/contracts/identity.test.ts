@@ -1,7 +1,14 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
-import { DelegateAddParams, getAddDelegateLogData, getRemoveDelegateLogData, removeDelegate } from "./identity";
+import {
+  DelegateAddParams,
+  getDelegateIdentitiesFor,
+  removeDelegate,
+  resolveDelegatesFor,
+  DelegateLogData,
+  getAllDelegateLogsFor,
+} from "./identity";
 
 import * as identity from "./identity";
 const {
@@ -20,9 +27,11 @@ const {
 
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
-import { setupSnapshot } from "../../test/hardhatRPC";
+import { revertHardhat, setupSnapshot, snapshotHardhat } from "../../test/hardhatRPC";
 import { Identity__factory } from "../../types/typechain";
 import { signEIP712Message } from "../../test/helpers/EIP712";
+import { getSignerForAccount } from "../../test/testAccounts";
+import { mineBlocks } from "../../test/utilities";
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
@@ -331,59 +340,368 @@ describe("identity", () => {
     });
   });
 
-  describe("#getRemoveDelegateLogData", () => {
-    let contractAddress: EthereumAddress;
-    let contractOwner: EthereumAddress;
-    let blockNumberForRemoval: number;
+  describe("#getDelegateIdentitiesFor", () => {
+    describe("when public address is not associated to an identity contract", () => {
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
 
-    describe("when no logs have been emitted for delegate", () => {
-      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+      beforeAll(async () => {
+        const signer = getSignerForAccount(10);
+        const contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+      });
 
-      it("return an empty array", async () => {
-        expect(await getRemoveDelegateLogData(fakeAddress)).toEqual([]);
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      it("returns empty list of identities", async () => {
+        const fakeAddress = "0x1ea32de10d5a18e55debaf379b26cc0c6952b168";
+
+        const result = await getDelegateIdentitiesFor(fakeAddress);
+
+        expect(result).toEqual([]);
       });
     });
 
-    describe("when logs have been emmited for delegate", () => {
+    describe("when a public address is associated (belongs) to a single identity contract", () => {
+      let contractOwner: EthereumAddress;
+      let contractAddress: EthereumAddress;
+      let signer: ethers.Signer;
+
       beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      beforeAll(async () => {
+        signer = getSignerForAccount(10);
         contractOwner = await signer.getAddress();
+
         const identityContract = await new Identity__factory(signer).deploy(contractOwner);
         await identityContract.deployed();
         contractAddress = identityContract.address;
-
-        await upsertDelegate(contractAddress, NON_OWNER, 0x1);
-        blockNumberForRemoval = (await provider.getBlockNumber()) + 5;
-        await removeDelegate(contractAddress, NON_OWNER, blockNumberForRemoval);
       });
 
-      it("returns logs for delegate removal", async () => {
-        const expected = {
-          endBlock: blockNumberForRemoval,
-          delegate: ethers.utils.getAddress(NON_OWNER),
-          name: "DSNPRemoveDelegate",
-          identityAddress: contractAddress,
-          blockNumber: expect.any(Number),
-        };
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
 
-        expect(await getRemoveDelegateLogData(NON_OWNER)).toContainEqual(expected);
+      it("returns one identity contract address associated with public address", async () => {
+        const result = await getDelegateIdentitiesFor(contractOwner);
+
+        expect(result.length).toBe(1);
+        expect(result).toEqual([contractAddress]);
+      });
+
+      describe("and an update is made to change permission", () => {
+        beforeEach(async () => {
+          await upsertDelegate(contractAddress, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns one identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(1);
+          expect(result).toEqual([contractAddress]);
+        });
+      });
+
+      describe("and delegate is removed immediately", () => {
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeAll(async () => {
+          await removeDelegate(contractAddress, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns zero identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(0);
+          expect(result).toEqual([]);
+        });
+      });
+
+      describe("and delegate is scheduled to be removed after 10 blocks", () => {
+        const delegateBlockPeriod = 10;
+
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeAll(async () => {
+          const curentBlockNumber = await provider.getBlockNumber();
+          const blockRemovalNumber = curentBlockNumber + delegateBlockPeriod;
+          await removeDelegate(contractAddress, contractOwner, blockRemovalNumber, { signer: signer });
+        });
+
+        describe("and is prior the schedule removal", () => {
+          it("continues to returns identity contract address associated with public address", async () => {
+            const result = await getDelegateIdentitiesFor(contractOwner);
+
+            expect(result.length).toBe(1);
+            expect(result).toEqual([contractAddress]);
+          });
+        });
+
+        describe("and is past the schedule removal", () => {
+          beforeEach(async () => {
+            await mineBlocks(delegateBlockPeriod, provider);
+          });
+
+          it("continues to returns identity contract address associated with public address", async () => {
+            const result = await getDelegateIdentitiesFor(contractOwner);
+            expect(result.length).toBe(0);
+            expect(result).toEqual([]);
+          });
+        });
+      });
+    });
+
+    describe("when public address is associated to many identities", () => {
+      let contractOwner: EthereumAddress;
+      let contractAddressOne: EthereumAddress;
+      let contractAddressTwo: EthereumAddress;
+      let signer: ethers.Signer;
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      beforeEach(async () => {
+        signer = getSignerForAccount(1);
+        contractOwner = await signer.getAddress();
+        const identityContractOne = await new Identity__factory(signer).deploy(contractOwner);
+        const identityContractTwo = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContractOne.deployed();
+        await identityContractTwo.deployed();
+        contractAddressOne = identityContractOne.address;
+        contractAddressTwo = identityContractTwo.address;
+      });
+
+      it("returns two identity contract address associated with public address", async () => {
+        const result = await getDelegateIdentitiesFor(contractOwner);
+
+        expect(result.length).toBe(2);
+        expect(result).toEqual([contractAddressOne, contractAddressTwo]);
+      });
+
+      describe("and an update is made to change permission to one of the identity contracts", () => {
+        beforeEach(async () => {
+          await upsertDelegate(contractAddressOne, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(2);
+          expect(result).toEqual([contractAddressOne, contractAddressTwo]);
+        });
+      });
+
+      describe("when a delegate is removed", () => {
+        beforeEach(async () => {
+          await removeDelegate(contractAddressOne, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns one identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(1);
+          expect(result).toEqual([contractAddressTwo]);
+        });
       });
     });
   });
 
-  describe("#getAddDelegateLogData", () => {
-    let contractAddress: EthereumAddress;
-    let contractOwner: EthereumAddress;
+  describe("#resolveDelegatesFor", () => {
+    describe("when logs contain only DSNPAddDelegate data", () => {
+      const provider = ({
+        getBlockNumber: jest.fn().mockResolvedValue(100),
+      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
 
-    describe("when no logs have been emitted for delegate", () => {
-      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+      const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+      const delegateLogData: DelegateLogData[] = [
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 330,
+        },
+      ];
 
-      it("return an empty array", async () => {
-        expect(await getAddDelegateLogData(fakeAddress)).toEqual([]);
+      it("returns delegate log data for one", async () => {
+        expect(await resolveDelegatesFor(delegateAddress, delegateLogData, { provider: provider })).toEqual(
+          delegateLogData
+        );
       });
     });
 
-    describe("when logs have been emmited for delegate", () => {
+    describe("when adding a delegate is set to be removed in a future block date", () => {
+      const provider = ({
+        getBlockNumber: jest.fn().mockResolvedValue(332),
+      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+
+      const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+      const delegateLogData: DelegateLogData[] = [
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 330,
+        },
+        {
+          name: "DSNPRemoveDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 331,
+          endBlock: 400,
+        },
+      ];
+
+      it("returns delegate log data", async () => {
+        const result = await resolveDelegatesFor(delegateAddress, delegateLogData, { provider: provider });
+        expect(result).toEqual([delegateLogData[1]]);
+      });
+    });
+
+    describe("when a delegate is removed", () => {
+      const provider = ({
+        getBlockNumber: jest.fn().mockResolvedValue(333),
+      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+
+      it("returns zero delegate log data", async () => {
+        const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+        const delegateLogData: DelegateLogData[] = [
+          {
+            name: "DSNPAddDelegate",
+            identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+            delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            blockNumber: 330,
+          },
+          {
+            name: "DSNPRemoveDelegate",
+            identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+            delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+            blockNumber: 331,
+            endBlock: 0,
+          },
+        ];
+
+        expect(await resolveDelegatesFor(delegateAddress, delegateLogData, { provider: provider })).toEqual([]);
+      });
+    });
+
+    describe("when delegate is added removed and re-added", () => {
+      const provider = ({
+        getBlockNumber: jest.fn().mockResolvedValue(400),
+      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+
+      const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+
+      const delegateLogData: DelegateLogData[] = [
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 330,
+        },
+        {
+          name: "DSNPRemoveDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 331,
+          endBlock: 333,
+        },
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 332,
+        },
+      ];
+
+      it("returns deleate log data with with re-added delegate", async () => {
+        expect(await resolveDelegatesFor(delegateAddress, delegateLogData, { provider: provider })).toEqual([
+          delegateLogData[2],
+        ]);
+      });
+    });
+
+    describe("when log data contains multiple indentities", () => {
+      const provider = ({
+        getBlockNumber: jest.fn().mockResolvedValue(350),
+      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+
+      const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
+
+      const delegateLogData: DelegateLogData[] = [
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 330,
+        },
+        {
+          name: "DSNPAddDelegate",
+          identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 332,
+        },
+        {
+          name: "DSNPRemoveDelegate",
+          identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
+          delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+          blockNumber: 333,
+          endBlock: 400,
+        },
+      ];
+
+      it("returns delegate data with two identities addreses", async () => {
+        const result = await resolveDelegatesFor(delegateAddress, delegateLogData, { provider: provider });
+        expect(result).toEqual([delegateLogData[0], delegateLogData[2]]);
+      });
+    });
+  });
+
+  describe("#getAllDelegateLogsFor", () => {
+    let contractOwner: EthereumAddress;
+    let contractAddress: EthereumAddress;
+
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
+    });
+
+    describe("when there are no logs (delegates) associated with address", () => {
+      const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+
+      it("return an empty array", async () => {
+        expect(await getAllDelegateLogsFor(fakeAddress)).toEqual([]);
+      });
+    });
+
+    describe("when there are logs (delegates) associated with address", () => {
       beforeAll(async () => {
+        const signer = getSignerForAccount(3);
         contractOwner = await signer.getAddress();
         const identityContract = await new Identity__factory(signer).deploy(contractOwner);
         await identityContract.deployed();
@@ -391,14 +709,20 @@ describe("identity", () => {
       });
 
       it("returns logs for delegate add", async () => {
-        const expected = {
-          delegate: ethers.utils.getAddress(contractOwner),
-          name: "DSNPAddDelegate",
-          identityAddress: contractAddress,
-          blockNumber: expect.any(Number),
-        };
+        const expected = [
+          expect.objectContaining({
+            fragment: expect.objectContaining({
+              args: expect.objectContaining({ delegate: contractOwner }),
+              name: expect.stringMatching(/DSNPAddDelegate/),
+            }),
+            log: expect.objectContaining({
+              address: contractAddress,
+              blockNumber: expect.any(Number),
+            }),
+          }),
+        ];
 
-        expect(await getAddDelegateLogData(contractOwner)).toContainEqual(expected);
+        expect(await getAllDelegateLogsFor(contractOwner)).toEqual(expect.arrayContaining(expected));
       });
     });
   });
