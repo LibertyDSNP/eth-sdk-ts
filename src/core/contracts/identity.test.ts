@@ -1,7 +1,13 @@
 import { ContractReceipt, ethers, BigNumber } from "ethers";
 import { EthereumAddress } from "../../types/Strings";
 import { getContractAddress, findEvent } from "./contract";
-import { DelegateAddParams, getAddDelegateLogData, getRemoveDelegateLogData, removeDelegate } from "./identity";
+import {
+  DelegateAddParams,
+  getAddDelegateLogData,
+  getDelegateIdentitiesFor,
+  getRemoveDelegateLogData,
+  removeDelegate,
+} from "./identity";
 
 import * as identity from "./identity";
 const {
@@ -20,9 +26,10 @@ const {
 
 import { EthAddressRegex } from "../../test/matchers";
 import { setupConfig } from "../../test/sdkTestConfig";
-import { setupSnapshot } from "../../test/hardhatRPC";
+import { revertHardhat, setupSnapshot, snapshotHardhat } from "../../test/hardhatRPC";
 import { Identity__factory } from "../../types/typechain";
 import { signEIP712Message } from "../../test/helpers/EIP712";
+import { getSignerForAccount } from "../../test/testAccounts";
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
@@ -399,6 +406,163 @@ describe("identity", () => {
         };
 
         expect(await getAddDelegateLogData(contractOwner)).toContainEqual(expected);
+      });
+    });
+  });
+
+  describe("#getDelegateIdentitiesFrom", () => {
+    describe("when public address is not associated to an identity contract", () => {
+      it("returns empty list of identities", async () => {
+        const fakeAddress = "0x1ea32de10d5a18e55debaf379b26cc0c6952b168";
+
+        const result = await getDelegateIdentitiesFor(fakeAddress);
+
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe("when a public address is associated (belongs) to a single identity contract", () => {
+      let contractOwner: EthereumAddress;
+      let contractAddress: EthereumAddress;
+      let signer: ethers.Signer;
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      beforeAll(async () => {
+        signer = getSignerForAccount(10);
+        contractOwner = await signer.getAddress();
+
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+        contractAddress = identityContract.address;
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      it("returns one identity contract address associated with public address", async () => {
+        const result = await getDelegateIdentitiesFor(contractOwner);
+
+        expect(result.length).toBe(1);
+        expect(result).toEqual([contractAddress]);
+      });
+
+      describe("and an update is made to change permission", () => {
+        beforeEach(async () => {
+          await upsertDelegate(contractAddress, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns one identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(1);
+          expect(result).toEqual([contractAddress]);
+        });
+      });
+
+      describe("and delegate is removed immediately", () => {
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeEach(async () => {
+          await removeDelegate(contractAddress, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("returns zero identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(0);
+          expect(result).toEqual([]);
+        });
+      });
+
+      describe("and delegate is scheduled to be removed after 10 blocks", () => {
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeEach(async () => {
+          const curentBlockNumber = provider.blockNumber;
+          await removeDelegate(contractAddress, contractOwner, curentBlockNumber + 0x10, { signer: signer });
+        });
+      });
+
+      it("continues to returns identity contract address associated with public address", async () => {
+        const result = await getDelegateIdentitiesFor(contractOwner);
+
+        expect(result.length).toBe(1);
+        expect(result).toEqual([contractAddress]);
+      });
+    });
+
+    describe("when public address is associatted to many identities", () => {
+      let contractOwner: EthereumAddress;
+      let contractAddressOne: EthereumAddress;
+      let contractAddressTwo: EthereumAddress;
+      let signer: ethers.Signer;
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      beforeEach(async () => {
+        signer = getSignerForAccount(1);
+        contractOwner = await signer.getAddress();
+        const identityContractOne = await new Identity__factory(signer).deploy(contractOwner);
+        const identityContractTwo = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContractOne.deployed();
+        await identityContractTwo.deployed();
+        contractAddressOne = identityContractOne.address;
+        contractAddressTwo = identityContractTwo.address;
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      it("returns two identity contract address associated with public address", async () => {
+        const result = await getDelegateIdentitiesFor(contractOwner);
+
+        expect(result.length).toBe(2);
+        expect(result).toEqual([contractAddressOne, contractAddressTwo]);
+      });
+
+      describe("and an update is made to change permission to one of the identity contracts", () => {
+        beforeEach(async () => {
+          await upsertDelegate(contractAddressOne, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("##REWORD THIS --returns identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(2);
+          expect(result).toEqual([contractAddressOne, contractAddressTwo]);
+        });
+      });
+
+      describe("when a delegate is removed", () => {
+        beforeEach(async () => {
+          await removeDelegate(contractAddressOne, contractOwner, 0x1, { signer: signer });
+        });
+
+        it("##REWORD THIS --returns one identity contract address associated with public address", async () => {
+          const result = await getDelegateIdentitiesFor(contractOwner);
+
+          expect(result.length).toBe(1);
+          expect(result).toEqual([contractAddressTwo]);
+        });
       });
     });
   });

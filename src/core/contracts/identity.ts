@@ -412,6 +412,57 @@ export const getRemoveDelegateLogData = async (
   return removeDelegateLogData;
 };
 
+/**
+ * getDelegateIdentitiesFor() Retrieves all active identities for an address
+ *
+ * @param ethereumAddress - The address to find all active identities associated to it
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const getDelegateIdentitiesFor = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<EthereumAddress[]> => {
+  const provider = requireGetProvider(opts);
+
+  const currentBlockNumber = await provider.getBlockNumber();
+  const isActiveDelegate = async (endBlock: number): Promise<boolean> => {
+    return endBlock >= currentBlockNumber;
+  };
+
+  const removeDelegateLogData = (await getRemoveDelegateLogData(ethereumAddress, opts)).filter(
+    (data) => data.delegate === ethereumAddress && isActiveDelegate(data.endBlock)
+  );
+
+  const addDelegateLogData = (await getAddDelegateLogData(ethereumAddress, opts)).filter(
+    (data) => data.delegate === ethereumAddress
+  );
+
+  const delegateDataLogs: DelegateLogData[] = [...removeDelegateLogData, ...addDelegateLogData].sort(
+    (_a, _b) => _a.blockNumber - _b.blockNumber
+  );
+
+  const groupedByIdentityAddress = groupByIdentityAddress(delegateDataLogs);
+
+  const filterLogs = <EthereumAddress[]>Object.values(groupedByIdentityAddress)
+    .map((log: DelegateLogData[]) => log.pop())
+    .filter((data: DelegateLogData | undefined) => data !== undefined)
+    .map((data: DelegateLogData | undefined) => data?.identityAddress);
+
+  return filterLogs;
+};
+
+const groupByIdentityAddress = (delegateLogs: DelegateLogData[]): Record<string, DelegateLogData[]> => {
+  return delegateLogs.reduce((acc: unknown | any, current: DelegateLogData) => {
+    if (!acc[current.identityAddress]) {
+      acc[current.identityAddress] = [];
+    }
+
+    acc[current.identityAddress].push(current);
+
+    return acc;
+  }, {});
+};
+
 const getDelegateLogs = async (ethereumAddress: EthereumAddress, eventSignature: HexString, opts?: ConfigOpts) => {
   const provider = requireGetProvider(opts);
   const logs: ethers.providers.Log[] = await provider.getLogs({
