@@ -123,6 +123,7 @@ export enum DSNPGraphChangeType {
 export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
   changeType: DSNPGraphChangeType;
   objectId: DSNPUserId;
+  createdAt: number;
 }
 
 /**
@@ -138,6 +139,7 @@ export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUser
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
   objectId: followeeId,
+  createdAt: Date.now(),
 });
 
 /**
@@ -153,6 +155,7 @@ export const createUnfollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUs
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
   objectId: followeeId,
+  createdAt: Date.now(),
 });
 
 /**
