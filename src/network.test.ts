@@ -37,7 +37,7 @@ describe("network", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromId: "0x0",
           signer,
           provider,
         });
@@ -47,7 +47,7 @@ describe("network", () => {
         const announcement = await network.follow(registerId);
 
         expect(announcement).toMatchObject({
-          fromId: "dsnp://0x0000000000000000",
+          fromId: "0x0",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
           objectId: registerId,
@@ -58,7 +58,7 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromId: "0x0",
           signer: undefined,
           provider,
         });
@@ -84,7 +84,7 @@ describe("network", () => {
     describe("with a valid signer and user id", () => {
       beforeEach(() => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromId: "0x0",
           signer,
           provider,
         });
@@ -94,7 +94,7 @@ describe("network", () => {
         const announcement = await network.unfollow(registerId);
 
         expect(announcement).toMatchObject({
-          fromId: "dsnp://0x0000000000000000",
+          fromId: "0x0",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Unfollow,
           objectId: registerId,
@@ -105,7 +105,7 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromId: "0x0",
           signer: undefined,
           provider,
         });

@@ -69,7 +69,7 @@ describe("handles", () => {
       expect(result).not.toBeNull();
       if (result === null) throw new Error();
       expect(result.contractAddr).toMatch(EthAddressRegex);
-      expect(result.dsnpUserId).toEqual("dsnp://0x00000000000003e8");
+      expect(result.dsnpUserId).toEqual("0x03e8");
       expect(result.handle).toEqual("taken");
     });
 
@@ -81,23 +81,23 @@ describe("handles", () => {
 
   describe("#resolveId", () => {
     it("returns null for unfound", async () => {
-      const result = await resolveId("dsnp://0x0000000000001388");
+      const result = await resolveId("0x1388");
       expect(result).toBeNull();
     });
 
     it("Handles the case of a single event with number", async () => {
-      const result = await resolveId("dsnp://0x00000000000003e8");
+      const result = await resolveId("0x03e8");
       expect(result?.handle).toEqual("taken");
     });
 
     it("Handles the case of a single event with hex", async () => {
-      const result = await resolveId("dsnp://0x0000000000000" + Number(1001).toString(16));
+      const result = await resolveId("0x0" + Number(1001).toString(16));
       expect(result?.handle).toEqual("taken1");
     });
 
     it("Handles the case of multiple events", async () => {
       await registry.changeHandle("taken", "new-taken");
-      const result = await resolveId("dsnp://0x00000000000003e8");
+      const result = await resolveId("0x03e8");
 
       expect(result?.handle).toEqual("new-taken");
     });

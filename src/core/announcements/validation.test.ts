@@ -4,7 +4,7 @@ import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
 import { createFollowGraphChange } from "./factories";
-import { buildDSNPAnnouncementId, DSNPUserId } from "../identifiers";
+import { buildDSNPAnnouncementUri, DSNPUserId } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import TestStore from "../../test/testStore";
@@ -65,14 +65,14 @@ describe("validation", () => {
       });
 
       it("returns false for graph change announcements with invalid fromIds", async () => {
-        const announcement = createFollowGraphChange("dsnp://not a valid id", followeeId);
+        const announcement = createFollowGraphChange("not a valid id", followeeId);
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("returns false for graph change announcements with invalid objectIds", async () => {
-        const announcement = createFollowGraphChange(userId, "dsnp://not a valid id");
+        const announcement = createFollowGraphChange(userId, "not a valid id");
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -97,7 +97,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const replyAnnouncement = await reply(
           noteContent,
-          buildDSNPAnnouncementId(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+          buildDSNPAnnouncementUri(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
         );
 
         expect(await isValidAnnouncement(replyAnnouncement)).toEqual(true);
@@ -111,7 +111,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const reactionAnnouncement = await react(
           "🎉",
-          buildDSNPAnnouncementId(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+          buildDSNPAnnouncementUri(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
         );
 
         expect(await isValidAnnouncement(reactionAnnouncement)).toEqual(true);

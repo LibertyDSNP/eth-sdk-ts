@@ -17,7 +17,7 @@ import {
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
 } from "./core/announcements";
-import { isDSNPAnnouncementId, DSNPAnnouncementId, InvalidAnnouncementIdentifierError } from "./core/identifiers";
+import { isDSNPAnnouncementUri, DSNPAnnouncementUri, InvalidAnnouncementUriError } from "./core/identifiers";
 import { hash } from "./core/utilities";
 
 /**
@@ -72,19 +72,19 @@ export const broadcast = async (
  * Thrown if the from id is not configured.
  * @throws {@link InvalidActivityContentError}
  * Thrown if the provided activity content object is not valid.
- * @throws {@link InvalidAnnouncementIdentifierError}
- * Thrown if the provided inReplyTo Announcement Id is invalid.
+ * @throws {@link InvalidAnnouncementUriError}
+ * Thrown if the provided inReplyTo Announcement Uri is invalid.
  * @param contentObject - The activity content object with which to reply
- * @param inReplyTo - The DSNP Announcement Id of the announcement that this announcement is in reply to
+ * @param inReplyTo - The DSNP Announcement Uri of the announcement that this announcement is in reply to
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed Reply Announcement ready for inclusion in a batch
  */
 export const reply = async (
   contentObject: ActivityContent,
-  inReplyTo: DSNPAnnouncementId,
+  inReplyTo: DSNPAnnouncementUri,
   opts?: ConfigOpts
 ): Promise<SignedReplyAnnouncement> => {
-  if (!isDSNPAnnouncementId(inReplyTo)) throw new InvalidAnnouncementIdentifierError(inReplyTo);
+  if (!isDSNPAnnouncementUri(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
 
   if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
@@ -111,16 +111,16 @@ export const reply = async (
  * Thrown if the signer is not configured.
  * @throws {@link MissingFromIdConfigError}
  * Thrown if the from id is not configured.
- * @throws {@link InvalidAnnouncementIdentifierError}
+ * @throws {@link InvalidAnnouncementUriError}
  * Thrown if the provided inReplyTo DSNP Message Id is invalid.
  * @param emoji - The emoji with which to react
- * @param inReplyTo - The DSNP Announcement Id of the announcement to which to react
+ * @param inReplyTo - The DSNP Announcement Uri of the announcement to which to react
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed Reaction Announcement ready for inclusion in a batch
  */
 export const react = async (
   emoji: string,
-  inReplyTo: DSNPAnnouncementId,
+  inReplyTo: DSNPAnnouncementUri,
   opts?: ConfigOpts
 ): Promise<SignedReactionAnnouncement> => {
   const currentFromId = requireGetCurrentFromId(opts);

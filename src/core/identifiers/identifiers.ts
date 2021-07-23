@@ -4,29 +4,36 @@ import { isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
 
 /**
- * DSNPAnnouncementId represents a DSNP Announcement Id following the DSNP
- * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
+ * DSNPAnnouncementUri represents a DSNP Announcement Uri following the DSNP
+ * [Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Identifiers.md)
  * specification.
  */
-export type DSNPAnnouncementId = string;
+export type DSNPAnnouncementUri = string;
 
 /**
- * isDSNPAnnouncementId() validates a given string as a DSNPAnnouncementId.
+ * isDSNPAnnouncementUri() validates a given string as a DSNPAnnouncementUri.
  *
  * @param id - The object to validate
- * @returns True of false depending on whether the string is a valid DSNPAnnouncementId
+ * @returns True of false depending on whether the string is a valid DSNPAnnouncementUri
  */
-export const isDSNPAnnouncementId = (id: unknown): id is DSNPAnnouncementId => {
+export const isDSNPAnnouncementUri = (id: unknown): id is DSNPAnnouncementUri => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/0x[0-9A-F]{16}\/0x[0-9A-F]{64}$/i) !== null;
+  return id.match(/^dsnp:\/\/0x[0-9A-F]{1,16}\/0x[0-9A-F]{64}$/i) !== null;
 };
 
 /**
  * DSNPUserId represents a DSNP user id following the DSNP
- * [Message Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Messages/Identifiers.md)
+ * [Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Identifiers.md)
  * specification.
  */
 export type DSNPUserId = string;
+
+/**
+ * DSNPUserUri represents a URI targeting a user following the DSNP
+ * [Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Identifiers.md)
+ * specification.
+ */
+export type DSNPUserUri = string;
 
 /**
  * isDSNPUserId validates a given object as a DSNPUserId.
@@ -36,7 +43,18 @@ export type DSNPUserId = string;
  */
 export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/0x[0-9A-F]{16}$/i) !== null;
+  return id.match(/^0x[0-9A-F]{1,16}$/i) !== null;
+};
+
+/**
+ * isDSNPUserUri validates a given object as a DSNPUserUri.
+ *
+ * @param uri - The object to validate
+ * @returns True of false depending on whether the string is a valid DSNPUserUri
+ */
+export const isDSNPUserUri = (uri: unknown): uri is DSNPUserUri => {
+  if (!isString(uri)) return false;
+  return uri.match(/^0x[0-9A-F]{1,16}$/i) !== null;
 };
 
 /**
@@ -48,30 +66,47 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
  */
 export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => {
   const hex = num.toHexString().replace("0x", "");
-  const paddingLength = 16 - hex.length;
-  const padding = Array(paddingLength + 1).join("0");
 
-  return `dsnp://0x${padding}${hex}`;
+  return `0x${hex}`;
 };
 
 /**
  * convertDSNPUserIdToBigNumber() converts DSNP user ids to ethers BigNumbers.
  *
- * @param dsnpUserId - The DSNP user id to convert
+ * @param userIdOrUri - The DSNP user id or uri to convert
  * @returns A big number representation of the same id
  */
-export const convertDSNPUserIdToBigNumber = (dsnpUserId: DSNPUserId): BigNumber => {
-  const hex = dsnpUserId.replace("dsnp://", "");
+export const convertDSNPUserIdToBigNumber = (userIdOrUri: DSNPUserId | DSNPUserUri): BigNumber => {
+  // Support DSNP User URI
+  const hex = userIdOrUri.replace("dsnp://", "");
   return BigNumber.from(hex);
 };
 
 /**
- * buildDSNPAnnouncementId() takes a DSNP user id and a content hash and returns
- * a DSNP announcement id.
+ * buildDSNPAnnouncementUri() takes a DSNP user id or uri and a content hash and returns
+ * a DSNP Announcement Uri.
  *
- * @param userId - The DSNP user id of the announcing user
+ * @param userIdOrUri - The DSNP user id or uri of the announcing user
  * @param contentHash - The content hash of the announcement posted by the user
- * @returns A DSNP announcement id for the given announcement
+ * @returns A DSNP Announcement Uri for the given announcement
  */
-export const buildDSNPAnnouncementId = (userId: DSNPUserId, contentHash: HexString): DSNPAnnouncementId =>
-  `${userId}/${contentHash}`;
+export const buildDSNPAnnouncementUri = (
+  userIdOrUri: DSNPUserId | DSNPUserUri,
+  contentHash: HexString
+): DSNPAnnouncementUri => {
+  const userId = userIdOrUri.replace("dsnp://", "");
+  return `dsnp://${userId}/${contentHash}`;
+};
+
+/**
+ * parseDSNPAnnouncementUri() takes a DSNP Announcement Uri and returns the userId and contentHash.
+ *
+ * @param announcementUri - A DSNP Announcement Id
+ * @returns the userId and contentHash from the Announcement Uri
+ */
+export const parseDSNPAnnouncementUri = (
+  announcementUri: DSNPAnnouncementUri
+): { userId: DSNPUserId; contentHash: HexString } => {
+  const [userId, contentHash] = announcementUri.replace("dsnp://", "").split("/");
+  return { userId, contentHash };
+};
