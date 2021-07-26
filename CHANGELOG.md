@@ -2,6 +2,8 @@
 
 ## Unreleased
 ### Changes
+- Updated announcement types to include createdAt type
+- Updated announcement factories to include optional createdAt param
 - Updated various types to specify DSNP ids instead of string
 - Updated various types to specify HexString instead of string
 - Updated all instances of keccak256 to use hash utilities instead
