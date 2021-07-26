@@ -23,6 +23,7 @@ export type Announcement = TypedAnnouncement<AnnouncementType>;
 export interface TypedAnnouncement<T extends AnnouncementType> {
   announcementType: T;
   fromId: DSNPUserId;
+  createdAt: number;
 }
 
 /**
@@ -45,6 +46,7 @@ export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementTyp
 export const createBroadcast = (fromId: DSNPUserId, url: string, hash: HexString): BroadcastAnnouncement => ({
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
+  createdAt: new Date().getTime(),
   fromId,
   url,
 });
@@ -76,6 +78,7 @@ export const createReply = (
 ): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
+  createdAt: new Date().getTime(),
   fromId,
   inReplyTo,
   url,
@@ -104,6 +107,7 @@ export const createReaction = (
   inReplyTo: DSNPAnnouncementId
 ): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,
+  createdAt: new Date().getTime(),
   emoji,
   fromId,
   inReplyTo,
@@ -138,6 +142,7 @@ export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUser
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
+  createdAt: new Date().getTime(),
   objectId: followeeId,
   createdAt: Date.now(),
 });
@@ -154,6 +159,7 @@ export const createUnfollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUs
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
+  createdAt: new Date().getTime(),
   objectId: followeeId,
   createdAt: Date.now(),
 });
@@ -177,6 +183,7 @@ export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.
 export const createProfile = (fromId: DSNPUserId, url: string, hash: HexString): ProfileAnnouncement => ({
   announcementType: AnnouncementType.Profile,
   contentHash: hash,
+  createdAt: new Date().getTime(),
   fromId,
   url,
 });
