@@ -159,7 +159,6 @@ export const createFollowGraphChange = (
   changeType: DSNPGraphChangeType.Follow,
   createdAt: createdAt || new Date().getTime(),
   objectId: followeeId,
-  createdAt: Date.now(),
 });
 
 /**
@@ -181,7 +180,6 @@ export const createUnfollowGraphChange = (
   changeType: DSNPGraphChangeType.Unfollow,
   createdAt: createdAt || new Date().getTime(),
   objectId: followeeId,
-  createdAt: Date.now(),
 });
 
 /**
