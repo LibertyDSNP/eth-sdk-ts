@@ -15,10 +15,7 @@ describe("announcement crypto", () => {
     });
 
     it("returns a valid signature for a valid private key and announcement", async () => {
-      const announcement = {
-        ...createBroadcast("1", "https://dsnp.org", "0x12345"),
-        createdAt: 1627324121352, // Fix the createdAt timestamp so the signature doesn't change
-      };
+      const announcement = createBroadcast("1", "https://dsnp.org", "0x12345", 1627324121352);
       const signedAnnouncement = await sign(announcement);
 
       expect(signedAnnouncement.signature).toEqual(
@@ -31,10 +28,7 @@ describe("announcement crypto", () => {
     const publicKey = "0x09A60F4A599d80e5dE935FE96c150eF24912D03f";
 
     it("returns the correct public key for a valid signature", () => {
-      const announcement = {
-        ...createBroadcast("1", "https://dsnp.org", "0x12345"),
-        createdAt: 1627324121352, // Fix the createdAt timestamp so the signature doesn't change
-      };
+      const announcement = createBroadcast("1", "https://dsnp.org", "0x12345", 1627324121352);
       const signature =
         "0xd33f14693809e6c7bcd5148cb585a63ce51d54bd229a7306dab22d3437b001140538494c1b7b19a2a806bcc6da26fc205b237cfe4a60dd738d994ec72e2a6a561c";
 
@@ -42,10 +36,7 @@ describe("announcement crypto", () => {
     });
 
     it("returns a different public key for an invalid signature", () => {
-      const announcement = {
-        ...createBroadcast("1", "https://dsnp.org", "0x12345"),
-        createdAt: 1627324121352, // Fix the createdAt timestamp so the signature doesn't change
-      };
+      const announcement = createBroadcast("1", "https://dsnp.org", "0x12345", 1627324121352);
       const signature =
         "0x168aeea67ab8e6b60a8d004ab57e17bab16dac135bcc9d9c8b34058808befd371e5d34ee6b1dc18b3d86e63765352286ba949a39cd458138cad7895b7faca2cb1c";
 
