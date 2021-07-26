@@ -41,12 +41,18 @@ export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementTyp
  * @param fromId - The id of the user from whom the announcement is posted
  * @param url - The URL of the activity content to reference
  * @param hash - The hash of the content at the URL
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A BroadcastAnnouncement
  */
-export const createBroadcast = (fromId: DSNPUserId, url: string, hash: HexString): BroadcastAnnouncement => ({
+export const createBroadcast = (
+  fromId: DSNPUserId,
+  url: string,
+  hash: HexString,
+  createdAt?: number
+): BroadcastAnnouncement => ({
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   fromId,
   url,
 });
@@ -68,17 +74,19 @@ export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Re
  * @param url       - The URL of the activity content to reference
  * @param hash      - The hash of the content at the URL
  * @param inReplyTo - The DSNP Announcement Id of the parent announcement
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A ReplyAnnouncement
  */
 export const createReply = (
   fromId: DSNPUserId,
   url: string,
   hash: HexString,
-  inReplyTo: DSNPAnnouncementId
+  inReplyTo: DSNPAnnouncementId,
+  createdAt?: number
 ): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   fromId,
   inReplyTo,
   url,
@@ -99,15 +107,17 @@ export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType
  * @param   fromId    - The id of the user from whom the announcement is posted
  * @param   emoji     - The emoji to respond with
  * @param   inReplyTo - The DSNP Announcement Id of the parent announcement
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A ReactionAnnouncement
  */
 export const createReaction = (
   fromId: DSNPUserId,
   emoji: string,
-  inReplyTo: DSNPAnnouncementId
+  inReplyTo: DSNPAnnouncementId,
+  createdAt?: number
 ): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   emoji,
   fromId,
   inReplyTo,
@@ -136,13 +146,18 @@ export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementT
  *
  * @param   fromId     - The id of the user from whom the announcement is posted
  * @param   followeeId - The id of the user to follow
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A GraphChangeAnnouncement
  */
-export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUserId): GraphChangeAnnouncement => ({
+export const createFollowGraphChange = (
+  fromId: DSNPUserId,
+  followeeId: DSNPUserId,
+  createdAt?: number
+): GraphChangeAnnouncement => ({
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   objectId: followeeId,
   createdAt: Date.now(),
 });
@@ -153,13 +168,18 @@ export const createFollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUser
  *
  * @param   fromId     - The id of the user from whom the announcement is posted
  * @param   followeeId - The id of the user to unfollow
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A GraphChangeAnnouncement
  */
-export const createUnfollowGraphChange = (fromId: DSNPUserId, followeeId: DSNPUserId): GraphChangeAnnouncement => ({
+export const createUnfollowGraphChange = (
+  fromId: DSNPUserId,
+  followeeId: DSNPUserId,
+  createdAt?: number
+): GraphChangeAnnouncement => ({
   fromId,
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   objectId: followeeId,
   createdAt: Date.now(),
 });
@@ -178,12 +198,18 @@ export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.
  * @param   fromId - The id of the user from whom the announcement is posted
  * @param   url    - The URL of the activity content to reference
  * @param   hash   - The hash of the content at the URL
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
  * @returns A ProfileAnnouncement
  */
-export const createProfile = (fromId: DSNPUserId, url: string, hash: HexString): ProfileAnnouncement => ({
+export const createProfile = (
+  fromId: DSNPUserId,
+  url: string,
+  hash: HexString,
+  createdAt?: number
+): ProfileAnnouncement => ({
   announcementType: AnnouncementType.Profile,
   contentHash: hash,
-  createdAt: new Date().getTime(),
+  createdAt: createdAt || new Date().getTime(),
   fromId,
   url,
 });
