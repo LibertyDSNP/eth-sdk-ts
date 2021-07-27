@@ -19,3 +19,4 @@
 
 export * from "./hash";
 export * from "./iterator";
+export * from "./time";
