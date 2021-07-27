@@ -1,270 +1,398 @@
 import { DSNPUserId } from "../identifiers";
+import { hash } from "../utilities";
 
-interface ActivityContentMention {
-  type: "Mention";
-  href: DSNPUserId;
+interface ActivityContentBase {
+  "@context": "https://www.w3.org/ns/activitystreams";
+  type: string;
+  name?: string;
+  published?: string;
+  location?: Array<ActivityContentLocation> | ActivityContentLocation;
+  tag?: Array<ActivityContentTag> | ActivityContentTag;
 }
 
 /**
- * ActivityContentTag represents a tag included in the tag field of an activity
- * content object
+ * ActivityContentNote represents a post created by the user.
  */
-export type ActivityContentTag = ActivityContentMention | string;
+export interface ActivityContentNote extends ActivityContentBase {
+  type: "Note";
+  mediaType: "text/plain";
+  content: string;
+  attachment?: Array<ActivityContentAttachment> | ActivityContentAttachment;
+}
+
+/**
+ * ActivityContentProfile represents profile data for the posting user.
+ */
+export interface ActivityContentProfile extends ActivityContentBase {
+  type: "Profile";
+  icon?: Array<ActivityContentImage>;
+  summary?: string;
+}
+
+/**
+ * ActivityContentLocation represents location data associated with an
+ * ActivityContentNote or ActivtyContentProfile.
+ */
+export interface ActivityContentLocation {
+  type: "Place";
+  name?: string;
+  accuracy?: number;
+  altitude?: number;
+  latitude?: number;
+  longitude?: number;
+  radius?: number;
+  units?: string;
+}
+
+/**
+ * ActivityContentTag is either an ActivityContentHashtag or an
+ * ActivityContentMention.
+ */
+export type ActivityContentTag = ActivityContentHashtag | ActivityContentMention;
+
+/**
+ * ActivityContentHashtag represents a hashtag associated with an
+ * ActivityContentNote or an ActivityContentProfile.
+ */
+export interface ActivityContentHashtag {
+  name: string;
+}
+
+/**
+ * ActivityContentMention represents a mention associated with an
+ * ActivityContentNote or an ActivityContentProfile.
+ */
+export interface ActivityContentMention {
+  type: "Mention";
+  id: DSNPUserId;
+  name?: string;
+}
+
+/**
+ * ActivityContentAttachment represents a piece of external content associated
+ * with an ActivityContentNote, such as a picture, video, audio clip or website.
+ */
+export type ActivityContentAttachment =
+  | ActivityContentAudio
+  | ActivityContentImage
+  | ActivityContentVideo
+  | ActivityContentLink;
+
+/**
+ * ActivityContentAudio represents an audio clip attached to an
+ * ActivityContentNote. ActivityContentAudio objects contain an array of
+ * ActivityContentAudioLinks with different versions of the same content. For
+ * example, a single item of audio content may be available in multiple formats,
+ * such as OGG or MP3, which may be included as individual
+ * ActivityContentAudioLink objects. The semantic content of each file should
+ * always be identical.
+ */
+export interface ActivityContentAudio {
+  type: "Audio";
+  url: Array<ActivityContentAudioLink>;
+  name?: string;
+  duration?: string;
+}
+
+/**
+ * ActivityContentImage represents an image file attached to an
+ * ActivityContentNote. ActivityContentImage objects contain an array of
+ * ActivityContentImageLinks with different versions of the same content. For
+ * example, a single picture may be available in multiple formats, such as JPEG
+ * or PNG, which may be included as individual ActivityContentImageLink
+ * objects. The height and width of the included ActivityContentImageLink
+ * objects may also vary to provide faster loading on different screen size
+ * devices. The semantic content of each file should always be identical.
+ */
+export interface ActivityContentImage {
+  type: "Image";
+  url: Array<ActivityContentImageLink>;
+  name?: string;
+}
+
+/**
+ * ActivityContentVideo represents an video file attached to an
+ * ActivityContentNote. ActivityContentVideoLink objects contain an array of
+ * ActivityContentVideoLinks with different versions of the same content. For
+ * example, a single video may be available in multiple formats, such as MPEG
+ * or MKV, which may be included as individual ActivityContentVideoLink
+ * objects. The height and width of the included ActivityContentVideoLink
+ * objects may also vary to provide faster loading on different screen size
+ * devices. The semantic content of each file should always be identical.
+ */
+export interface ActivityContentVideo {
+  type: "Video";
+  url: Array<ActivityContentVideoLink>;
+  name?: string;
+  duration?: string;
+}
+
+/**
+ * ActivityContentLink represents a link attached to an ActivityContentNote.
+ * Unlike ActivityContentAudio, ActivityContentImage and ActivityContentVideo
+ * objects, link objects may point to dynamic content, such as a news article,
+ * which should not be hashed to prove their authenticity.
+ */
+export interface ActivityContentLink {
+  type: "Link";
+  href: string;
+  name?: string;
+}
+
+/**
+ * ActivityContentAudioLink represents a specific audio file included in an
+ * ActivityContentAudio object.
+ */
+export interface ActivityContentAudioLink extends ActivityContentLink {
+  mediaType: string;
+  hash: Array<ActivityContentHash>;
+}
+
+/**
+ * ActivityContentImageLink represents a specific image file included in an
+ * ActivityContentImage object.
+ */
+export interface ActivityContentImageLink extends ActivityContentLink {
+  mediaType: string;
+  hash: Array<ActivityContentHash>;
+  height?: number;
+  width?: number;
+}
+
+/**
+ * ActivityContentVideoLink represents a specific video file included in an
+ * ActivityContentVideo object.
+ */
+export interface ActivityContentVideoLink extends ActivityContentLink {
+  mediaType: string;
+  hash: Array<ActivityContentHash>;
+  height?: number;
+  width?: number;
+}
 
 /**
  * ActivtyContentHash represents a hash included in the hash field of an
- * activity content object
+ * ActivityContentAudioLink, ActivityContentImageLink or
+ * ActivityContentVideoLink object to prove it's authenticity.
  */
-export interface ActivtyContentHash {
+export interface ActivityContentHash {
   algorithm: string;
   [others: string]: string;
 }
 
 /**
- * BaseActivityContent represents a base activity content object
- */
-export interface BaseActivityContent {
-  "@context": string;
-  type: string;
-  published: string;
-  context?: string;
-  tag?: Array<ActivityContentTag> | ActivityContentTag;
-}
-
-export type ActivityContentAttachment = ActivityContent | string;
-
-/**
- * ActivityContentLink represents a Link type activity content object
- */
-export interface ActivityContentLink extends BaseActivityContent {
-  type: "Link";
-  href: string;
-  mediaType?: string;
-}
-
-/**
- * ActivityContentNote represents a Note type activity content object
- */
-export interface ActivityContentNote extends BaseActivityContent {
-  type: "Note";
-  content: string;
-  mediaType?: string;
-  attachment?: Array<ActivityContentAttachment> | ActivityContentAttachment;
-  summary?: string;
-}
-
-/**
- * ActivityContentPerson represents a Person type activity content object
- */
-export interface ActivityContentPerson extends BaseActivityContent {
-  type: "Person";
-  name: string;
-}
-
-/**
- * ActivityContentAudio represents a Audio type activity content object
- */
-export interface ActivityContentAudio extends BaseActivityContent {
-  type: "Audio";
-  url: ActivityContentLink | string;
-  mediaType: string;
-  hash: Array<ActivtyContentHash> | ActivtyContentHash;
-  duration?: string;
-}
-
-/**
- * ActivityContentImage represents a Image type activity content object
- */
-export interface ActivityContentImage extends BaseActivityContent {
-  type: "Image";
-  url: ActivityContentLink | string;
-  mediaType: string;
-  hash: Array<ActivtyContentHash> | ActivtyContentHash;
-  height: number;
-  width: number;
-}
-
-/**
- * ActivityContentProfile represents a Profile type activity content object
- */
-export interface ActivityContentProfile extends BaseActivityContent {
-  type: "Profile";
-  describes: ActivityContentPerson;
-  summary?: string;
-  icon?: ActivityContentImage;
-  links?: Array<ActivityContentLink>;
-}
-
-/**
- * ActivityContentVideo represents a Video type activity content object
- */
-export interface ActivityContentVideo extends BaseActivityContent {
-  type: "Video";
-  url: ActivityContentLink | string;
-  mediaType: string;
-  hash: Array<ActivtyContentHash> | ActivtyContentHash;
-  height: number;
-  width: number;
-  duration?: string;
-}
-
-/**
- * ActivityContent represents an activity content object of unknown type
- */
-export type ActivityContent =
-  | ActivityContentLink
-  | ActivityContentNote
-  | ActivityContentPerson
-  | ActivityContentAudio
-  | ActivityContentImage
-  | ActivityContentProfile
-  | ActivityContentVideo;
-
-/**
- * createLink() provides a simple factory for generating ActivityContentLink
- * objects.
- *
- * @param href - The URL to include in the link
- * @param options - Any additional fields for the activity content link
- * @returns An activity content link object
- */
-export const createLink = (href: string, options?: Partial<ActivityContentLink>): ActivityContentLink => ({
-  "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Link",
-  published: new Date().toISOString(),
-  href,
-  ...options,
-});
-
-/**
- * createNote() provides a simple factory for generating ActivityContentNote
- * objects.
+ * createNote() provides a simple factory for generating an ActivityContentNote
+ * object.
  *
  * @param content - The text content to include in the note
- * @param options - Any additional fields for the activity content note
- * @returns An activity content note object
+ * @param options - Any additional fields for the ActivityContentNote
+ * @returns An ActivityContentNote object
  */
 export const createNote = (content: string, options?: Partial<ActivityContentNote>): ActivityContentNote => ({
   "@context": "https://www.w3.org/ns/activitystreams",
   type: "Note",
-  published: new Date().toISOString(),
+  mediaType: "text/plain",
   content,
   ...options,
 });
 
 /**
- * createPerson() provides a simple factory for generating ActivityContentPerson
- * objects.
+ * createProfile() provides a simple factory for generating an
+ * ActivityContentProfile object.
  *
- * @param name - The new display name for the user
- * @returns An activity content person object
+ * @param options - Any fields for the ActivityContentProfile
+ * @returns An ActivityContentProfile object
  */
-export const createPerson = (name: string): ActivityContentPerson => ({
+export const createProfile = (options?: Partial<ActivityContentProfile>): ActivityContentProfile => ({
   "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Person",
-  published: new Date().toISOString(),
+  type: "Profile",
+  ...options,
+});
+
+/**
+ * createAudioAttachment() provides a simple factory for generating an
+ * ActivityContentAudio object.
+ *
+ * @param links - An array of ActivityContentAudioLink objects to include
+ * @param options - Any additional fields for the ActivityContentAudio
+ * @returns An ActivityContentAudio object
+ */
+export const createAudioAttachment = (
+  links: Array<ActivityContentAudioLink>,
+  options?: Partial<ActivityContentAudio>
+): ActivityContentAudio => ({
+  type: "Audio",
+  url: links,
+  ...options,
+});
+
+/**
+ * createAudioLink() provides a simple factory for generation an
+ * ActivityContentAudioLink object for inclusion in an ActivityContentAudio
+ * object.
+ *
+ * @param href      - The URL of the file
+ * @param mediaType - The MIME type of the file
+ * @param hash      - An ActivityContentHash object to authenticate the file
+ * @param options - Any additional fields for the ActivityContentAudioLink
+ * @returns An ActivityContentAudioLink object
+ */
+export const createAudioLink = (
+  href: string,
+  mediaType: string,
+  hash: Array<ActivityContentHash>,
+  options?: Partial<ActivityContentAudioLink>
+): ActivityContentAudioLink => ({
+  type: "Link",
+  href,
+  mediaType,
+  hash,
+  ...options,
+});
+
+/**
+ * createImageAttachment() provides a simple factory for generating an
+ * ActivityContentImage object.
+ *
+ * @param links - An array of ActivityContentImageLink objects to include
+ * @param options - Any additional fields for the ActivityContentImage
+ * @returns An ActivityContentImage object
+ */
+export const createImageAttachment = (
+  links: Array<ActivityContentImageLink>,
+  options?: Partial<ActivityContentImage>
+): ActivityContentImage => ({
+  type: "Image",
+  url: links,
+  ...options,
+});
+
+/**
+ * createImageLink() provides a simple factory for generation an
+ * ActivityContentImageLink object for inclusion in an ActivityContentImage
+ * object.
+ *
+ * @param href      - The URL of the file
+ * @param mediaType - The MIME type of the file
+ * @param hash      - An ActivityContentHash object to authenticate the file
+ * @param options - Any additional fields for the ActivityContentImageLink
+ * @returns An ActivityContentImageLink object
+ */
+export const createImageLink = (
+  href: string,
+  mediaType: string,
+  hash: Array<ActivityContentHash>,
+  options?: Partial<ActivityContentImageLink>
+): ActivityContentImageLink => ({
+  type: "Link",
+  href,
+  mediaType,
+  hash,
+  ...options,
+});
+
+/**
+ * createVideoAttachment() provides a simple factory for generating an
+ * ActivityContentVideo object.
+ *
+ * @param links - An array of ActivityContentVideoLink objects to include
+ * @param options - Any additional fields for the ActivityContentVideo
+ * @returns An ActivityContentVideo object
+ */
+export const createVideoAttachment = (
+  links: Array<ActivityContentVideoLink>,
+  options?: Partial<ActivityContentVideo>
+): ActivityContentVideo => ({
+  type: "Video",
+  url: links,
+  ...options,
+});
+
+/**
+ * createVideoLink() provides a simple factory for generation an
+ * ActivityContentVideoLink object for inclusion in an ActivityContentVideo
+ * object.
+ *
+ * @param href      - The URL of the file
+ * @param mediaType - The MIME type of the file
+ * @param hash      - An ActivityContentHash object to authenticate the file
+ * @param options - Any additional fields for the ActivityContentVideoLink
+ * @returns An ActivityContentVideoLink object
+ */
+export const createVideoLink = (
+  href: string,
+  mediaType: string,
+  hash: Array<ActivityContentHash>,
+  options?: Partial<ActivityContentVideoLink>
+): ActivityContentVideoLink => ({
+  type: "Link",
+  href,
+  mediaType,
+  hash,
+  ...options,
+});
+
+/**
+ * createLinkAttachment() provides a simple factory for generating an
+ * ActivityContentLink object.
+ *
+ * @param href - The URL to include in the link
+ * @param options - Any additional fields for the ActivityContentLink
+ * @returns An ActivityContentLink object
+ */
+export const createLinkAttachment = (href: string, options?: Partial<ActivityContentLink>): ActivityContentLink => ({
+  type: "Link",
+  href,
+  ...options,
+});
+
+/**
+ * createLocation() provides a simple factory for generating an
+ * ActivityContentLocation object.
+ *
+ * @param options - Any options for the ActivityContentLocation
+ * @returns An ActivityContentLocation object
+ */
+export const createLocation = (options?: Partial<ActivityContentLocation>): ActivityContentLocation => ({
+  type: "Place",
+  ...options,
+});
+
+/**
+ * createHashtag() provides a simple factory for generating an
+ * ActivityContentHashtag object.
+ *
+ * @param name - The hashtag value, without "#" character
+ * @returns An ActivityContentTag object
+ */
+export const createHashtag = (name: string): ActivityContentHashtag => ({
   name,
 });
 
 /**
- * createAudio() provides a simple factory for generating ActivityContentAudio
- * objects.
+ * createMention() provides a simple factory for generating an
+ * ActivityContentMention object.
  *
- * @param url - The URL of the audio file
- * @param mediaType - The MIME type of the audio file
- * @param hash - An ActivtyContentHash or array of ActivtyContentHashes for the file
- * @param options - Any additional fields for the activity content audio
- * @returns An activity content audio object
+ * @param id - The DSNPUserId of the mention user
+ * @param options - Any additional fields for the ActivityContentMention
+ * @returns An ActivityContentMention object
  */
-export const createAudio = (
-  url: string,
-  mediaType: string,
-  hash: Array<ActivtyContentHash> | ActivtyContentHash,
-  options?: Partial<ActivityContentAudio>
-): ActivityContentAudio => ({
-  "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Audio",
-  published: new Date().toISOString(),
-  url: createLink(url, { mediaType }),
-  mediaType,
-  hash,
+export const createMention = (id: DSNPUserId, options?: Partial<ActivityContentMention>): ActivityContentMention => ({
+  type: "Mention",
+  id,
   ...options,
 });
 
 /**
- * createImage() provides a simple factory for generating ActivityContentImage
- * objects.
+ * createHash() provides a simple factory for generating an ActivityContentHash
+ * object. This factory assumes the user intends to use a standard Keccak256
+ * hash. To use other authentication algorithms, users should build their own
+ * ActivityContentHash objects.
  *
- * @param url - The URL of the image file
- * @param mediaType - The MIME type of the image file
- * @param hash - An ActivtyContentHash or array of ActivtyContentHashes for the file
- * @param height - The height of the image
- * @param width - The width of the image
- * @param options - Any additional fields for the activity content image
- * @returns An activity content image object
+ * @param content - The file content to be hashed
+ * @returns An ActivityContentHash containing the keccak256 proof of the content
  */
-export const createImage = (
-  url: string,
-  mediaType: string,
-  hash: Array<ActivtyContentHash> | ActivtyContentHash,
-  height: number,
-  width: number,
-  options?: Partial<ActivityContentImage>
-): ActivityContentImage => ({
-  "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Image",
-  published: new Date().toISOString(),
-  url: createLink(url, { mediaType }),
-  mediaType,
-  hash,
-  height,
-  width,
-  ...options,
-});
-
-/**
- * createProfile() provides a simple factory for generating
- * ActivityContentProfile objects.
- *
- * @param name - The new display name for the user
- * @param options - Any additional fields for the activity content profile
- * @returns An activity content profile object
- */
-export const createProfile = (name: string, options?: Partial<ActivityContentProfile>): ActivityContentProfile => ({
-  "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Profile",
-  published: new Date().toISOString(),
-  describes: createPerson(name),
-  ...options,
-});
-
-/**
- * createVideo() provides a simple factory for generating ActivityContentVideo
- * objects.
- *
- * @param url - The URL of the video file
- * @param mediaType - The MIME type of the video file
- * @param hash - An ActivtyContentHash or array of ActivtyContentHashes for the file
- * @param height - The height of the video
- * @param width - The width of the video
- * @param options - Any additional fields for the activity content video
- * @returns An activity content video object
- */
-export const createVideo = (
-  url: string,
-  mediaType: string,
-  hash: Array<ActivtyContentHash> | ActivtyContentHash,
-  height: number,
-  width: number,
-  options?: Partial<ActivityContentVideo>
-): ActivityContentVideo => ({
-  "@context": "https://www.w3.org/ns/activitystreams",
-  type: "Video",
-  published: new Date().toISOString(),
-  url: createLink(url, { mediaType }),
-  mediaType,
-  hash,
-  height,
-  width,
-  ...options,
+export const createHash = (content: string): ActivityContentHash => ({
+  algorithm: "keccak256",
+  value: hash(content),
 });
