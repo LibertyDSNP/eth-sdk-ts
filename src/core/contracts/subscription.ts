@@ -4,6 +4,7 @@ import { requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
 import { Filter } from "@ethersproject/abstract-provider";
 import { Publisher__factory } from "../../types/typechain";
+import { LogDescription } from "@ethersproject/abi";
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
@@ -68,7 +69,7 @@ export const subscribeToBatchPublications = async (
   });
 
   if (useQueue) {
-    pastLogs = await getPastLogs(provider, { fromBlock: filter?.fromBlock });
+    pastLogs = await getPastLogs(provider, { ...batchFilter, fromBlock: filter?.fromBlock });
     maxBlockNumberForPastLogs = pastLogs[pastLogs.length - 1].blockNumber;
 
     while (pastLogs.length > 0) {
@@ -115,10 +116,17 @@ const getPastLogs = async (
 const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationCallbackArgs[] => {
   return logs
     .map((log: ethers.providers.Log) => {
-      const fragment = PUBLISHER_DECODER.parseLog(log);
-      return { fragment, log: log };
+      try {
+        const fragment = PUBLISHER_DECODER.parseLog(log);
+        return { fragment, log: log };
+      } catch (err) {
+        // Catch this error so a single corrupted log won't break all of log retrieval.
+        console.log("Error parsing batch publication log", log, err);
+        // Return this log will be filtered out in the next step.
+        return { fragment: (undefined as unknown) as LogDescription, log: log };
+      }
     })
-    .filter((desc: ParsedLog) => desc.fragment.name === "DSNPBatchPublication")
+    .filter((desc: ParsedLog) => desc.fragment && desc.fragment.name === "DSNPBatchPublication")
     .map((item: ParsedLog) => {
       return {
         announcementType: item.fragment.args.announcementType,
