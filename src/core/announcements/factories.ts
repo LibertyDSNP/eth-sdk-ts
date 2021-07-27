@@ -127,8 +127,8 @@ export const createReaction = (
  * DSNPGraphChangeType: an enum representing different types of graph changes
  */
 export enum DSNPGraphChangeType {
+  Unfollow = 0,
   Follow = 1,
-  Unfollow = 2,
 }
 
 /**
