@@ -2,6 +2,8 @@
 
 ## Unreleased
 ### Changes
+- Updated announcement types to include createdAt type
+- Updated announcement factories to include optional createdAt param
 - Updated various types to specify DSNP ids instead of string
 - Updated various types to specify HexString instead of string
 - Updated all instances of keccak256 to use hash utilities instead
@@ -36,11 +38,11 @@
 - Ability to remove delegate
 - Ability to get DSNPAddDelegate logs
 - Ability to get DSNPRemoveDelegate logs
-- createdAt field to GraphChange announcement type, plus update to parquet schema. 
+- createdAt field to GraphChange announcement type, plus update to parquet schema.
 ### Removed
 -
 ### Fixed
--
+- Updated GraphChange enum values to match spec
 
 ## [1.0.0] - 2021-06-22
 ### Changes

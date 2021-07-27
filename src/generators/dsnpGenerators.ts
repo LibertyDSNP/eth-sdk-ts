@@ -1,9 +1,11 @@
 import * as fs from "fs";
 
 import {
+  createBroadcast,
+  createReaction,
+  createReply,
   BroadcastAnnouncement,
   Announcement,
-  AnnouncementType,
   ReactionAnnouncement,
   ReplyAnnouncement,
 } from "../core/announcements";
@@ -70,40 +72,26 @@ export const writeFixture = (data: Array<Announcement>, jsonFilePath: string): n
   return ws.bytesWritten;
 };
 
-export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement => {
-  return {
-    announcementType: AnnouncementType.Broadcast,
-    fromId: from ? from : generateEthereumAddress(),
-    contentHash: generateHexString(64),
-    url: sample(PREFAB_URLS),
-  };
-};
+export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement =>
+  createBroadcast(from ? from : generateEthereumAddress(), sample(PREFAB_URLS), generateHexString(64));
 
 /**
  * generateReply
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReply = (from?: EthereumAddress): ReplyAnnouncement => {
-  return {
-    announcementType: AnnouncementType.Reply,
-    fromId: from ? from : generateEthereumAddress(),
-    inReplyTo: generateHexString(64),
-    contentHash: generateHexString(64),
-    url: sample(PREFAB_URLS),
-  };
-};
+export const generateReply = (from?: EthereumAddress): ReplyAnnouncement =>
+  createReply(
+    from ? from : generateEthereumAddress(),
+    sample(PREFAB_URLS),
+    generateHexString(64),
+    generateHexString(64)
+  );
 
 /**
  * generateReaction
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReaction = (from?: EthereumAddress): ReactionAnnouncement => {
-  return {
-    announcementType: AnnouncementType.Reaction,
-    fromId: from ? from : generateEthereumAddress(),
-    emoji: generateHexString(20),
-    inReplyTo: generateHexString(64),
-  };
-};
+export const generateReaction = (from?: EthereumAddress): ReactionAnnouncement =>
+  createReaction(from ? from : generateEthereumAddress(), generateHexString(20), generateHexString(64));
