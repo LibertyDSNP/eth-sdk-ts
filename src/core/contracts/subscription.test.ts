@@ -1,6 +1,6 @@
 import { requireGetProvider } from "../config";
 import { publish, Publication, dsnpBatchFilter } from "./publisher";
-import { subscribeToBatchPublications, BatchPublicationCallbackArgs } from "./subscription";
+import { subscribeToBatchPublications, BatchPublicationCallbackArgs, BatchFilterOptions } from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { checkNumberOfFunctionCalls } from "../../test/utilities";
@@ -63,6 +63,23 @@ describe("subscription", () => {
       await removeListener();
       const filter = await dsnpBatchFilter();
       expect(provider.listeners(filter).length).toEqual(0);
+    });
+    describe("when a filter is provided", () => {
+      const filterOptions: BatchFilterOptions = {
+        announcementType: 2,
+        fromBlock: 0,
+      };
+
+      it("does not fail if there are no past logs", async () => {
+        const provider = requireGetProvider();
+        const mock = jest.fn();
+
+        const removeListener = await subscribeToBatchPublications(mock, filterOptions);
+        expect(mock).not.toHaveBeenCalled();
+        await removeListener();
+        const filter = await dsnpBatchFilter();
+        expect(provider.listeners(filter).length).toEqual(0);
+      });
     });
 
     describe("when listener is removed", () => {
