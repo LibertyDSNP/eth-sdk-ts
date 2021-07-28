@@ -25,8 +25,8 @@ export interface ActivityContentNote extends ActivityContentBase {
  */
 export interface ActivityContentProfile extends ActivityContentBase {
   type: "Profile";
-  icon?: Array<ActivityContentImage>;
   summary?: string;
+  icon?: Array<ActivityContentImageLink>;
 }
 
 /**

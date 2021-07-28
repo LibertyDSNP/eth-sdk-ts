@@ -1,259 +1,551 @@
-import { ActivityContent } from "./factories";
-import { isValidActivityContent } from "./validation";
+import { ActivityContentNote, ActivityContentProfile } from "./factories";
+import {
+  isActivityContentNote,
+  isActivityContentProfile,
+  isValidActivityContentNote,
+  isValidActivityContentProfile,
+} from "./validation";
 
 describe("activity content validations", () => {
-  describe("isValid", () => {
-    const validActivityContents: Record<string, ActivityContent> = {
-      "a valid link object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Link",
-        published: "2021-07-14T14:09:05+00:00",
-        href: "https://spec.dsnp.org",
-      },
-      "a valid link object with media type": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Link",
-        published: "2021-07-14T14:09:05+00:00",
-        href: "https://spec.dsnp.org",
-        mediaType: "text/html",
-      },
-      "a valid note object": {
+  describe("isActivityContentNote", () => {
+    const activityContentNotes: Record<string, ActivityContentNote> = {
+      "a note with no attachements": {
         "@context": "https://www.w3.org/ns/activitystreams",
         type: "Note",
-        published: "2021-07-14T14:09:05+00:00",
         content: "Hello world!",
+        mediaType: "text/plain",
       },
-      "a valid note object with media type": {
+      "a note with an audio attachement": {
         "@context": "https://www.w3.org/ns/activitystreams",
         type: "Note",
-        published: "2021-07-14T14:09:05+00:00",
-        content: "#Hello world!",
-        mediaType: "text/markdown",
-      },
-      "a valid person object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Person",
-        published: "2021-07-14T14:09:05+00:00",
-        name: "🌹🚗",
-      },
-      "a valid audio object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Audio",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/en/0/01/Hound_Dog_%26_intro_%28live-Ed_Sullivan_2%29.ogg",
-        mediaType: "audio/ogg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-      },
-      "a valid audio object with link sub-object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Audio",
-        published: "2021-07-14T14:09:05+00:00",
-        url: {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          type: "Link",
-          published: "2021-07-14T14:09:05+00:00",
-          href: "https://upload.wikimedia.org/wikipedia/en/0/01/Hound_Dog_%26_intro_%28live-Ed_Sullivan_2%29.ogg",
-          mediaType: "audio/ogg",
-        },
-        mediaType: "audio/ogg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-      },
-      "a valid image object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Image",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
-        mediaType: "image/jpg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 1564,
-        width: 2782,
-      },
-      "a valid image object with link sub-object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Image",
-        published: "2021-07-14T14:09:05+00:00",
-        url: {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          type: "Link",
-          published: "2021-07-14T14:09:05+00:00",
-          href: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
-          mediaType: "image/jpg",
-        },
-        mediaType: "image/jpg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 1564,
-        width: 2782,
-      },
-      "a valid profile object": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Profile",
-        published: "2021-07-14T14:09:05+00:00",
-        describes: {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          type: "Person",
-          published: "2021-07-14T14:09:05+00:00",
-          name: "🌹🚗",
-        },
-        summary: "I'm a small kitten who does software engineering. See my profile pic.",
-        icon: {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          type: "Image",
-          published: "2021-07-14T14:09:05+00:00",
-          url: "https://placekitten.com/64/64",
-          mediaType: "image/jpg",
-          hash: {
-            algorithm: "keccak256",
-            value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
+        content: "Feel like I've heard this before!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Audio",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.ogg",
+                mediaType: "audio/ogg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x3b33df3d163e86514e9041ac97e3d920a75bbafa8d9c1489e631897874b762cc",
+                  },
+                ],
+              },
+            ],
           },
-          height: 64,
-          width: 64,
-        },
+        ],
       },
-      "a valid video object": {
+      "a note with an image attachement": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Video",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
-        mediaType: "video/webm",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 2250,
-        width: 4000,
+        type: "Note",
+        content: "Interesting guy!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
-      "a valid video object with link sub-object": {
+      "a note with an video attachement": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Video",
-        published: "2021-07-14T14:09:05+00:00",
-        url: {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          type: "Link",
-          published: "2021-07-14T14:09:05+00:00",
-          href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
-          mediaType: "video/webm",
-        },
-        mediaType: "video/webm",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 1564,
-        width: 2782,
+        type: "Note",
+        content: "What an adventure!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Video",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
+                mediaType: "video/webm",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0xf841950dfcedc968dbd63132da844b9f28faea3dbfd4cf326b3831b419a20e9a",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an link attachement": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Interesting project!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Link",
+            href: "https://dsnp.org",
+          },
+        ],
       },
     };
 
-    for (const key in validActivityContents) {
+    for (const key in activityContentNotes) {
       it(`returns true for ${key}`, () => {
-        expect(isValidActivityContent(validActivityContents[key])).toEqual(true);
+        expect(isActivityContentNote(activityContentNotes[key])).toEqual(true);
       });
     }
 
-    const invalidActivityContents: Record<string, unknown> = {
-      "a link object without a publish timestamp": {
+    const notActivityContentNotes: Record<string, unknown> = {
+      "a note missing a mediaType": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Link",
-        href: "https://spec.dsnp.org",
-        mediaType: "text/html",
+        type: "Note",
+        content: "Hello world!",
       },
-      "an audio object without a mediaType": {
+      "a note with an audio attachement missing a hash": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Audio",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/en/0/01/Hound_Dog_%26_intro_%28live-Ed_Sullivan_2%29.ogg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
+        type: "Note",
+        content: "Feel like I've heard this before!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Audio",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.ogg",
+                mediaType: "audio/ogg",
+              },
+            ],
+          },
+        ],
       },
-      "an audio object without a hash": {
+      "a note with an image attachement missing a mediaType": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Audio",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/en/0/01/Hound_Dog_%26_intro_%28live-Ed_Sullivan_2%29.ogg",
-        mediaType: "audio/ogg",
+        type: "Note",
+        content: "Interesting guy!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
-      "an image object without a mediaType": {
+      "a note with an video attachement with a non-array URL field": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Image",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 1564,
-        width: 2782,
+        type: "Note",
+        content: "What an adventure!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Video",
+            url: {
+              type: "Link",
+              href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
+              mediaType: "video/webm",
+              hash: [
+                {
+                  algorithm: "keccak256",
+                  value: "0xf841950dfcedc968dbd63132da844b9f28faea3dbfd4cf326b3831b419a20e9a",
+                },
+              ],
+            },
+          },
+        ],
       },
-      "an image object without a hash": {
+      "a note with an link attachement with a no type": {
         "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Image",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
-        mediaType: "image/jpg",
-        height: 1564,
-        width: 2782,
-      },
-      "an image object without height and width": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Image",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
-        mediaType: "image/jpg",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-      },
-      "a video object without a mediaType": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Video",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-        height: 2250,
-        width: 4000,
-      },
-      "a video without height and width": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Video",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
-        mediaType: "video/webm",
-        hash: {
-          algorithm: "keccak256",
-          value: "0x0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF",
-        },
-      },
-      "a video object without a hash": {
-        "@context": "https://www.w3.org/ns/activitystreams",
-        type: "Video",
-        published: "2021-07-14T14:09:05+00:00",
-        url: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
-        mediaType: "video/webm",
-        height: 2250,
-        width: 4000,
+        type: "Note",
+        content: "Interesting project!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            href: "https://dsnp.org",
+          },
+        ],
       },
     };
 
-    for (const key in invalidActivityContents) {
+    for (const key in notActivityContentNotes) {
       it(`returns false for ${key}`, () => {
-        expect(isValidActivityContent(invalidActivityContents[key])).toEqual(false);
+        expect(isActivityContentNote(notActivityContentNotes[key])).toEqual(false);
+      });
+    }
+  });
+
+  describe("isActivityContentProfile", () => {
+    const activityContentProfiles: Record<string, ActivityContentProfile> = {
+      "a profile object": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "🌹🚗",
+      },
+      "a profile object with a published timestamp": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "jaboukie",
+        published: "2000-01-01T00:00:00+00:00",
+      },
+      "a profile object with icon": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "dril",
+        icon: [
+          {
+            type: "Link",
+            href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
+            mediaType: "image/jpg",
+            hash: [
+              {
+                algorithm: "keccak256",
+                value: "0x00a63eb58f6ce7fccd93e2d004fed81da5ec1a9747b63f5f1bf80742026efea7",
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    for (const key in activityContentProfiles) {
+      it(`returns true for ${key}`, () => {
+        expect(isActivityContentProfile(activityContentProfiles[key])).toEqual(true);
+      });
+    }
+
+    const notActivityContentProfiles: Record<string, unknown> = {
+      "a profile object without type": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        name: "🌹🚗",
+      },
+      "a profile object with icon without a hash": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "dril",
+        icon: [
+          {
+            type: "Link",
+            href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
+          },
+        ],
+      },
+    };
+
+    for (const key in notActivityContentProfiles) {
+      it(`returns false for ${key}`, () => {
+        expect(isActivityContentProfile(notActivityContentProfiles[key])).toEqual(false);
+      });
+    }
+  });
+
+  describe("isValidActivityContentNote", () => {
+    const validActivityContentNotes: Record<string, ActivityContentNote> = {
+      "a note with no attachements": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Hello world!",
+        mediaType: "text/plain",
+      },
+      "a note with an audio attachement": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Feel like I've heard this before!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Audio",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.ogg",
+                mediaType: "audio/ogg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x3b33df3d163e86514e9041ac97e3d920a75bbafa8d9c1489e631897874b762cc",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an image attachement": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Interesting guy!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an video attachement": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "What an adventure!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Video",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
+                mediaType: "video/webm",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0xf841950dfcedc968dbd63132da844b9f28faea3dbfd4cf326b3831b419a20e9a",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an link attachement": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Interesting project!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Link",
+            href: "https://dsnp.org",
+          },
+        ],
+      },
+    };
+
+    for (const key in validActivityContentNotes) {
+      it(`returns true for ${key}`, () => {
+        expect(isValidActivityContentNote(validActivityContentNotes[key])).toEqual(true);
+      });
+    }
+
+    const invalidActivityContentNotes: Record<string, unknown> = {
+      "a note with a bad published field": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Hello world!",
+        mediaType: "text/plain",
+        published: "Yesterday",
+      },
+      "a note with an audio attachement with an invalid hash": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Feel like I've heard this before!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Audio",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.ogg",
+                mediaType: "audio/ogg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x3b33df3d",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an image attachement without a keccak256 hash": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Interesting guy!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "ftp://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: [
+                  {
+                    algorithm: "MD5",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an video attachement without a supported mediaType": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "What an adventure!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Video",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
+                mediaType: "video/avi",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0xf841950dfcedc968dbd63132da844b9f28faea3dbfd4cf326b3831b419a20e9a",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      "a note with an link attachement with an invalid protocol": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Interesting project!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Link",
+            href: "ftp://dsnp.org",
+          },
+        ],
+      },
+    };
+
+    for (const key in invalidActivityContentNotes) {
+      it(`returns false for ${key}`, () => {
+        expect(isValidActivityContentNote(invalidActivityContentNotes[key])).toEqual(false);
+      });
+    }
+  });
+
+  describe("isValidActivityContentProfile", () => {
+    const validActivityContentProfiles: Record<string, ActivityContentProfile> = {
+      "a profile object": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "🌹🚗",
+      },
+      "a profile object with a published timestamp": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "jaboukie",
+        published: "2000-01-01T00:00:00+00:00",
+      },
+      "a profile object with icon": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "dril",
+        icon: [
+          {
+            type: "Link",
+            href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
+            mediaType: "image/jpg",
+            hash: [
+              {
+                algorithm: "keccak256",
+                value: "0x00a63eb58f6ce7fccd93e2d004fed81da5ec1a9747b63f5f1bf80742026efea7",
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    for (const key in validActivityContentProfiles) {
+      it(`returns true for ${key}`, () => {
+        expect(isValidActivityContentProfile(validActivityContentProfiles[key])).toEqual(true);
+      });
+    }
+
+    const invalidActivityContentProfiles: Record<string, unknown> = {
+      "a profile object with an invalid published timestamp": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "jaboukie",
+        published: "07/28/2021",
+      },
+      "a profile object with an icon with an invalid hash": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "dril",
+        icon: [
+          {
+            type: "Link",
+            href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
+            hash: [
+              {
+                algorithm: "keccak256",
+                value: "0x0",
+              },
+            ],
+          },
+        ],
+      },
+      "a profile object with an icon without a keccak256 hash": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "dril",
+        icon: [
+          {
+            type: "Link",
+            href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
+            hash: [
+              {
+                algorithm: "MD5",
+                value: "0x0",
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    for (const key in invalidActivityContentProfiles) {
+      it(`returns false for ${key}`, () => {
+        expect(isValidActivityContentProfile(invalidActivityContentProfiles[key])).toEqual(false);
       });
     }
   });
