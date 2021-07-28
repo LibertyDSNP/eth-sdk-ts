@@ -1,4 +1,4 @@
-import { ActivityContent } from "./factories";
+import { ActivityContentNote, ActivityContentProfile } from "./factories";
 import { sortObject } from "../utilities/json";
 
 /**
@@ -8,7 +8,7 @@ import { sortObject } from "../utilities/json";
  * @param data - The activity content object to hash
  * @returns A string representation of the activity content object
  */
-export const serialize = (data: ActivityContent): string => {
-  const sortedData = (sortObject((data as unknown) as Record<string, unknown>) as unknown) as ActivityContent;
+export const serialize = (data: ActivityContentNote | ActivityContentProfile): string => {
+  const sortedData = sortObject((data as unknown) as Record<string, unknown>);
   return JSON.stringify(sortedData);
 };
