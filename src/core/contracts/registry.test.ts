@@ -9,6 +9,8 @@ import {
   register,
   resolveRegistration,
   isSignatureAuthorizedTo,
+  getRegistrationsByIdentityAddress,
+  Handle,
 } from "./registry";
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -22,6 +24,7 @@ import {
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
 import { DSNPUserURI } from "../identifiers";
+import { EthereumAddress } from "../../types/Strings";
 
 describe("registry", () => {
   let signer: Signer;
@@ -253,7 +256,7 @@ describe("registry", () => {
     const permDenied = Permission.OWNERSHIP_TRANSFER;
     let contractAddr = "";
     let sig = "";
-    let dsnpUserId = "";
+    let dsnpUserURI = "";
     let signerAddr = "";
 
     beforeAll(async () => {
@@ -263,7 +266,7 @@ describe("registry", () => {
       await identityContract.deployed();
       contractAddr = identityContract.address;
       const tx = await register(contractAddr, "Animaniacs");
-      dsnpUserId = await getURIFromRegisterTransaction(tx);
+      dsnpUserURI = await getURIFromRegisterTransaction(tx);
       const signedMessage = await sign(msg);
       sig = signedMessage.signature;
     });
@@ -273,7 +276,7 @@ describe("registry", () => {
     });
 
     it("returns true if the signer is authorized for the given permissions", async () => {
-      await expect(isSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed)).toBeTruthy();
+      await expect(isSignatureAuthorizedTo(sig, msg, dsnpUserURI, permAllowed)).toBeTruthy();
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
@@ -286,7 +289,7 @@ describe("registry", () => {
       const otherMsg = generateBroadcast();
       const signedMessage = await sign(otherMsg);
       const badSig = signedMessage.signature;
-      const res = await isSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed);
+      const res = await isSignatureAuthorizedTo(badSig, msg, dsnpUserURI, permAllowed);
       expect(res).toBeFalsy();
     });
 
@@ -301,7 +304,7 @@ describe("registry", () => {
         { name: "0x1", value: 0x1, expected: true },
       ].forEach((tc) => {
         it(`${tc.name} returns ${tc.expected}`, async () => {
-          const actual = await isSignatureAuthorizedTo(sig, msg, dsnpUserId, permAllowed, 1);
+          const actual = await isSignatureAuthorizedTo(sig, msg, dsnpUserURI, permAllowed, 1);
           expect(actual).toEqual(tc.expected);
         });
       });
@@ -312,9 +315,195 @@ describe("registry", () => {
     });
     it("throws if signature is garbage", async () => {
       const badSig = generateHexString(65);
-      await expect(isSignatureAuthorizedTo(badSig, msg, dsnpUserId, permAllowed)).rejects.toThrow(
+      await expect(isSignatureAuthorizedTo(badSig, msg, dsnpUserURI, permAllowed)).rejects.toThrow(
         /signature missing v and recoveryParam/
       );
+    });
+  });
+
+  describe("#getRegistrationsByIdentityAddress", () => {
+    describe("when identity is not associated to a registration", () => {
+      let identityContract: EthereumAddress;
+
+      setupSnapshot();
+
+      beforeAll(async () => {
+        const contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+      });
+
+      it("returns an empty array", async () => {
+        const result = await getRegistrationsByIdentityAddress(identityContract);
+
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe("when identity is associated (belongs) to one registration", () => {
+      let identityContractAddress: EthereumAddress;
+      const handle = "Joe";
+      const newHandle = "JoeNoSe";
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      beforeAll(async () => {
+        const contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+
+        identityContractAddress = identityContract.address;
+        await register(identityContractAddress, handle);
+      });
+
+      it("returns one registration", async () => {
+        const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+        expect(result.length).toEqual(1);
+        expect(result[0]).toEqual(
+          expect.objectContaining({
+            handle,
+            contractAddr: identityContractAddress,
+            dsnpUserURI: expect.any(String),
+          })
+        );
+      });
+
+      describe("and registration handle is updated", () => {
+        beforeAll(async () => {
+          await changeHandle(handle, newHandle);
+        });
+
+        it("returns one registration with updated handle", async () => {
+          const handle = "JoeNoSe";
+          const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+          expect(result.length).toEqual(1);
+          expect(result[0]).toEqual(
+            expect.objectContaining({
+              handle,
+              contractAddr: identityContractAddress,
+              dsnpUserURI: expect.any(String),
+            })
+          );
+        });
+
+        describe("and a new identity address is set to registration", () => {
+          let newIdentityContract: EthereumAddress;
+
+          beforeAll(async () => {
+            const contractOwner = await signer.getAddress();
+            const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+            await identityContract.deployed();
+            newIdentityContract = identityContract.address;
+            await changeAddress(newHandle, newIdentityContract);
+          });
+
+          it("returns zero registration associated with old identity", async () => {
+            const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+            expect(result.length).toEqual(0);
+            expect(result).not.toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  contractAddr: identityContractAddress,
+                }),
+              ])
+            );
+          });
+        });
+      });
+    });
+
+    describe("when identity is associated (belongs) to many registrations", () => {
+      let identityContractAddress: EthereumAddress;
+      let handleOne: Handle;
+      let handleTwo: Handle;
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      beforeAll(async () => {
+        handleOne = "YoSe";
+        handleTwo = "YoNoSabo";
+        const contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+
+        identityContractAddress = identityContract.address;
+        await register(identityContractAddress, handleOne);
+        await register(identityContractAddress, handleTwo);
+      });
+
+      it("returns multiple registrations", async () => {
+        const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+        expect(result).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              contractAddr: identityContractAddress,
+              handle: handleOne,
+            }),
+            expect.objectContaining({
+              contractAddr: identityContractAddress,
+              handle: handleTwo,
+            }),
+          ])
+        );
+      });
+
+      describe("and one of the registrations updates the identity address", () => {
+        beforeEach(async () => {
+          const contractOwner = await signer.getAddress();
+          const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+          await identityContract.deployed();
+          const newIdentityContract = identityContract.address;
+          const handleTwo = "YoNoSabo";
+          await changeAddress(handleTwo, newIdentityContract);
+        });
+
+        it("returns only registrations associated with the indentity", async () => {
+          const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+          expect(result.length).toEqual(1);
+          expect(result).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                contractAddr: identityContractAddress,
+                handle: "YoSe",
+              }),
+            ])
+          );
+        });
+
+        describe("and all identity association with registrations are removed", () => {
+          beforeEach(async () => {
+            const contractOwner = await signer.getAddress();
+            const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+            await identityContract.deployed();
+            const newIdentityContract = identityContract.address;
+            const handleOne = "YoSe";
+            await changeAddress(handleOne, newIdentityContract);
+          });
+
+          it("returns only registrations associated with the indentity", async () => {
+            const result = await getRegistrationsByIdentityAddress(identityContractAddress);
+
+            expect(result).toEqual([]);
+          });
+        });
+      });
     });
   });
 });

@@ -49,6 +49,7 @@
 - Added type check and validation functions to activityContent module
 - Added type check and validation functions to announcements module
 - Added hash() and getHashGenerator() utility functions
+- Ability to get Registrations associated to identity address
 ### Removed
 -
 ### Fixed
