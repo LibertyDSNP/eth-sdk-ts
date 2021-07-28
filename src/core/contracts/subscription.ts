@@ -70,18 +70,20 @@ export const subscribeToBatchPublications = async (
 
   if (useQueue) {
     pastLogs = await getPastLogs(provider, { ...batchFilter, fromBlock: filter?.fromBlock });
-    maxBlockNumberForPastLogs = pastLogs[pastLogs.length - 1].blockNumber;
 
-    while (pastLogs.length > 0) {
-      const batchItem = pastLogs.shift();
-      if (batchItem) doReceivePublication(batchItem);
+    if (pastLogs.length) {
+      maxBlockNumberForPastLogs = pastLogs[pastLogs.length - 1].blockNumber;
+
+      while (pastLogs.length > 0) {
+        const batchItem = pastLogs.shift();
+        if (batchItem) doReceivePublication(batchItem);
+      }
+
+      while (currentLogQueue.length > 0) {
+        const batchItem = currentLogQueue.shift();
+        if (batchItem && batchItem.blockNumber > maxBlockNumberForPastLogs) doReceivePublication(batchItem);
+      }
     }
-
-    while (currentLogQueue.length > 0) {
-      const batchItem = currentLogQueue.shift();
-      if (batchItem && batchItem.blockNumber > maxBlockNumberForPastLogs) doReceivePublication(batchItem);
-    }
-
     useQueue = false;
   }
 
