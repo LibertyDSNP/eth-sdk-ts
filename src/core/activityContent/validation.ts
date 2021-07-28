@@ -212,79 +212,54 @@ export const isActivityContentProfile = (obj: unknown): obj is ActivityContentPr
   return true;
 };
 
-const isValidHrefField = (obj: unknown): obj is string => {
-  if (!isString(obj)) return false;
-  if (!obj.match(HREF_REGEX)) return false;
+const isValidHrefField = (obj: string): boolean => obj.match(HREF_REGEX) !== null;
 
-  return true;
-};
+const isValidPublishedField = (obj: string): boolean => obj.match(ISO8601_REGEX) !== null;
 
-const isValidPublishedField = (obj: unknown): obj is string => {
-  if (!isString(obj)) return false;
-  if (!obj.match(ISO8601_REGEX)) return false;
+const isValidDurationField = (obj: string): boolean => obj.match(DURATION_REGEX) !== null;
 
-  return true;
-};
-
-const isValidDurationField = (obj: unknown): obj is string => {
-  if (!isString(obj)) return false;
-  if (!obj.match(DURATION_REGEX)) return false;
-
-  return true;
-};
-
-const isValidAttachmentField = (obj: unknown): obj is Array<ActivityContentAttachment> => {
-  const attachmentValidators: Record<string, (obj: unknown) => boolean> = {
+const isValidActivityContentAttachment = (obj: ActivityContentAttachment): boolean =>
+  (({
     Audio: isValidActivityContentAudio,
     Image: isValidActivityContentImage,
-    Link: isValidActivityContentLink,
     Video: isValidActivityContentVideo,
-  };
-  if (!isArrayOfType(obj, isActivityContentAttachment)) return false;
+    Link: isValidActivityContentLink,
+  }[obj["type"]] as (o: ActivityContentAttachment) => boolean)(obj));
 
-  for (const attachment of obj) {
-    if (!isRecord(attachment)) return false;
-    if (!isString(attachment["type"])) return false;
-    if (!attachmentValidators[attachment["type"]]) return false;
-    if (!attachmentValidators[attachment["type"]](attachment)) return false;
+const isValidActivityContentAudio = (obj: ActivityContentAudio): boolean => {
+  if (obj["duration"] && !isValidDurationField(obj["duration"])) return false;
+  if (!hasAtLeastOneSupportedAudioMediaType(obj["url"])) return false;
+
+  for (const link of obj["url"]) {
+    if (!isValidActivityContentAudioLink(link)) return false;
   }
 
   return true;
 };
 
-const isValidActivityContentAudio = (obj: unknown): obj is ActivityContentAudio => {
-  if (!isActivityContentAudio(obj)) return false;
-  if (!isValidAudioLinkField(obj["url"])) return false;
+const isValidActivityContentImage = (obj: ActivityContentImage): boolean => {
+  if (!hasAtLeastOneSupportedImageMediaType(obj["url"])) return false;
 
-  if (obj["duration"] && !isValidDurationField(obj["duration"])) return false;
-
-  return true;
-};
-
-const isValidActivityContentImage = (obj: unknown): obj is ActivityContentImage => {
-  if (!isActivityContentImage(obj)) return false;
-  if (!isValidImageLinkField(obj["url"])) return false;
+  for (const link of obj["url"]) {
+    if (!isValidActivityContentImageLink(link)) return false;
+  }
 
   return true;
 };
 
-const isValidActivityContentVideo = (obj: unknown): obj is ActivityContentVideo => {
-  if (!isActivityContentVideo(obj)) return false;
-  if (!isValidVideoLinkField(obj["url"])) return false;
+const isValidActivityContentVideo = (obj: ActivityContentVideo): boolean => {
+  if (!hasAtLeastOneSupportedVideoMediaType(obj["url"])) return false;
+
+  for (const link of obj["url"]) {
+    if (!isValidActivityContentVideoLink(link)) return false;
+  }
 
   return true;
 };
 
-const isValidActivityContentLink = (obj: unknown): obj is ActivityContentLink => {
-  if (!isActivityContentLink(obj)) return false;
-  if (!isValidHrefField(obj["href"])) return false;
+const isValidActivityContentLink = (obj: ActivityContentLink): boolean => isValidHrefField(obj["href"]);
 
-  return true;
-};
-
-const isValidAudioLinkField = (obj: unknown): obj is Array<ActivityContentAudioLink> => {
-  if (!isArrayOfType(obj, isValidActivityContentAudioLink)) return false;
-
+const hasAtLeastOneSupportedAudioMediaType = (obj: Array<ActivityContentAudioLink>): boolean => {
   for (const audioLink of obj) {
     if (SUPPORTED_AUDIO_MEDIA_TYPES.includes(audioLink["mediaType"])) return true;
   }
@@ -292,9 +267,7 @@ const isValidAudioLinkField = (obj: unknown): obj is Array<ActivityContentAudioL
   return false;
 };
 
-const isValidImageLinkField = (obj: unknown): obj is Array<ActivityContentImageLink> => {
-  if (!isArrayOfType(obj, isValidActivityContentImageLink)) return false;
-
+const hasAtLeastOneSupportedImageMediaType = (obj: Array<ActivityContentImageLink>): boolean => {
   for (const imageLink of obj) {
     if (SUPPORTED_IMAGE_MEDIA_TYPES.includes(imageLink["mediaType"])) return true;
   }
@@ -302,9 +275,7 @@ const isValidImageLinkField = (obj: unknown): obj is Array<ActivityContentImageL
   return false;
 };
 
-const isValidVideoLinkField = (obj: unknown): obj is Array<ActivityContentVideoLink> => {
-  if (!isArrayOfType(obj, isValidActivityContentVideoLink)) return false;
-
+const hasAtLeastOneSupportedVideoMediaType = (obj: Array<ActivityContentVideoLink>): boolean => {
   for (const videoLink of obj) {
     if (SUPPORTED_VIDEO_MEDIA_TYPES.includes(videoLink["mediaType"])) return true;
   }
@@ -312,18 +283,16 @@ const isValidVideoLinkField = (obj: unknown): obj is Array<ActivityContentVideoL
   return false;
 };
 
-const isValidActivityContentAudioLink = (obj: unknown): obj is ActivityContentAudioLink => {
-  if (!isActivityContentAudioLink(obj)) return false;
+const isValidActivityContentAudioLink = (obj: ActivityContentAudioLink): boolean => {
   if (!isValidHrefField(obj["href"])) return false;
-  if (!isValidHashField(obj["hash"])) return false;
+  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
 
   return true;
 };
 
-const isValidActivityContentImageLink = (obj: unknown): obj is ActivityContentImageLink => {
-  if (!isActivityContentImageLink(obj)) return false;
+const isValidActivityContentImageLink = (obj: ActivityContentImageLink): boolean => {
   if (!isValidHrefField(obj["href"])) return false;
-  if (!isValidHashField(obj["hash"])) return false;
+  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
 
   if (obj["height"] && obj["height"] < 1) return false;
   if (obj["width"] && obj["width"] < 1) return false;
@@ -331,10 +300,9 @@ const isValidActivityContentImageLink = (obj: unknown): obj is ActivityContentIm
   return true;
 };
 
-const isValidActivityContentVideoLink = (obj: unknown): obj is ActivityContentVideoLink => {
-  if (!isActivityContentVideoLink(obj)) return false;
+const isValidActivityContentVideoLink = (obj: ActivityContentVideoLink): boolean => {
   if (!isValidHrefField(obj["href"])) return false;
-  if (!isValidHashField(obj["hash"])) return false;
+  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
 
   if (obj["height"] && obj["height"] < 1) return false;
   if (obj["width"] && obj["width"] < 1) return false;
@@ -342,9 +310,7 @@ const isValidActivityContentVideoLink = (obj: unknown): obj is ActivityContentVi
   return true;
 };
 
-const isValidHashField = (obj: unknown): obj is Array<ActivityContentHash> => {
-  if (!isArrayOfType(obj, isActivityContentHash)) return false;
-
+const hasAtLeastOneSupportedHashAlgorithm = (obj: Array<ActivityContentHash>): boolean => {
   for (const hash of obj) {
     if (hash["algorithm"] === "keccak256" && isString(hash["value"]) && hash["value"].match(HASH_REGEX)) return true;
   }
@@ -352,37 +318,33 @@ const isValidHashField = (obj: unknown): obj is Array<ActivityContentHash> => {
   return false;
 };
 
-const isValidLocationField = (obj: unknown): obj is Array<ActivityContentLocation> => {
-  if (!isArrayOfType(obj, isActivityContentLocation)) return false;
-
-  for (const location of obj) {
-    if (location["accuracy"]) {
-      if (!isNumber(location["accuracy"])) return false;
-      if (location["accuracy"] < 0) return false;
-      if (location["accuracy"] > 100) return false;
-    }
-    if (location["latitude"]) {
-      if (!isNumber(location["latitude"])) return false;
-      if (location["latitude"] < -90) return false;
-      if (location["latitude"] > 90) return false;
-    }
-    if (location["longitude"]) {
-      if (!isNumber(location["longitude"])) return false;
-      if (location["longitude"] < -180) return false;
-      if (location["longitude"] > 180) return false;
-    }
-    if (location["units"]) {
-      if (!isString(location["units"])) return false;
-      if (
-        location["units"] !== "cm" &&
-        location["units"] !== "feet" &&
-        location["units"] !== "inches" &&
-        location["units"] !== "km" &&
-        location["units"] !== "m" &&
-        location["units"] !== "miles"
-      )
-        return false;
-    }
+const isValidActivityContentLocation = (location: ActivityContentLocation): boolean => {
+  if (location["accuracy"]) {
+    if (!isNumber(location["accuracy"])) return false;
+    if (location["accuracy"] < 0) return false;
+    if (location["accuracy"] > 100) return false;
+  }
+  if (location["latitude"]) {
+    if (!isNumber(location["latitude"])) return false;
+    if (location["latitude"] < -90) return false;
+    if (location["latitude"] > 90) return false;
+  }
+  if (location["longitude"]) {
+    if (!isNumber(location["longitude"])) return false;
+    if (location["longitude"] < -180) return false;
+    if (location["longitude"] > 180) return false;
+  }
+  if (location["units"]) {
+    if (!isString(location["units"])) return false;
+    if (
+      location["units"] !== "cm" &&
+      location["units"] !== "feet" &&
+      location["units"] !== "inches" &&
+      location["units"] !== "km" &&
+      location["units"] !== "m" &&
+      location["units"] !== "miles"
+    )
+      return false;
   }
 
   return true;
@@ -398,12 +360,24 @@ const isValidLocationField = (obj: unknown): obj is Array<ActivityContentLocatio
  * @param obj - The object to check
  * @returns A boolean indicating whether or not the object is a valid ActivityContentNote
  */
-export const isValidActivityContentNote = (obj: unknown): obj is ActivityContentNote => {
+export const isValidActivityContentNote = (obj: unknown): boolean => {
   if (!isActivityContentNote(obj)) return false;
 
   if (obj["published"] && !isValidPublishedField(obj["published"])) return false;
-  if (obj["attachment"] && !isValidAttachmentField(obj["attachment"])) return false;
-  if (obj["location"] && !isValidLocationField(obj["location"])) return false;
+  if (obj["attachment"]) {
+    for (const attachment of obj["attachment"]) {
+      if (!isValidActivityContentAttachment(attachment)) return false;
+    }
+  }
+  if (obj["location"]) {
+    if (Array.isArray(obj["location"])) {
+      for (const location of obj["location"]) {
+        if (!isValidActivityContentLocation(location)) return false;
+      }
+    } else {
+      if (!isValidActivityContentLocation(obj["location"])) return false;
+    }
+  }
 
   return true;
 };
@@ -418,12 +392,24 @@ export const isValidActivityContentNote = (obj: unknown): obj is ActivityContent
  * @param obj - The object to check
  * @returns A boolean indicating whether or not the object is a valid ActivityContentProfile
  */
-export const isValidActivityContentProfile = (obj: unknown): obj is ActivityContentProfile => {
+export const isValidActivityContentProfile = (obj: unknown): boolean => {
   if (!isActivityContentProfile(obj)) return false;
 
   if (obj["published"] && !isValidPublishedField(obj["published"])) return false;
-  if (obj["icon"] && !isValidImageLinkField(obj["icon"])) return false;
-  if (obj["location"] && !isValidLocationField(obj["location"])) return false;
+  if (obj["icon"]) {
+    for (const icon of obj["icon"]) {
+      if (!isValidActivityContentImageLink(icon)) return false;
+    }
+  }
+  if (obj["location"]) {
+    if (Array.isArray(obj["location"])) {
+      for (const location of obj["location"]) {
+        if (!isValidActivityContentLocation(location)) return false;
+      }
+    } else {
+      if (!isValidActivityContentLocation(obj["location"])) return false;
+    }
+  }
 
   return true;
 };
