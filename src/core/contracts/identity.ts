@@ -209,7 +209,10 @@ interface DelegateRemoveLogData extends DelegateAddLogData {
   endBlock: number;
 }
 
-type DelegateLogData = DelegateAddLogData | DelegateRemoveLogData;
+/**
+ * DelegateLogData represents a struct for log data
+ */
+export type DelegateLogData = DelegateAddLogData | DelegateRemoveLogData;
 
 /**
  * DelegateAdd represents a struct for adding delegates
@@ -377,45 +380,96 @@ export const removeDelegate = async (
 };
 
 /**
- * getAddDelegateLogs() Retrieves event filter for DSNPAddDelegate event
+ * getDelegateIdentitiesFor() Retrieves all identities for an address
  *
- * @param ethereumAddress - Address to filter on
+ * @param ethereumAddress - The address to find all active identities associated to it
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns DSNPBatch event filter
+ * @returns A list of idenetity addresses that the input address is a delegate to
  */
-export const getAddDelegateLogData = async (
+export const getDelegateIdentitiesFor = async (
   ethereumAddress: EthereumAddress,
   opts?: ConfigOpts
-): Promise<DelegateAddLogData[]> => {
-  const eventSignature = hash("DSNPAddDelegate(address,uint8)");
-  const addDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
-  const addDelegateLogData: DelegateAddLogData[] = siftDelegateLogs(addDelegateLogs);
+): Promise<EthereumAddress[]> => {
+  const delegateLogData: DelegateLogData[] = siftDelegateLogs(await getAllDelegateLogsFor(ethereumAddress, opts));
 
-  return addDelegateLogData;
+  const activeIdentities = (await resolveDelegatesFor(ethereumAddress, delegateLogData)).map(
+    (data: DelegateLogData) => data?.identityAddress
+  );
+
+  return activeIdentities;
 };
 
 /**
- * getRemoveDelegateLogs() Retrieves event filter for DSNPRemoveDelegate event
+ * resolveDelegatesFor()
  *
- * @param ethereumAddress - Address to filter on
+ * @param ethereumAddress - The address to find all active identities associated to it
+ * @param delegateLogData - Sorted by block-number unfiltered log data from the Add/Remove Delegate events
+ * the Add/Remove Delegate events (DSNPAddDelegate and DSNPRemoveDelegate)
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns DSNPBatch event filter
+ * @returns Filtered logs to which the input address is a delegate to
  */
-export const getRemoveDelegateLogData = async (
+export const resolveDelegatesFor = async (
   ethereumAddress: EthereumAddress,
+  delegateLogData: DelegateLogData[],
   opts?: ConfigOpts
-): Promise<DelegateRemoveLogData[]> => {
-  const eventSignature = hash("DSNPRemoveDelegate(address,uint64)");
-  const removeDelegateLogs = await getDelegateLogs(ethereumAddress, eventSignature, opts);
-  const removeDelegateLogData = siftDelegateLogs(removeDelegateLogs) as DelegateRemoveLogData[];
+): Promise<DelegateLogData[]> => {
+  const provider = requireGetProvider(opts);
 
-  return removeDelegateLogData;
+  const currentBlockNumber = await provider.getBlockNumber();
+  const isRemoved = (delegate: DelegateRemoveLogData): boolean => delegate.endBlock <= currentBlockNumber;
+
+  const lastLogForIdentityAddress = getLastLogForIdentityAddress(delegateLogData);
+
+  const filteredDelegateLogData = lastLogForIdentityAddress.filter((delegate: DelegateLogData) => {
+    return (
+      delegate.delegate == ethereumAddress &&
+      (isDelegateAddLogData(delegate) || (isDelegateRemoveLogData(delegate) && !isRemoved(delegate)))
+    );
+  });
+
+  return filteredDelegateLogData;
 };
 
-const getDelegateLogs = async (ethereumAddress: EthereumAddress, eventSignature: HexString, opts?: ConfigOpts) => {
+const isDelegateRemoveLogData = (
+  delegate: DelegateAddLogData | DelegateRemoveLogData
+): delegate is DelegateRemoveLogData => {
+  return (delegate as DelegateRemoveLogData).name === "DSNPRemoveDelegate";
+};
+
+const isDelegateAddLogData = (delegate: DelegateAddLogData | DelegateRemoveLogData): delegate is DelegateAddLogData => {
+  return (delegate as DelegateAddLogData).name === "DSNPAddDelegate";
+};
+
+const getLastLogForIdentityAddress = (delegateLogs: DelegateLogData[]): DelegateLogData[] => {
+  const groupedByIdentityAddress = delegateLogs.reduce(
+    (acc: Record<HexString, DelegateLogData>, current: DelegateLogData) => {
+      acc[current.identityAddress] = current;
+
+      return acc;
+    },
+    {}
+  );
+
+  return Object.values(groupedByIdentityAddress);
+};
+
+/**
+ * getAllDelegateLogsFor() Retrieves all logs associated to an address
+ *
+ * @param ethereumAddress - Address used to retrive all delegate logs for
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ */
+export const getAllDelegateLogsFor = async (
+  ethereumAddress: EthereumAddress,
+  opts?: ConfigOpts
+): Promise<ParsedLog[]> => {
   const provider = requireGetProvider(opts);
+
+  const addDelegateEventSignature = hash("DSNPAddDelegate(address,uint8)");
+  const removeDelegateEventSignature = hash("DSNPRemoveDelegate(address,uint64)");
+
   const logs: ethers.providers.Log[] = await provider.getLogs({
-    topics: [eventSignature, ethers.utils.hexZeroPad(ethereumAddress, 32)],
+    topics: [[removeDelegateEventSignature, addDelegateEventSignature], [ethers.utils.hexZeroPad(ethereumAddress, 32)]],
     fromBlock: 0,
   });
 
