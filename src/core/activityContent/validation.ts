@@ -16,7 +16,7 @@ import {
   ActivityContentLocation,
 } from "./factories";
 import { isDSNPUserId } from "../identifiers";
-import { isRecord, isString, isNumber } from "../utilities/validation";
+import { isRecord, isString, isNumber, isArrayOfType } from "../utilities/validation";
 
 const ISO8601_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?$/;
 const HREF_REGEX = /^https?:\/\/.+/;
@@ -33,90 +33,18 @@ const SUPPORTED_IMAGE_MEDIA_TYPES = [
 ];
 const SUPPORTED_VIDEO_MEDIA_TYPES = ["video/mpeg", "video/ogg", "video/webm", "video/H256", "video/mp4"];
 
-const isHashField = (obj: unknown): obj is Array<ActivityContentHash> => {
-  if (!Array.isArray(obj)) return false;
-  for (const hash of obj) {
-    if (!isActivityContentHash(hash)) return false;
-  }
-
-  return true;
-};
-
-const isAttachmentField = (obj: unknown): obj is Array<ActivityContentAttachment> => {
-  const attachmentValidators: Record<string, (obj: unknown) => boolean> = {
-    Audio: isActivityContentAudio,
-    Image: isActivityContentImage,
-    Link: isActivityContentLink,
-    Video: isActivityContentVideo,
-  };
-
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isRecord(attachment)) return false;
-    if (!isString(attachment["type"])) return false;
-    if (!attachmentValidators[attachment["type"]]) return false;
-    if (!attachmentValidators[attachment["type"]](attachment)) return false;
-  }
-
-  return true;
-};
-
-const isTagField = (obj: unknown): obj is Array<ActivityContentTag> => {
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isRecord(attachment)) return false;
-    if (attachment["type"] === undefined) {
-      if (!isActivityContentHashtag(attachment)) return false;
-    } else {
-      if (!isActivityContentMention(attachment)) return false;
-    }
-  }
-
-  return true;
-};
-
-const isLocationField = (obj: unknown): obj is Array<ActivityContentLocation> => {
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isActivityContentLocation(attachment)) return false;
-  }
-
-  return true;
-};
-
-const isAudioLinkField = (obj: unknown): obj is Array<ActivityContentAudioLink> => {
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isActivityContentAudioLink(attachment)) return false;
-  }
-
-  return true;
-};
-
-const isImageLinkField = (obj: unknown): obj is Array<ActivityContentImageLink> => {
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isActivityContentImageLink(attachment)) return false;
-  }
-
-  return true;
-};
-
-const isVideoLinkField = (obj: unknown): obj is Array<ActivityContentVideoLink> => {
-  if (!Array.isArray(obj)) return false;
-  for (const attachment of obj) {
-    if (!isActivityContentVideoLink(attachment)) return false;
-  }
-
-  return true;
-};
+const isActivityContentAttachment = (obj: unknown): obj is ActivityContentAttachment =>
+  isActivityContentAudio(obj) ||
+  isActivityContentImage(obj) ||
+  isActivityContentVideo(obj) ||
+  isActivityContentLink(obj);
 
 const isActivityContentAudioLink = (obj: unknown): obj is ActivityContentAudioLink => {
   if (!isRecord(obj)) return false;
   if (obj["type"] !== "Link") return false;
   if (!isString(obj["href"])) return false;
   if (!isString(obj["mediaType"])) return false;
-  if (!isHashField(obj["hash"])) return false;
+  if (!isArrayOfType(obj["hash"], isActivityContentHash)) return false;
 
   return true;
 };
@@ -126,7 +54,7 @@ const isActivityContentImageLink = (obj: unknown): obj is ActivityContentImageLi
   if (obj["type"] !== "Link") return false;
   if (!isString(obj["href"])) return false;
   if (!isString(obj["mediaType"])) return false;
-  if (!isHashField(obj["hash"])) return false;
+  if (!isArrayOfType(obj["hash"], isActivityContentHash)) return false;
 
   if (obj["height"] && !isNumber(obj["height"])) return false;
   if (obj["width"] && !isNumber(obj["width"])) return false;
@@ -139,7 +67,7 @@ const isActivityContentVideoLink = (obj: unknown): obj is ActivityContentVideoLi
   if (obj["type"] !== "Link") return false;
   if (!isString(obj["href"])) return false;
   if (!isString(obj["mediaType"])) return false;
-  if (!isHashField(obj["hash"])) return false;
+  if (!isArrayOfType(obj["hash"], isActivityContentHash)) return false;
 
   if (obj["height"] && !isNumber(obj["height"])) return false;
   if (obj["width"] && !isNumber(obj["width"])) return false;
@@ -169,8 +97,12 @@ const isActivityContentLocation = (obj: unknown): obj is ActivityContentLocation
   return true;
 };
 
+const isActivityContentTag = (obj: unknown): obj is ActivityContentTag =>
+  isActivityContentHashtag(obj) || isActivityContentMention(obj);
+
 const isActivityContentHashtag = (obj: unknown): obj is ActivityContentHashtag => {
   if (!isRecord(obj)) return false;
+  if (obj["type"] !== undefined) return false;
   if (!isString(obj["name"])) return false;
 
   return true;
@@ -178,6 +110,7 @@ const isActivityContentHashtag = (obj: unknown): obj is ActivityContentHashtag =
 
 const isActivityContentMention = (obj: unknown): obj is ActivityContentMention => {
   if (!isRecord(obj)) return false;
+  if (obj["type"] !== "Mention") return false;
   if (!isDSNPUserId(obj["id"])) return false;
 
   if (obj["name"] && !isString(obj["name"])) return false;
@@ -188,7 +121,7 @@ const isActivityContentMention = (obj: unknown): obj is ActivityContentMention =
 const isActivityContentAudio = (obj: unknown): obj is ActivityContentAudio => {
   if (!isRecord(obj)) return false;
   if (obj["type"] !== "Audio") return false;
-  if (!isAudioLinkField(obj["url"])) return false;
+  if (!isArrayOfType(obj["url"], isActivityContentAudioLink)) return false;
 
   if (obj["name"] && !isString(obj["name"])) return false;
   if (obj["duration"] && !isString(obj["duration"])) return false;
@@ -199,7 +132,7 @@ const isActivityContentAudio = (obj: unknown): obj is ActivityContentAudio => {
 const isActivityContentImage = (obj: unknown): obj is ActivityContentImage => {
   if (!isRecord(obj)) return false;
   if (obj["type"] !== "Image") return false;
-  if (!isImageLinkField(obj["url"])) return false;
+  if (!isArrayOfType(obj["url"], isActivityContentImageLink)) return false;
 
   if (obj["name"] && !isString(obj["name"])) return false;
 
@@ -209,7 +142,7 @@ const isActivityContentImage = (obj: unknown): obj is ActivityContentImage => {
 const isActivityContentVideo = (obj: unknown): obj is ActivityContentVideo => {
   if (!isRecord(obj)) return false;
   if (obj["type"] !== "Video") return false;
-  if (!isVideoLinkField(obj["url"])) return false;
+  if (!isArrayOfType(obj["url"], isActivityContentVideoLink)) return false;
 
   if (obj["name"] && !isString(obj["name"])) return false;
   if (obj["duration"] && !isString(obj["duration"])) return false;
@@ -246,9 +179,9 @@ export const isActivityContentNote = (obj: unknown): obj is ActivityContentNote 
 
   if (obj["name"] && !isString(obj["name"])) return false;
   if (obj["published"] && !isString(obj["published"])) return false;
-  if (obj["attachment"] && !isAttachmentField(obj["attachment"])) return false;
-  if (obj["tag"] && !isTagField(obj["tag"])) return false;
-  if (obj["location"] && !isLocationField(obj["location"])) return false;
+  if (obj["attachment"] && !isArrayOfType(obj["attachment"], isActivityContentAttachment)) return false;
+  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag)) return false;
+  if (obj["location"] && !isArrayOfType(obj["location"], isActivityContentLocation)) return false;
 
   return true;
 };
@@ -271,10 +204,10 @@ export const isActivityContentProfile = (obj: unknown): obj is ActivityContentPr
 
   if (obj["name"] && !isString(obj["name"])) return false;
   if (obj["summary"] && !isString(obj["name"])) return false;
-  if (obj["icon"] && !isImageLinkField(obj["icon"])) return false;
+  if (obj["icon"] && !isArrayOfType(obj["icon"], isActivityContentImageLink)) return false;
   if (obj["published"] && !isString(obj["published"])) return false;
-  if (obj["tag"] && !isTagField(obj["tag"])) return false;
-  if (obj["location"] && !isLocationField(obj["location"])) return false;
+  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag)) return false;
+  if (obj["location"] && !isArrayOfType(obj["location"], isActivityContentLocation)) return false;
 
   return true;
 };
@@ -307,7 +240,7 @@ const isValidAttachmentField = (obj: unknown): obj is Array<ActivityContentAttac
     Link: isValidActivityContentLink,
     Video: isValidActivityContentVideo,
   };
-  if (!isAttachmentField(obj)) return false;
+  if (!isArrayOfType(obj, isActivityContentAttachment)) return false;
 
   for (const attachment of obj) {
     if (!isRecord(attachment)) return false;
@@ -350,10 +283,9 @@ const isValidActivityContentLink = (obj: unknown): obj is ActivityContentLink =>
 };
 
 const isValidAudioLinkField = (obj: unknown): obj is Array<ActivityContentAudioLink> => {
-  if (!isAudioLinkField(obj)) return false;
+  if (!isArrayOfType(obj, isValidActivityContentAudioLink)) return false;
 
   for (const audioLink of obj) {
-    if (!isValidActivityContentAudioLink(audioLink)) return false;
     if (SUPPORTED_AUDIO_MEDIA_TYPES.includes(audioLink["mediaType"])) return true;
   }
 
@@ -361,10 +293,9 @@ const isValidAudioLinkField = (obj: unknown): obj is Array<ActivityContentAudioL
 };
 
 const isValidImageLinkField = (obj: unknown): obj is Array<ActivityContentImageLink> => {
-  if (!isImageLinkField(obj)) return false;
+  if (!isArrayOfType(obj, isValidActivityContentImageLink)) return false;
 
   for (const imageLink of obj) {
-    if (!isValidActivityContentImageLink(imageLink)) return false;
     if (SUPPORTED_IMAGE_MEDIA_TYPES.includes(imageLink["mediaType"])) return true;
   }
 
@@ -372,10 +303,9 @@ const isValidImageLinkField = (obj: unknown): obj is Array<ActivityContentImageL
 };
 
 const isValidVideoLinkField = (obj: unknown): obj is Array<ActivityContentVideoLink> => {
-  if (!isVideoLinkField(obj)) return false;
+  if (!isArrayOfType(obj, isValidActivityContentVideoLink)) return false;
 
   for (const videoLink of obj) {
-    if (!isValidActivityContentVideoLink(videoLink)) return false;
     if (SUPPORTED_VIDEO_MEDIA_TYPES.includes(videoLink["mediaType"])) return true;
   }
 
@@ -413,10 +343,9 @@ const isValidActivityContentVideoLink = (obj: unknown): obj is ActivityContentVi
 };
 
 const isValidHashField = (obj: unknown): obj is Array<ActivityContentHash> => {
-  if (!isHashField(obj)) return false;
+  if (!isArrayOfType(obj, isActivityContentHash)) return false;
 
   for (const hash of obj) {
-    if (!isActivityContentHash(hash)) return false;
     if (hash["algorithm"] === "keccak256" && isString(hash["value"]) && hash["value"].match(HASH_REGEX)) return true;
   }
 
@@ -424,10 +353,9 @@ const isValidHashField = (obj: unknown): obj is Array<ActivityContentHash> => {
 };
 
 const isValidLocationField = (obj: unknown): obj is Array<ActivityContentLocation> => {
-  if (!isLocationField(obj)) return false;
+  if (!isArrayOfType(obj, isActivityContentLocation)) return false;
 
   for (const location of obj) {
-    if (!isActivityContentLocation(location)) return false;
     if (location["accuracy"]) {
       if (!isNumber(location["accuracy"])) return false;
       if (location["accuracy"] < 0) return false;
