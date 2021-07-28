@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Changes
+- Updated activityContent module to match new spec, again
 - Fix length check bug in `subscribeToBatchPublications`
 - Updated announcement types to include createdAt type
 - Updated announcement factories to include optional createdAt param
