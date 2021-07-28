@@ -35,7 +35,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","published":"[0-9TZ\-:.]+","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","mediaType":"text\/plain","type":"Note"\}/
           );
         });
 
@@ -130,7 +130,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","published":"[0-9TZ\-:.]+","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","mediaType":"text\/plain","type":"Note"\}/
           );
         });
 
@@ -287,7 +287,7 @@ describe("content", () => {
   });
 
   describe("profile", () => {
-    const profileObject = createProfile("🌹🚗");
+    const profileObject = createProfile({ name: "🌹🚗" });
 
     describe("with a valid signer, storage adapter and user URI", () => {
       let store: TestStore;
@@ -311,7 +311,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","describes":{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"🌹🚗","published":"[0-9TZ\-:.]+","type":"Person"},"published":"[0-9TZ\-:.]+","type":"Profile"}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"🌹🚗","type":"Profile"}/
           );
         });
 

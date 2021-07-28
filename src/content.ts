@@ -1,8 +1,9 @@
 import { requireGetCurrentFromURI, requireGetStore, ConfigOpts } from "./core/config";
 import {
-  isValidActivityContent,
+  isValidActivityContentNote,
+  isValidActivityContentProfile,
   serialize,
-  ActivityContent,
+  ActivityContentNote,
   ActivityContentProfile,
   InvalidActivityContentError,
 } from "./core/activityContent";
@@ -38,10 +39,10 @@ import { hash } from "./core/utilities";
  * @returns A Signed Broadcast announcement ready for inclusion in a batch
  */
 export const broadcast = async (
-  contentObject: ActivityContent,
+  contentObject: ActivityContentNote,
   opts?: ConfigOpts
 ): Promise<SignedBroadcastAnnouncement> => {
-  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContentNote(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
@@ -80,13 +81,13 @@ export const broadcast = async (
  * @returns A Signed Reply Announcement ready for inclusion in a batch
  */
 export const reply = async (
-  contentObject: ActivityContent,
+  contentObject: ActivityContentNote,
   inReplyTo: DSNPAnnouncementURI,
   opts?: ConfigOpts
 ): Promise<SignedReplyAnnouncement> => {
   if (!isDSNPAnnouncementURI(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
 
-  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContentNote(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
@@ -152,7 +153,7 @@ export const profile = async (
   contentObject: ActivityContentProfile,
   opts?: ConfigOpts
 ): Promise<SignedProfileAnnouncement> => {
-  if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
+  if (!isValidActivityContentProfile(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
