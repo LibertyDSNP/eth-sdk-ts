@@ -2,9 +2,9 @@ import { sample, sampleText } from "@dsnp/test-generators";
 
 import {
   createNote,
-  createPerson,
+  createProfile,
   ActivityContentNote,
-  ActivityContentPerson,
+  ActivityContentProfile,
   ActivityContentImage,
   ActivityContentVideo,
 } from "../core/activityContent";
@@ -31,9 +31,9 @@ export const generateNote = (content: string, hasAttachment?: boolean): Activity
  *
  * @param name - The new display name of the person or generate one.
  */
-export const generatePerson = (name?: string): ActivityContentPerson => {
+export const generateProfile = (name?: string): ActivityContentProfile => {
   const newName = name ? name : [sample(PREFAB_FIRST_NAMES), sample(PREFAB_LAST_NAMES)].join(" ");
-  return createPerson(newName);
+  return createProfile({ name: newName });
 };
 
 /**
@@ -44,17 +44,20 @@ export const generatePerson = (name?: string): ActivityContentPerson => {
 export const generateImageAttachment = (url?: string): ActivityContentImage => {
   const theURL = url ? url : sample(PREFAB_URLS);
   return {
-    "@context": "https://www.w3.org/ns/activitystreams",
     type: "Image",
-    published: new Date().toISOString(),
-    url: theURL,
-    hash: {
-      algorithm: "keccak256",
-      value: getRandomHex(),
-    },
-    mediaType: theURL.replace(/(^\w+:|^)\/\//, ""),
-    height: 1024,
-    width: 768,
+    url: [
+      {
+        type: "Link",
+        href: theURL,
+        hash: [
+          {
+            algorithm: "keccak256",
+            value: getRandomHex(),
+          },
+        ],
+        mediaType: theURL.replace(/(^\w+:|^)\/\//, ""),
+      },
+    ],
   };
 };
 
@@ -66,16 +69,19 @@ export const generateImageAttachment = (url?: string): ActivityContentImage => {
 export const generateVideoAttachment = (url?: string): ActivityContentVideo => {
   const theURL = url ? url : sample(PREFAB_VIDEOS);
   return {
-    "@context": "https://www.w3.org/ns/activitystreams",
     type: "Video",
-    published: new Date().toISOString(),
-    url: theURL,
-    hash: {
-      algorithm: "keccak256",
-      value: getRandomHex(),
-    },
-    mediaType: theURL.replace(/(^\w+:|^)\/\//, ""),
-    height: 1024,
-    width: 768,
+    url: [
+      {
+        type: "Link",
+        href: theURL,
+        hash: [
+          {
+            algorithm: "keccak256",
+            value: getRandomHex(),
+          },
+        ],
+        mediaType: theURL.replace(/(^\w+:|^)\/\//, ""),
+      },
+    ],
   };
 };

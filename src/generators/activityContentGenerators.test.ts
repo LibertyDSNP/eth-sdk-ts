@@ -1,7 +1,7 @@
 import * as apg from "./activityContentGenerators";
 import {
   ActivityContentNote,
-  ActivityContentPerson,
+  ActivityContentProfile,
   ActivityContentImage,
   ActivityContentVideo,
 } from "../core/activityContent";
@@ -13,28 +13,26 @@ describe("activityContentGenerators", () => {
     let res: ActivityContentNote = apg.generateNote(opText);
     expect(res.attachment).toEqual(undefined);
     expect(res.type).toEqual("Note");
-    expect(res.published).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
 
     res = apg.generateNote(opText, true);
-    expect(res.attachment).not.toEqual("");
+    expect(res.attachment).not.toEqual(undefined);
   });
 
-  it("generatePerson does", () => {
-    const res: ActivityContentPerson = apg.generatePerson("Ted");
+  it("generateProfile does", () => {
+    const res: ActivityContentProfile = apg.generateProfile("Ted");
     expect(res.name).not.toEqual("");
-    expect(res.type).toEqual("Person");
-    expect(res.published).toMatch(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
+    expect(res.type).toEqual("Profile");
   });
 
   it("generateImageAttachment works", () => {
     const res: ActivityContentImage = apg.generateImageAttachment();
-    expect(res.url).not.toEqual("");
+    expect(res.url[0].href).not.toEqual("");
     expect(res.type).toEqual("Image");
   });
 
   it("generateVideoAttachment works", () => {
     const res: ActivityContentVideo = apg.generateVideoAttachment();
-    expect(res.url).not.toEqual("");
+    expect(res.url[0].href).not.toEqual("");
     expect(res.type).toEqual("Video");
   });
 });

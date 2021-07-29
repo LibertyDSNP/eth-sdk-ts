@@ -1,4 +1,4 @@
-import { createLink, createNote, createProfile } from "../activityContent";
+import { createNote, createProfile } from "../activityContent";
 import { setConfig } from "../../config";
 import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
@@ -80,7 +80,7 @@ describe("validation", () => {
     });
 
     describe("for BroadcastAnnouncement", () => {
-      const activityContent = createLink("https://forum.dsnp.org");
+      const activityContent = createNote("words words words");
 
       it("returns true for valid broadcast announcements", async () => {
         const announcement = await broadcast(activityContent);
@@ -90,8 +90,8 @@ describe("validation", () => {
     });
 
     describe("for ReplyAnnouncement", () => {
-      const linkContent = createLink("https://spec.dsnp.org");
-      const noteContent = createNote("Cool website!");
+      const linkContent = createNote("hey");
+      const noteContent = createNote("hi");
 
       it("returns true for valid reply announcements", async () => {
         const broadcastAnnouncement = await broadcast(linkContent);
@@ -105,7 +105,7 @@ describe("validation", () => {
     });
 
     describe("for ReactionAnnouncement", () => {
-      const linkContent = createLink("https://dsnp.org");
+      const linkContent = createNote("blahblehblah");
 
       it("returns true for valid reaction announcements", async () => {
         const broadcastAnnouncement = await broadcast(linkContent);
@@ -119,7 +119,7 @@ describe("validation", () => {
     });
 
     describe("for ProfileAnnouncement", () => {
-      const activityContent = createProfile("🌹🚗");
+      const activityContent = createProfile({ name: "🌹🚗" });
 
       it("returns true for valid broadcast announcements", async () => {
         const announcement = await profile(activityContent);
