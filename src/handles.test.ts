@@ -7,7 +7,7 @@ import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "./test/matchers";
-import { convertDSNPUserIdToBigNumber } from "./core/identifiers";
+import { convertDSNPUserIdOrURIToBigNumber } from "./core/identifiers";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -69,7 +69,7 @@ describe("handles", () => {
       expect(result).not.toBeNull();
       if (result === null) throw new Error();
       expect(result.contractAddr).toMatch(EthAddressRegex);
-      expect(result.dsnpUserId).toEqual("0x03e8");
+      expect(result.dsnpUserURI).toEqual("dsnp://0x00000000000003e8");
       expect(result.handle).toEqual("taken");
     });
 
@@ -81,23 +81,23 @@ describe("handles", () => {
 
   describe("#resolveId", () => {
     it("returns null for unfound", async () => {
-      const result = await resolveId("0x1388");
+      const result = await resolveId("dsnp://0x0000000000001388");
       expect(result).toBeNull();
     });
 
     it("Handles the case of a single event with number", async () => {
-      const result = await resolveId("0x03e8");
+      const result = await resolveId("dsnp://0x00000000000003e8");
       expect(result?.handle).toEqual("taken");
     });
 
     it("Handles the case of a single event with hex", async () => {
-      const result = await resolveId("0x0" + Number(1001).toString(16));
+      const result = await resolveId("dsnp://0x0000000000000000" + Number(1001).toString(16));
       expect(result?.handle).toEqual("taken1");
     });
 
     it("Handles the case of multiple events", async () => {
       await registry.changeHandle("taken", "new-taken");
-      const result = await resolveId("0x03e8");
+      const result = await resolveId("dsnp://0x00000000000003e8");
 
       expect(result?.handle).toEqual("new-taken");
     });
@@ -107,9 +107,9 @@ describe("handles", () => {
     const handle = "flarp";
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
 
-    it("returns a DSNP User Id", async () => {
-      const dsnpUserId = await createRegistration(fakeAddress, handle);
-      const id = convertDSNPUserIdToBigNumber(dsnpUserId);
+    it("returns a DSNP User URI", async () => {
+      const dsnpUserURI = await createRegistration(fakeAddress, handle);
+      const id = convertDSNPUserIdOrURIToBigNumber(dsnpUserURI);
 
       expect(id.toNumber()).toBeGreaterThan(999);
     });

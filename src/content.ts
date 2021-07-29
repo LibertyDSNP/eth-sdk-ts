@@ -1,4 +1,4 @@
-import { requireGetCurrentFromId, requireGetStore, ConfigOpts } from "./core/config";
+import { requireGetCurrentFromURI, requireGetStore, ConfigOpts } from "./core/config";
 import {
   isValidActivityContent,
   serialize,
@@ -17,7 +17,7 @@ import {
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
 } from "./core/announcements";
-import { isDSNPAnnouncementUri, DSNPAnnouncementUri, InvalidAnnouncementUriError } from "./core/identifiers";
+import { isDSNPAnnouncementURI, DSNPAnnouncementURI, InvalidAnnouncementUriError } from "./core/identifiers";
 import { hash } from "./core/utilities";
 
 /**
@@ -44,7 +44,7 @@ export const broadcast = async (
   if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
-  const currentFromId = requireGetCurrentFromId(opts);
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
@@ -53,7 +53,7 @@ export const broadcast = async (
     end();
   });
 
-  const announcement = createBroadcast(currentFromId, url.toString(), contentHash);
+  const announcement = createBroadcast(currentFromURI, url.toString(), contentHash);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
@@ -81,15 +81,15 @@ export const broadcast = async (
  */
 export const reply = async (
   contentObject: ActivityContent,
-  inReplyTo: DSNPAnnouncementUri,
+  inReplyTo: DSNPAnnouncementURI,
   opts?: ConfigOpts
 ): Promise<SignedReplyAnnouncement> => {
-  if (!isDSNPAnnouncementUri(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
+  if (!isDSNPAnnouncementURI(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
 
   if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
-  const currentFromId = requireGetCurrentFromId(opts);
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
@@ -98,7 +98,7 @@ export const reply = async (
     end();
   });
 
-  const announcement = createReply(currentFromId, url.toString(), contentHash, inReplyTo);
+  const announcement = createReply(currentFromURI, url.toString(), contentHash, inReplyTo);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
@@ -120,12 +120,12 @@ export const reply = async (
  */
 export const react = async (
   emoji: string,
-  inReplyTo: DSNPAnnouncementUri,
+  inReplyTo: DSNPAnnouncementURI,
   opts?: ConfigOpts
 ): Promise<SignedReactionAnnouncement> => {
-  const currentFromId = requireGetCurrentFromId(opts);
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
-  const announcement = createReaction(currentFromId, emoji, inReplyTo);
+  const announcement = createReaction(currentFromURI, emoji, inReplyTo);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
@@ -155,7 +155,7 @@ export const profile = async (
   if (!isValidActivityContent(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
-  const currentFromId = requireGetCurrentFromId(opts);
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
@@ -164,7 +164,7 @@ export const profile = async (
     end();
   });
 
-  const announcement = createProfile(currentFromId, url.toString(), contentHash);
+  const announcement = createProfile(currentFromURI, url.toString(), contentHash);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;

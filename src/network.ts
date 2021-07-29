@@ -1,5 +1,5 @@
-import { ConfigOpts, requireGetCurrentFromId } from "./core/config";
-import { DSNPUserId } from "./core/identifiers";
+import { ConfigOpts, requireGetCurrentFromURI } from "./core/config";
+import { DSNPUserURI } from "./core/identifiers";
 import {
   createFollowGraphChange,
   createUnfollowGraphChange,
@@ -14,14 +14,14 @@ import {
  * Thrown if the signer is not configured.
  * @throws {@link MissingFromIdConfigError}
  * Thrown if the from id is not configured.
- * @param followeeId - The id of the user to follow
- * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @param followeeURI - The id of the user to follow
+ * @param opts        - Optional. Configuration overrides, such as from address, if any
  * @returns The signed Graph Change Announcement
  */
-export const follow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
-  const currentFromId = requireGetCurrentFromId(opts);
+export const follow = async (followeeURI: DSNPUserURI, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
-  const announcement = createFollowGraphChange(currentFromId, followeeId);
+  const announcement = createFollowGraphChange(currentFromURI, followeeURI);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;
@@ -34,14 +34,14 @@ export const follow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promise
  * Thrown if the signer is not configured.
  * @throws {@link MissingFromIdConfigError}
  * Thrown if the from id is not configured.
- * @param followeeId - The id of the user to unfollow
- * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @param followeeURI - The id of the user to unfollow
+ * @param opts        - Optional. Configuration overrides, such as from address, if any
  * @returns The signed Graph Change Announcement
  */
-export const unfollow = async (followeeId: DSNPUserId, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
-  const currentFromId = requireGetCurrentFromId(opts);
+export const unfollow = async (followeeURI: DSNPUserURI, opts?: ConfigOpts): Promise<SignedGraphChangeAnnouncement> => {
+  const currentFromURI = requireGetCurrentFromURI(opts);
 
-  const announcement = createUnfollowGraphChange(currentFromId, followeeId);
+  const announcement = createUnfollowGraphChange(currentFromURI, followeeURI);
 
   const signedAnnouncement = await sign(announcement, opts);
   return signedAnnouncement;

@@ -4,11 +4,11 @@ import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
 import { createFollowGraphChange } from "./factories";
-import { buildDSNPAnnouncementUri, DSNPUserId } from "../identifiers";
+import { buildDSNPAnnouncementURI, DSNPUserId } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import TestStore from "../../test/testStore";
-import { getIdFromRegisterTransaction } from "../../test/testAccounts";
+import { getURIFromRegisterTransaction } from "../../test/testAccounts";
 import { Identity__factory } from "../../types/typechain";
 import { isValidAnnouncement } from "./validation";
 
@@ -27,10 +27,10 @@ describe("validation", () => {
     const userIdentityContract = await new Identity__factory(signer).deploy(userAddress);
     await userIdentityContract.deployed();
     const userTransaction = await register(userIdentityContract.address, "Bob Loblaw");
-    userId = await getIdFromRegisterTransaction(userTransaction);
+    userId = await getURIFromRegisterTransaction(userTransaction);
 
     setConfig({
-      currentFromId: userId,
+      currentFromURI: userId,
     });
   });
 
@@ -50,7 +50,7 @@ describe("validation", () => {
         const followeeIdentityContract = await new Identity__factory(signer).deploy(followeeAddress);
         await followeeIdentityContract.deployed();
         const followeeTransaction = await register(followeeIdentityContract.address, "George Bluth");
-        followeeId = await getIdFromRegisterTransaction(followeeTransaction);
+        followeeId = await getURIFromRegisterTransaction(followeeTransaction);
       });
 
       afterAll(async () => {
@@ -97,7 +97,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const replyAnnouncement = await reply(
           noteContent,
-          buildDSNPAnnouncementUri(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+          buildDSNPAnnouncementURI(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
         );
 
         expect(await isValidAnnouncement(replyAnnouncement)).toEqual(true);
@@ -111,7 +111,7 @@ describe("validation", () => {
         const broadcastAnnouncement = await broadcast(linkContent);
         const reactionAnnouncement = await react(
           "🎉",
-          buildDSNPAnnouncementUri(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+          buildDSNPAnnouncementURI(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
         );
 
         expect(await isValidAnnouncement(reactionAnnouncement)).toEqual(true);

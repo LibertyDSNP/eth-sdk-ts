@@ -8,20 +8,20 @@ import { Registry__factory } from "../../types/typechain";
 import { Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { Announcement, serialize } from "../announcements";
-import { convertBigNumberToDSNPUserId, convertDSNPUserIdToBigNumber, DSNPUserId } from "../identifiers";
+import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
 
 const CONTRACT_NAME = "Registry";
 
 export interface Registration {
   contractAddr: EthereumAddress;
-  dsnpUserId: DSNPUserId;
+  dsnpUserURI: DSNPUserURI;
   handle: Handle;
 }
 
 export type Handle = string;
 
 /**
- * resolveRegistration() Try to resolve a handle into a DSNP User Id
+ * resolveRegistration() Try to resolve a handle into a Registration
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -30,15 +30,15 @@ export type Handle = string;
  * @throws a VMError if contract fails
  * @param handle - String handle to resolve
  * @param opts - (optional) any config overrides.
- * @returns The Hex for the DSNP User Id or null if not found
+ * @returns A Registration object for the user or null if not found
  */
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
   const contract = await getContract(opts);
   try {
-    const [dsnpUserId, contractAddr] = await contract.resolveRegistration(handle);
+    const [userId, contractAddr] = await contract.resolveRegistration(handle);
     return {
       handle,
-      dsnpUserId: convertBigNumberToDSNPUserId(dsnpUserId),
+      dsnpUserURI: convertBigNumberToDSNPUserURI(userId),
       contractAddr,
     };
   } catch (e) {
@@ -52,7 +52,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
 };
 
 /**
- * register() registers a handle to get a new DSNP User Id
+ * register() registers a handle to get a new identity contract address
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -75,7 +75,7 @@ export const register = async (
 };
 
 /**
- * changeAddress() changes the identity contract address of a DSNP User Id
+ * changeAddress() changes the identity contract address of a user
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -97,7 +97,7 @@ export const changeAddress = async (
 };
 
 /**
- * changeHandle() changes the handle of a DSNP User Id
+ * changeHandle() changes the handle of a user
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -125,7 +125,7 @@ export const changeHandle = async (
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the registration contract address cannot be found.
- * @param filter - By dsnpUserId or Contract Address
+ * @param filter - By dsnpUserURI or Contract Address
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
  */
@@ -133,14 +133,14 @@ export const getDSNPRegistryUpdateEvents = async (
   filter: Partial<Omit<Registration, "handle">>,
   opts?: ConfigOpts
 ): Promise<Registration[]> => {
-  const dsnpUserId = filter.dsnpUserId ? convertDSNPUserIdToBigNumber(filter.dsnpUserId) : undefined;
+  const userId = filter.dsnpUserURI ? convertDSNPUserIdOrURIToBigNumber(filter.dsnpUserURI) : undefined;
   const contract = await getContract(opts);
-  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(dsnpUserId, filter.contractAddr));
+  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr));
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    const dsnpUserId = convertBigNumberToDSNPUserId(id);
-    return { contractAddr: addr, dsnpUserId, handle };
+    const dsnpUserURI = convertBigNumberToDSNPUserURI(id);
+    return { contractAddr: addr, dsnpUserURI, handle };
   });
 };
 
@@ -152,12 +152,12 @@ export const getDSNPRegistryUpdateEvents = async (
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
  * @throws {@link MissingRegistrationError}
- * Thrown if a registration cannot be found for the given DSNP User Id.
+ * Thrown if a registration cannot be found for the given DSNP User URI.
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
  * @param signature - the signature for the message
  * @param message - the signed announcement or string
- * @param dsnpUserId - the DSNP User Id of the supposed signer
+ * @param dsnpUserURI - the DSNP User URI of the supposed signer
  * @param permission - the permissions to check for
  * @param blockTag - (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
@@ -167,18 +167,18 @@ export const getDSNPRegistryUpdateEvents = async (
 export const isSignatureAuthorizedTo = async (
   signature: HexString,
   message: Announcement | string,
-  dsnpUserId: DSNPUserId,
+  dsnpUserURI: DSNPUserURI,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
   opts?: ConfigOpts
 ): Promise<boolean> => {
   const registrations = await getDSNPRegistryUpdateEvents(
     {
-      dsnpUserId,
+      dsnpUserURI,
     },
     opts
   );
-  if (registrations.length === 0) throw new MissingRegistrationError(dsnpUserId);
+  if (registrations.length === 0) throw new MissingRegistrationError(dsnpUserURI);
   const reg = registrations[registrations.length - 1];
 
   const provider = requireGetProvider(opts);

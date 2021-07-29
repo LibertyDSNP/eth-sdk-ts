@@ -15,7 +15,7 @@
 - Updated activityContent generators to match new types
 - Updated content porcelain to accept proper activityContent objects and validate them
 - Renamed activityPub -> activityContent
-- Renamed DSNPId to DSNPAnnouncementUri to avoid confusion with DSNPUserId
+- Renamed DSNPId to DSNPAnnouncementURI to avoid confusion with DSNPUserId
 - Renamed uri -> url everywhere it was referring to a url only
 - Renamed sdk.subscribeToBatchAnnounceEvents -> sdk.subscribeToBatchPublications
 - Renamed sdk.core.contracts.announcer -> sdk.core.contracts.publisher
@@ -33,9 +33,9 @@
 - Renamed DSNPType -> AnnouncementType
 - Updated Parquet Schema
 - Rename InvalidAnnouncementIdentifierError -> InvalidAnnouncementUriError
-- Rename type DSNPAnnouncementId -> DSNPAnnouncementUri
-- Rename sdk.core.identifiers.isDSNPAnnouncementId -> sdk.core.identifiers.isDSNPAnnouncementUri
-- Rename sdk.core.identifiers.buildDSNPAnnouncementId -> sdk.core.identifiers.buildDSNPAnnouncementUri
+- Rename type DSNPAnnouncementId -> DSNPAnnouncementURI
+- Rename sdk.core.identifiers.isDSNPAnnouncementId -> sdk.core.identifiers.isDSNPAnnouncementURI
+- Rename sdk.core.identifiers.buildDSNPAnnouncementId -> sdk.core.identifiers.buildDSNPAnnouncementURI
 - DSNP User Id return no longer contain the dsnp:// prefix
 ### Added
 - sdk.createPublication
@@ -44,7 +44,7 @@
 - Ability to get DSNPRemoveDelegate logs
 - createdAt field to GraphChange announcement type, plus update to parquet schema.
 - Ability to get all identities associated to an address
-- sdk.core.identifiers.parseDSNPAnnouncementUri
+- sdk.core.identifiers.parseDSNPAnnouncementURI
 - Added type check and validation functions to activityContent module
 - Added type check and validation functions to announcements module
 - Added hash() and getHashGenerator() utility functions
