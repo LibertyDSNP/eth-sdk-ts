@@ -199,3 +199,35 @@ const getContract = async (opts?: ConfigOpts) => {
 
   return Registry__factory.connect(address, provider);
 };
+
+/**
+ * getRegistrationsByIdentityAddress() Resolves all registrations associated to an identity contract address
+ *
+ * @param identityAddress - The identity contract address to resolve the registrations for
+ * @returns A list of registrations that are associated to the identity contract address
+ */
+export const getRegistrationsByIdentityAddress = async (identityAddress: HexString): Promise<Registration[]> => {
+  const lastRegistryUpdates = await getLatestRegistryUpdatesFor(identityAddress);
+
+  const registrationsHandles: Handle[] = lastRegistryUpdates.map((registrations: Registration) => registrations.handle);
+
+  if (registrationsHandles.length === 0) return [];
+
+  const allRegistrations = await Promise.all(registrationsHandles.map((handle: Handle) => resolveRegistration(handle)));
+
+  const isRegistration = (r: Registration | null): r is Registration => !!r && r.contractAddr === identityAddress;
+
+  return allRegistrations.filter(isRegistration);
+};
+
+const getLatestRegistryUpdatesFor = async (identityAddress: HexString): Promise<Registration[]> => {
+  const registrations: Registration[] = await getDSNPRegistryUpdateEvents({ contractAddr: identityAddress });
+
+  const lastRegistration = registrations.reduce<Record<string, Registration>>((acc, r) => {
+    acc[r.dsnpUserURI] = r;
+
+    return acc;
+  }, {});
+
+  return Object.values(lastRegistration);
+};
