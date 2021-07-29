@@ -13,12 +13,10 @@
 - Removed put method from the store interface in favor of putStream everywhere
 - Updated activityContent types to match spec
 - Updated activityContent generators to match new types
-- Added type check and validation functions to activityContent module
-- Added type check and validation functions to announcements module
 - Updated content porcelain to accept proper activityContent objects and validate them
 - Renamed activityPub -> activityContent
-- Renamed DSNPId to DSNPAnnouncementId to avoid confusion with DSNPUserId
-- Renamed uri -> url everywhere
+- Renamed DSNPId to DSNPAnnouncementURI to avoid confusion with DSNPUserId
+- Renamed uri -> url everywhere it was referring to a url only
 - Renamed sdk.subscribeToBatchAnnounceEvents -> sdk.subscribeToBatchPublications
 - Renamed sdk.core.contracts.announcer -> sdk.core.contracts.publisher
 - Renamed sdk.core.contracts.announcer.batch -> sdk.core.contracts.publisher.publish
@@ -34,6 +32,11 @@
 - Updated Publication interface: dsnpType -> announcementType, dsnpUrl -> fileUrl, dsnpHash -> fileHash
 - Renamed DSNPType -> AnnouncementType
 - Updated Parquet Schema
+- Rename InvalidAnnouncementIdentifierError -> InvalidAnnouncementUriError
+- Rename type DSNPAnnouncementId -> DSNPAnnouncementURI
+- Rename sdk.core.identifiers.isDSNPAnnouncementId -> sdk.core.identifiers.isDSNPAnnouncementURI
+- Rename sdk.core.identifiers.buildDSNPAnnouncementId -> sdk.core.identifiers.buildDSNPAnnouncementURI
+- DSNP User Id return no longer contain the dsnp:// prefix
 ### Added
 - sdk.createPublication
 - Ability to remove delegate
@@ -41,6 +44,10 @@
 - Ability to get DSNPRemoveDelegate logs
 - createdAt field to GraphChange announcement type, plus update to parquet schema.
 - Ability to get all identities associated to an address
+- sdk.core.identifiers.parseDSNPAnnouncementURI
+- Added type check and validation functions to activityContent module
+- Added type check and validation functions to announcements module
+- Added hash() and getHashGenerator() utility functions
 ### Removed
 -
 ### Fixed

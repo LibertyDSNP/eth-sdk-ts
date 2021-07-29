@@ -23,7 +23,7 @@ describe("createPublication", () => {
     store = new TestStore();
 
     setConfig({
-      currentFromId: "dsnp://0x0123456789ABCDEF",
+      currentFromURI: "dsnp://0x0123456789ABCDEF",
       signer: new ethers.Wallet("0xd98d551044eb9ef4c9a2afd1d9c95646e22b710da55c8dc95431038d5544d804"),
       store: store,
     });
@@ -102,7 +102,7 @@ describe("createPublications", () => {
     store = new TestStore();
 
     setConfig({
-      currentFromId: "dsnp://0x0123456789ABCDEF",
+      currentFromURI: "dsnp://0x0123456789ABCDEF",
       signer: new ethers.Wallet("0xd98d551044eb9ef4c9a2afd1d9c95646e22b710da55c8dc95431038d5544d804"),
       store: store,
     });

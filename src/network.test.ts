@@ -7,10 +7,16 @@ import { DSNPGraphChangeType, AnnouncementType } from "./core/announcements";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
+import {
+  convertBigNumberToDSNPUserId,
+  convertBigNumberToDSNPUserURI,
+  DSNPUserId,
+  DSNPUserURI,
+} from "./core/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;
+  let registerURI: DSNPUserURI;
 
   setupSnapshot();
   const { signer, provider } = setupConfig();
@@ -26,6 +32,7 @@ describe("network", () => {
     const receipt = await txn.wait(1);
 
     const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
+    registerURI = convertBigNumberToDSNPUserURI(registerEvent.args[0]);
     registerId = convertBigNumberToDSNPUserId(registerEvent.args[0]);
   });
 
@@ -34,20 +41,20 @@ describe("network", () => {
   });
 
   describe("follow", () => {
-    describe("with a valid signer and user id", () => {
+    describe("with a valid signer and user URI", () => {
       beforeEach(() => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromURI: "dsnp://0x0000000000000000",
           signer,
           provider,
         });
       });
 
       it("returns a follow graph change announcement", async () => {
-        const announcement = await network.follow(registerId);
+        const announcement = await network.follow(registerURI);
 
         expect(announcement).toMatchObject({
-          fromId: "dsnp://0x0000000000000000",
+          fromId: "0x0",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
           objectId: registerId,
@@ -58,19 +65,19 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromURI: "dsnp://0x0000000000000000",
           signer: undefined,
           provider,
         });
 
-        await expect(network.follow(registerId)).rejects.toThrow(MissingSignerConfigError);
+        await expect(network.follow(registerURI)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
-    describe("without a user id", () => {
+    describe("without a user URI", () => {
       it("throws MissingFromIdConfigError", async () => {
         setConfig({
-          currentFromId: undefined,
+          currentFromURI: undefined,
           signer,
           provider,
         });
@@ -81,20 +88,20 @@ describe("network", () => {
   });
 
   describe("unfollow", () => {
-    describe("with a valid signer and user id", () => {
+    describe("with a valid signer and user URI", () => {
       beforeEach(() => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromURI: "dsnp://0x0000000000000000",
           signer,
           provider,
         });
       });
 
       it("returns a follow graph change announcement", async () => {
-        const announcement = await network.unfollow(registerId);
+        const announcement = await network.unfollow(registerURI);
 
         expect(announcement).toMatchObject({
-          fromId: "dsnp://0x0000000000000000",
+          fromId: "0x0",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Unfollow,
           objectId: registerId,
@@ -105,24 +112,24 @@ describe("network", () => {
     describe("without a signer", () => {
       it("throws MissingSignerConfigError", async () => {
         setConfig({
-          currentFromId: "dsnp://0x0000000000000000",
+          currentFromURI: "dsnp://0x0000000000000000",
           signer: undefined,
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(MissingSignerConfigError);
+        await expect(network.unfollow(registerURI)).rejects.toThrow(MissingSignerConfigError);
       });
     });
 
-    describe("without a user id", () => {
+    describe("without a user URI", () => {
       it("throws MissingFromIdConfigError", async () => {
         setConfig({
-          currentFromId: undefined,
+          currentFromURI: undefined,
           signer,
           provider,
         });
 
-        await expect(network.unfollow(registerId)).rejects.toThrow(MissingFromIdConfigError);
+        await expect(network.unfollow(registerURI)).rejects.toThrow(MissingFromIdConfigError);
       });
     });
   });

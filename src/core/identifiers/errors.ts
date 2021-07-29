@@ -10,14 +10,14 @@ export class IdentifierError extends DSNPError {
 }
 
 /**
- * InvalidAnnouncementIdentifierError indicates an improperly formatted DSNP announcement
+ * InvalidAnnouncementUriError indicates an improperly formatted DSNP announcement
  * identifier.
  */
-export class InvalidAnnouncementIdentifierError extends IdentifierError {
-  announcementId: string;
+export class InvalidAnnouncementUriError extends IdentifierError {
+  AnnouncementUri: string;
 
-  constructor(announcementId: string) {
-    super(`Invalid Announcement Id: ${announcementId}`);
-    this.announcementId = announcementId;
+  constructor(AnnouncementUri: string) {
+    super(`Invalid Announcement Uri: ${AnnouncementUri}`);
+    this.AnnouncementUri = AnnouncementUri;
   }
 }

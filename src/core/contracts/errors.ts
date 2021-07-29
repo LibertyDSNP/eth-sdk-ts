@@ -1,4 +1,4 @@
-import { DSNPUserId } from "../identifiers";
+import { DSNPUserURI } from "../identifiers";
 import { DSNPError } from "../errors";
 
 /**
@@ -25,14 +25,14 @@ export class MissingContractAddressError extends ContractError {
 
 /**
  * MissingRegistrationError indicates that the registration for a given
- * DSNP User Id could not be found.
+ * DSNP User URI could not be found.
  */
 export class MissingRegistrationError extends ContractError {
-  dsnpUserId: DSNPUserId;
+  dsnpUserURI: DSNPUserURI;
 
-  constructor(dsnpUserId: DSNPUserId) {
-    super(`Could not find registration for user id ${dsnpUserId}.`);
-    this.dsnpUserId = dsnpUserId;
+  constructor(dsnpUserURI: DSNPUserURI) {
+    super(`Could not find registration for user: ${dsnpUserURI}.`);
+    this.dsnpUserURI = dsnpUserURI;
   }
 }
 

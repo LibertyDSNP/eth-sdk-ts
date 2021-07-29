@@ -1,5 +1,5 @@
 import { providers, Wallet } from "ethers";
-import { getConfig, requireGetCurrentFromId, requireGetProvider, requireGetSigner, requireGetStore } from "./config";
+import { getConfig, requireGetCurrentFromURI, requireGetProvider, requireGetSigner, requireGetStore } from "./config";
 import {
   MissingStoreConfigError,
   MissingSignerConfigError,
@@ -33,11 +33,11 @@ describe("config", () => {
       expect(requireGetStore({ store: testStore })).toBeInstanceOf(Object);
     });
 
-    it("requireGetCurrentFromId", () => {
-      expect(() => requireGetCurrentFromId(badConfig)).toThrow(MissingFromIdConfigError);
+    it("requireGetCurrentFromURI", () => {
+      expect(() => requireGetCurrentFromURI(badConfig)).toThrow(MissingFromIdConfigError);
 
       const testRegistration = "0xabcd1234";
-      expect(requireGetCurrentFromId({ currentFromId: testRegistration })).toEqual(testRegistration);
+      expect(requireGetCurrentFromURI({ currentFromURI: testRegistration })).toEqual(testRegistration);
     });
   });
 });

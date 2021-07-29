@@ -2,7 +2,7 @@ import * as config from "./core/config";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { convertBigNumberToDSNPUserId, DSNPUserId } from "./core/identifiers";
+import { convertBigNumberToDSNPUserId, DSNPUserURI } from "./core/identifiers";
 import { HexString } from "./types/Strings";
 
 /**
@@ -24,7 +24,7 @@ export const createRegistration = async (
   addr: HexString,
   handle: Handle,
   opts?: config.ConfigOpts
-): Promise<DSNPUserId> => {
+): Promise<DSNPUserURI> => {
   const txn = await createAndRegisterBeaconProxy(addr, handle, opts);
   const receipt = await txn.wait(1);
 
@@ -41,26 +41,26 @@ export const createRegistration = async (
  * Thrown if the registration contract address cannot be found.
  * @param handle - The Registry Handle
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
+ * @returns The Registration object with Handle, DSNP User URI, and Identity contract address
  */
 export const resolveHandle = (handle: Handle, opts?: config.ConfigOpts): Promise<Registration | null> =>
   resolveRegistration(handle, opts);
 
 /**
- * Get the current registration from a DSNP User Id
+ * Get the current registration from a DSNP User URI
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the registration contract address cannot be found.
- * @param dsnpUserId - The DSNP User Id
+ * @param dsnpUserURI - The DSNP User URI
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns The Registration object with Handle, DSNP User Id, and Identity contract address
+ * @returns The Registration object with Handle, DSNP User URI, and Identity contract address
  */
-export const resolveId = async (dsnpUserId: DSNPUserId, opts?: config.ConfigOpts): Promise<Registration | null> => {
+export const resolveId = async (dsnpUserURI: DSNPUserURI, opts?: config.ConfigOpts): Promise<Registration | null> => {
   const registrations = await getDSNPRegistryUpdateEvents(
     {
-      dsnpUserId,
+      dsnpUserURI,
     },
     opts
   );

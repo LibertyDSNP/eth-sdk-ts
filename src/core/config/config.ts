@@ -44,8 +44,8 @@ export interface Config {
   store?: StoreInterface;
   /** Contracts are different addresses for specific contracts or for running custom tests */
   contracts: Contracts;
-  /** currentFromId stores the id of the currently authenticated user */
-  currentFromId?: HexString;
+  /** currentFromURI stores the id of the currently authenticated user */
+  currentFromURI?: HexString;
   /** to allow access of keys by name */
   [index: string]: unknown;
 }
@@ -118,17 +118,17 @@ export const requireGetStore = (opts?: ConfigOpts): StoreInterface => {
 };
 
 /**
- * Get the currentFromId and if undefined, throw.
+ * Get the currentFromURI and if undefined, throw.
  *
  * @throws {@link MissingFromIdConfigError}
- * Thrown if the currentFromId is not configured.
+ * Thrown if the currentFromURI is not configured.
  * @param opts - overrides for the current configuration.
- * @returns a never-undefined currentFromId
+ * @returns a never-undefined currentFromURI
  */
-export const requireGetCurrentFromId = (opts?: ConfigOpts): HexString => {
-  const currentFromId = opts?.currentFromId || getConfig().currentFromId;
-  if (!currentFromId) throw new MissingFromIdConfigError();
-  return currentFromId;
+export const requireGetCurrentFromURI = (opts?: ConfigOpts): HexString => {
+  const currentFromURI = opts?.currentFromURI || getConfig().currentFromURI;
+  if (!currentFromURI) throw new MissingFromIdConfigError();
+  return currentFromURI;
 };
 
 /**
