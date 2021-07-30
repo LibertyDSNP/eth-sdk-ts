@@ -50,6 +50,7 @@
 - Added type check and validation functions to announcements module
 - Added hash() and getHashGenerator() utility functions
 - Ability to get Registrations associated to identity address
+- Ability to lookup registrations by wallet address
 ### Removed
 -
 ### Fixed
