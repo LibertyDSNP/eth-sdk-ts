@@ -1,4 +1,4 @@
-import { Signer } from "ethers";
+import { ethers, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { DSNPError } from "../errors";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
@@ -11,6 +11,7 @@ import {
   isSignatureAuthorizedTo,
   getRegistrationsByIdentityAddress,
   Handle,
+  getRegistrationsByWalletAddress,
 } from "./registry";
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -18,6 +19,7 @@ import { Permission } from "./identity";
 import { Announcement, sign } from "../announcements";
 import { generateBroadcast } from "../../generators/dsnpGenerators";
 import {
+  getSignerForAccount,
   getURIFromRegisterTransaction,
   newRegistrationForAccountIndex,
   RegistrationWithSigner,
@@ -503,6 +505,113 @@ describe("registry", () => {
             expect(result).toEqual([]);
           });
         });
+      });
+    });
+  });
+
+  describe("#getRegistrationsByWalletAddress", () => {
+    describe("when wallet address has many identities", () => {
+      describe("and identity has many registrations", () => {
+        let contractOwner: EthereumAddress;
+        let contractAddressOne: EthereumAddress;
+        let contractAddressTwo: EthereumAddress;
+        let signer: ethers.Signer;
+
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeEach(async () => {
+          signer = getSignerForAccount(2);
+          contractOwner = await signer.getAddress();
+          const identityContractOne = await new Identity__factory(signer).deploy(contractOwner);
+          const identityContractTwo = await new Identity__factory(signer).deploy(contractOwner);
+          await identityContractOne.deployed();
+          await identityContractTwo.deployed();
+          contractAddressOne = identityContractOne.address;
+          contractAddressTwo = identityContractTwo.address;
+
+          const handleOne = "earth";
+          const handleTwo = "wind";
+          const handleThree = "fire";
+
+          await register(contractAddressOne, handleOne);
+          await register(contractAddressOne, handleTwo);
+          await register(contractAddressTwo, handleThree);
+        });
+
+        it("returns all registrations belonging to public key", async () => {
+          const result = await getRegistrationsByWalletAddress(contractOwner);
+
+          expect(result).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({ contractAddr: contractAddressOne, handle: "earth" }),
+              expect.objectContaining({ contractAddr: contractAddressOne, handle: "wind" }),
+              expect.objectContaining({ contractAddr: contractAddressTwo, handle: "fire" }),
+            ])
+          );
+        });
+      });
+
+      describe("and identities do not have any registrations associated to them", () => {
+        let contractOwner: EthereumAddress;
+
+        beforeAll(async () => {
+          await snapshotHardhat(provider);
+        });
+
+        afterAll(async () => {
+          await revertHardhat(provider);
+        });
+
+        beforeEach(async () => {
+          const signer = getSignerForAccount(2);
+          contractOwner = await signer.getAddress();
+          const identityContractOne = await new Identity__factory(signer).deploy(contractOwner);
+          const identityContractTwo = await new Identity__factory(signer).deploy(contractOwner);
+          await identityContractOne.deployed();
+          await identityContractTwo.deployed();
+        });
+
+        it("returns an empty list", async () => {
+          const result = await getRegistrationsByWalletAddress(contractOwner);
+
+          expect(result).toEqual([]);
+        });
+      });
+    });
+
+    describe("when wallet address does not have any registrations", () => {
+      let contractOwner: EthereumAddress;
+
+      beforeAll(async () => {
+        await snapshotHardhat(provider);
+      });
+
+      afterAll(async () => {
+        await revertHardhat(provider);
+      });
+
+      beforeEach(async () => {
+        const signer = getSignerForAccount(2);
+        contractOwner = await signer.getAddress();
+        const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+        await identityContract.deployed();
+        const contractAddress = identityContract.address;
+
+        const handleOne = "earth";
+        await register(contractAddress, handleOne);
+      });
+
+      it("returns an empty list", async () => {
+        const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
+        const result = await getRegistrationsByWalletAddress(fakeAddress);
+
+        expect(result).toEqual([]);
       });
     });
   });

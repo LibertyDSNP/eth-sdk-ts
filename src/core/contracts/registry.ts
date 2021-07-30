@@ -5,7 +5,7 @@ import { MissingRegistrationError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
 import { Registry__factory } from "../../types/typechain";
-import { Permission } from "./identity";
+import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { Announcement, serialize } from "../announcements";
 import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
@@ -230,4 +230,20 @@ const getLatestRegistryUpdatesFor = async (identityAddress: HexString): Promise<
   }, {});
 
   return Object.values(lastRegistration);
+};
+
+/**
+ * getRegistrationsByWalletAddress() Resolves all registrations associated to an identity contract address
+ *
+ * @param walletAddress - The address to resolve the registrations for
+ * @returns A list of registrations that are associated to the address
+ */
+export const getRegistrationsByWalletAddress = async (walletAddress: EthereumAddress): Promise<Registration[]> => {
+  const identityAddresses: EthereumAddress[] = await getDelegateIdentitiesFor(walletAddress);
+
+  const registrations: Registration[][] = await Promise.all(
+    identityAddresses.map((identityAddresses) => getRegistrationsByIdentityAddress(identityAddresses))
+  );
+
+  return ([] as Registration[]).concat(...registrations);
 };
