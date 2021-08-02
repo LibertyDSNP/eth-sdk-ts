@@ -70,23 +70,22 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_contract.vmerror.html" class="tsd-kind-icon">Vm<wbr>Error</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_contract.VmError.html" class="tsd-kind-icon">Vm<wbr>Error</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_contracts_contract.html#dsnp_migration_abi" class="tsd-kind-icon">DSNP_<wbr>MIGRATION_<wbr>ABI</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="core_contracts_contract.html#DSNP_MIGRATION_ABI" class="tsd-kind-icon">DSNP_<wbr>MIGRATION_<wbr>ABI</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#findevent" class="tsd-kind-icon">find<wbr>Event</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#getcontractaddress" class="tsd-kind-icon">get<wbr>Contract<wbr>Address</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#getkeccaktopic" class="tsd-kind-icon">get<wbr>Keccak<wbr>Topic</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#getvmerror" class="tsd-kind-icon">get<wbr>VmError</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#parselogs" class="tsd-kind-icon">parse<wbr>Logs</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#findEvent" class="tsd-kind-icon">find<wbr>Event</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#getContractAddress" class="tsd-kind-icon">get<wbr>Contract<wbr>Address</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#getVmError" class="tsd-kind-icon">get<wbr>VmError</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_contract.html#parseLogs" class="tsd-kind-icon">parse<wbr>Logs</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,7 +94,7 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="dsnp_migration_abi" class="tsd-anchor"></a>
+					<a name="DSNP_MIGRATION_ABI" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> DSNP_<wbr>MIGRATION_<wbr>ABI</h3>
 					<div class="tsd-signature tsd-kind-icon">DSNP_<wbr>MIGRATION_<wbr>ABI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ethers.utils.ParamType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
@@ -105,7 +104,7 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="findevent" class="tsd-anchor"></a>
+					<a name="findEvent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> find<wbr>Event</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 						<li class="tsd-signature tsd-kind-icon">find<wbr>Event<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, logs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RawLog</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LogDescription</span></li>
@@ -116,14 +115,12 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Find event with given name.</p>
+									<p>findEvent() finds event with given name.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p>error if no matching events were found</p>
-									</dd>
-									<dt>throws</dt>
-									<dd><p>error if a log is unparsable. This is probably because the event&#39;s ABI has not been added to EVENTS_ABI.</p>
+									<dd><p><a href="../classes/core_contracts_errors.NoLogsFoundContractError.html">NoLogsFoundContractError</a>
+										Thrown if the requested log event could not be found.</p>
 									</dd>
 								</dl>
 							</div>
@@ -148,10 +145,10 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="getcontractaddress" class="tsd-anchor"></a>
+					<a name="getContractAddress" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Contract<wbr>Address</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Contract<wbr>Address<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Provider</span>, contractName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Contract<wbr>Address<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Provider</span>, contractName<span class="tsd-signature-symbol">: </span><a href="core_config_config.html#ContractName" class="tsd-signature-type" data-tsd-kind="Type alias">ContractName</a>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -159,9 +156,23 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>getContractAddress() allows users call the batch smart contract and post the URI and hash
-									of a generated batch to the blockchain.</p>
+									<p>getContractAddress() fetches the address for a given contract. If a contract
+										address override is available in the configuration, it will be returned. If
+										no override exists, the latest migration ABI will be fetched from the chain,
+										parsed and the appropriate contract address will be returned. If the contract
+										address is missing from the chain as well, a MissingContractAddressError will be
+									thrown.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_config_errors.MissingProviderConfigError.html">MissingProviderConfigError</a>
+										Thrown if the provider is not configured.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_contracts_errors.MissingContractAddressError.html">MissingContractAddressError</a>
+										Thrown if the requested contract address cannot be found.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -172,42 +183,28 @@
 									</div>
 								</li>
 								<li>
-									<h5>contractName: <span class="tsd-signature-type">string</span></h5>
+									<h5>contractName: <a href="core_config_config.html#ContractName" class="tsd-signature-type" data-tsd-kind="Type alias">ContractName</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Name of contract to find address for</p>
 									</div>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional. Configuration overrides, such as from address, if any</p>
+									</div>
+								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>HexString A hexidecimal string representing the contract address</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="getkeccaktopic" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Keccak<wbr>Topic</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Keccak<wbr>Topic<span class="tsd-signature-symbol">(</span>topic<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>topic: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="getvmerror" class="tsd-anchor"></a>
+					<a name="getVmError" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>VmError</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>VmError<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_contracts_contract.vmerror.html" class="tsd-signature-type" data-tsd-kind="Interface">VmError</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>VmError<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_contracts_contract.VmError.html" class="tsd-signature-type" data-tsd-kind="Interface">VmError</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -221,7 +218,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>e: <a href="../interfaces/core_contracts_contract.vmerror.html" class="tsd-signature-type" data-tsd-kind="Interface">VmError</a></h5>
+									<h5>e: <a href="../interfaces/core_contracts_contract.VmError.html" class="tsd-signature-type" data-tsd-kind="Interface">VmError</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The error expected to have a vm Error</p>
 									</div>
@@ -233,7 +230,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="parselogs" class="tsd-anchor"></a>
+					<a name="parseLogs" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> parse<wbr>Logs</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 						<li class="tsd-signature tsd-kind-icon">parse<wbr>Logs<span class="tsd-signature-symbol">(</span>logs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RawLog</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">LogDescription</span><span class="tsd-signature-symbol">[]</span></li>
@@ -244,14 +241,9 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Parse all transaction logs.
+									<p>parseLogs() parses all transaction logs.
 									This requires that all contracts involved in processing the transaction be included in EVENTS_ABI.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>throws</dt>
-									<dd><p>error if a log is unparsable. This is probably because the event&#39;s ABI has not been added to EVENTS_ABI.</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -283,25 +275,22 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/core_contracts_contract.vmerror.html" class="tsd-kind-icon">Vm<wbr>Error</a>
+						<a href="../interfaces/core_contracts_contract.VmError.html" class="tsd-kind-icon">Vm<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#dsnp_migration_abi" class="tsd-kind-icon">DSNP_<wbr>MIGRATION_<wbr>ABI</a>
+						<a href="core_contracts_contract.html#DSNP_MIGRATION_ABI" class="tsd-kind-icon">DSNP_<wbr>MIGRATION_<wbr>ABI</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#findevent" class="tsd-kind-icon">find<wbr>Event</a>
+						<a href="core_contracts_contract.html#findEvent" class="tsd-kind-icon">find<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#getcontractaddress" class="tsd-kind-icon">get<wbr>Contract<wbr>Address</a>
+						<a href="core_contracts_contract.html#getContractAddress" class="tsd-kind-icon">get<wbr>Contract<wbr>Address</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#getkeccaktopic" class="tsd-kind-icon">get<wbr>Keccak<wbr>Topic</a>
+						<a href="core_contracts_contract.html#getVmError" class="tsd-kind-icon">get<wbr>VmError</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#getvmerror" class="tsd-kind-icon">get<wbr>VmError</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_contract.html#parselogs" class="tsd-kind-icon">parse<wbr>Logs</a>
+						<a href="core_contracts_contract.html#parseLogs" class="tsd-kind-icon">parse<wbr>Logs</a>
 					</li>
 				</ul>
 			</nav>
@@ -320,10 +309,11 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

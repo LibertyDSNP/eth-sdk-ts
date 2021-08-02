@@ -70,12 +70,12 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#createfile" class="tsd-kind-icon">create<wbr>File</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_batch.html#createFile" class="tsd-kind-icon">create<wbr>File</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#includes" class="tsd-kind-icon">includes</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openfile" class="tsd-kind-icon">open<wbr>File</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openurl" class="tsd-kind-icon">openURL</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#readfile" class="tsd-kind-icon">read<wbr>File</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#writebatch" class="tsd-kind-icon">write<wbr>Batch</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openFile" class="tsd-kind-icon">open<wbr>File</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openURL" class="tsd-kind-icon">openURL</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#readFile" class="tsd-kind-icon">read<wbr>File</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_batch.html#writeBatch" class="tsd-kind-icon">write<wbr>Batch</a></li>
 							</ul>
 						</section>
 					</div>
@@ -83,11 +83,11 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="createfile" class="tsd-anchor"></a>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="createFile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>File</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>File<span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, messages<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_messages_messages.dsnpmessage.html" class="tsd-signature-type" data-tsd-kind="Interface">DSNPMessage</a><span class="tsd-signature-symbol">[]</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/index.config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>File&lt;T&gt;<span class="tsd-signature-symbol">(</span>targetPath<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, announcements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BatchFileData</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -95,15 +95,30 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>createFile() takes a series of DSNP messages and returns a URL
-									for storage location.</p>
+									<p>createFile() takes a series of Signed Announcements, writes them to a file at
+									specified target path and returns a BatchFileData object.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>throws</dt>
-									<dd><p>error if messages argument is empty.</p>
+									<dd><p><a href="../classes/core_config_errors.MissingStoreConfigError.html">MissingStoreConfigError</a>
+										Thrown if the store is not configured.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_batch_errors.EmptyBatchError.html">EmptyBatchError</a>
+										Thrown if the announcement iterator provided is empty.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_batch_errors.MixedTypeBatchError.html">MixedTypeBatchError</a>
+										Thrown if the announcement iterator provided contains multiple announcement types.</p>
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -113,20 +128,20 @@
 									</div>
 								</li>
 								<li>
-									<h5>messages: <a href="../interfaces/core_messages_messages.dsnpmessage.html" class="tsd-signature-type" data-tsd-kind="Interface">DSNPMessage</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>announcements: <span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of DSNPMessage to include in the batch file</p>
+										<p>An array of Announcements to include in the batch file</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/index.config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional. Configuration overrides, such as store, if any</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A URL of the storage location</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">BatchFileData</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A BatchFileData object including a URL and keccak hash of the file</p>
 						</li>
 					</ul>
 				</section>
@@ -172,7 +187,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="openfile" class="tsd-anchor"></a>
+					<a name="openFile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> open<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 						<li class="tsd-signature tsd-kind-icon">open<wbr>File<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
@@ -201,7 +216,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="openurl" class="tsd-anchor"></a>
+					<a name="openURL" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> openURL</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 						<li class="tsd-signature tsd-kind-icon">openURL<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">URL</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
@@ -230,7 +245,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="readfile" class="tsd-anchor"></a>
+					<a name="readFile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> read<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
 						<li class="tsd-signature tsd-kind-icon">read<wbr>File<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, doReadRow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReadRowFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
@@ -264,11 +279,11 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="writebatch" class="tsd-anchor"></a>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+					<a name="writeBatch" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> write<wbr>Batch</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Batch<span class="tsd-signature-symbol">(</span>writeStream<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_store_interface.writestream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a>, schema<span class="tsd-signature-symbol">: </span><a href="core_batch_parquetschema.html#schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a>, messages<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_messages_messages.dsnpmessage.html" class="tsd-signature-type" data-tsd-kind="Interface">DSNPMessage</a><span class="tsd-signature-symbol">[]</span>, opts<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_batch_parquetschema.bloomfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">write<wbr>Batch&lt;T&gt;<span class="tsd-signature-symbol">(</span>writeStream<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_store_interface.WriteStream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a>, schema<span class="tsd-signature-symbol">: </span><a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a>, announcements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -276,32 +291,48 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>writeBatch() takes a series of DSNP messages and returns a Batch file
-									object for publishing.</p>
+									<p>writeBatch() takes a series of Signed Announcements, writes them to the given
+									stream and returns a void promise which resolves when done.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_batch_errors.EmptyBatchError.html">EmptyBatchError</a>
+										Thrown if the announcement iterator provided is empty.</p>
+									</dd>
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_batch_errors.MixedTypeBatchError.html">MixedTypeBatchError</a>
+										Thrown if the announcement iterator provided contains multiple announcement types.</p>
+									</dd>
+								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>writeStream: <a href="../interfaces/core_store_interface.writestream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a></h5>
+									<h5>writeStream: <a href="../interfaces/core_store_interface.WriteStream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A writable stream</p>
 									</div>
 								</li>
 								<li>
-									<h5>schema: <a href="core_batch_parquetschema.html#schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></h5>
+									<h5>schema: <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The ParquetJS schema for the messages DSNP type</p>
+										<p>The ParquetJS schema for the announcements announcement type</p>
 									</div>
 								</li>
 								<li>
-									<h5>messages: <a href="../interfaces/core_messages_messages.dsnpmessage.html" class="tsd-signature-type" data-tsd-kind="Interface">DSNPMessage</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>announcements: <span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>An array of DSNPMessage to include in the batch file</p>
+										<p>An array of signed announcements to include in the batch file</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <a href="../interfaces/core_batch_parquetschema.bloomfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Options for creating a Parquet file</p>
 									</div>
@@ -327,23 +358,23 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_batch_batch.html#createfile" class="tsd-kind-icon">create<wbr>File</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="core_batch_batch.html#createFile" class="tsd-kind-icon">create<wbr>File</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_batch_batch.html#includes" class="tsd-kind-icon">includes</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_batch_batch.html#openfile" class="tsd-kind-icon">open<wbr>File</a>
+						<a href="core_batch_batch.html#openFile" class="tsd-kind-icon">open<wbr>File</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_batch_batch.html#openurl" class="tsd-kind-icon">openURL</a>
+						<a href="core_batch_batch.html#openURL" class="tsd-kind-icon">openURL</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_batch_batch.html#readfile" class="tsd-kind-icon">read<wbr>File</a>
+						<a href="core_batch_batch.html#readFile" class="tsd-kind-icon">read<wbr>File</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_batch_batch.html#writebatch" class="tsd-kind-icon">write<wbr>Batch</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="core_batch_batch.html#writeBatch" class="tsd-kind-icon">write<wbr>Batch</a>
 					</li>
 				</ul>
 			</nav>
@@ -362,10 +393,11 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

@@ -68,9 +68,16 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_utilities_hash.HashGenerator.html" class="tsd-kind-icon">Hash<wbr>Generator</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_utilities_hash.html#hashprefix" class="tsd-kind-icon">hash<wbr>Prefix</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_utilities_hash.html#getHashGenerator" class="tsd-kind-icon">get<wbr>Hash<wbr>Generator</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_utilities_hash.html#hash" class="tsd-kind-icon">hash</a></li>
 							</ul>
 						</section>
 					</div>
@@ -79,22 +86,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="hashprefix" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> hash<wbr>Prefix</h3>
+					<a name="getHashGenerator" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Hash<wbr>Generator</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">hash<wbr>Prefix<span class="tsd-signature-symbol">(</span>hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Hash<wbr>Generator<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/core_utilities_hash.HashGenerator.html" class="tsd-signature-type" data-tsd-kind="Interface">HashGenerator</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>getHashGenerator() returns a hash generator function which a user can call to
+									append content to a hash and get the digest when done.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/core_utilities_hash.HashGenerator.html" class="tsd-signature-type" data-tsd-kind="Interface">HashGenerator</a></h4>
+							<p>A hash generator</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="hash" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> hash</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">hash<span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>hash() takes a string and returns a keccak256 hash string with a 0x prefix.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>hash: <span class="tsd-signature-type">string</span></h5>
+									<h5>content: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The string content to hash</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>A 0x prefixed keccak256 hash</p>
 						</li>
 					</ul>
 				</section>
@@ -113,8 +150,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/core_utilities_hash.HashGenerator.html" class="tsd-kind-icon">Hash<wbr>Generator</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_utilities_hash.html#hashprefix" class="tsd-kind-icon">hash<wbr>Prefix</a>
+						<a href="core_utilities_hash.html#getHashGenerator" class="tsd-kind-icon">get<wbr>Hash<wbr>Generator</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_utilities_hash.html#hash" class="tsd-kind-icon">hash</a>
 					</li>
 				</ul>
 			</nav>
@@ -133,10 +176,11 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

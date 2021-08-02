@@ -70,14 +70,15 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_subscription.batchannouncecallbackargs.html" class="tsd-kind-icon">Batch<wbr>Announce<wbr>Callback<wbr>Args</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_subscription.batchfilteroptions.html" class="tsd-kind-icon">Batch<wbr>Filter<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_subscription.BatchFilterOptions.html" class="tsd-kind-icon">Batch<wbr>Filter<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_subscription.BatchPublicationCallbackArgs.html" class="tsd-kind-icon">Batch<wbr>Publication<wbr>Callback<wbr>Args</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_subscription.ParsedLog.html" class="tsd-kind-icon">Parsed<wbr>Log</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_subscription.html#subscribetobatchannounceevents" class="tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Announce<wbr>Events</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_subscription.html#subscribeToBatchPublications" class="tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Publications</a></li>
 							</ul>
 						</section>
 					</div>
@@ -86,10 +87,10 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="subscribetobatchannounceevents" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> subscribe<wbr>ToBatch<wbr>Announce<wbr>Events</h3>
+					<a name="subscribeToBatchPublications" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> subscribe<wbr>ToBatch<wbr>Publications</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Announce<wbr>Events<span class="tsd-signature-symbol">(</span>doReceiveAnnouncement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchAnnounceCallback</span>, filter<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_contracts_subscription.batchfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BatchFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Publications<span class="tsd-signature-symbol">(</span>doReceivePublication<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchPublicationCallback</span>, filter<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_contracts_subscription.BatchFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BatchFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -97,21 +98,28 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>subscribeToBatchAnnounceEvents() sets up a listener to listen to retrieve Batch Announce events from the chain.
-										It takes a callback and a filter. The filter is used to filter events that come through.
-									The callback is invoked for each correctly filtered event.</p>
+									<p>subscribeToBatchPublications() sets up a listener to listen to retrieve Batch
+										Publication events from the chain. It takes a callback and a filter. The
+										filter is used to filter events that come through. The callback is invoked
+									for each correctly filtered event.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_config_errors.MissingProviderConfigError.html">MissingProviderConfigError</a>
+										Thrown if the provider is not configured.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>doReceiveAnnouncement: <span class="tsd-signature-type">BatchAnnounceCallback</span></h5>
+									<h5>doReceivePublication: <span class="tsd-signature-type">BatchPublicationCallback</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The callback function to be called when an event is received</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filter: <a href="../interfaces/core_contracts_subscription.batchfilteroptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BatchFilterOptions</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> filter: <a href="../interfaces/core_contracts_subscription.BatchFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BatchFilterOptions</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Any filter options for including or excluding certain events</p>
 									</div>
@@ -138,13 +146,16 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/core_contracts_subscription.batchannouncecallbackargs.html" class="tsd-kind-icon">Batch<wbr>Announce<wbr>Callback<wbr>Args</a>
+						<a href="../interfaces/core_contracts_subscription.BatchFilterOptions.html" class="tsd-kind-icon">Batch<wbr>Filter<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/core_contracts_subscription.batchfilteroptions.html" class="tsd-kind-icon">Batch<wbr>Filter<wbr>Options</a>
+						<a href="../interfaces/core_contracts_subscription.BatchPublicationCallbackArgs.html" class="tsd-kind-icon">Batch<wbr>Publication<wbr>Callback<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/core_contracts_subscription.ParsedLog.html" class="tsd-kind-icon">Parsed<wbr>Log</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_contracts_subscription.html#subscribetobatchannounceevents" class="tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Announce<wbr>Events</a>
+						<a href="core_contracts_subscription.html#subscribeToBatchPublications" class="tsd-kind-icon">subscribe<wbr>ToBatch<wbr>Publications</a>
 					</li>
 				</ul>
 			</nav>
@@ -163,10 +174,11 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
