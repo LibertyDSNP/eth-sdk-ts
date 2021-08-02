@@ -219,12 +219,14 @@ const isValidPublishedField = (obj: string): boolean => obj.match(ISO8601_REGEX)
 const isValidDurationField = (obj: string): boolean => obj.match(DURATION_REGEX) !== null;
 
 const isValidActivityContentAttachment = (obj: ActivityContentAttachment): boolean =>
-  (({
-    Audio: isValidActivityContentAudio,
-    Image: isValidActivityContentImage,
-    Video: isValidActivityContentVideo,
-    Link: isValidActivityContentLink,
-  }[obj["type"]] as (o: ActivityContentAttachment) => boolean)(obj));
+  ((
+    {
+      Audio: isValidActivityContentAudio,
+      Image: isValidActivityContentImage,
+      Video: isValidActivityContentVideo,
+      Link: isValidActivityContentLink,
+    }[obj["type"]] as (o: ActivityContentAttachment) => boolean
+  )(obj));
 
 const isValidActivityContentAudio = (obj: ActivityContentAudio): boolean => {
   if (obj["duration"] && !isValidDurationField(obj["duration"])) return false;

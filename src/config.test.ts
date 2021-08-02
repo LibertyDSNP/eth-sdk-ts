@@ -4,9 +4,9 @@ import { getConfig, setConfig } from "./config";
 describe("config", () => {
   describe("#getConfig", () => {
     it("fetches the current config settings", () => {
-      const testConfig = ({
+      const testConfig = {
         test: "object",
-      } as unknown) as Config;
+      } as unknown as Config;
 
       setConfig(testConfig);
 
@@ -14,16 +14,16 @@ describe("config", () => {
     });
 
     it("overrides the returned settings with any provided parameters", () => {
-      const testConfig = ({
+      const testConfig = {
         test: "object",
-      } as unknown) as Config;
+      } as unknown as Config;
 
       setConfig(testConfig);
 
       expect(
-        getConfig(({
+        getConfig({
           otherTest: "differentObject",
-        } as unknown) as Config)
+        } as unknown as Config)
       ).toMatchObject({
         test: "object",
         otherTest: "differentObject",
@@ -33,9 +33,9 @@ describe("config", () => {
 
   describe("#setConfig", () => {
     it("updates the config settings", async () => {
-      const testConfig = ({
+      const testConfig = {
         test: "object",
-      } as unknown) as Config;
+      } as unknown as Config;
 
       setConfig(testConfig);
 
@@ -47,9 +47,9 @@ describe("config", () => {
         other_test: "blah blah",
       });
 
-      const testConfig = ({
+      const testConfig = {
         test: "object",
-      } as unknown) as Config;
+      } as unknown as Config;
 
       setConfig(testConfig);
 

@@ -1,9 +1,11 @@
 # Changelog
 
 ## Unreleased
+
+## [2.0.0] - 2021-08-02
 ### Changes
-- Updated activityContent module to match new spec, again
-- Fix length check bug in `subscribeToBatchPublications`
+- Updated npm dependencies
+- Updated activityContent module to match spec
 - Updated announcement types to include createdAt type
 - Updated announcement factories to include optional createdAt param
 - Updated various types to specify DSNP ids instead of string
@@ -12,7 +14,6 @@
 - Added hash() and getHashGenerator() utility functions
 - Moved "requireGet" config methods back into the SDK core
 - Removed put method from the store interface in favor of putStream everywhere
-- Updated activityContent types to match spec
 - Updated activityContent generators to match new types
 - Updated content porcelain to accept proper activityContent objects and validate them
 - Renamed activityPub -> activityContent
@@ -52,9 +53,11 @@
 - Ability to get Registrations associated to identity address
 - Ability to lookup registrations by wallet address
 ### Removed
--
+
 ### Fixed
 - Updated GraphChange enum values to match spec
+- Fix length check bug in `subscribeToBatchPublications`
+
 
 ## [1.0.0] - 2021-06-22
 ### Changes

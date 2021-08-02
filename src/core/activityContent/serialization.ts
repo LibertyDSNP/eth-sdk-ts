@@ -9,6 +9,6 @@ import { sortObject } from "../utilities/json";
  * @returns A string representation of the activity content object
  */
 export const serialize = (data: ActivityContentNote | ActivityContentProfile): string => {
-  const sortedData = sortObject((data as unknown) as Record<string, unknown>);
+  const sortedData = sortObject(data as unknown as Record<string, unknown>);
   return JSON.stringify(sortedData);
 };

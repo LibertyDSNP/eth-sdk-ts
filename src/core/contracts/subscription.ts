@@ -125,7 +125,7 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
         // Catch this error so a single corrupted log won't break all of log retrieval.
         console.log("Error parsing batch publication log", log, err);
         // Return this log will be filtered out in the next step.
-        return { fragment: (undefined as unknown) as LogDescription, log: log };
+        return { fragment: undefined as unknown as LogDescription, log: log };
       }
     })
     .filter((desc: ParsedLog) => desc.fragment && desc.fragment.name === "DSNPBatchPublication")

@@ -531,9 +531,9 @@ describe("identity", () => {
 
   describe("#resolveDelegatesFor", () => {
     describe("when logs contain only DSNPAddDelegate data", () => {
-      const provider = ({
+      const provider = {
         getBlockNumber: jest.fn().mockResolvedValue(100),
-      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+      } as Partial<ethers.providers.Provider> as ethers.providers.Provider;
 
       const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
       const delegateLogData: DelegateLogData[] = [
@@ -553,9 +553,9 @@ describe("identity", () => {
     });
 
     describe("when adding a delegate is set to be removed in a future block date", () => {
-      const provider = ({
+      const provider = {
         getBlockNumber: jest.fn().mockResolvedValue(332),
-      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+      } as Partial<ethers.providers.Provider> as ethers.providers.Provider;
 
       const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
       const delegateLogData: DelegateLogData[] = [
@@ -581,9 +581,9 @@ describe("identity", () => {
     });
 
     describe("when a delegate is removed", () => {
-      const provider = ({
+      const provider = {
         getBlockNumber: jest.fn().mockResolvedValue(333),
-      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+      } as Partial<ethers.providers.Provider> as ethers.providers.Provider;
 
       it("returns zero delegate log data", async () => {
         const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
@@ -608,9 +608,9 @@ describe("identity", () => {
     });
 
     describe("when delegate is added removed and re-added", () => {
-      const provider = ({
+      const provider = {
         getBlockNumber: jest.fn().mockResolvedValue(400),
-      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+      } as Partial<ethers.providers.Provider> as ethers.providers.Provider;
 
       const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
@@ -644,9 +644,9 @@ describe("identity", () => {
     });
 
     describe("when log data contains multiple indentities", () => {
-      const provider = ({
+      const provider = {
         getBlockNumber: jest.fn().mockResolvedValue(350),
-      } as Partial<ethers.providers.Provider>) as ethers.providers.Provider;
+      } as Partial<ethers.providers.Provider> as ethers.providers.Provider;
 
       const delegateAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
