@@ -12,8 +12,8 @@ export const convertSignedAnnouncementToAnnouncement = (obj: SignedAnnouncement)
   const newObj: Record<string, unknown> = {};
 
   for (const key in obj) {
-    if (key != "signature") newObj[key] = ((obj as unknown) as Record<string, unknown>)[key];
+    if (key != "signature") newObj[key] = (obj as unknown as Record<string, unknown>)[key];
   }
 
-  return (newObj as unknown) as Announcement;
+  return newObj as unknown as Announcement;
 };

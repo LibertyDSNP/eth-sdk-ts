@@ -125,8 +125,7 @@ describe("activityPub", () => {
         url: [
           {
             type: "Link",
-            href:
-              "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
+            href: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Canmania_Car_show_-_Wimborne_%289589569829%29.jpg",
             mediaType: "image/jpg",
             hash: [
               {

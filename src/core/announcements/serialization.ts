@@ -8,7 +8,7 @@ import { Announcement } from "./factories";
  * @returns A string serialization of the announcement
  */
 export const serialize = (announcement: Announcement): string => {
-  const sortedObj = sortObject((announcement as unknown) as Record<string, unknown>);
+  const sortedObj = sortObject(announcement as unknown as Record<string, unknown>);
   let serialization = "";
 
   for (const key in sortedObj) {
