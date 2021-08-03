@@ -26,8 +26,6 @@ export type Handle = string;
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
- * Thrown if the registration contract address cannot be found.
- * @throws a VMError if contract fails
  * @param handle - String handle to resolve
  * @param opts - (optional) any config overrides.
  * @returns A Registration object for the user or null if not found
@@ -44,7 +42,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
   } catch (e) {
     const error = <VmError>e;
     const vmError = getVmError(error);
-    if (vmError?.includes("Handle does not exist")) {
+    if (vmError) {
       return null;
     }
     throw e;
