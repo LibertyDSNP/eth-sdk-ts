@@ -78,6 +78,7 @@ const isActivityContentVideoLink = (obj: unknown): obj is ActivityContentVideoLi
 const isActivityContentHash = (obj: unknown): obj is ActivityContentHash => {
   if (!isRecord(obj)) return false;
   if (!isString(obj["algorithm"])) return false;
+  if (!isString(obj["value"])) return false;
 
   return true;
 };

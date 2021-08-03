@@ -131,6 +131,29 @@ describe("activity content validations", () => {
           },
         ],
       },
+      "a note with an audio attachement missing a hash value": {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Feel like I've heard this before!",
+        mediaType: "text/plain",
+        attachment: [
+          {
+            type: "Audio",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.ogg",
+                mediaType: "audio/ogg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
       "a note with an image attachement missing a mediaType": {
         "@context": "https://www.w3.org/ns/activitystreams",
         type: "Note",
