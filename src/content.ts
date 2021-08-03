@@ -49,9 +49,9 @@ export const broadcast = async (
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
-  const url = await store.putStream(contentHash, async ({ write, end }) => {
-    write(content);
-    end();
+  const url = await store.putStream(contentHash, async (writeStream) => {
+    writeStream.write(content);
+    writeStream.end();
   });
 
   const announcement = createBroadcast(currentFromURI, url.toString(), contentHash);
@@ -94,9 +94,9 @@ export const reply = async (
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
-  const url = await store.putStream(contentHash, async ({ write, end }) => {
-    write(content);
-    end();
+  const url = await store.putStream(contentHash, async (writeStream) => {
+    writeStream.write(content);
+    writeStream.end();
   });
 
   const announcement = createReply(currentFromURI, url.toString(), contentHash, inReplyTo);
@@ -160,9 +160,9 @@ export const profile = async (
 
   const contentHash = hash(content);
   const store = requireGetStore(opts);
-  const url = await store.putStream(contentHash, async ({ write, end }) => {
-    write(content);
-    end();
+  const url = await store.putStream(contentHash, async (writeStream) => {
+    writeStream.write(content);
+    writeStream.end();
   });
 
   const announcement = createProfile(currentFromURI, url.toString(), contentHash);

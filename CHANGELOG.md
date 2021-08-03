@@ -4,6 +4,10 @@
 ### Changes
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
 
+## [2.0.1] - TBD
+### Fixed
+- no longer using destructuring for methods that result in a `store.putStream` call. 
+
 ## [2.0.0] - 2021-08-02
 ### Changes
 - Updated npm dependencies
