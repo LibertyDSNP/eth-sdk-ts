@@ -2,16 +2,17 @@
 
 ## Unreleased
 ### Changes
+
+## [2.0.1] - 2021-08-04
+### Changes
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
 - Updated the Activity Content Published field validation regex to support fractional seconds
 - Updated @dsnp/contracts to v1.0.1
 - Updated minor dependencies
-### Fixed
-- sdk.createRegistration was incorrectly returning a DSNP User Id instead of a DSNP User URI
 
-## [2.0.1] - TBD
 ### Fixed
-- no longer using destructuring for methods that result in a `store.putStream` call. 
+- no longer using destructuring for methods that result in a `store.putStream` call.
+- sdk.createRegistration was incorrectly returning a DSNP User Id instead of a DSNP User URI
 
 ## [2.0.0] - 2021-08-02
 ### Changes
