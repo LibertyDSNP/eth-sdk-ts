@@ -6,6 +6,8 @@
 - Updated the Activity Content Published field validation regex to support fractional seconds
 - Updated @dsnp/contracts to v1.0.1
 - Updated minor dependencies
+### Fixed
+- sdk.createRegistration was incorrectly returning a DSNP User Id instead of a DSNP User URI
 
 ## [2.0.1] - TBD
 ### Fixed
