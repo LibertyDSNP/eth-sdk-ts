@@ -18,7 +18,14 @@ import {
 import { isDSNPUserId } from "../identifiers";
 import { isRecord, isString, isNumber, isArrayOfType } from "../utilities/validation";
 
-const ISO8601_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-](\d{2}):(\d{2}))?$/;
+/**
+ * Regex for ISO 8601 / XML Schema Dates
+ * - T separation
+ * - Required Time
+ * - Supports fractional seconds
+ * - Z or hour minute offset
+ */
+const ISO8601_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d{1,})?(Z|[+-][01][0-9]:[0-5][0-9])?$/;
 const HREF_REGEX = /^https?:\/\/.+/;
 const DURATION_REGEX = /^-?P[0-9]+Y?([0-9]+M)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.[0-9]+)?S)?)?$/;
 const HASH_REGEX = /^0x[0-9A-Fa-f]{64}$/;
