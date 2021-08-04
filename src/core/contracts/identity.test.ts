@@ -542,6 +542,7 @@ describe("identity", () => {
           identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
+          transactionHash: expect.any(String),
         },
       ];
 
@@ -564,6 +565,7 @@ describe("identity", () => {
           identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
+          transactionHash: expect.any(String),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -571,6 +573,7 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 331,
           endBlock: 400,
+          transactionHash: expect.any(String),
         },
       ];
 
@@ -593,6 +596,7 @@ describe("identity", () => {
             identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
             delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
             blockNumber: 330,
+            transactionHash: expect.any(String),
           },
           {
             name: "DSNPRemoveDelegate",
@@ -600,6 +604,7 @@ describe("identity", () => {
             delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
             blockNumber: 331,
             endBlock: 0,
+            transactionHash: expect.any(String),
           },
         ];
 
@@ -620,6 +625,7 @@ describe("identity", () => {
           identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
+          transactionHash: expect.any(String),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -627,12 +633,14 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 331,
           endBlock: 333,
+          transactionHash: expect.any(String),
         },
         {
           name: "DSNPAddDelegate",
           identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 332,
+          transactionHash: expect.any(String),
         },
       ];
 
@@ -656,12 +664,14 @@ describe("identity", () => {
           identityAddress: "0x71C95911E9a5D330f4D621842EC243EE1343292e",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
+          transactionHash: expect.any(String),
         },
         {
           name: "DSNPAddDelegate",
           identityAddress: "0x8464135c8F25Da09e49BC8782676a84730C318bC",
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 332,
+          transactionHash: expect.any(String),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -669,6 +679,7 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 333,
           endBlock: 400,
+          transactionHash: expect.any(String),
         },
       ];
 

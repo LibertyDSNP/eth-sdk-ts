@@ -27,6 +27,7 @@ import {
 import { generateHexString } from "@dsnp/test-generators";
 import { DSNPUserURI } from "../identifiers";
 import { EthereumAddress } from "../../types/Strings";
+import { mineBlocks } from "../../test/utilities";
 
 describe("registry", () => {
   let signer: Signer;
@@ -194,13 +195,19 @@ describe("registry", () => {
       const regs = await getDSNPRegistryUpdateEvents({
         contractAddr: identityContractAddress,
       });
-      expect(regs[0].contractAddr).toEqual(identityContractAddress);
 
-      expect(regs[0].dsnpUserURI).toEqual("dsnp://0x0000000000000" + Number(1000).toString(16));
-      expect(regs[0].handle).toEqual(handle);
+      const expected = expect.objectContaining({
+        transactionHash: expect.any(String),
+        blockNumber: expect.any(Number),
+        contractAddr: identityContractAddress,
+        dsnpUserURI: "dsnp://0x0000000000000" + Number(1000).toString(16),
+        handle: handle,
+      });
+
+      expect(regs[0]).toEqual(expected);
     });
 
-    it("Does not pull other almost matching events", async () => {
+    it("does not pull other almost matching events", async () => {
       const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
       const identityContract = await new Identity__factory(signer).deploy(fakeAddress);
       await identityContract.deployed();
@@ -213,9 +220,17 @@ describe("registry", () => {
       const regs = await getDSNPRegistryUpdateEvents({
         contractAddr: identityContract.address,
       });
+
+      const expected = expect.objectContaining({
+        transactionHash: expect.any(String),
+        blockNumber: expect.any(Number),
+        contractAddr: identityContract.address,
+        dsnpUserURI: expect.any(String),
+        handle: handle,
+      });
+
       expect(regs).toHaveLength(1);
-      expect(regs[0].contractAddr).toEqual(identityContract.address);
-      expect(regs[0].handle).toEqual(handle);
+      expect(regs[0]).toEqual(expected);
     });
 
     it("pulls all the related events for identityContract", async () => {
@@ -248,6 +263,129 @@ describe("registry", () => {
       expect(regs).toHaveLength(2);
       expect(regs[0].handle).toEqual(handle);
       expect(regs[1].handle).toEqual(handle + "new");
+    });
+
+    it("pulls all events starting at from specified start and end block number", async () => {
+      const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
+      await identityContract.deployed();
+      const handle = "DonkeyButtons";
+      const handleTwo = "DonkeyButtons2";
+      const handleThree = "DonkeyButtons3";
+
+      const identityContractAddress = identityContract.address;
+      await register(identityContractAddress, handle);
+
+      await mineBlocks(10, provider);
+
+      const currentBlockNumber = await provider.getBlockNumber();
+      await changeHandle(handle, handleTwo);
+
+      await mineBlocks(10, provider);
+      await changeHandle(handleTwo, handleThree);
+
+      const result = await getDSNPRegistryUpdateEvents({
+        fromBlock: currentBlockNumber,
+        endBlock: currentBlockNumber + 10,
+      });
+
+      const expected = expect.arrayContaining([
+        expect.objectContaining({
+          handle: handleTwo,
+        }),
+      ]);
+
+      const expectedTwo = expect.not.arrayContaining([
+        expect.objectContaining({
+          handle: handle,
+        }),
+      ]);
+
+      expect(result.length).toEqual(1);
+      expect(result).toEqual(expected);
+      expect(result).toEqual(expectedTwo);
+    });
+
+    it("pulls all events starting at from specified start block", async () => {
+      const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
+      await identityContract.deployed();
+      const handle = "PenguinButtons";
+      const handleTwo = "PenguinButtons2";
+      const handleThree = "PenguinButtons3";
+
+      const identityContractAddress = identityContract.address;
+      await register(identityContractAddress, handle);
+
+      await mineBlocks(10, provider);
+
+      const currentBlockNumber = await provider.getBlockNumber();
+      await changeHandle(handle, handleTwo);
+
+      await mineBlocks(10, provider);
+      await changeHandle(handleTwo, handleThree);
+
+      const result = await getDSNPRegistryUpdateEvents({
+        fromBlock: currentBlockNumber,
+      });
+
+      const expected = expect.arrayContaining([
+        expect.objectContaining({
+          handle: handleTwo,
+        }),
+        expect.objectContaining({
+          handle: handleThree,
+        }),
+      ]);
+
+      const expectedTwo = expect.not.arrayContaining([
+        expect.objectContaining({
+          handle: handle,
+        }),
+      ]);
+
+      expect(result).toEqual(expected);
+      expect(result).toEqual(expectedTwo);
+    });
+
+    it("pulls all events from block 0 to specific end block", async () => {
+      const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
+      await identityContract.deployed();
+      const handle = "LlamaButtons";
+      const handleTwo = "LlamaButtons2";
+      const handleThree = "LlamaButtons3";
+
+      const identityContractAddress = identityContract.address;
+      await register(identityContractAddress, handle);
+
+      await mineBlocks(10, provider);
+
+      await changeHandle(handle, handleTwo);
+
+      const currentBlockNumber = await provider.getBlockNumber();
+
+      await mineBlocks(10, provider);
+      await changeHandle(handleTwo, handleThree);
+
+      const result = await getDSNPRegistryUpdateEvents({
+        endBlock: currentBlockNumber,
+      });
+
+      const expected = expect.arrayContaining([
+        expect.objectContaining({
+          handle: handle,
+        }),
+        expect.objectContaining({
+          handle: handleTwo,
+        }),
+      ]);
+
+      const expectedTwo = expect.not.arrayContaining([
+        expect.objectContaining({
+          handle: handleThree,
+        }),
+      ]);
+
+      expect(result).toEqual(expected);
+      expect(result).toEqual(expectedTwo);
     });
   });
 

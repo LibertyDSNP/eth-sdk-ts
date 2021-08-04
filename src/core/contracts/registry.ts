@@ -9,15 +9,37 @@ import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { Announcement, serialize } from "../announcements";
 import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
+import { LogEventData } from "./utilities";
 
 const CONTRACT_NAME = "Registry";
 
+/**
+ * Registration represents a struct for a registration
+ */
 export interface Registration {
   contractAddr: EthereumAddress;
   dsnpUserURI: DSNPUserURI;
   handle: Handle;
 }
 
+/**
+ * RegistryUpdateLogData represents a struct for RegistryUpdate event data
+ */
+export type RegistryUpdateLogData = LogEventData & Registration;
+
+/**
+ * RegistryUpdateFilterOptions represents a struct for filtering event data
+ */
+export interface RegistryUpdateFilterOptions {
+  contractAddr?: EthereumAddress;
+  dsnpUserURI?: DSNPUserURI;
+  fromBlock?: number;
+  endBlock?: number;
+}
+
+/**
+ * Handle represents a registration handle
+ */
 export type Handle = string;
 
 /**
@@ -132,17 +154,26 @@ export const changeHandle = async (
  * @returns An array of all the matching events
  */
 export const getDSNPRegistryUpdateEvents = async (
-  filter: Partial<Omit<Registration, "handle">>,
+  filter: RegistryUpdateFilterOptions,
   opts?: ConfigOpts
-): Promise<Registration[]> => {
-  const userId = filter.dsnpUserURI ? convertDSNPUserIdOrURIToBigNumber(filter.dsnpUserURI) : undefined;
+): Promise<RegistryUpdateLogData[]> => {
   const contract = await getContract(opts);
-  const logs = await contract.queryFilter(contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr));
+
+  const userId = filter.dsnpUserURI ? convertDSNPUserIdOrURIToBigNumber(filter.dsnpUserURI) : undefined;
+  const eventFilter: ethers.EventFilter = contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr);
+
+  const logs = await contract.queryFilter(eventFilter, filter.fromBlock, filter.endBlock);
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;
-    const dsnpUserURI = convertBigNumberToDSNPUserURI(id);
-    return { contractAddr: addr, dsnpUserURI, handle };
+
+    return {
+      blockNumber: desc.blockNumber,
+      transactionHash: desc.transactionHash,
+      dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+      contractAddr: addr,
+      handle,
+    };
   });
 };
 
@@ -180,6 +211,7 @@ export const isSignatureAuthorizedTo = async (
     },
     opts
   );
+
   if (registrations.length === 0) throw new MissingRegistrationError(dsnpUserURI);
   const reg = registrations[registrations.length - 1];
 
