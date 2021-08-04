@@ -49,8 +49,8 @@
     "@types/jest": "26.0.24",
     "@types/mkdirp": "^1.0.2",
     "@types/request": "^2.48.7",
-    "@typescript-eslint/eslint-plugin": "4.28.5",
-    "@typescript-eslint/parser": "4.28.5",
+    "@typescript-eslint/eslint-plugin": "4.29.0",
+    "@typescript-eslint/parser": "4.29.0",
     "babel-jest": "^27.0.6",
     "dotenv": "^10.0.0 ",
     "eslint": "^7.32.0",
@@ -67,7 +67,7 @@
     "stream": "^0.0.2",
     "ts-jest": "27.0.4",
     "ts-node": "10.1.0",
-    "typechain": "^5.0.0",
+    "typechain": "^5.1.2",
     "typedoc": "0.21.5",
     "typedoc-plugin-markdown": "3.10.4",
     "typescript": "4.3.5"
@@ -105,7 +105,7 @@
     "titleTemplate": "{title}"
   },
   "dependencies": {
-    "@dsnp/contracts": "1.0.0",
+    "@dsnp/contracts": "1.0.1",
     "@dsnp/parquetjs": "^1.1.1",
     "@dsnp/test-generators": "^0.1.0",
     "@ethersproject/abi": "^5.4.0",

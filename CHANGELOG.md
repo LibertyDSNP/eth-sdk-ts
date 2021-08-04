@@ -4,6 +4,8 @@
 ### Changes
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
 - Updated the Activity Content Published field validation regex to support fractional seconds
+- Updated @dsnp/contracts to v1.0.1
+- Updated minor dependencies
 
 ## [2.0.1] - TBD
 ### Fixed
