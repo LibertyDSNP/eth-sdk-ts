@@ -1,4 +1,4 @@
-import { ethers, ContractTransaction } from "ethers";
+import { ethers, ContractTransaction, BigNumber } from "ethers";
 
 import { getContractAddress, getVmError, VmError } from "./contract";
 import { MissingRegistrationError } from "./errors";
@@ -9,6 +9,7 @@ import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { Announcement, serialize } from "../announcements";
 import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
+import { ParsedLog } from "./subscription";
 
 const CONTRACT_NAME = "Registry";
 
@@ -246,4 +247,110 @@ export const getRegistrationsByWalletAddress = async (walletAddress: EthereumAdd
   );
 
   return ([] as Registration[]).concat(...registrations);
+};
+
+// interface RegistryUpdateCallbackParams {
+//   blockNumber: number;
+//   transactionHash: HexString;
+//   blockTimestamp: number;
+//   registration: Registration;
+// }
+
+type RegistryUpdateCallbackCallback = (doReceiveRegistryUpdate: RegistryUpdateLogData) => void;
+
+interface RegistryUpdateSubscriptionFilter {
+  fromBlock?: number;
+}
+
+interface RegistryUpdateLogData {
+  transactionHash: HexString;
+  blockNumber: number;
+  registration: Registration;
+}
+
+export const subribeToRegistrytyUpdates = async (
+  doReceiveRegistryUpdate: RegistryUpdateCallbackCallback,
+  filter: RegistryUpdateSubscriptionFilter,
+  opts?: ConfigOpts
+): Promise<any> => {
+  const contract = await getContract(opts);
+  const contractFilter = contract.filters.DSNPRegistryUpdate();
+
+  console.log("on", contract.on);
+  const listener = (id: BigNumber, address: HexString, handle: string, event: ethers.Event) => {
+    const updateRegistryLog: RegistryUpdateLogData = {
+      transactionHash: event.transactionHash,
+      blockNumber: event.blockNumber,
+      registration: {
+        contractAddr: address,
+        handle,
+        dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+      },
+    };
+
+    doReceiveRegistryUpdate(updateRegistryLog);
+  };
+
+  contract.on(contractFilter, listener);
+
+  // console.log("parsedLogs", parsedLogs);
+
+  return () => contract.off(contractFilter, listener);
+};
+
+// const withPastLogs = () => {
+
+
+// }
+
+
+//event DSNPRegistryUpdate(uint64 indexed id, address indexed addr, string handle);
+export const getUpdateRegistryLogs = async (
+  filter: any,
+  startBlock: number,
+  end: number | string,
+  opts?: ConfigOpts
+): Promise<RegistryUpdateLogData[]> => {
+  const contract = await getContract(opts);
+  const contractFilter = contract.filters.DSNPRegistryUpdate();
+
+  const oldLogs = await contract.queryFilter(contractFilter, filter.startBlockNumber, "latest");
+
+  const logData: RegistryUpdateLogData[] = siftRegistryUpdateLogs(
+    oldLogs.map((log) => {
+      const fragment = contract.interface.parseLog(log);
+
+      return {
+        fragment,
+        log,
+      };
+    })
+  );
+
+  return logData;
+};
+
+// const withPreviousLogs = () => {
+
+// };
+
+const siftRegistryUpdateLogs = (logs: ParsedLog[]): RegistryUpdateLogData[] => {
+  return logs.map((item: ParsedLog) => {
+    const {
+      fragment: {
+        args: { id, addr, handle },
+      },
+      log: { blockNumber, transactionHash },
+    } = item;
+
+    return {
+      blockNumber,
+      transactionHash,
+      registration: {
+        dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+        contractAddr: addr,
+        handle,
+      },
+    };
+  });
 };

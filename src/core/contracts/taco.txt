@@ -1,0 +1,13 @@
+```
+  // DSNPRegistryUpdate is triggered when a
+    - register
+    - we want to update a handle (changeHandle)
+      - emit DSNPRegistryUpdate(newReg.id, newReg.identityAddress, newHandle)
+    - we want to update an identity contract address (changeAddress)
+      - emit DSNPRegistryUpdate(reg.id, newAddr, handle);    
+```
+
+Based on the logs I cannot the distinguish between updating a handle or updating an identity contract.
+
+If an
+

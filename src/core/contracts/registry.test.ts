@@ -12,6 +12,7 @@ import {
   getRegistrationsByIdentityAddress,
   Handle,
   getRegistrationsByWalletAddress,
+  subribeToRegistrytyUpdates,
 } from "./registry";
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -613,6 +614,50 @@ describe("registry", () => {
 
         expect(result).toEqual([]);
       });
+    });
+  });
+
+  describe.only("#subribeToRegistrytyUpdates", () => {
+    let contractOwner: EthereumAddress;
+    let contractAddress: EthereumAddress;;
+
+    beforeAll(async () => {
+      await snapshotHardhat(provider);
+    });
+
+    afterAll(async () => {
+      await revertHardhat(provider);
+    });
+
+    beforeEach(async () => {
+      const signer = getSignerForAccount(2);
+      contractOwner = await signer.getAddress();
+      const identityContract = await new Identity__factory(signer).deploy(contractOwner);
+      await identityContract.deployed();
+      contractAddress = identityContract.address;
+
+      const handleOne = "earth";
+      const handleTwo = "wind";
+      await register(contractAddress, handleOne);
+      await register(contractAddress, handleTwo);
+    });
+
+    it("subscribes", async () => {
+      const unsubscribe = await subribeToRegistrytyUpdates(
+        // (...args) => {
+        //   console.log(args);
+        // },
+        { startBlockNumber: 0 }
+      );
+
+      const handleThree = "fire";
+      const handleFour = "water";
+
+      await register(contractAddress, handleThree);
+      await register(contractAddress, handleFour);
+
+      expect(true).toBe(true);
+      unsubscribe();
     });
   });
 });

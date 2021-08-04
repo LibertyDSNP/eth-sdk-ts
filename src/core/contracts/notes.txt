@@ -1,0 +1,27 @@
+1. build filter
+2. check if we need to get all logs
+3. set up subscription
+  - queue up new events
+
+4. get old events up to new event
+  - flush does out first flush
+
+
+
+
+queue = [];
+
+provider.on((log) => {
+    queue.push(log);
+
+});
+
+oldStuff.unshift();
+
+while queue.length
+  log = queue.shift()
+  callback(log)
+  
+
+
+old-stuff; incoming; newStuff

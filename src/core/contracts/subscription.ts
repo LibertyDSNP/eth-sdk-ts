@@ -52,6 +52,7 @@ export const subscribeToBatchPublications = async (
   let pastLogs: BatchPublicationCallbackArgs[] = [];
   const currentLogQueue: BatchPublicationCallbackArgs[] = [];
   const batchFilter: ethers.EventFilter = await dsnpBatchFilter();
+  console.log("batchFilter", batchFilter);
   const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
 
   const provider = requireGetProvider();
