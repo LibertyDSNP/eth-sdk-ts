@@ -1,6 +1,6 @@
 import { ethers, ContractTransaction } from "ethers";
 
-import { getContractAddress, getVmError, VmError } from "./contract";
+import { getContractAddress } from "./contract";
 import { MissingRegistrationError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
@@ -21,6 +21,16 @@ export interface Registration {
 export type Handle = string;
 
 /**
+ * Checks to see if the address is zero
+ *
+ * @param addr - The address to check
+ * @returns true if the address is nothing but zeros
+ */
+const isZeroAddress = (addr: string): boolean => {
+  return addr.replace(/[0x]/g, "") === "";
+};
+
+/**
  * resolveRegistration() Try to resolve a handle into a Registration
  *
  * @throws {@link MissingProviderConfigError}
@@ -32,21 +42,15 @@ export type Handle = string;
  */
 export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Promise<Registration | null> => {
   const contract = await getContract(opts);
-  try {
-    const [userId, contractAddr] = await contract.resolveRegistration(handle);
-    return {
-      handle,
-      dsnpUserURI: convertBigNumberToDSNPUserURI(userId),
-      contractAddr,
-    };
-  } catch (e) {
-    const error = <VmError>e;
-    const vmError = getVmError(error);
-    if (vmError) {
-      return null;
-    }
-    throw e;
+  const [userId, contractAddr] = await contract.resolveRegistration(handle);
+  if (userId.isZero() && isZeroAddress(contractAddr)) {
+    return null;
   }
+  return {
+    handle,
+    dsnpUserURI: convertBigNumberToDSNPUserURI(userId),
+    contractAddr,
+  };
 };
 
 /**
