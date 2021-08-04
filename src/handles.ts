@@ -2,7 +2,7 @@ import * as config from "./core/config";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { convertBigNumberToDSNPUserId, DSNPUserURI } from "./core/identifiers";
+import { convertBigNumberToDSNPUserURI, DSNPUserURI } from "./core/identifiers";
 import { HexString } from "./types/Strings";
 
 /**
@@ -18,7 +18,7 @@ import { HexString } from "./types/Strings";
  * @param addr - public key address that will be used to control identity delegate
  * @param handle - name of identity (must be globally unique)
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns id of identity created
+ * @returns DSNP User URI of identity created
  */
 export const createRegistration = async (
   addr: HexString,
@@ -29,7 +29,7 @@ export const createRegistration = async (
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return convertBigNumberToDSNPUserId(registerEvent.args[0]);
+  return convertBigNumberToDSNPUserURI(registerEvent.args[0]);
 };
 
 /**

@@ -112,6 +112,7 @@ describe("handles", () => {
       const id = convertDSNPUserIdOrURIToBigNumber(dsnpUserURI);
 
       expect(id.toNumber()).toBeGreaterThan(999);
+      expect(dsnpUserURI.substr(0, 9)).toEqual("dsnp://0x");
     });
   });
 });
