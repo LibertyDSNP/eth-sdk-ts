@@ -13370,11 +13370,7 @@
 									},
 									{
 										"tag": "throws",
-										"text": "{@link MissingContractAddressError}\nThrown if the registration contract address cannot be found."
-									},
-									{
-										"tag": "throws",
-										"text": "a VMError if contract fails"
+										"text": "{@link MissingContractAddressError}"
 									}
 								]
 							},
@@ -18535,7 +18531,7 @@
 							"flags": {},
 							"comment": {
 								"shortText": "createRegistration() creates a new identity for a public key and registers a handle to it.\nThis function will wait for the identity to land on chain before resolving.",
-								"returns": "id of identity created\n",
+								"returns": "DSNP User URI of identity created\n",
 								"tags": [
 									{
 										"tag": "throws",
