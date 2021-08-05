@@ -5,19 +5,22 @@ import { dsnpBatchFilter } from "./publisher";
 import { Filter } from "@ethersproject/abstract-provider";
 import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
+import { LogEventData } from "./utilities";
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
- * subscribeToBatchPublications: interface for callback function that is passed
- * to subscribeToBatchPublications
+ * BatchPublication represents a struct for a publication data
  */
-export interface BatchPublicationCallbackArgs {
-  blockNumber: number;
-  transactionHash: HexString;
+export interface BatchPublication {
   announcementType: number;
   fileUrl: string;
   fileHash: HexString;
 }
+
+/**
+ * BatchPublicationLogData represents a struct for batch publication event data
+ */
+export type BatchPublicationLogData = LogEventData & BatchPublication;
 
 /**
  * ParsedLog: interface for parsing log data
@@ -31,7 +34,11 @@ export interface BatchFilterOptions {
   announcementType?: number;
   fromBlock?: number;
 }
-type BatchPublicationCallback = (doReceivePublication: BatchPublicationCallbackArgs) => void;
+
+/**
+ * BatchPublicationCallback represents a type for publication callback function
+ */
+export type BatchPublicationCallback = (doReceivePublication: BatchPublicationLogData) => void;
 
 /**
  * subscribeToBatchPublications() sets up a listener to listen to retrieve Batch
@@ -49,8 +56,8 @@ export const subscribeToBatchPublications = async (
   doReceivePublication: BatchPublicationCallback,
   filter?: BatchFilterOptions
 ): Promise<() => void> => {
-  let pastLogs: BatchPublicationCallbackArgs[] = [];
-  const currentLogQueue: BatchPublicationCallbackArgs[] = [];
+  let pastLogs: BatchPublicationLogData[] = [];
+  const currentLogQueue: BatchPublicationLogData[] = [];
   const batchFilter: ethers.EventFilter = await dsnpBatchFilter();
   const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
 
@@ -107,15 +114,12 @@ const createFilter = (batchFilter: ethers.EventFilter, filterOptions: BatchFilte
   return finalFilter;
 };
 
-const getPastLogs = async (
-  provider: ethers.providers.Provider,
-  filter: Filter
-): Promise<BatchPublicationCallbackArgs[]> => {
+const getPastLogs = async (provider: ethers.providers.Provider, filter: Filter): Promise<BatchPublicationLogData[]> => {
   const logs = await provider.getLogs(filter);
   return decodeLogsForBatchPublication(logs);
 };
 
-const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationCallbackArgs[] => {
+const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
   return logs
     .map((log: ethers.providers.Log) => {
       try {

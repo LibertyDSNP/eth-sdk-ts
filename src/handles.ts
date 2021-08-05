@@ -64,6 +64,7 @@ export const resolveId = async (dsnpUserURI: DSNPUserURI, opts?: config.ConfigOp
     },
     opts
   );
+
   if (registrations.length === 0) return null;
   return registrations[registrations.length - 1];
 };

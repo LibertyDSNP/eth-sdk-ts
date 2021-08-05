@@ -15,6 +15,7 @@ import {
   createTypedData,
   EIP712Signature,
   TypedDomainData,
+  LogEventData,
 } from "./utilities";
 import { getContractAddress } from "./contract";
 import { Provider } from "@ethersproject/providers";
@@ -202,7 +203,6 @@ interface DelegateAddLogData {
   name: string;
   identityAddress: HexString;
   delegate: HexString;
-  blockNumber: number;
 }
 
 interface DelegateRemoveLogData extends DelegateAddLogData {
@@ -212,7 +212,7 @@ interface DelegateRemoveLogData extends DelegateAddLogData {
 /**
  * DelegateLogData represents a struct for log data
  */
-export type DelegateLogData = DelegateAddLogData | DelegateRemoveLogData;
+export type DelegateLogData = (DelegateAddLogData | DelegateRemoveLogData) & LogEventData;
 
 /**
  * DelegateAdd represents a struct for adding delegates
@@ -492,13 +492,14 @@ const siftDelegateLogs = (logs: ParsedLog[]): DelegateLogData[] => {
         args: { delegate, endBlock },
         name,
       },
-      log: { address, blockNumber },
+      log: { address, blockNumber, transactionHash },
     } = item;
 
     return {
       name,
       identityAddress: address,
       delegate: delegate,
+      transactionHash,
       blockNumber,
       ...(endBlock !== undefined ? { endBlock: endBlock.toNumber() } : {}),
     };

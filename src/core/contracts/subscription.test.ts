@@ -1,6 +1,6 @@
 import { requireGetProvider } from "../config";
 import { publish, Publication, dsnpBatchFilter } from "./publisher";
-import { subscribeToBatchPublications, BatchPublicationCallbackArgs, BatchFilterOptions } from "./subscription";
+import { subscribeToBatchPublications, BatchPublicationLogData, BatchFilterOptions } from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { checkNumberOfFunctionCalls } from "../../test/utilities";
@@ -100,7 +100,7 @@ describe("subscription", () => {
   describe("BatchPublication events with custom filter", () => {
     it("returns events that matches filters", async () => {
       const provider = requireGetProvider();
-      const mock = jest.fn((opts: BatchPublicationCallbackArgs) => {
+      const mock = jest.fn((opts: BatchPublicationLogData) => {
         return opts;
       });
       const testUrl3 = "http://www.testconst333.com";

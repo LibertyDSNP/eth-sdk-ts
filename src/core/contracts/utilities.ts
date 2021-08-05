@@ -1,3 +1,5 @@
+import { HexString } from "../../types/Strings";
+
 /**
  * DomainData represents EIP-712 unique domain
  */
@@ -67,3 +69,11 @@ export const createTypedData = (
     message,
   };
 };
+
+/**
+ * LogEventData represents a struct for log data
+ */
+export interface LogEventData {
+  transactionHash: HexString;
+  blockNumber: number;
+}

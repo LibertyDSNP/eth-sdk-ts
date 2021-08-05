@@ -1,7 +1,11 @@
 # Changelog
 
 ## Unreleased
+### Added
+- Ability to filter registr update events based on start and end block
+
 ### Changes
+- Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
 
 ## [2.0.1] - 2021-08-04
 ### Changes
