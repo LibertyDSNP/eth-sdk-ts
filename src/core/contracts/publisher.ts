@@ -42,6 +42,7 @@ export const dsnpBatchFilter = (announcementType?: AnnouncementType): EventFilte
   const topic = publisherInterface.getEventTopic(
     publisherInterface.events["DSNPBatchPublication(int16,bytes32,string)"]
   );
+
   const topics = [topic];
   if (announcementType) {
     topics.push("0x" + announcementType.toString(16).padStart(64, "0"));
