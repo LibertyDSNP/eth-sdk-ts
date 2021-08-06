@@ -3,8 +3,9 @@ import { publish, Publication, dsnpBatchFilter } from "./publisher";
 import { subscribeToBatchPublications, BatchPublicationLogData, BatchFilterOptions } from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
-import { checkNumberOfFunctionCalls } from "../../test/utilities";
+import { checkNumberOfFunctionCalls, mineBlocks } from "../../test/utilities";
 import { hash } from "../utilities";
+import { ethers } from "ethers";
 
 describe("subscription", () => {
   setupSnapshot();
@@ -64,21 +65,63 @@ describe("subscription", () => {
       const filter = await dsnpBatchFilter();
       expect(provider.listeners(filter).length).toEqual(0);
     });
+
     describe("when a filter is provided", () => {
-      const filterOptions: BatchFilterOptions = {
-        announcementType: 2,
-        fromBlock: 0,
-      };
+      describe("and fromBlock is from genesis block", () => {
+        const filterOptions: BatchFilterOptions = {
+          announcementType: 2,
+          fromBlock: 0,
+        };
 
-      it("does not fail if there are no past logs", async () => {
-        const provider = requireGetProvider();
-        const mock = jest.fn();
+        it("does not fail if there are no past logs", async () => {
+          const provider = requireGetProvider();
+          const mock = jest.fn();
 
-        const removeListener = await subscribeToBatchPublications(mock, filterOptions);
-        expect(mock).not.toHaveBeenCalled();
-        await removeListener();
-        const filter = await dsnpBatchFilter();
-        expect(provider.listeners(filter).length).toEqual(0);
+          const removeListener = await subscribeToBatchPublications(mock, filterOptions);
+          expect(mock).not.toHaveBeenCalled();
+          await removeListener();
+          const filter = await dsnpBatchFilter();
+          expect(provider.listeners(filter).length).toEqual(0);
+        });
+      });
+
+      describe("and a fromBlock from the future is provided", () => {
+        let filterOptions: BatchFilterOptions;
+        let provider: ethers.providers.Provider;
+
+        beforeEach(async () => {
+          provider = requireGetProvider();
+        });
+
+        it("logs data after starting at fromBlock", async () => {
+          const blockNumber = await provider.getBlockNumber();
+          filterOptions = {
+            announcementType: 2,
+            fromBlock: blockNumber + 10,
+          };
+          const mock = jest.fn();
+
+          const removeListener = await subscribeToBatchPublications(mock, filterOptions);
+
+          const testUrl = "http://www.test.com";
+          const fileHash = hash("test");
+          const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: fileHash }];
+          await (await publish(publications1)).wait(1);
+          await new Promise((r) => setTimeout(r, 2000));
+
+          await mineBlocks(11, provider as ethers.providers.JsonRpcProvider);
+
+          const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: fileHash }];
+
+          await (await publish(publications)).wait(1);
+
+          const numberOfCalls = await checkNumberOfFunctionCalls(mock, 10, 1);
+          expect(numberOfCalls).toBeTruthy();
+
+          await removeListener();
+          const filter = await dsnpBatchFilter();
+          expect(provider.listeners(filter).length).toEqual(0);
+        });
       });
     });
 

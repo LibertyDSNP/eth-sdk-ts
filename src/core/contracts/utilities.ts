@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { HexString } from "../../types/Strings";
 
 /**
@@ -77,3 +78,62 @@ export interface LogEventData {
   transactionHash: HexString;
   blockNumber: number;
 }
+
+/**
+ * UnsubscribeFunction represents a function to unsubscribe to events
+ */
+export type UnsubscribeFunction = () => void;
+
+/**
+ * subscribeToEvent() allows users to subscribe to new incoming event
+ * and also get events prior the current block.
+ *
+ * @param provider - initialized provider
+ * @param filter - a filter to filter block events
+ * @param doReceiveEvent - a callback that handles incoming event logs
+ * @param fromBlock - a block number to start receiving event logs
+ * @returns An unsubscribe function
+ */
+export const subscribeToEvent = async (
+  provider: ethers.providers.Provider,
+  filter: ethers.EventFilter,
+  doReceiveEvent: (log: ethers.providers.Log) => void,
+  fromBlock?: number
+): Promise<UnsubscribeFunction> => {
+  if (!fromBlock) {
+    provider.on(filter, doReceiveEvent);
+
+    return () => provider.off(filter);
+  }
+
+  const currentBlockNumber = await provider.getBlockNumber();
+  const newLogsQueue: ethers.providers.Log[] = [];
+  let isFetchingPastLogData = true;
+
+  provider.on(filter, (log: ethers.providers.Log) => {
+    if (log.blockNumber < fromBlock) return;
+    if (log.blockNumber <= currentBlockNumber) return;
+
+    if (isFetchingPastLogData) {
+      newLogsQueue.push(log);
+    } else {
+      doReceiveEvent(log);
+    }
+  });
+
+  const pastLogs = await provider.getLogs({
+    ...filter,
+    fromBlock: fromBlock,
+    toBlock: currentBlockNumber,
+  });
+
+  [...pastLogs, ...newLogsQueue].forEach((log) => {
+    doReceiveEvent(log);
+  });
+
+  isFetchingPastLogData = false;
+
+  return () => {
+    provider.off(filter);
+  };
+};
