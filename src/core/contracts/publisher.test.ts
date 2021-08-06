@@ -26,7 +26,16 @@ describe("#batch", () => {
     );
   });
 
-  it("can return the topic", () => {
-    expect(dsnpBatchFilter().topics).toEqual(["0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576"]);
+  describe("dsnpBatchFilter", () => {
+    it("can return the topic", () => {
+      expect(dsnpBatchFilter().topics).toEqual(["0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576"]);
+    });
+
+    it("can return the topics with a type filter", () => {
+      expect(dsnpBatchFilter(1).topics).toEqual([
+        "0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576",
+        "0x0000000000000000000000000000000000000000000000000000000000000001",
+      ]);
+    });
   });
 });

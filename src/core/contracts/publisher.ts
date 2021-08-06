@@ -3,6 +3,7 @@ import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
 import { HexString } from "../../types/Strings";
 import { Publisher, Publisher__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
+import { AnnouncementType } from "../announcements";
 
 const CONTRACT_NAME = "Publisher";
 
@@ -33,14 +34,19 @@ export const publish = async (publications: Publication[]): Promise<ContractTran
 /**
  * Retrieves event filter for DSNPBatch event
  *
+ * @param announcementType - DSNP Announcement Type Filter
  * @returns DSNPBatch event filter
  */
-export const dsnpBatchFilter = (): EventFilter => {
+export const dsnpBatchFilter = (announcementType?: AnnouncementType): EventFilter => {
   const publisherInterface = Publisher__factory.createInterface();
   const topic = publisherInterface.getEventTopic(
     publisherInterface.events["DSNPBatchPublication(int16,bytes32,string)"]
   );
-  return { topics: [topic] };
+  const topics = [topic];
+  if (announcementType) {
+    topics.push("0x" + announcementType.toString(16).padStart(64, "0"));
+  }
+  return { topics };
 };
 
 const getPublisherContract = async (opts?: ConfigOpts): Promise<Publisher> => {
