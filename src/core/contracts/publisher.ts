@@ -33,17 +33,14 @@ export const publish = async (publications: Publication[]): Promise<ContractTran
 /**
  * Retrieves event filter for DSNPBatch event
  *
- * @throws {@link MissingSignerConfigError}
- * Thrown if the signer is not configured.
- * @throws {@link MissingProviderConfigError}
- * Thrown if the provider is not configured.
- * @throws {@link MissingContractAddressError}
- * Thrown if the batch contract address cannot be found.
  * @returns DSNPBatch event filter
  */
-export const dsnpBatchFilter = async (): Promise<EventFilter> => {
-  const contract = await getPublisherContract();
-  return contract.filters.DSNPBatchPublication();
+export const dsnpBatchFilter = (): EventFilter => {
+  const publisherInterface = Publisher__factory.createInterface();
+  const topic = publisherInterface.getEventTopic(
+    publisherInterface.events["DSNPBatchPublication(int16,bytes32,string)"]
+  );
+  return { topics: [topic] };
 };
 
 const getPublisherContract = async (opts?: ConfigOpts): Promise<Publisher> => {

@@ -1,4 +1,4 @@
-import { publish, Publication } from "./publisher";
+import { publish, Publication, dsnpBatchFilter } from "./publisher";
 import { hash } from "../utilities";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { setupSnapshot } from "../../test/hardhatRPC";
@@ -24,5 +24,9 @@ describe("#batch", () => {
     expect(logs[0].data).toEqual(
       "0x9c22ff5f21f0b81b113e63f7db6da94fedef11b2119b4088b89664fb9a3cb65800000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000018687474703a2f2f7777772e74657374636f6e73742e636f6d0000000000000000"
     );
+  });
+
+  it("can return the topic", () => {
+    expect(dsnpBatchFilter().topics).toEqual(["0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576"]);
   });
 });

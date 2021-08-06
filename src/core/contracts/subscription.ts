@@ -58,7 +58,7 @@ export const subscribeToBatchPublications = async (
 ): Promise<() => void> => {
   let pastLogs: BatchPublicationLogData[] = [];
   const currentLogQueue: BatchPublicationLogData[] = [];
-  const batchFilter: ethers.EventFilter = await dsnpBatchFilter();
+  const batchFilter: ethers.EventFilter = dsnpBatchFilter();
   const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
 
   const provider = requireGetProvider();
