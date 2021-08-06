@@ -58,14 +58,13 @@ export const subscribeToBatchPublications = async (
 ): Promise<() => void> => {
   let pastLogs: BatchPublicationLogData[] = [];
   const currentLogQueue: BatchPublicationLogData[] = [];
-  const batchFilter: ethers.EventFilter = await dsnpBatchFilter();
-  const batchFilterWithOptions = filter ? createFilter(batchFilter, filter) : batchFilter;
+  const batchFilter: ethers.EventFilter = dsnpBatchFilter(filter?.announcementType);
 
   const provider = requireGetProvider();
   let maxBlockNumberForPastLogs = filter?.fromBlock || 0;
   let useQueue = filter?.fromBlock != undefined;
 
-  provider.on(batchFilterWithOptions, (log: ethers.providers.Log) => {
+  provider.on(batchFilter, (log: ethers.providers.Log) => {
     const logItem = decodeLogsForBatchPublication([log])[0];
 
     if (useQueue) {
@@ -95,23 +94,8 @@ export const subscribeToBatchPublications = async (
   }
 
   return () => {
-    provider.off(batchFilterWithOptions);
+    provider.off(batchFilter);
   };
-};
-
-const createFilter = (batchFilter: ethers.EventFilter, filterOptions: BatchFilterOptions) => {
-  const topics = batchFilter.topics ? batchFilter.topics : [];
-  const announcementTypeTopic = filterOptions?.announcementType
-    ? "0x" + filterOptions.announcementType.toString(16).padStart(64, "0")
-    : null;
-  if (announcementTypeTopic) {
-    topics.push(announcementTypeTopic);
-  }
-
-  const finalFilter: ethers.providers.EventType = {
-    topics: topics,
-  };
-  return finalFilter;
 };
 
 const getPastLogs = async (provider: ethers.providers.Provider, filter: Filter): Promise<BatchPublicationLogData[]> => {

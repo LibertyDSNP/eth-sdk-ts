@@ -3,6 +3,7 @@ import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
 import { HexString } from "../../types/Strings";
 import { Publisher, Publisher__factory } from "../../types/typechain";
 import { getContractAddress } from "./contract";
+import { AnnouncementType } from "../announcements";
 
 const CONTRACT_NAME = "Publisher";
 
@@ -33,17 +34,19 @@ export const publish = async (publications: Publication[]): Promise<ContractTran
 /**
  * Retrieves event filter for DSNPBatch event
  *
- * @throws {@link MissingSignerConfigError}
- * Thrown if the signer is not configured.
- * @throws {@link MissingProviderConfigError}
- * Thrown if the provider is not configured.
- * @throws {@link MissingContractAddressError}
- * Thrown if the batch contract address cannot be found.
+ * @param announcementType - DSNP Announcement Type Filter
  * @returns DSNPBatch event filter
  */
-export const dsnpBatchFilter = async (): Promise<EventFilter> => {
-  const contract = await getPublisherContract();
-  return contract.filters.DSNPBatchPublication();
+export const dsnpBatchFilter = (announcementType?: AnnouncementType): EventFilter => {
+  const publisherInterface = Publisher__factory.createInterface();
+  const topic = publisherInterface.getEventTopic(
+    publisherInterface.events["DSNPBatchPublication(int16,bytes32,string)"]
+  );
+  const topics = [topic];
+  if (announcementType) {
+    topics.push("0x" + announcementType.toString(16).padStart(64, "0"));
+  }
+  return { topics };
 };
 
 const getPublisherContract = async (opts?: ConfigOpts): Promise<Publisher> => {

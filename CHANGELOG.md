@@ -2,10 +2,12 @@
 
 ## Unreleased
 ### Added
-- Ability to filter registr update events based on start and end block
+- Ability to filter registry update events based on start and end block
 
 ### Changes
 - Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
+- Updated subscribeToBatchPublications to not need a signer
+- sdk.core.contracts.publisher.dsnpBatchFilter is no longer async
 
 ## [2.0.1] - 2021-08-04
 ### Changes
