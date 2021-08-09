@@ -4,7 +4,7 @@ import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
 import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
-import { createFollowGraphChange, createTombstone, AnnouncementType } from "./factories";
+import { createTombstone, AnnouncementType, DSNPGraphChangeType } from "./factories";
 import { buildDSNPAnnouncementURI, DSNPUserId } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -12,6 +12,7 @@ import TestStore from "../../test/testStore";
 import { getURIFromRegisterTransaction } from "../../test/testAccounts";
 import { Identity__factory } from "../../types/typechain";
 import { isValidAnnouncement } from "./validation";
+import { serializeToHex } from "./serialization";
 
 describe("validation", () => {
   const { signer, provider } = setupConfig();
@@ -28,7 +29,7 @@ describe("validation", () => {
     const userIdentityContract = await new Identity__factory(signer).deploy(userAddress);
     await userIdentityContract.deployed();
     const userTransaction = await register(userIdentityContract.address, "Bob Loblaw");
-    userId = await getURIFromRegisterTransaction(userTransaction);
+    userId = serializeToHex(await getURIFromRegisterTransaction(userTransaction));
 
     setConfig({
       currentFromURI: userId,
@@ -51,7 +52,7 @@ describe("validation", () => {
         const followeeIdentityContract = await new Identity__factory(signer).deploy(followeeAddress);
         await followeeIdentityContract.deployed();
         const followeeTransaction = await register(followeeIdentityContract.address, "George Bluth");
-        followeeId = await getURIFromRegisterTransaction(followeeTransaction);
+        followeeId = serializeToHex(await getURIFromRegisterTransaction(followeeTransaction));
       });
 
       afterAll(async () => {
@@ -59,21 +60,39 @@ describe("validation", () => {
       });
 
       it("returns true for valid graph change announcements", async () => {
-        const announcement = createFollowGraphChange(userId, followeeId);
+        const announcement = {
+          fromId: userId,
+          announcementType: AnnouncementType.GraphChange,
+          changeType: DSNPGraphChangeType.Follow,
+          createdAt: +Date.now(),
+          objectId: followeeId,
+        };
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
       });
 
       it("returns false for graph change announcements with invalid fromIds", async () => {
-        const announcement = createFollowGraphChange("not a valid id", followeeId);
+        const announcement = {
+          fromId: "not a valid id",
+          announcementType: AnnouncementType.GraphChange,
+          changeType: DSNPGraphChangeType.Follow,
+          createdAt: +Date.now(),
+          objectId: followeeId,
+        };
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("returns false for graph change announcements with invalid objectIds", async () => {
-        const announcement = createFollowGraphChange(userId, "not a valid id");
+        const announcement = {
+          fromId: userId,
+          announcementType: AnnouncementType.GraphChange,
+          changeType: DSNPGraphChangeType.Follow,
+          createdAt: +Date.now(),
+          objectId: "not a valid id",
+        };
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
