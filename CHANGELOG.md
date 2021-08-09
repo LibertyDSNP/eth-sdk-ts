@@ -3,6 +3,7 @@
 ## Unreleased
 ### Added
 - Ability to filter registry update events based on start and end block
+- Exported sdk.core.identifiers
 
 ### Changes
 - Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
