@@ -6,6 +6,7 @@ import {
   Announcement,
   DSNPGraphChangeType,
   AnnouncementType,
+  TombstoneAnnouncement,
   GraphChangeAnnouncement,
   BroadcastAnnouncement,
   ReplyAnnouncement,
@@ -16,9 +17,17 @@ import { isDSNPUserId, isDSNPAnnouncementURI } from "../identifiers";
 import { convertSignedAnnouncementToAnnouncement } from "./services";
 import { isRecord, isString, isNumber } from "../utilities/validation";
 
+const SIGNATURE_REGEX = /^0x[0-9a-f]{130}$/i;
+const EMOJI_REGEX = /^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u;
+
 const isValidEmoji = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
-  return obj.match(/^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u) !== null;
+  return obj.match(EMOJI_REGEX) !== null;
+};
+
+const isValidSignature = (obj: unknown): boolean => {
+  if (!isString(obj)) return false;
+  return obj.match(SIGNATURE_REGEX) !== null;
 };
 
 /**
@@ -41,12 +50,38 @@ export const isGraphChangeType = (obj: unknown): obj is DSNPGraphChangeType => {
 export const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
   if (!isNumber(obj)) return false;
   return (
+    obj == AnnouncementType.Tombstone ||
     obj == AnnouncementType.GraphChange ||
     obj == AnnouncementType.Broadcast ||
     obj == AnnouncementType.Reply ||
     obj == AnnouncementType.Reaction ||
     obj == AnnouncementType.Profile
   );
+};
+
+/**
+ * isTombstoneAnnouncement() is a type check for TombstoneAnnouncement
+ *
+ * @param obj - The object to check
+ * @returns True if the object is a TombstoneAnnouncement, otherwise false
+ */
+export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncement => {
+  if (!isRecord(obj)) return false;
+  if (obj["announcementType"] != AnnouncementType.Tombstone) return false;
+  if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isNumber(obj["createdAt"])) return false;
+  if (!isAnnouncementType(obj["targetAnnouncementType"])) return false;
+  if (
+    !(
+      obj["targetAnnouncementType"] === AnnouncementType.Broadcast ||
+      obj["targetAnnouncementType"] === AnnouncementType.Reply ||
+      obj["targetAnnouncementType"] === AnnouncementType.Reaction
+    )
+  )
+    return false;
+  if (!isValidSignature(obj["targetSignature"])) return false;
+
+  return true;
 };
 
 /**
@@ -141,6 +176,7 @@ export const isAnnouncement = (obj: unknown): obj is Announcement => {
   if (!isAnnouncementType(obj["announcementType"])) return false;
 
   const validators: Record<AnnouncementType, (obj: unknown) => boolean> = {
+    [AnnouncementType.Tombstone]: isTombstoneAnnouncement,
     [AnnouncementType.GraphChange]: isGraphChangeAnnouncement,
     [AnnouncementType.Broadcast]: isBroadcastAnnouncement,
     [AnnouncementType.Reply]: isReplyAnnouncement,
@@ -159,7 +195,7 @@ export const isAnnouncement = (obj: unknown): obj is Announcement => {
  */
 export const isSignedAnnouncement = (obj: unknown): obj is SignedAnnouncement => {
   if (!isRecord(obj)) return false;
-  if (!isString(obj["signature"])) return false;
+  if (!isValidSignature(obj["signature"])) return false;
 
   return isAnnouncement(obj);
 };

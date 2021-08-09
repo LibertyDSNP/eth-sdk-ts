@@ -3,6 +3,7 @@ import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import {
   Announcement,
+  TombstoneAnnouncement,
   BroadcastAnnouncement,
   GraphChangeAnnouncement,
   ProfileAnnouncement,
@@ -22,6 +23,12 @@ export type AnnouncementWithSignature<T extends Announcement> = T & { signature:
  * {@link Announcement}
  */
 export type SignedAnnouncement = AnnouncementWithSignature<Announcement>;
+
+/**
+ * A Signed Tombstone Announcement ready for inclusion in a Batch File
+ * {@link TombstoneAnnouncement}
+ */
+export type SignedTombstoneAnnouncement = AnnouncementWithSignature<TombstoneAnnouncement>;
 
 /**
  * A Signed Broadcast Announcement ready for inclusion in a Batch File

@@ -4,7 +4,7 @@
  * @param obj - The object to test
  * @returns True if the object is a record, otherwise false
  */
-export const isRecord = (obj: unknown): obj is Record<string, unknown> => !!(obj && typeof obj == "object");
+export const isRecord = (obj: unknown): obj is Record<string, unknown> => typeof obj == "object";
 
 /**
  * isString is a type check for records
@@ -12,7 +12,7 @@ export const isRecord = (obj: unknown): obj is Record<string, unknown> => !!(obj
  * @param obj - The object to test
  * @returns True if the object is a string, otherwise false
  */
-export const isString = (obj: unknown): obj is string => !!(obj && typeof obj == "string");
+export const isString = (obj: unknown): obj is string => typeof obj == "string";
 
 /**
  * isNumber is a type check for records
@@ -20,7 +20,7 @@ export const isString = (obj: unknown): obj is string => !!(obj && typeof obj ==
  * @param obj - The object to test
  * @returns True if the object is a number, otherwise false
  */
-export const isNumber = (obj: unknown): obj is number => !!(obj && typeof obj == "number");
+export const isNumber = (obj: unknown): obj is number => typeof obj == "number";
 
 /**
  * isArrayOfType

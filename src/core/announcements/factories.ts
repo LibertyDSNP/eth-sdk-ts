@@ -6,6 +6,7 @@ import { createdAtOrNow } from "../utilities";
  * AnnouncementType: an enum representing different types of DSNP announcements
  */
 export enum AnnouncementType {
+  Tombstone = 0,
   GraphChange = 1,
   Broadcast = 2,
   Reply = 3,
@@ -26,6 +27,37 @@ export interface TypedAnnouncement<T extends AnnouncementType> {
   fromId: DSNPUserId;
   createdAt: number;
 }
+
+/**
+ * TombstoneAnnouncement: an Announcement of type Tombstone
+ */
+export interface TombstoneAnnouncement extends TypedAnnouncement<AnnouncementType.Tombstone> {
+  targetAnnouncementType: AnnouncementType;
+  targetSignature: HexString;
+}
+
+/**
+ * createTombstone() generates a tombstone announcement from a given URL and
+ * hash.
+ *
+ * @param fromURI         - The id of the user from whom the announcement is posted
+ * @param targetType      - The DSNP announcement type of the target announcement
+ * @param targetSignature - The signature of the target announcement
+ * @param createdAt       - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @returns A TombstoneAnnouncement
+ */
+export const createTombstone = (
+  fromURI: DSNPUserURI,
+  targetType: AnnouncementType,
+  targetSignature: HexString,
+  createdAt?: number
+): TombstoneAnnouncement => ({
+  announcementType: AnnouncementType.Tombstone,
+  targetAnnouncementType: targetType,
+  targetSignature,
+  createdAt: createdAtOrNow(createdAt),
+  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+});
 
 /**
  * BroadcastAnnouncement: an Announcement of type Broadcast
@@ -138,7 +170,6 @@ export enum DSNPGraphChangeType {
 export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
   changeType: DSNPGraphChangeType;
   objectId: DSNPUserId;
-  createdAt: number;
 }
 
 /**
