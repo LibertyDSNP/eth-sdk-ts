@@ -9,6 +9,7 @@
 - Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
 - Updated subscribeToBatchPublications to not need a signer
 - sdk.core.contracts.publisher.dsnpBatchFilter is no longer async
+- Updated Ethers from 5.3.0 -> 5.4.4
 
 ## [2.0.1] - 2021-08-04
 ### Changes
