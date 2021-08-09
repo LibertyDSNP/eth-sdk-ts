@@ -2,10 +2,9 @@ import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import { requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
-import { Filter } from "@ethersproject/abstract-provider";
 import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
-import { LogEventData } from "./utilities";
+import { LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
@@ -55,52 +54,17 @@ export type BatchPublicationCallback = (doReceivePublication: BatchPublicationLo
 export const subscribeToBatchPublications = async (
   doReceivePublication: BatchPublicationCallback,
   filter?: BatchFilterOptions
-): Promise<() => void> => {
-  let pastLogs: BatchPublicationLogData[] = [];
-  const currentLogQueue: BatchPublicationLogData[] = [];
+): Promise<UnsubscribeFunction> => {
+  const provider = requireGetProvider();
+
+  const doReceiveEvent = (log: ethers.providers.Log) => {
+    const logItem = decodeLogsForBatchPublication([log])[0];
+    doReceivePublication(logItem);
+  };
+
   const batchFilter: ethers.EventFilter = dsnpBatchFilter(filter?.announcementType);
 
-  const provider = requireGetProvider();
-  let maxBlockNumberForPastLogs = filter?.fromBlock || 0;
-  let useQueue = filter?.fromBlock != undefined;
-
-  provider.on(batchFilter, (log: ethers.providers.Log) => {
-    const logItem = decodeLogsForBatchPublication([log])[0];
-
-    if (useQueue) {
-      currentLogQueue.push(logItem);
-    } else if (logItem.blockNumber > maxBlockNumberForPastLogs) {
-      doReceivePublication(logItem);
-    }
-  });
-
-  if (useQueue) {
-    pastLogs = await getPastLogs(provider, { ...batchFilter, fromBlock: filter?.fromBlock });
-
-    if (pastLogs.length) {
-      maxBlockNumberForPastLogs = pastLogs[pastLogs.length - 1].blockNumber;
-
-      while (pastLogs.length > 0) {
-        const batchItem = pastLogs.shift();
-        if (batchItem) doReceivePublication(batchItem);
-      }
-
-      while (currentLogQueue.length > 0) {
-        const batchItem = currentLogQueue.shift();
-        if (batchItem && batchItem.blockNumber > maxBlockNumberForPastLogs) doReceivePublication(batchItem);
-      }
-    }
-    useQueue = false;
-  }
-
-  return () => {
-    provider.off(batchFilter);
-  };
-};
-
-const getPastLogs = async (provider: ethers.providers.Provider, filter: Filter): Promise<BatchPublicationLogData[]> => {
-  const logs = await provider.getLogs(filter);
-  return decodeLogsForBatchPublication(logs);
+  return subscribeToEvent(provider, batchFilter, doReceiveEvent, filter?.fromBlock);
 };
 
 const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
