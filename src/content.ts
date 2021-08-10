@@ -1,6 +1,6 @@
 import { requireGetCurrentFromURI, requireGetStore, ConfigOpts } from "./core/config";
 import {
-  isValidActivityContentNote,
+  requireValidActivityContentNote,
   isValidActivityContentProfile,
   serialize,
   ActivityContentNote,
@@ -46,7 +46,7 @@ export const broadcast = async (
   contentObject: ActivityContentNote,
   opts?: ConfigOpts
 ): Promise<SignedBroadcastAnnouncement> => {
-  if (!isValidActivityContentNote(contentObject)) throw new InvalidActivityContentError();
+  requireValidActivityContentNote(contentObject);
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
@@ -91,7 +91,7 @@ export const reply = async (
 ): Promise<SignedReplyAnnouncement> => {
   if (!isDSNPAnnouncementURI(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
 
-  if (!isValidActivityContentNote(contentObject)) throw new InvalidActivityContentError();
+  requireValidActivityContentNote(contentObject);
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
