@@ -17,6 +17,7 @@ import {
 } from "./factories";
 import { isDSNPUserId } from "../identifiers";
 import { isRecord, isString, isNumber, isArrayOfType } from "../utilities/validation";
+import { InvalidActivityContentError } from "./errors";
 
 /**
  * Regex for ISO 8601 / XML Schema Dates
@@ -40,89 +41,101 @@ const SUPPORTED_IMAGE_MEDIA_TYPES = [
   "image/gif",
 ];
 const SUPPORTED_VIDEO_MEDIA_TYPES = ["video/mpeg", "video/ogg", "video/webm", "video/H256", "video/mp4"];
+const SUPPORTED_URL_PROTOCOL = ["http:", "https:"];
+
+const UNSUPPORTED_PROTOCOL_MESSAGE =
+  "ActivityContentLink href protocol must be one of: " + SUPPORTED_URL_PROTOCOL.join(", ");
+
+const InvalidRecordMessage = (extra?: string): string => {
+  return `${extra || "object"} is not a record type`;
+};
 
 const requireActivityContentAttachment = (obj: unknown): obj is ActivityContentAttachment => {
-  if (!isRecord(obj)) throw new Error("not a record: " + obj); // this check is required for type checking to work
+  if (!isRecord(obj)) throw new InvalidActivityContentError("not a record: " + obj); // this check is required for type checking to work
   switch (obj["type"]) {
     case "Image":
       return requireActivityContentImage(obj);
     case "Audio":
       return requireActivityContentAudio(obj);
     case "Link":
-      return requireActivityContentLink(obj);
+      return requireIsActivityContentLink(obj);
     case "Video":
       return requireActivityContentVideo(obj);
     default:
-      throw new Error("unknown activity content type: " + obj["type"]);
+      throw new InvalidActivityContentError("unknown activity content type: " + obj["type"]);
   }
 };
 
-const requireIsContentLink = (obj: Record<string, unknown>, name: string): boolean => {
-  if (obj["type"] !== "Link") throw new Error(`${name} type is not 'Link'`);
-  requireIsString(obj["href"], `${name} href`);
+const requireIsMediaContentLink = (obj: Record<string, unknown>, name: string): boolean => {
+  if (obj["type"] !== "Link") throw new InvalidActivityContentError(`${name} type is not 'Link'`);
   requireIsString(obj["mediaType"], `${name} mediaType`);
-  if (!isArrayOfType(obj["hash"], requireValidActivityContentHash)) throw new Error(`${name} hash is invalid`);
+  const href = requireIsString(obj["href"], `${name} href`);
+  if (!isSupportedHrefProtocol(href)) {
+    console.error("bad href:  ", href);
+    throw new InvalidActivityContentError();
+  }
+  if (!isArrayOfType(obj["hash"], requireIsActivityContentHash))
+    throw new InvalidActivityContentError(`${name} hash is invalid`);
   return true;
 };
 
 const requireValidDimensions = (obj: Record<string, unknown>, name?: string): boolean => {
-  if (obj["height"] && !isNumber(obj["height"])) throw new Error(`${name} height is invalid`);
-  if (obj["width"] && !isNumber(obj["width"])) throw new Error(`${name} width is invalid`);
+  if (obj["height"] && !isNumber(obj["height"])) throw new InvalidActivityContentError(`${name} height is invalid`);
+  if (obj["width"] && !isNumber(obj["width"])) throw new InvalidActivityContentError(`${name} width is invalid`);
   return true;
 };
 
 const requireIsActivityContentAudioLink = (obj: unknown): obj is ActivityContentAudioLink => {
-  if (!isRecord(obj)) throw new Error("ActivityContentAudioLink is not a record");
-  requireIsContentLink(obj, "ActivityContentAudioLink");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentAudioLink"));
+  requireIsMediaContentLink(obj, "ActivityContentAudioLink");
   return true;
 };
 
 const requireIsActivityContentImageLink = (obj: unknown): obj is ActivityContentImageLink => {
-  if (!isRecord(obj)) throw new Error("ActivityContentImageLink is not a record");
-  requireIsContentLink(obj, "ActivityContentImageLink");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentImageLink"));
+  requireIsMediaContentLink(obj, "ActivityContentImageLink");
   requireValidDimensions(obj, "ActivityContentImageLink");
   return true;
 };
 
 const requireIsActivityContentVideoLink = (obj: unknown): obj is ActivityContentVideoLink => {
-  if (!isRecord(obj)) throw new Error("ActivityContentVideoLink is not a record");
-  requireIsContentLink(obj, "ActivityContentVideoLink");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentVideoLink"));
+  requireIsMediaContentLink(obj, "ActivityContentVideoLink");
   requireValidDimensions(obj, "ActivityContentVideoLink");
   return true;
 };
 
-const requireActivityContentLink = (obj: unknown): obj is ActivityContentLink => {
-  if (!isRecord(obj)) throw new Error("ActivityContentVideoLink is not a record");
-  if (obj["type"] !== "Link") throw new Error("ActivityContentLink type is not 'Link'");
-  requireIsString(obj["href"], "ActivityContentLink href");
-
+const requireIsActivityContentLink = (obj: unknown): obj is ActivityContentLink => {
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentVideoLink"));
+  if (obj["type"] !== "Link") throw new InvalidActivityContentError("ActivityContentLink type is not 'Link'");
+  const href = requireIsString(obj["href"], "ActivityContentLink href");
+  if (!isSupportedHrefProtocol(href)) throw new InvalidActivityContentError(UNSUPPORTED_PROTOCOL_MESSAGE);
   if (obj["name"]) requireIsString(obj["name"], "ActivityContentLink name");
-
   return true;
 };
 
-const requireValidActivityContentHash = (obj: unknown): obj is ActivityContentHash => {
-  if (!isRecord(obj)) throw new Error("ActivityContentHash is not a record");
+const requireIsActivityContentHash = (obj: unknown): obj is ActivityContentHash => {
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentHash"));
   const hashVal = requireIsString(obj["value"], "ActivityContentHash value field");
-  if (!hashVal.match(HASH_REGEX)) throw new Error("ActivityContentHash value is invalid");
+  if (!hashVal.match(HASH_REGEX)) throw new InvalidActivityContentError("ActivityContentHash value is invalid");
 
   const algo = requireIsString(obj["algorithm"], "ActivityContentHash algorithm");
-  if (!SUPPORTED_ALGORITHMS.includes(algo)) throw new Error("ActivityContentHash has unsupported algorithm");
+  if (!SUPPORTED_ALGORITHMS.includes(algo))
+    throw new InvalidActivityContentError("ActivityContentHash has unsupported algorithm");
   return true;
 };
 
 const requireIsActivityContentLocation = (obj: unknown): obj is ActivityContentLocation => {
-  if (!isRecord(obj)) throw new Error("ActivityContentLocation is not a record");
-  if (obj["type"] !== "Place") throw new Error("ActivityContentLocation type is not 'Place'");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentLocation"));
+  if (obj["type"] !== "Place") throw new InvalidActivityContentError("ActivityContentLocation type is not 'Place'");
 
   if (obj["name"]) requireIsString(obj["name"], "ActivityContentLocation name");
   if (obj["units"]) requireIsString(obj["units"], "ActivityContentLocation units");
 
-  if (obj["accuracy"] && !isNumber(obj["accuracy"])) return false;
-  if (obj["altitude"] && !isNumber(obj["altitude"])) return false;
-  if (obj["latitude"] && !isNumber(obj["latitude"])) return false;
-  if (obj["longitude"] && !isNumber(obj["longitude"])) return false;
-  if (obj["radius"] && !isNumber(obj["radius"])) return false;
+  ["accuracy", "altitude", "latitude", "longitude", "radius"].forEach((dimension) => {
+    if (obj[dimension] && !isNumber(obj[dimension]))
+      throw new InvalidActivityContentError(`ActivityContentLocation ${dimension} is not a number`);
+  });
 
   return true;
 };
@@ -149,97 +162,46 @@ const isActivityContentMention = (obj: unknown): obj is ActivityContentMention =
 };
 
 const requireActivityContentAudio = (obj: unknown): obj is ActivityContentAudio => {
-  if (!isRecord(obj)) throw new Error("not a record"); // this check is required for type checking to work
-  if (obj["type"] !== "Audio") throw new Error('type is not "Audio"');
-  if (!isArrayOfType(obj["url"], requireIsActivityContentAudioLink))
-    throw new Error("invalid ActivityContentAudioLink");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentAudio")); // this check is required for type checking to work
+  if (obj["type"] !== "Audio") throw new InvalidActivityContentError('type is not "Audio"');
 
-  if (obj["name"]) requireIsString(obj["name"]);
-  if (obj["duration"]) requireIsString(obj["duration"]);
+  if (!isArrayOfType(obj["url"], requireIsActivityContentAudioLink))
+    throw new InvalidActivityContentError("invalid ActivityContentAudioLink");
+
+  if (obj["name"]) requireIsString(obj["name"], "ActivityContentAudio name");
+  if (obj["duration"]) requireIsString(obj["duration"], "ActivityContentAudio duration");
 
   return true;
 };
 
 const requireActivityContentImage = (obj: unknown): obj is ActivityContentImage => {
-  if (!isRecord(obj)) return false; // this check is required for type checking to work
-  if (obj["type"] !== "Image") throw new Error('"type" is not "Image"');
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentImage")); // this check is required for type checking to work
+  if (obj["type"] !== "Image") throw new InvalidActivityContentError('"type" is not "Image"');
+
   if (!isArrayOfType(obj["url"], requireIsActivityContentImageLink))
-    throw new Error("invalid ActivityContentImageLink");
-  if (obj["name"]) requireIsString(obj["name"]);
+    throw new InvalidActivityContentError("invalid ActivityContentImageLink");
+
+  if (obj["name"]) requireIsString(obj["name"], "ActivityContentImage name");
+
   return true;
 };
 
 const requireActivityContentVideo = (obj: unknown): obj is ActivityContentVideo => {
-  if (!isRecord(obj)) throw new Error("not a record"); // this check is required for type checking to work
-  if (obj["type"] !== "Video") throw new Error("invalid video type");
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("")); // this check is required for type checking to work
+  if (obj["type"] !== "Video") throw new InvalidActivityContentError("type is not 'Video'");
+
   if (!isArrayOfType(obj["url"], requireIsActivityContentVideoLink))
-    throw new Error("invalid ActivityContentVideoLink");
+    throw new InvalidActivityContentError("invalid ActivityContentVideoLink");
 
-  if (obj["name"]) requireIsString(obj["name"]);
-  if (obj["duration"]) requireIsString(obj["duration"]);
+  if (obj["name"]) requireIsString(obj["name"], "ActivityContentVideo name");
+  if (obj["duration"]) requireIsString(obj["duration"], "ActivityContentVideo duration");
 
   return true;
 };
 
-const requireIsString = (obj: unknown, name?: string): string => {
-  if (!isString(obj)) throw new Error(`${name} is not a string`);
+const requireIsString = (obj: unknown, name: string): string => {
+  if (!isString(obj)) throw new InvalidActivityContentError(`${name} is not a string`);
   return obj as string;
-};
-
-/**
- * requireActivityContentNoteType() is a type check function for ActivityContentNote
- * objects. Note that this function only checks that the given object meets the
- * type definition of an ActivityContentNote. It **does not** perform any logic
- * validations, such as checking the format of string fields or checking that
- * required attachments each include at least one supported format.
- *
- * @param obj - The object to check
- * @returns true if the object is an ActivityContentNote, otherwise throws an Error.
- */
-export const requireActivityContentNoteType = (obj: unknown): obj is ActivityContentNote => {
-  if (!isRecord(obj)) throw new Error("ActivityContentNote is not a record"); // this check is required for type checking to work
-  requireIsString(obj["content"]);
-
-  if (obj["@context"] !== "https://www.w3.org/ns/activitystreams") throw new Error("invalid @context");
-  if (obj["type"] !== "Note") throw new Error("invalid type");
-  if (obj["mediaType"] !== "text/plain") throw new Error("invalid mediaType");
-
-  if (obj["name"]) requireIsString(obj["name"], "ActivityContentNote name");
-  if (obj["published"]) requireIsString(obj["published"], "ActivityContentNote published");
-
-  if (obj["attachment"] && !isArrayOfType(obj["attachment"], requireActivityContentAttachment))
-    throw new Error("invalid ActivityContentAttachment");
-  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag))
-    throw new Error("invalid ActivityContentNote tag");
-  if (obj["location"]) requireIsActivityContentLocation(obj["location"]);
-
-  return true;
-};
-
-/**
- * isActivityContentProfile() is a type check function for
- * ActivityContentProfile objects. Note that this function only checks that the
- * given object meets the type definition of an ActivityContentProfile. It
- * does not** perform any logic validations, such as checking the format of
- * string fields or checking that the icon field includes at least one supported
- * image format.
- *
- * @param obj - The object to check
- * @returns A boolean indicating whether or not the object is an ActivityContentProfile
- */
-export const isActivityContentProfile = (obj: unknown): obj is ActivityContentProfile => {
-  if (!isRecord(obj)) return false;
-  if (obj["@context"] != "https://www.w3.org/ns/activitystreams") return false;
-  if (obj["type"] !== "Profile") return false;
-
-  if (obj["name"] && !isString(obj["name"])) return false;
-  if (obj["summary"] && !isString(obj["name"])) return false;
-  if (obj["icon"] && !isArrayOfType(obj["icon"], requireIsActivityContentImageLink)) return false;
-  if (obj["published"] && !isString(obj["published"])) return false;
-  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag)) return false;
-  if (obj["location"]) requireIsActivityContentLocation(obj["location"]);
-
-  return true;
 };
 
 const isValidHrefField = (obj: string): boolean => obj.match(HREF_REGEX) !== null;
@@ -261,7 +223,7 @@ const isValidActivityContentAudio = (obj: ActivityContentAudio): boolean => {
   if (!hasAtLeastOneSupportedAudioMediaType(obj["url"])) return false;
 
   for (const link of obj["url"]) {
-    if (!isValidActivityContentAudioLink(link)) return false;
+    if (requireIsActivityContentAudioLink(link)) return false;
   }
 
   return true;
@@ -271,23 +233,29 @@ const isValidActivityContentImage = (obj: ActivityContentImage): boolean => {
   if (!hasAtLeastOneSupportedImageMediaType(obj["url"])) return false;
 
   for (const link of obj["url"]) {
-    if (!isValidActivityContentImageLink(link)) return false;
+    if (!requireIsActivityContentImageLink(link)) return false;
   }
 
   return true;
 };
 
 const isValidActivityContentVideo = (obj: ActivityContentVideo): boolean => {
-  if (!hasAtLeastOneSupportedVideoMediaType(obj["url"])) return false;
+  if (!hasAtLeastOneSupportedVideoMediaType(obj["url"]))
+    throw new InvalidActivityContentError("ActivityContentVideo url mediaType is unsupported");
 
   for (const link of obj["url"]) {
-    if (!isValidActivityContentVideoLink(link)) return false;
+    if (!requireIsActivityContentVideoLink(link)) return false;
   }
 
   return true;
 };
 
 const isValidActivityContentLink = (obj: ActivityContentLink): boolean => isValidHrefField(obj["href"]);
+
+const isSupportedHrefProtocol = (href: string): boolean => {
+  const protocol = new URL(href).protocol;
+  return SUPPORTED_URL_PROTOCOL.includes(protocol);
+};
 
 const hasAtLeastOneSupportedAudioMediaType = (obj: Array<ActivityContentAudioLink>): boolean => {
   for (const audioLink of obj) {
@@ -313,40 +281,33 @@ const hasAtLeastOneSupportedVideoMediaType = (obj: Array<ActivityContentVideoLin
   return false;
 };
 
-const isValidActivityContentAudioLink = (obj: ActivityContentAudioLink): boolean => {
-  if (!isValidHrefField(obj["href"])) return false;
-  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
-
-  return true;
-};
-
-const isValidActivityContentImageLink = (obj: ActivityContentImageLink): boolean => {
-  if (!isValidHrefField(obj["href"])) return false;
-  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
-
-  if (obj["height"] && obj["height"] < 1) return false;
-  if (obj["width"] && obj["width"] < 1) return false;
-
-  return true;
-};
-
-const isValidActivityContentVideoLink = (obj: ActivityContentVideoLink): boolean => {
-  if (!isValidHrefField(obj["href"])) return false;
-  if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
-
-  if (obj["height"] && obj["height"] < 1) return false;
-  if (obj["width"] && obj["width"] < 1) return false;
-
-  return true;
-};
-
-const hasAtLeastOneSupportedHashAlgorithm = (obj: Array<ActivityContentHash>): boolean => {
-  for (const hash of obj) {
-    requireValidActivityContentHash(hash);
-  }
-
-  return false;
-};
+// const isValidActivityContentAudioLink = (obj: ActivityContentAudioLink): boolean => {
+//   if (!isValidHrefField(obj["href"])) return false;
+//   if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
+//
+//   return true;
+// };
+//
+// const isValidActivityContentImageLink = (obj: ActivityContentImageLink): boolean => {
+//   if (!isValidHrefField(obj["href"])) return false;
+//   if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
+//   requireValidDimensions(obj);
+//   return true;
+// };
+//
+// const isValidActivityContentVideoLink = (obj: ActivityContentVideoLink): boolean => {
+//   if (!isValidHrefField(obj["href"])) return false;
+//   if (!hasAtLeastOneSupportedHashAlgorithm(obj["hash"])) return false;
+//   requireValidDimensions(obj);
+//   return true;
+// };
+//
+// const hasAtLeastOneSupportedHashAlgorithm = (obj: Array<ActivityContentHash>): boolean => {
+//   for (const hash of obj) {
+//     requireIsActivityContentHash(hash);
+//   }
+//   return true;
+// };
 
 const isValidActivityContentLocation = (location: ActivityContentLocation): boolean => {
   if (location["accuracy"]) {
@@ -381,6 +342,69 @@ const isValidActivityContentLocation = (location: ActivityContentLocation): bool
 };
 
 /**
+ * requireActivityContentNoteType() is a type check function for ActivityContentNote
+ * objects. Note that this function only checks that the given object meets the
+ * type definition of an ActivityContentNote. It **does not** perform any logic
+ * validations, such as checking the format of string fields or checking that
+ * required attachments each include at least one supported format.
+ *
+ * @param obj - The object to check
+ * @returns true if the object is an ActivityContentNote, otherwise throws an Error.
+ */
+export const requireActivityContentNoteType = (obj: unknown): obj is ActivityContentNote => {
+  if (!isRecord(obj)) throw new InvalidActivityContentError("ActivityContentNote"); // this check is required for type checking to work
+
+  if (obj["@context"] !== "https://www.w3.org/ns/activitystreams")
+    throw new InvalidActivityContentError("invalid ActivityContentNote @context");
+  if (obj["type"] !== "Note") throw new InvalidActivityContentError("invalid ActivityContentNote type");
+  if (obj["mediaType"] !== "text/plain") throw new InvalidActivityContentError("invalid ActivityContentNote mediaType");
+
+  if (obj["name"]) requireIsString(obj["name"], "ActivityContentNote name");
+  if (obj["published"]) requireIsString(obj["published"], "ActivityContentNote published");
+
+  if (obj["attachment"] && !isArrayOfType(obj["attachment"], requireActivityContentAttachment))
+    throw new InvalidActivityContentError("ActivityContentNote has invalid ActivityContentAttachment");
+  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag))
+    throw new InvalidActivityContentError("invalid ActivityContentNote tag");
+  if (obj["location"]) requireIsActivityContentLocation(obj["location"]);
+
+  return true;
+};
+
+/**
+ * isActivityContentProfile() is a type check function for
+ * ActivityContentProfile objects. Note that this function only checks that the
+ * given object meets the type definition of an ActivityContentProfile. It
+ * does not** perform any logic validations, such as checking the format of
+ * string fields or checking that the icon field includes at least one supported
+ * image format.
+ *
+ * @param obj - The object to check
+ * @returns A boolean indicating whether or not the object is an ActivityContentProfile
+ */
+export const requireIsActivityContentProfile = (obj: unknown): obj is ActivityContentProfile => {
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentProfile"));
+  if (obj["@context"] != "https://www.w3.org/ns/activitystreams")
+    throw new InvalidActivityContentError("invalid ActivityContentProfile @context");
+  if (obj["type"] !== "Profile") throw new InvalidActivityContentError("invalid ActivityContentProfile type");
+
+  if (obj["name"]) requireIsString(obj["name"], "ActivityContentProfile name");
+  if (obj["summary"]) requireIsString(obj["summary"], "ActivityContentProfile summary");
+
+  if (obj["icon"] && !isArrayOfType(obj["icon"], requireIsActivityContentImageLink))
+    throw new InvalidActivityContentError("ActivityContentProfile icon is invalid");
+
+  if (obj["published"]) requireIsString(obj["published"], "ActivityContentProfile published");
+
+  if (obj["tag"] && !isArrayOfType(obj["tag"], isActivityContentTag))
+    throw new InvalidActivityContentError("ActivityContentProfile tag is invalid");
+
+  if (obj["location"]) requireIsActivityContentLocation(obj["location"]);
+
+  return true;
+};
+
+/**
  * requireValidActivityContentNote() validates that a given object meets all
  * necessary specification requirements for an ActivityContentNote object,
  * include string field formats and other logical validations. Note that this
@@ -394,7 +418,8 @@ export const requireValidActivityContentNote = (obj: unknown): void => {
   if (requireActivityContentNoteType(obj)) {
     if (obj["published"]) {
       requireIsString(obj["published"], "ActivityContentNote published");
-      if (!isValidPublishedField(obj["published"] as string)) throw new Error("published is not a valid value");
+      if (!isValidPublishedField(obj["published"] as string))
+        throw new InvalidActivityContentError("ActivityContentNote published is invalid");
     }
 
     if (obj["attachment"]) {
@@ -403,7 +428,8 @@ export const requireValidActivityContentNote = (obj: unknown): void => {
       }
     }
     if (obj["location"]) {
-      if (!isValidActivityContentLocation(obj["location"])) throw new Error("location is not valid");
+      if (!isValidActivityContentLocation(obj["location"]))
+        throw new InvalidActivityContentError("location is not valid");
     }
   }
 };
@@ -418,24 +444,21 @@ export const requireValidActivityContentNote = (obj: unknown): void => {
  * @param obj - The object to check
  * @returns A boolean indicating whether or not the object is a valid ActivityContentProfile
  */
-export const isValidActivityContentProfile = (obj: unknown): boolean => {
-  if (!isActivityContentProfile(obj)) return false;
-
-  if (obj["published"] && !isValidPublishedField(obj["published"])) return false;
-  if (obj["icon"]) {
-    for (const icon of obj["icon"]) {
-      if (!isValidActivityContentImageLink(icon)) return false;
-    }
-  }
-  if (obj["location"]) {
-    if (Array.isArray(obj["location"])) {
-      for (const location of obj["location"]) {
-        if (!isValidActivityContentLocation(location)) return false;
+export const requireValidActivityContentProfile = (obj: unknown): void => {
+  if (requireIsActivityContentProfile(obj)) {
+    if (obj["published"] && !isValidPublishedField(obj["published"]))
+      throw new InvalidActivityContentError("ActivityContentProfile published is invalid");
+    if (obj["icon"]) {
+      for (const icon of obj["icon"]) {
+        requireIsActivityContentLink(icon);
       }
-    } else {
-      if (!isValidActivityContentLocation(obj["location"])) return false;
+    }
+    if (obj["location"]) {
+      const locations = Array.isArray(obj["location"]) ? obj["location"] : [obj["location"]];
+      for (const loc of locations) {
+        if (!isValidActivityContentLocation(loc))
+          throw new InvalidActivityContentError("ActivityContentProfile 1 or more locations are invalid");
+      }
     }
   }
-
-  return true;
 };

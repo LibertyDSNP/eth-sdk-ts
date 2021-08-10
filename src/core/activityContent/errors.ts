@@ -15,7 +15,7 @@ export class ActivityContentError extends DSNPError {
  * to pass validation.
  */
 export class InvalidActivityContentError extends ActivityContentError {
-  constructor() {
-    super("The activity content object provided is invalid.");
+  constructor(message?: string) {
+    super("Invalid ActivityContent: " + (message || "unknown error"));
   }
 }

@@ -1,7 +1,7 @@
 import { requireGetCurrentFromURI, requireGetStore, ConfigOpts } from "./core/config";
 import {
   requireValidActivityContentNote,
-  isValidActivityContentProfile,
+  requireValidActivityContentProfile,
   serialize,
   ActivityContentNote,
   ActivityContentProfile,
@@ -157,7 +157,7 @@ export const profile = async (
   contentObject: ActivityContentProfile,
   opts?: ConfigOpts
 ): Promise<SignedProfileAnnouncement> => {
-  if (!isValidActivityContentProfile(contentObject)) throw new InvalidActivityContentError();
+  if (!requireValidActivityContentProfile(contentObject)) throw new InvalidActivityContentError();
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
