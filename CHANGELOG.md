@@ -4,6 +4,7 @@
 ### Added
 - Ability to filter registry update events based on start and end block
 - Exported sdk.core.identifiers
+- Ability to subscribe to DSNPRegistryUpdate events
 
 ### Changes
 - Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
