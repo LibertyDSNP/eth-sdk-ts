@@ -1,10 +1,14 @@
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
-import { requireGetProvider } from "../config";
+import { ConfigOpts, requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
 import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
 import { LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
+import { RegistryUpdateLogData, getContract } from "./registry";
+import { convertBigNumberToDSNPUserURI } from "../identifiers";
+import { Registry } from "../../types/typechain";
+
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
 /**
@@ -90,4 +94,58 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
         transactionHash: item.log.transactionHash,
       };
     });
+};
+/**
+ * RegistryUpdateSubscriptionFilter filter options for including or excluding certain events
+ */
+export interface RegistryUpdateSubscriptionFilter {
+  fromBlock?: number;
+}
+
+/**
+ * RegistryUpdateCallback represents a type for registry update callback function
+ */
+export type RegistryUpdateCallback = (doReceiveRegistryUpdate: RegistryUpdateLogData) => void;
+
+/**
+ * subscribeToRegistryUpdates() sets up a listener to retrieve DSNPRegistryUpdate events
+ *
+ * @param doReceiveRegistryUpdate - The callback function to be called when an event is received
+ * @param filter - Filter options for including or excluding certain events
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A function that can be called to remove listener for this type of event
+ */
+export const subscribeToRegistryUpdates = async (
+  doReceiveRegistryUpdate: RegistryUpdateCallback,
+  filter: RegistryUpdateSubscriptionFilter,
+  opts?: ConfigOpts
+): Promise<UnsubscribeFunction> => {
+  const provider = requireGetProvider();
+  const contract = await getContract(opts);
+
+  const registryUpdateFilter = contract.filters.DSNPRegistryUpdate();
+
+  const doReceiveEvent = (log: ethers.providers.Log) => {
+    const logItem = decodeLogsForRegistryUpdate([log], contract)[0];
+    doReceiveRegistryUpdate(logItem);
+  };
+
+  return subscribeToEvent(provider, registryUpdateFilter, doReceiveEvent, filter?.fromBlock);
+};
+
+const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Registry): RegistryUpdateLogData[] => {
+  return logs.map((log) => {
+    const {
+      args: { id, addr, handle },
+    } = contract.interface.parseLog(log);
+    const { blockNumber, transactionHash } = log;
+
+    return {
+      blockNumber,
+      transactionHash,
+      dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+      contractAddr: addr,
+      handle,
+    };
+  });
 };

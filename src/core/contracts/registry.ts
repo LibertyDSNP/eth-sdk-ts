@@ -4,7 +4,7 @@ import { getContractAddress } from "./contract";
 import { MissingRegistrationError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
-import { Registry__factory } from "../../types/typechain";
+import { Registry__factory, Registry } from "../../types/typechain";
 import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
 import { Announcement, serialize } from "../announcements";
@@ -227,7 +227,13 @@ export const isSignatureAuthorizedTo = async (
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
 };
 
-const getContract = async (opts?: ConfigOpts) => {
+/**
+ * getContract() get the latest registry contract
+ *
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A typechain registry factory
+ */
+export const getContract = async (opts?: ConfigOpts): Promise<Registry> => {
   const provider = requireGetProvider(opts);
   const address = await getContractAddress(provider, CONTRACT_NAME, opts);
 

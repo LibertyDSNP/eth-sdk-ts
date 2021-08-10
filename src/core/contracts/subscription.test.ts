@@ -1,11 +1,19 @@
 import { requireGetProvider } from "../config";
 import { publish, Publication, dsnpBatchFilter } from "./publisher";
-import { subscribeToBatchPublications, BatchPublicationLogData, BatchFilterOptions } from "./subscription";
+import {
+  subscribeToBatchPublications,
+  BatchPublicationLogData,
+  BatchFilterOptions,
+  subscribeToRegistryUpdates,
+} from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { checkNumberOfFunctionCalls, mineBlocks } from "../../test/utilities";
 import { hash } from "../utilities";
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
+import { changeHandle, getContract, register } from "./registry";
+import { Identity__factory, Registry } from "../../types/typechain";
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 describe("subscription", () => {
   setupSnapshot();
@@ -224,6 +232,79 @@ describe("subscription", () => {
       const filter = await dsnpBatchFilter();
       await removeListener();
       expect(provider.listeners(filter).length).toEqual(0);
+    });
+  });
+
+  describe("#subscribeToRegistrytyUpdates", () => {
+    jest.setTimeout(70000);
+
+    describe("get past events from start block", () => {
+      let signer: Signer;
+      let provider: JsonRpcProvider;
+
+      setupSnapshot();
+
+      beforeAll(() => {
+        ({ signer, provider } = setupConfig());
+      });
+
+      it("retrieves past events based on given start block", async () => {
+        const mock = jest.fn();
+
+        const identityContract = await new Identity__factory(signer).deploy(await signer.getAddress());
+        const contract: Registry = await getContract();
+        const registryUpdateFilter = contract.filters.DSNPRegistryUpdate();
+        await identityContract.deployed();
+        const handle = "PenguinButtons";
+        const handleTwo = "PenguinButtons2";
+        const handleThree = "PenguinButtons3";
+
+        const currentBlockNumber = await provider.getBlockNumber();
+        const identityContractAddress = identityContract.address;
+        await (await register(identityContractAddress, handle)).wait(1);
+
+        await mineBlocks(10, provider as ethers.providers.JsonRpcProvider);
+
+        await (await changeHandle(handle, handleTwo)).wait(1);
+
+        await mineBlocks(10, provider as ethers.providers.JsonRpcProvider);
+        await (await changeHandle(handleTwo, handleThree)).wait(1);
+
+        const removeListener = await subscribeToRegistryUpdates(mock, { fromBlock: currentBlockNumber });
+        await checkNumberOfFunctionCalls(mock, 10, 3);
+
+        expect(mock).toHaveBeenCalledTimes(3);
+        expect(mock.mock.calls[0][0]).toEqual(
+          expect.objectContaining({
+            transactionHash: expect.any(String),
+            blockNumber: expect.any(Number),
+            dsnpUserURI: expect.any(String),
+            contractAddr: identityContractAddress,
+            handle: handle,
+          })
+        );
+        expect(mock.mock.calls[1][0]).toEqual(
+          expect.objectContaining({
+            transactionHash: expect.any(String),
+            blockNumber: expect.any(Number),
+            dsnpUserURI: expect.any(String),
+            contractAddr: identityContractAddress,
+            handle: handleTwo,
+          })
+        );
+        expect(mock.mock.calls[2][0]).toEqual(
+          expect.objectContaining({
+            transactionHash: expect.any(String),
+            blockNumber: expect.any(Number),
+            dsnpUserURI: expect.any(String),
+            contractAddr: identityContractAddress,
+            handle: handleThree,
+          })
+        );
+
+        await removeListener();
+        expect(provider.listeners(registryUpdateFilter).length).toEqual(0);
+      });
     });
   });
 });
