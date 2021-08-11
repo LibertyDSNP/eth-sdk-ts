@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [2.0.2] - 2021-08-11
 ### Added
 - Ability to filter registry update events based on start and end block
 - Exported sdk.core.identifiers
