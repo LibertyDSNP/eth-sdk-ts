@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>TypedDataField | @dsnp/sdk</title>
+	<title>RegistryUpdateFilterOptions | @dsnp/sdk</title>
 	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,13 +53,13 @@
 					<a href="../modules.html">@dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/core_contracts_utilities.html">core/contracts/utilities</a>
+					<a href="../modules/core_contracts_registry.html">core/contracts/registry</a>
 				</li>
 				<li>
-					<a href="core_contracts_utilities.TypedDataField.html">TypedDataField</a>
+					<a href="core_contracts_registry.RegistryUpdateFilterOptions.html">RegistryUpdateFilterOptions</a>
 				</li>
 			</ul>
-			<h1>Interface TypedDataField</h1>
+			<h1>Interface RegistryUpdateFilterOptions</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>TypedDataField represents a single type</p>
+						<p>RegistryUpdateFilterOptions represents a struct for filtering event data</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +77,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">TypedDataField</span>
+						<span class="target">RegistryUpdateFilterOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -88,8 +88,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_utilities.TypedDataField.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_utilities.TypedDataField.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_registry.RegistryUpdateFilterOptions.html#contractAddr" class="tsd-kind-icon">contract<wbr>Addr</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_registry.RegistryUpdateFilterOptions.html#dsnpUserURI" class="tsd-kind-icon">dsnp<wbr>UserURI</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_registry.RegistryUpdateFilterOptions.html#endBlock" class="tsd-kind-icon">end<wbr>Block</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="core_contracts_registry.RegistryUpdateFilterOptions.html#fromBlock" class="tsd-kind-icon">from<wbr>Block</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,16 +100,30 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="contractAddr" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> contract<wbr>Addr</h3>
+					<div class="tsd-signature tsd-kind-icon">contract<wbr>Addr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="dsnpUserURI" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> dsnp<wbr>UserURI</h3>
+					<div class="tsd-signature tsd-kind-icon">dsnp<wbr>UserURI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="endBlock" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> end<wbr>Block</h3>
+					<div class="tsd-signature tsd-kind-icon">end<wbr>Block<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="fromBlock" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> from<wbr>Block</h3>
+					<div class="tsd-signature tsd-kind-icon">from<wbr>Block<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 					</aside>
 				</section>
@@ -120,50 +136,68 @@
 						<a href="../modules.html">Modules</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/core_contracts_utilities.html">core/contracts/utilities</a>
+						<a href="../modules/core_contracts_registry.html">core/contracts/registry</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_contracts_utilities.LogEventData.html" class="tsd-kind-icon">Log<wbr>Event<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_contracts_utilities.TypedData.html" class="tsd-kind-icon">Typed<wbr>Data</a>
+						<a href="core_contracts_registry.Registration.html" class="tsd-kind-icon">Registration</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="core_contracts_utilities.TypedDataField.html" class="tsd-kind-icon">Typed<wbr>Data<wbr>Field</a>
+						<a href="core_contracts_registry.RegistryUpdateFilterOptions.html" class="tsd-kind-icon">Registry<wbr>Update<wbr>Filter<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="core_contracts_utilities.TypedDataField.html#name" class="tsd-kind-icon">name</a>
+								<a href="core_contracts_registry.RegistryUpdateFilterOptions.html#contractAddr" class="tsd-kind-icon">contract<wbr>Addr</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="core_contracts_utilities.TypedDataField.html#type" class="tsd-kind-icon">type</a>
+								<a href="core_contracts_registry.RegistryUpdateFilterOptions.html#dsnpUserURI" class="tsd-kind-icon">dsnp<wbr>UserURI</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="core_contracts_registry.RegistryUpdateFilterOptions.html#endBlock" class="tsd-kind-icon">end<wbr>Block</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="core_contracts_registry.RegistryUpdateFilterOptions.html#fromBlock" class="tsd-kind-icon">from<wbr>Block</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#EIP712Signature" class="tsd-kind-icon">EIP712<wbr>Signature</a>
+						<a href="../modules/core_contracts_registry.html#Handle" class="tsd-kind-icon">Handle</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#TypedDomainData" class="tsd-kind-icon">Typed<wbr>Domain<wbr>Data</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#TypedMessageDataField" class="tsd-kind-icon">Typed<wbr>Message<wbr>Data<wbr>Field</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#UnsubscribeFunction" class="tsd-kind-icon">Unsubscribe<wbr>Function</a>
+						<a href="../modules/core_contracts_registry.html#RegistryUpdateLogData" class="tsd-kind-icon">Registry<wbr>Update<wbr>Log<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#createTypedData" class="tsd-kind-icon">create<wbr>Typed<wbr>Data</a>
+						<a href="../modules/core_contracts_registry.html#changeAddress" class="tsd-kind-icon">change<wbr>Address</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/core_contracts_utilities.html#subscribeToEvent" class="tsd-kind-icon">subscribe<wbr>ToEvent</a>
+						<a href="../modules/core_contracts_registry.html#changeHandle" class="tsd-kind-icon">change<wbr>Handle</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#getContract" class="tsd-kind-icon">get<wbr>Contract</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#getDSNPRegistryUpdateEvents" class="tsd-kind-icon">getDSNPRegistry<wbr>Update<wbr>Events</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#getRegistrationsByIdentityAddress" class="tsd-kind-icon">get<wbr>Registrations<wbr>ByIdentity<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#getRegistrationsByWalletAddress" class="tsd-kind-icon">get<wbr>Registrations<wbr>ByWallet<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#isSignatureAuthorizedTo" class="tsd-kind-icon">is<wbr>Signature<wbr>Authorized<wbr>To</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#register" class="tsd-kind-icon">register</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/core_contracts_registry.html#resolveRegistration" class="tsd-kind-icon">resolve<wbr>Registration</a>
 					</li>
 				</ul>
 			</nav>

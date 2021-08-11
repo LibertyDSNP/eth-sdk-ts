@@ -71,12 +71,14 @@
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-kind-icon">Registration</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/core_contracts_registry.RegistryUpdateFilterOptions.html" class="tsd-kind-icon">Registry<wbr>Update<wbr>Filter<wbr>Options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="core_contracts_registry.html#Handle" class="tsd-kind-icon">Handle</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="core_contracts_registry.html#RegistryUpdateLogData" class="tsd-kind-icon">Registry<wbr>Update<wbr>Log<wbr>Data</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -84,6 +86,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#changeAddress" class="tsd-kind-icon">change<wbr>Address</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#changeHandle" class="tsd-kind-icon">change<wbr>Handle</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#getContract" class="tsd-kind-icon">get<wbr>Contract</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#getDSNPRegistryUpdateEvents" class="tsd-kind-icon">getDSNPRegistry<wbr>Update<wbr>Events</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#getRegistrationsByIdentityAddress" class="tsd-kind-icon">get<wbr>Registrations<wbr>ByIdentity<wbr>Address</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_contracts_registry.html#getRegistrationsByWalletAddress" class="tsd-kind-icon">get<wbr>Registrations<wbr>ByWallet<wbr>Address</a></li>
@@ -103,6 +106,23 @@
 					<div class="tsd-signature tsd-kind-icon">Handle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Handle represents a registration handle</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="RegistryUpdateLogData" class="tsd-anchor"></a>
+					<h3>Registry<wbr>Update<wbr>Log<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">Registry<wbr>Update<wbr>Log<wbr>Data<span class="tsd-signature-symbol">:</span> <a href="../interfaces/core_contracts_utilities.LogEventData.html" class="tsd-signature-type" data-tsd-kind="Interface">LogEventData</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-signature-type" data-tsd-kind="Interface">Registration</a></div>
+					<aside class="tsd-sources">
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>RegistryUpdateLogData represents a struct for RegistryUpdate event data</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -210,10 +230,39 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getContract" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Contract</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Contract<span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Registry</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>getContract() get the latest registry contract</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Optional. Configuration overrides, such as from address, if any</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Registry</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A typechain registry factory</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="getDSNPRegistryUpdateEvents" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> getDSNPRegistry<wbr>Update<wbr>Events</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">getDSNPRegistry<wbr>Update<wbr>Events<span class="tsd-signature-symbol">(</span>filter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-signature-type" data-tsd-kind="Interface">Registration</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;handle&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-signature-type" data-tsd-kind="Interface">Registration</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">getDSNPRegistry<wbr>Update<wbr>Events<span class="tsd-signature-symbol">(</span>filter<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_contracts_registry.RegistryUpdateFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RegistryUpdateFilterOptions</a>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_config_config.Config.html" class="tsd-signature-type" data-tsd-kind="Interface">Config</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="core_contracts_registry.html#RegistryUpdateLogData" class="tsd-signature-type" data-tsd-kind="Type alias">RegistryUpdateLogData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -237,7 +286,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>filter: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-signature-type" data-tsd-kind="Interface">Registration</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">&quot;handle&quot;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>filter: <a href="../interfaces/core_contracts_registry.RegistryUpdateFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RegistryUpdateFilterOptions</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>By dsnpUserURI or Contract Address</p>
 									</div>
@@ -249,7 +298,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-signature-type" data-tsd-kind="Interface">Registration</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="core_contracts_registry.html#RegistryUpdateLogData" class="tsd-signature-type" data-tsd-kind="Type alias">RegistryUpdateLogData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>An array of all the matching events</p>
 						</li>
 					</ul>
@@ -501,14 +550,23 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/core_contracts_registry.Registration.html" class="tsd-kind-icon">Registration</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/core_contracts_registry.RegistryUpdateFilterOptions.html" class="tsd-kind-icon">Registry<wbr>Update<wbr>Filter<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="core_contracts_registry.html#Handle" class="tsd-kind-icon">Handle</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="core_contracts_registry.html#RegistryUpdateLogData" class="tsd-kind-icon">Registry<wbr>Update<wbr>Log<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_contracts_registry.html#changeAddress" class="tsd-kind-icon">change<wbr>Address</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_contracts_registry.html#changeHandle" class="tsd-kind-icon">change<wbr>Handle</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_contracts_registry.html#getContract" class="tsd-kind-icon">get<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_contracts_registry.html#getDSNPRegistryUpdateEvents" class="tsd-kind-icon">getDSNPRegistry<wbr>Update<wbr>Events</a>
