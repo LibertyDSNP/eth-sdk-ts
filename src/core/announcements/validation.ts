@@ -2,6 +2,7 @@ import { ConfigOpts } from "../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
+import { AnnouncementError } from "./errors";
 import {
   Announcement,
   DSNPGraphChangeType,
@@ -66,11 +67,11 @@ export const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
  * @returns True if the object is a TombstoneAnnouncement, otherwise false
  */
 export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncement => {
-  if (!isRecord(obj)) return false;
-  if (obj["announcementType"] != AnnouncementType.Tombstone) return false;
-  if (!isDSNPUserId(obj["fromId"])) return false;
-  if (!isNumber(obj["createdAt"])) return false;
-  if (!isAnnouncementType(obj["targetAnnouncementType"])) return false;
+  if (!isRecord(obj)) throw new AnnouncementError("Announcement is not an object");
+  if (obj["announcementType"] != AnnouncementType.Tombstone) throw new AnnouncementError("Announcement is not tombstone");
+  if (!isDSNPUserId(obj["fromId"])) throw new AnnouncementError("Announcement has invalid fromId");
+  if (!isNumber(obj["createdAt"])) throw new AnnouncementError("Announcement has invalid createdAt");
+  if (!isAnnouncementType(obj["targetAnnouncementType"])) throw new AnnouncementError("Announcement has invalid target type");
   if (
     !(
       obj["targetAnnouncementType"] === AnnouncementType.Broadcast ||
@@ -78,8 +79,8 @@ export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncem
       obj["targetAnnouncementType"] === AnnouncementType.Reaction
     )
   )
-    return false;
-  if (!isValidSignature(obj["targetSignature"])) return false;
+    throw new AnnouncementError("Announcement has invalid target type");
+  if (!isValidSignature(obj["targetSignature"])) throw new AnnouncementError("Announcement has invalid target signature");
 
   return true;
 };
