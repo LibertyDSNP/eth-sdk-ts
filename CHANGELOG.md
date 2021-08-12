@@ -1,7 +1,9 @@
 # Changelog
 
 ## Unreleased
-Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum version 
+- Reworked ActivityContent validations to log or throw informative errors when an ActvityContent is invalid. 
+- Fixed a bug in DURATION_REGEX.
+- Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum version 
 
 ## [2.0.2] - 2021-08-11
 ### Added

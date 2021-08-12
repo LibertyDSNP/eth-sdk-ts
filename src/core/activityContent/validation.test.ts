@@ -1,7 +1,7 @@
 import { ActivityContentAttachment, ActivityContentNote, ActivityContentProfile } from "./factories";
 import {
-  requireActivityContentNoteType,
-  requireActivityContentProfileType,
+  requireIsActivityContentNoteType,
+  requireIsActivityContentProfileType,
   requireValidActivityContentNote,
   requireValidActivityContentProfile,
   requireGetSupportedContentAttachments,
@@ -40,7 +40,7 @@ describe("activity content validations", () => {
             ],
           },
         ],
-        "Video attachment with multiple urls but only one has a valid hash algorithm": [
+        "Video attachment with multiple hashs but only one is a valid hash algorithm": [
           {
             type: "Video",
             name: "My video",
@@ -230,7 +230,7 @@ describe("activity content validations", () => {
       });
     });
     describe("when there are multiple attachments", () => {
-      it("with a single invalid attachment url, throws expected error", () => {
+      it("with a single invalid Image attachment url, throws expected error", () => {
         const missingMediaType = [
           {
             type: "Image",
@@ -253,7 +253,7 @@ describe("activity content validations", () => {
         );
       });
 
-      it("with one attachment that has multiple urls where only one is valid, returns the attachment", () => {
+      it("with one Image attachment that has multiple urls where only one is valid, returns the attachment", () => {
         const multipleUrlsAttachment = [
           {
             type: "Image",
@@ -297,7 +297,7 @@ describe("activity content validations", () => {
         expect(requireGetSupportedContentAttachments(multipleUrlsAttachment)).toStrictEqual(multipleUrlsAttachment);
       });
 
-      it("with multiple attachments but only one is usable/valid, returns the valid one", () => {
+      it("with multiple Image attachments but only one is usable/valid, returns the valid one", () => {
         const validAttachment = {
           type: "Image",
           url: [
@@ -330,7 +330,9 @@ describe("activity content validations", () => {
           ],
         };
 
-        expect(requireGetSupportedContentAttachments([validAttachment, invalidAttachment])).toHaveLength(1);
+        expect(requireGetSupportedContentAttachments([validAttachment, invalidAttachment])).toStrictEqual([
+          validAttachment,
+        ]);
       });
 
       it("with multiple link attachments and one is invalid, returns the valid one", () => {
@@ -557,7 +559,7 @@ describe("activity content validations", () => {
 
       for (const key in activityContentNotes) {
         it(`returns true for ${key}`, () => {
-          expect(() => requireActivityContentNoteType(activityContentNotes[key])).not.toThrow();
+          expect(() => requireIsActivityContentNoteType(activityContentNotes[key])).not.toThrow();
         });
       }
     });
@@ -583,9 +585,18 @@ describe("activity content validations", () => {
             location: "My house",
           },
         },
+        {
+          name: "a valid profile object",
+          expErr: "invalid ActivityContentNote type",
+          testObject: {
+            "@context": "https://www.w3.org/ns/activitystreams",
+            type: "Profile",
+            name: "🌹🚗",
+          },
+        },
       ].forEach((testCase) => {
         it(`${testCase.name} throws correct error`, () => {
-          expect(() => requireActivityContentNoteType(testCase.testObject)).toThrowError(
+          expect(() => requireIsActivityContentNoteType(testCase.testObject)).toThrowError(
             "Invalid ActivityContent: " + testCase.expErr
           );
         });
@@ -629,7 +640,7 @@ describe("activity content validations", () => {
 
       for (const key in activityContentProfiles) {
         it(`returns true for ${key}`, () => {
-          expect(requireActivityContentProfileType(activityContentProfiles[key])).toEqual(true);
+          expect(requireIsActivityContentProfileType(activityContentProfiles[key])).toEqual(true);
         });
       }
     });
@@ -748,9 +759,19 @@ describe("activity content validations", () => {
             icon: "http://placekitten.com/700/400",
           },
         },
+        {
+          name: "a valid note type",
+          expErr: "invalid ActivityContentProfile type",
+          testObject: {
+            "@context": "https://www.w3.org/ns/activitystreams",
+            type: "Note",
+            content: "Hello world!",
+            mediaType: "text/plain",
+          },
+        },
       ].forEach((testCase) => {
         it(`throws error for ${testCase.name}`, () => {
-          expect(() => requireActivityContentProfileType(testCase.testObject)).toThrowError(
+          expect(() => requireIsActivityContentProfileType(testCase.testObject)).toThrowError(
             "DSNPError: Invalid ActivityContent: " + testCase.expErr
           );
         });
