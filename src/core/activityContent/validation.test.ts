@@ -1,7 +1,7 @@
 import { ActivityContentAttachment, ActivityContentNote, ActivityContentProfile } from "./factories";
 import {
   requireActivityContentNoteType,
-  requireIsActivityContentProfileType,
+  requireActivityContentProfileType,
   requireValidActivityContentNote,
   requireValidActivityContentProfile,
   requireGetSupportedContentAttachments,
@@ -91,7 +91,7 @@ describe("activity content validations", () => {
       };
       for (const tc in testCases) {
         it(`returns the attachment ${tc}`, () => {
-          expect(requireGetSupportedContentAttachments(testCases[tc])).toEqual(testCases[tc]);
+          expect(requireGetSupportedContentAttachments(testCases[tc])).toStrictEqual(testCases[tc]);
         });
       }
     });
@@ -224,7 +224,7 @@ describe("activity content validations", () => {
           ],
         },
       ].forEach((testCase) => {
-        it(`${testCase.name} throws error`, () => {
+        it(`${testCase.name} throws expected error`, () => {
           expect(() => requireGetSupportedContentAttachments(testCase.attachment)).toThrowError(testCase.expErr);
         });
       });
@@ -254,7 +254,7 @@ describe("activity content validations", () => {
       });
 
       it("with one attachment that has multiple urls where only one is valid, returns the attachment", () => {
-        const multipleUrls = [
+        const multipleUrlsAttachment = [
           {
             type: "Image",
             url: [
@@ -294,7 +294,7 @@ describe("activity content validations", () => {
             ],
           },
         ];
-        expect(requireGetSupportedContentAttachments(multipleUrls)).toHaveLength(1);
+        expect(requireGetSupportedContentAttachments(multipleUrlsAttachment)).toStrictEqual(multipleUrlsAttachment);
       });
 
       it("with multiple attachments but only one is usable/valid, returns the valid one", () => {
@@ -629,7 +629,7 @@ describe("activity content validations", () => {
 
       for (const key in activityContentProfiles) {
         it(`returns true for ${key}`, () => {
-          expect(requireIsActivityContentProfileType(activityContentProfiles[key])).toEqual(true);
+          expect(requireActivityContentProfileType(activityContentProfiles[key])).toEqual(true);
         });
       }
     });
@@ -750,7 +750,7 @@ describe("activity content validations", () => {
         },
       ].forEach((testCase) => {
         it(`throws error for ${testCase.name}`, () => {
-          expect(() => requireIsActivityContentProfileType(testCase.testObject)).toThrowError(
+          expect(() => requireActivityContentProfileType(testCase.testObject)).toThrowError(
             "DSNPError: Invalid ActivityContent: " + testCase.expErr
           );
         });

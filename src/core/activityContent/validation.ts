@@ -45,6 +45,53 @@ const SUPPORTED_VIDEO_MEDIA_TYPES = ["video/mpeg", "video/ogg", "video/webm", "v
 const InvalidRecordMessage = (extra?: string): string => {
   return `${extra || "object"} is not a record type`;
 };
+const requireIsString = (obj: unknown, name: string): string => {
+  if (!isString(obj)) throw new InvalidActivityContentError(`${name} is not a string`);
+  return obj as string;
+};
+
+const requireIsArray = (obj: unknown, name: string): Array<unknown> => {
+  if (!Array.isArray(obj)) throw new InvalidActivityContentError(`${name} is not an Array`);
+  return obj as Array<unknown>;
+};
+
+const isValidHrefField = (obj: string): boolean => obj.match(HREF_REGEX) !== null;
+
+const isValidPublishedField = (obj: string): boolean => obj.match(ISO8601_REGEX) !== null;
+
+const isValidDurationField = (obj: string): boolean => obj.match(DURATION_REGEX) !== null;
+
+const hasAtLeastOneSupportedAudioMediaType = (obj: Array<ActivityContentAudioLink>): boolean => {
+  for (const audioLink of obj) {
+    if (SUPPORTED_AUDIO_MEDIA_TYPES.includes(audioLink["mediaType"])) return true;
+  }
+
+  return false;
+};
+
+const hasAtLeastOneSupportedImageMediaType = (obj: Array<ActivityContentImageLink>): boolean => {
+  for (const imageLink of obj) {
+    if (SUPPORTED_IMAGE_MEDIA_TYPES.includes(imageLink["mediaType"])) return true;
+  }
+
+  return false;
+};
+
+const hasAtLeastOneSupportedVideoMediaType = (obj: Array<ActivityContentVideoLink>): boolean => {
+  for (const videoLink of obj) {
+    if (SUPPORTED_VIDEO_MEDIA_TYPES.includes(videoLink["mediaType"])) return true;
+  }
+
+  return false;
+};
+
+const hasAtLeastOneSupportedHashAlgorithm = (obj: Array<ActivityContentHash>): boolean => {
+  for (const hash of obj) {
+    if (hash["algorithm"] === "keccak256" && isString(hash["value"]) && hash["value"].match(HASH_REGEX)) return true;
+  }
+
+  return false;
+};
 
 const getActivityContentAttachment = (obj: unknown): ActivityContentAttachment | undefined => {
   try {
@@ -53,6 +100,17 @@ const getActivityContentAttachment = (obj: unknown): ActivityContentAttachment |
     console.error(e.toString());
     return undefined;
   }
+};
+
+const requireValidDimensions = (obj: Record<string, unknown>, name?: string): boolean => {
+  if (obj["height"] && !isNumber(obj["height"])) throw new InvalidActivityContentError(`${name} height is invalid`);
+  if (obj["width"] && !isNumber(obj["width"])) throw new InvalidActivityContentError(`${name} width is invalid`);
+  return true;
+};
+
+const requireValidDuration = (obj: Record<string, unknown>, contentType: string) => {
+  const duration = requireIsString(obj["duration"], `${contentType} duration`);
+  if (!isValidDurationField(duration)) throw new InvalidActivityContentError(`${contentType} duration is invalid`);
 };
 
 /**
@@ -90,12 +148,6 @@ const requireIsMediaContentLink = (obj: Record<string, unknown>, name: string): 
       "ActivityContent hash algorithms must contain at least one of: " + SUPPORTED_ALGORITHMS.join(",")
     );
 
-  return true;
-};
-
-const requireValidDimensions = (obj: Record<string, unknown>, name?: string): boolean => {
-  if (obj["height"] && !isNumber(obj["height"])) throw new InvalidActivityContentError(`${name} height is invalid`);
-  if (obj["width"] && !isNumber(obj["width"])) throw new InvalidActivityContentError(`${name} width is invalid`);
   return true;
 };
 
@@ -178,125 +230,73 @@ const requireIsActivityContentMention = (obj: unknown): obj is ActivityContentMe
 };
 
 /**
- * requireActivityContentAudio converts a validated unknown object type to an ActivityContentAudio
+ * requireActivityContentAudio validates then converts an unknown object type to an ActivityContentAudio
  * in a type safe way.  It throws an error if the object is not valid.
  *
  * @param obj - the object to convert
  */
 const requireActivityContentAudio = (obj: unknown): ActivityContentAudio => {
-  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentAudio")); // this check is required for type checking to work
-  if (obj["type"] !== "Audio") throw new InvalidActivityContentError('type is not "Audio"');
+  const objectName = "ActivityContentAudio";
+
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage(objectName)); // this check is required for type checking to work
+  if (obj["name"]) requireIsString(obj["name"], objectName + " name");
+  if (obj["duration"]) requireValidDuration(obj, objectName);
+
+  if (obj["type"] !== "Audio") throw new InvalidActivityContentError(`${objectName} type is not "Audio"`);
 
   if (!isArrayOfType(obj["url"], requireIsActivityContentAudioLink))
-    throw new InvalidActivityContentError("invalid ActivityContentAudioLink");
+    throw new InvalidActivityContentError(`invalid ${objectName}Link`);
 
   if (!hasAtLeastOneSupportedAudioMediaType(obj["url"]))
-    throw new InvalidActivityContentError("ActivityContentAudio has no supported media types");
-
-  if (obj["name"]) requireIsString(obj["name"], "ActivityContentAudio name");
-
-  if (obj["duration"]) {
-    const duration = requireIsString(obj["duration"], "ActivityContentAudio duration");
-    if (!isValidDurationField(duration))
-      throw new InvalidActivityContentError("ActivityContentAudio duration is invalid");
-  }
+    throw new InvalidActivityContentError(objectName + " has no supported media types");
 
   return { type: "Audio", url: [], ...obj };
 };
 
 /**
- * requireActivityContentImage converts a validated unknown object type to an ActivityContentImage
+ * requireActivityContentImage validates then converts an unknown object type to an ActivityContentImage
  * in a type safe way. It throws an error if the object is not valid.
  *
  * @param obj - the object to convert
  */
 const requireActivityContentImage = (obj: unknown): ActivityContentImage => {
-  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentImage")); // this check is required for type checking to work
-  if (obj["type"] !== "Image") throw new InvalidActivityContentError('"type" is not "Image"');
+  const objectName = "ActivityContentImage";
+
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage(objectName)); // this check is required for type checking to work
+  if (obj["name"]) requireIsString(obj["name"], objectName + " name");
+
+  if (obj["type"] !== "Image") throw new InvalidActivityContentError(`${objectName} type is not "Image"`);
 
   if (!isArrayOfType(obj["url"], requireIsActivityContentImageLink))
-    throw new InvalidActivityContentError("invalid ActivityContentImageLink");
+    throw new InvalidActivityContentError(`invalid ${objectName}Link`);
+
   if (!hasAtLeastOneSupportedImageMediaType(obj["url"]))
-    throw new InvalidActivityContentError("ActivityContentImage has no supported media types");
+    throw new InvalidActivityContentError(`${objectName} has no supported media types`);
 
-  if (obj["name"]) requireIsString(obj["name"], "ActivityContentImage name");
-
-  // const content: ActivityContentImage = { type: "Image", url: [], ...obj };
   return { type: "Image", url: [], ...obj };
 };
 
 /**
- * requireActivityContentVideo converts a validated unknown object type to an ActivityContentVideo
+ * requireActivityContentVideo validates then converts an unknown object type to an ActivityContentVideo
  * in a type safe way.  It throws an error if the object is not valid.
  *
  * @param obj - the object to convert
  */
 const requireActivityContentVideo = (obj: unknown): ActivityContentVideo => {
-  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("")); // this check is required for type checking to work
+  const objectName = "ActivityContentVideo";
+  if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage(objectName)); // this check is required for type checking to work
+  if (obj["name"]) requireIsString(obj["name"], objectName + " name");
+  if (obj["duration"]) requireValidDuration(obj, objectName);
+
   if (obj["type"] !== "Video") throw new InvalidActivityContentError("type is not 'Video'");
 
   if (!isArrayOfType(obj["url"], requireIsActivityContentVideoLink))
-    throw new InvalidActivityContentError("invalid ActivityContentVideoLink");
+    throw new InvalidActivityContentError(`invalid ${objectName}Link`);
 
   if (!hasAtLeastOneSupportedVideoMediaType(obj["url"]))
-    throw new InvalidActivityContentError("ActivityContentVideo has no supported media types");
-
-  if (obj["name"]) requireIsString(obj["name"], "ActivityContentVideo name");
-  if (obj["duration"]) {
-    const duration = requireIsString(obj["duration"], "ActivityContentVideo duration");
-    if (!isValidDurationField(duration))
-      throw new InvalidActivityContentError("ActivityContentVideo duration is invalid");
-  }
+    throw new InvalidActivityContentError(`${objectName} has no supported media types`);
 
   return { type: "Video", url: [], ...obj };
-};
-
-const requireIsString = (obj: unknown, name: string): string => {
-  if (!isString(obj)) throw new InvalidActivityContentError(`${name} is not a string`);
-  return obj as string;
-};
-
-const requireIsArray = (obj: unknown, name: string): Array<unknown> => {
-  if (!Array.isArray(obj)) throw new InvalidActivityContentError(`${name} is not an Array`);
-  return obj as Array<unknown>;
-};
-
-const isValidHrefField = (obj: string): boolean => obj.match(HREF_REGEX) !== null;
-
-const isValidPublishedField = (obj: string): boolean => obj.match(ISO8601_REGEX) !== null;
-
-const isValidDurationField = (obj: string): boolean => obj.match(DURATION_REGEX) !== null;
-
-const hasAtLeastOneSupportedAudioMediaType = (obj: Array<ActivityContentAudioLink>): boolean => {
-  for (const audioLink of obj) {
-    if (SUPPORTED_AUDIO_MEDIA_TYPES.includes(audioLink["mediaType"])) return true;
-  }
-
-  return false;
-};
-
-const hasAtLeastOneSupportedImageMediaType = (obj: Array<ActivityContentImageLink>): boolean => {
-  for (const imageLink of obj) {
-    if (SUPPORTED_IMAGE_MEDIA_TYPES.includes(imageLink["mediaType"])) return true;
-  }
-
-  return false;
-};
-
-const hasAtLeastOneSupportedVideoMediaType = (obj: Array<ActivityContentVideoLink>): boolean => {
-  for (const videoLink of obj) {
-    if (SUPPORTED_VIDEO_MEDIA_TYPES.includes(videoLink["mediaType"])) return true;
-  }
-
-  return false;
-};
-
-const hasAtLeastOneSupportedHashAlgorithm = (obj: Array<ActivityContentHash>): boolean => {
-  for (const hash of obj) {
-    if (hash["algorithm"] === "keccak256" && isString(hash["value"]) && hash["value"].match(HASH_REGEX)) return true;
-  }
-
-  return false;
 };
 
 const requireActivityContentBaseType = (obj: unknown, typeName: string): boolean => {
@@ -342,7 +342,7 @@ export const requireActivityContentNoteType = (obj: unknown): obj is ActivityCon
  * @param obj - The object to check
  * @returns A boolean indicating whether or not the object is an ActivityContentProfile
  */
-export const requireIsActivityContentProfileType = (obj: unknown): obj is ActivityContentProfile => {
+export const requireActivityContentProfileType = (obj: unknown): obj is ActivityContentProfile => {
   if (!isRecord(obj)) throw new InvalidActivityContentError(InvalidRecordMessage("ActivityContentProfile"));
   requireActivityContentBaseType(obj, "Profile");
   if (obj["summary"]) requireIsString(obj["summary"], "ActivityContentProfile summary");
@@ -411,7 +411,7 @@ export const requireValidActivityContentNote = (obj: unknown): boolean => {
  * @returns true if valid, throws Error if invalid.
  */
 export const requireValidActivityContentProfile = (obj: unknown): boolean => {
-  if (requireIsActivityContentProfileType(obj)) {
+  if (requireActivityContentProfileType(obj)) {
     if (obj["tag"] && !isArrayOfType(obj["tag"], requireIsActivityContentTag)) requireIsActivityContentTag(obj["tag"]);
 
     if (obj["published"] && !isValidPublishedField(obj["published"]))
