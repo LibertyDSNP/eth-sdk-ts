@@ -2,7 +2,7 @@ import { ConfigOpts } from "../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
-import { AnnouncementError } from "./errors";
+import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
 import {
   Announcement,
   DSNPGraphChangeType,
@@ -68,10 +68,12 @@ export const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
  */
 export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncement => {
   if (!isRecord(obj)) throw new AnnouncementError("Announcement is not an object");
-  if (obj["announcementType"] != AnnouncementType.Tombstone) throw new AnnouncementError("Announcement is not tombstone");
+  if (obj["announcementType"] != AnnouncementType.Tombstone)
+    throw new AnnouncementError("Announcement is not tombstone");
   if (!isDSNPUserId(obj["fromId"])) throw new AnnouncementError("Announcement has invalid fromId");
   if (!isNumber(obj["createdAt"])) throw new AnnouncementError("Announcement has invalid createdAt");
-  if (!isAnnouncementType(obj["targetAnnouncementType"])) throw new AnnouncementError("Announcement has invalid target type");
+  if (!isAnnouncementType(obj["targetAnnouncementType"]))
+    throw new AnnouncementError("Announcement has invalid targetAnnouncementType");
   if (
     !(
       obj["targetAnnouncementType"] === AnnouncementType.Broadcast ||
@@ -79,8 +81,9 @@ export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncem
       obj["targetAnnouncementType"] === AnnouncementType.Reaction
     )
   )
-    throw new AnnouncementError("Announcement has invalid target type");
-  if (!isValidSignature(obj["targetSignature"])) throw new AnnouncementError("Announcement has invalid target signature");
+    throw new InvalidTombstoneAnnouncementTypeError(obj["targetAnnouncementType"]);
+  if (!isValidSignature(obj["targetSignature"]))
+    throw new AnnouncementError("Announcement has invalid target signature");
 
   return true;
 };
