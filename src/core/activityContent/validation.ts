@@ -28,7 +28,7 @@ import { InvalidActivityContentError } from "./errors";
  */
 const ISO8601_REGEX = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d{1,})?(Z|[+-][01][0-9]:[0-5][0-9])?$/;
 const HREF_REGEX = /^https?:\/\/.+/;
-const DURATION_REGEX = /^-?P[0-9]+Y?([0-9]+M)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.[0-9]+)?S)?)?$/;
+const DURATION_REGEX = /^-?P([0-9]+Y)?([0-9]+M)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.[0-9]+)?S)?)?$/;
 const HASH_REGEX = /^0x[0-9A-Fa-f]{64}$/;
 const SUPPORTED_ALGORITHMS = ["keccak256"];
 const SUPPORTED_AUDIO_MEDIA_TYPES = ["audio/mp3", "audio/ogg", "audio/webm"];
@@ -383,7 +383,7 @@ export const requireGetSupportedContentAttachments = (obj: Array<unknown>): Arra
  * @param obj - The object to check
  * @returns true if valid, throws Error if invalid.
  */
-export const requireValidActivityContentNote = (obj: unknown): void => {
+export const requireValidActivityContentNote = (obj: unknown): boolean => {
   if (requireActivityContentNoteType(obj)) {
     if (obj["tag"]) requireIsActivityContentTag(obj["tag"]);
 
@@ -397,6 +397,7 @@ export const requireValidActivityContentNote = (obj: unknown): void => {
   } else {
     throw new InvalidActivityContentError("ActivityContentNote is invalid for an unknown reason");
   }
+  return true;
 };
 
 /**
@@ -407,9 +408,9 @@ export const requireValidActivityContentNote = (obj: unknown): void => {
  * hashes are correct.
  *
  * @param obj - The object to check
- * @returns A boolean indicating whether or not the object is a valid ActivityContentProfile
+ * @returns true if valid, throws Error if invalid.
  */
-export const requireValidActivityContentProfile = (obj: unknown): void => {
+export const requireValidActivityContentProfile = (obj: unknown): boolean => {
   if (requireIsActivityContentProfileType(obj)) {
     if (obj["tag"] && !isArrayOfType(obj["tag"], requireIsActivityContentTag)) requireIsActivityContentTag(obj["tag"]);
 
@@ -424,4 +425,5 @@ export const requireValidActivityContentProfile = (obj: unknown): void => {
   } else {
     throw new InvalidActivityContentError("ActivityContentProfile is invalid for an unknown reason");
   }
+  return true;
 };

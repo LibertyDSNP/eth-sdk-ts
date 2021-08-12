@@ -44,7 +44,7 @@ describe("activity content validations", () => {
           {
             type: "Video",
             name: "My video",
-            duration: "00:00:47",
+            duration: "PT1H26M39S",
             url: [
               {
                 type: "Link",
