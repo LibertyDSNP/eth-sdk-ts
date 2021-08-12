@@ -157,7 +157,7 @@ export const profile = async (
   contentObject: ActivityContentProfile,
   opts?: ConfigOpts
 ): Promise<SignedProfileAnnouncement> => {
-  if (!requireValidActivityContentProfile(contentObject)) throw new InvalidActivityContentError();
+  requireValidActivityContentProfile(contentObject);
   const content = serialize(contentObject);
 
   const currentFromURI = requireGetCurrentFromURI(opts);
