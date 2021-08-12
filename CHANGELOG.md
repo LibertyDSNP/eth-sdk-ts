@@ -23,6 +23,7 @@ Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum 
 
 ## [2.0.1] - 2021-08-04
 ### Changes
+- Reworked ActivityContent validations to log or throw informative errors when an ActvityContent is invalid. Fixed a bug in DURATION_REGEX.
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
 - Updated the Activity Content Published field validation regex to support fractional seconds
 - Updated @dsnp/contracts to v1.0.1

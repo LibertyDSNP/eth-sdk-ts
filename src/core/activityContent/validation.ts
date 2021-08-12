@@ -358,7 +358,7 @@ export const requireIsActivityContentProfileType = (obj: unknown): obj is Activi
  * If there are attachments but none of them are valid, it throws an error.
  *
  * @param obj - an array of unknown object types to check for validity
- * @returns an array of all valid attachments
+ * @returns an array of all valid ActivityContentAttachments
  */
 export const requireGetSupportedContentAttachments = (obj: Array<unknown>): Array<ActivityContentAttachment> => {
   if (!obj.length) return [];
