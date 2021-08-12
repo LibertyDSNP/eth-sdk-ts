@@ -5,7 +5,6 @@ import {
   serialize,
   ActivityContentNote,
   ActivityContentProfile,
-  InvalidActivityContentError,
 } from "./core/activityContent";
 import {
   createBroadcast,
