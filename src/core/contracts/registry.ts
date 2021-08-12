@@ -279,8 +279,8 @@ const getLatestRegistryUpdatesFor = async (identityAddress: HexString): Promise<
  * @returns A list of registrations that are associated to the address
  */
 export const getRegistrationsByWalletAddress = async (walletAddress: EthereumAddress): Promise<Registration[]> => {
-  const identityAddresses: EthereumAddress[] = await getDelegateIdentitiesFor(walletAddress);
-
+  const canonicalAddress = ethers.utils.getAddress(walletAddress);
+  const identityAddresses: EthereumAddress[] = await getDelegateIdentitiesFor(canonicalAddress);
   const registrations: Registration[][] = await Promise.all(
     identityAddresses.map((identityAddresses) => getRegistrationsByIdentityAddress(identityAddresses))
   );
