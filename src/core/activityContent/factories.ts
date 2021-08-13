@@ -6,7 +6,7 @@ interface ActivityContentBase {
   type: string;
   name?: string;
   published?: string;
-  location?: Array<ActivityContentLocation> | ActivityContentLocation;
+  location?: ActivityContentLocation;
   tag?: Array<ActivityContentTag> | ActivityContentTag;
 }
 

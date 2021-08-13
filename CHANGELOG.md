@@ -1,7 +1,18 @@
 # Changelog
 
 ## Unreleased
-Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum version 
+- Major rework of ActivityContent validations to log or throw informative errors when an ActvityContent is invalid, with a couple of other changes:
+  - An array of locations is no longer allowed; this will invalidate an attachment. 
+  - Attachments MUST pass a minimal type check before further processing. For example if even one of its Link url hashes is _malformed_, it fails validation.
+  - If an attachment passes a type check, but it fails to meet requirements for what is supported by DSNP, it also fails validation. HOWEVER, attachments can have multiple Link URLs; only one needs to be supported by DSNP to be considered a valid attachment. See code documentation for details.
+  - If there is more than one attachment, but at least one is valid, it's considered a valid ActivityContent.
+  - New exported function for retrieving an array of valid attachments for an ActivityContent: `requireGetSupportedContentAttachments`  Please see code documentation for details. 
+  - Note on naming convention: anything beginning with 'require' will throw when failing the indicated action or validation. For example `requireGetSupportedContentAttachments` throws an error if there are attachments but none are valid.
+  - If you wish to simply check for type validity without having to catch errors, use `isActivityContentNoteType` and `isActivityContentProfileType` 
+- Fixed a bug in duration validation.
+- Reworked ActivityContent validations to log or throw informative errors when an ActivityContent is invalid. 
+- Fixed a bug in DURATION_REGEX.
+- Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum version 
 
 ## [2.0.2] - 2021-08-11
 ### Added
@@ -23,6 +34,7 @@ Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum 
 
 ## [2.0.1] - 2021-08-04
 ### Changes
+- Reworked ActivityContent validations to log or throw informative errors when an ActvityContent is invalid. Fixed a bug in DURATION_REGEX.
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
 - Updated the Activity Content Published field validation regex to support fractional seconds
 - Updated @dsnp/contracts to v1.0.1
