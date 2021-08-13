@@ -422,7 +422,7 @@ export const resolveDelegatesFor = async (
 
   const filteredDelegateLogData = lastLogForIdentityAddress.filter((delegate: DelegateLogData) => {
     return (
-      delegate.delegate == ethereumAddress &&
+      delegate.delegate.toLowerCase() == ethereumAddress.toLowerCase() &&
       (isDelegateAddLogData(delegate) || (isDelegateRemoveLogData(delegate) && !isRemoved(delegate)))
     );
   });
