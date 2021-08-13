@@ -1,3 +1,4 @@
+import { AnnouncementType } from "../announcements";
 import { publish, Publication, dsnpBatchFilter } from "./publisher";
 import { hash } from "../utilities";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -32,9 +33,16 @@ describe("#batch", () => {
     });
 
     it("can return the topics with a type filter", () => {
-      expect(dsnpBatchFilter(1).topics).toEqual([
+      expect(dsnpBatchFilter(AnnouncementType.GraphChange).topics).toEqual([
         "0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576",
         "0x0000000000000000000000000000000000000000000000000000000000000001",
+      ]);
+    });
+
+    it("can return the correct topics for Tombstones", () => {
+      expect(dsnpBatchFilter(AnnouncementType.Tombstone).topics).toEqual([
+        "0xe63a4904ccacc079f71e52aad2cf99c00a7d4963566562a94d7c07610f1df576",
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
       ]);
     });
   });
