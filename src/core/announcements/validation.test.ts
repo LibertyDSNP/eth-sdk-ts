@@ -3,7 +3,8 @@ import { setConfig } from "../../config";
 import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
-import { createFollowGraphChange } from "./factories";
+import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
+import { createFollowGraphChange, createTombstone, AnnouncementType } from "./factories";
 import { buildDSNPAnnouncementURI, DSNPUserId } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -76,6 +77,37 @@ describe("validation", () => {
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
+      });
+    });
+
+    describe("for TombstoneAnnouncement", () => {
+      it("returns true for valid tombstone announcements", async () => {
+        const announcement = createTombstone(
+          userId,
+          AnnouncementType.Broadcast,
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
+        );
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
+      });
+
+      it("throws for a tombstone announcements with an invalid target signature", async () => {
+        const announcement = createTombstone(userId, AnnouncementType.Broadcast, "0x0");
+        const signedAnnouncement = await sign(announcement);
+
+        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
+      });
+
+      it("throws for a tombstone announcements with an invalid target type", async () => {
+        const announcement = createTombstone(
+          userId,
+          AnnouncementType.GraphChange,
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
+        );
+        const signedAnnouncement = await sign(announcement);
+
+        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(InvalidTombstoneAnnouncementTypeError);
       });
     });
 

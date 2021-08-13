@@ -21,3 +21,16 @@ export class InvalidAnnouncementTypeError extends AnnouncementError {
     this.announcementType = announcementType;
   }
 }
+
+/**
+ * InvalidTombstoneAnnouncementTypeError indicates an invalid Announcement type
+ * included as a Tombstone target.
+ */
+export class InvalidTombstoneAnnouncementTypeError extends AnnouncementError {
+  announcementType: AnnouncementType;
+
+  constructor(announcementType: AnnouncementType) {
+    super(`Invalid Tombstone Target Type: ${announcementType}`);
+    this.announcementType = announcementType;
+  }
+}

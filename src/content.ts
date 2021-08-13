@@ -12,11 +12,15 @@ import {
   createProfile,
   createReaction,
   createReply,
+  createTombstone,
+  isValidAnnouncement,
   sign,
+  InvalidTombstoneAnnouncementTypeError,
   SignedBroadcastAnnouncement,
   SignedProfileAnnouncement,
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
+  SignedTombstoneAnnouncement,
 } from "./core/announcements";
 import { isDSNPAnnouncementURI, DSNPAnnouncementURI, InvalidAnnouncementUriError } from "./core/identifiers";
 import { hash } from "./core/utilities";
@@ -168,5 +172,37 @@ export const profile = async (
   const announcement = createProfile(currentFromURI, url.toString(), contentHash);
 
   const signedAnnouncement = await sign(announcement, opts);
+  return signedAnnouncement;
+};
+
+/**
+ * tombstone() creates a tombstone announcement for later publishing.
+ *
+ * @throws {@link MissingProviderConfigError}
+ * Thrown if the provider is not configured.
+ * @throws {@link MissingSignerConfigError}
+ * Thrown if the signer is not configured.
+ * @throws {@link MissingFromIdConfigError}
+ * Thrown if the from id is not configured.
+ * @throws {@link InvalidAnnouncementUriError}
+ * Thrown if the provided inReplyTo DSNP Message Id is invalid.
+ * @throws {@link InvalidTombstoneAnnouncementTypeError}
+ * Thrown if the target type provided for the tombstone is invalid.
+ * @param target - The DSNP Announcement to tombstone
+ * @param opts - Optional. Configuration overrides, such as from address, if any
+ * @returns A Signed Tombstone Announcement ready for inclusion in a batch
+ */
+export const tombstone = async (
+  target: SignedBroadcastAnnouncement | SignedReplyAnnouncement | SignedReactionAnnouncement,
+  opts?: ConfigOpts
+): Promise<SignedTombstoneAnnouncement> => {
+  const currentFromURI = requireGetCurrentFromURI(opts);
+
+  const announcement = createTombstone(currentFromURI, target.announcementType, target.signature);
+  const signedAnnouncement = await sign(announcement, opts);
+
+  if (!(await isValidAnnouncement(signedAnnouncement)))
+    throw new InvalidTombstoneAnnouncementTypeError(target.announcementType);
+
   return signedAnnouncement;
 };

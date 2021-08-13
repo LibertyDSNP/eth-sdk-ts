@@ -7,6 +7,9 @@
 - Ability to filter registry update events based on start and end block
 - Exported sdk.core.identifiers
 - Ability to subscribe to DSNPRegistryUpdate events
+- Added createTombstone factory to announcements module
+- Added isTombstoneAnnouncement validator to announcements module
+- Added tombstone porcelain method to top level exports
 
 ### Changes
 - Renamed BatchPublicationCallbackArgs -> BatchPublicationLogData
