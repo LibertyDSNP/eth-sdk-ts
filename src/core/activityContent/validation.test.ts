@@ -1,5 +1,7 @@
 import { ActivityContentAttachment, ActivityContentNote, ActivityContentProfile } from "./factories";
 import {
+  isActivityContentProfileType,
+  isActivityContentNoteType,
   requireIsActivityContentNoteType,
   requireIsActivityContentProfileType,
   requireValidActivityContentNote,
@@ -8,6 +10,75 @@ import {
 } from "./validation";
 
 describe("activity content validations", () => {
+  describe("isActivityContentProfileType", () => {
+    it("returns true for a valid Profile", () => {
+      const validProfile = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "jaboukie",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(isActivityContentProfileType(validProfile)).toEqual(true);
+    });
+    it("returns false for an invalid Profile", () => {
+      const invalidProfile = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Profile",
+        name: "jaboukie",
+        attachment: [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: "this should be an array",
+              },
+            ],
+          },
+        ],
+      };
+      expect(isActivityContentNoteType(invalidProfile)).toEqual(false);
+    });
+  });
+  describe("isActivityContentNoteType", () => {
+    it("returns true for a valid Note", () => {
+      const validNote = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "Hello world!",
+        mediaType: "text/plain",
+      };
+      expect(isActivityContentNoteType(validNote)).toEqual(true);
+    });
+    it("returns false for an invalid Note", () => {
+      const invalidNote = {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        type: "Note",
+        content: "I am invalid because I am missing a mediaType",
+      };
+      expect(isActivityContentNoteType(invalidNote)).toEqual(false);
+    });
+  });
   describe("requireGetSupportedContentAttachments", () => {
     describe("when there is one valid attachment", () => {
       const testCases: Record<string, Array<ActivityContentAttachment>> = {
@@ -40,7 +111,7 @@ describe("activity content validations", () => {
             ],
           },
         ],
-        "Video attachment with multiple hashs but only one is a valid hash algorithm": [
+        "Video attachment with multiple hashes but only one is a valid hash algorithm": [
           {
             type: "Video",
             name: "My video",

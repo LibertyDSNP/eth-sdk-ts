@@ -8,6 +8,7 @@
   - If there is more than one attachment, but at least one is valid, it's considered a valid ActivityContent.
   - New exported function for retrieving an array of valid attachments for an ActivityContent: `requireGetSupportedContentAttachments`  Please see code documentation for details. 
   - Note on naming convention: anything beginning with 'require' will throw when failing the indicated action or validation. For example `requireGetSupportedContentAttachments` throws an error if there are attachments but none are valid.
+  - If you wish to simply check for type validity without having to catch errors, use `isActivityContentNoteType` and `isActivityContentProfileType` 
 - Fixed a bug in duration validation.
 - Reworked ActivityContent validations to log or throw informative errors when an ActvityContent is invalid. 
 - Fixed a bug in DURATION_REGEX.

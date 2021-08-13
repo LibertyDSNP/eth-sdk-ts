@@ -338,6 +338,24 @@ export const requireIsActivityContentNoteType = (obj: unknown): obj is ActivityC
 };
 
 /**
+ * isActivityContentNoteType is a non-throwing version of `requireIsActivityContentNoteType`
+ * Performs the same checks but catches InvalidActivityContentError and returns false instead.
+ *
+ * @param obj - The object to check
+ * @returns a boolean - indicating if the object is an ActivityContentNote
+ */
+export const isActivityContentNoteType = (obj: unknown): obj is ActivityContentNote => {
+  if (!isRecord(obj)) return false;
+  try {
+    requireIsActivityContentNoteType(obj);
+  } catch (e) {
+    if (e instanceof InvalidActivityContentError) return false;
+    throw e;
+  }
+  return true;
+};
+
+/**
  * requireIsActivityContentProfileType() is a type check function for
  * ActivityContentProfile objects. Note that this function only checks that the
  * given object meets the first-level type definition of an ActivityContentProfile. It
@@ -346,7 +364,7 @@ export const requireIsActivityContentNoteType = (obj: unknown): obj is ActivityC
  * image format.
  *
  * @param obj - The object to check
- * @returns A boolean indicating whether or not the object is an ActivityContentProfile
+ * @returns true if the object is an ActivityContentProfile,otherwise throws an Error
  * @throws InvalidActivityContentError if type checks fail.
  */
 export const requireIsActivityContentProfileType = (obj: unknown): obj is ActivityContentProfile => {
@@ -356,6 +374,24 @@ export const requireIsActivityContentProfileType = (obj: unknown): obj is Activi
   if (obj["icon"] && !isArrayOfType(obj["icon"], requireIsActivityContentImageLink))
     throw new InvalidActivityContentError("ActivityContentProfile icon is invalid");
   if (obj["attachment"]) requireToArray(obj["attachment"], "ActivityContentProfile attachment");
+  return true;
+};
+
+/**
+ * isActivityContentProfileType is a non-throwing version of `requireIsActivityContentProfileType`.
+ * Performs the same checks but catches InvalidActivityContentError and returns false instead.
+ *
+ * @param obj - The object to check
+ * @returns a boolean - indicating if the object is an ActivityContentProfile
+ */
+export const isActivityContentProfileType = (obj: unknown): obj is ActivityContentProfile => {
+  if (!isRecord(obj)) return false;
+  try {
+    requireIsActivityContentProfileType(obj);
+  } catch (e) {
+    if (e instanceof InvalidActivityContentError) return false;
+    throw e;
+  }
   return true;
 };
 
