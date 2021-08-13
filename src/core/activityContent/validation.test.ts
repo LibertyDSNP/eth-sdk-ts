@@ -88,6 +88,36 @@ describe("activity content validations", () => {
             ],
           },
         ],
+        "an Image attachment with multiple URLs, and only one is valid (but all pass the type checks)": [
+          {
+            type: "Image",
+            url: [
+              {
+                type: "Link",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "badMediaType",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+              {
+                type: "Link",
+                name: "this is fine",
+                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                mediaType: "image/jpg",
+                hash: [
+                  {
+                    algorithm: "keccak256",
+                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       };
       for (const tc in testCases) {
         it(`returns the attachment ${tc}`, () => {
@@ -97,6 +127,41 @@ describe("activity content validations", () => {
     });
     describe("when there is one invalid attachment", () => {
       [
+        {
+          name: "an Video attachment with multiple URLs and one fails a type check (with a malformed hash)",
+          expErr: "DSNPError: Invalid ActivityContent: ActivityContentHash value is invalid",
+          attachment: [
+            {
+              name: "Multiple URLs with one having a malformed hash",
+              type: "Video",
+              duration: "PT3M2S",
+              url: [
+                {
+                  type: "Link",
+                  href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                  mediaType: "video/mpeg",
+                  hash: [
+                    {
+                      algorithm: "keccak256",
+                      value: "0xThis hash fails to match the regex",
+                    },
+                  ],
+                },
+                {
+                  type: "Link",
+                  href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                  mediaType: "video/webm",
+                  hash: [
+                    {
+                      algorithm: "keccak256",
+                      value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
         {
           name: "an audio attachment with a bad duration value",
           expErr: "ActivityContentAudio duration is invalid",
@@ -223,6 +288,37 @@ describe("activity content validations", () => {
             },
           ],
         },
+        {
+          name: "an Image attachment with only invalid URLs, throws on first encountered error",
+          expErr: "DSNPError: Invalid ActivityContent: ActivityContentImageLink mediaType is not a string",
+          attachment: [
+            {
+              type: "Image",
+              url: [
+                {
+                  type: "Link",
+                  href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                  hash: [
+                    {
+                      algorithm: "keccak256",
+                      value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
+                    },
+                  ],
+                },
+                {
+                  type: "Link",
+                  href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
+                  hash: [
+                    {
+                      algorithm: "keccak256",
+                      value: "0x12345",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ].forEach((testCase) => {
         it(`${testCase.name} throws expected error`, () => {
           expect(() => requireGetSupportedContentAttachments(testCase.attachment)).toThrowError(testCase.expErr);
@@ -230,74 +326,7 @@ describe("activity content validations", () => {
       });
     });
     describe("when there are multiple attachments", () => {
-      it("with a single invalid Image attachment url, throws expected error", () => {
-        const missingMediaType = [
-          {
-            type: "Image",
-            url: [
-              {
-                type: "Link",
-                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                hash: [
-                  {
-                    algorithm: "keccak256",
-                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
-                  },
-                ],
-              },
-            ],
-          },
-        ];
-        expect(() => requireGetSupportedContentAttachments(missingMediaType)).toThrowError(
-          "DSNPError: Invalid ActivityContent: ActivityContentImageLink mediaType is not a string"
-        );
-      });
-
-      it("with one Image attachment that has multiple urls where only one is valid, returns the attachment", () => {
-        const multipleUrlsAttachment = [
-          {
-            type: "Image",
-            url: [
-              {
-                type: "Link",
-                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/bar",
-                hash: [
-                  {
-                    algorithm: "keccak256",
-                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
-                  },
-                ],
-              },
-              {
-                type: "Link",
-                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/foo",
-                hash: [
-                  {
-                    algorithm: "keccak256",
-                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
-                  },
-                ],
-              },
-              {
-                type: "Link",
-                href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/jpg",
-                hash: [
-                  {
-                    algorithm: "keccak256",
-                    value: "0x90b3b09658ec527d679c2de983b5720f6e12670724f7e227e5c360a3510b4cb5",
-                  },
-                ],
-              },
-            ],
-          },
-        ];
-        expect(requireGetSupportedContentAttachments(multipleUrlsAttachment)).toStrictEqual(multipleUrlsAttachment);
-      });
-
-      it("with multiple Image attachments but only one is usable/valid, returns the valid one", () => {
+      it("with two Image attachments but only one is valid, returns the valid one", () => {
         const validAttachment = {
           type: "Image",
           url: [
@@ -335,7 +364,7 @@ describe("activity content validations", () => {
         ]);
       });
 
-      it("with multiple link attachments and one is invalid, returns the valid one", () => {
+      it("with two Link attachments where one is invalid, returns only the valid attachment", () => {
         const validAttachment = {
           type: "Link",
           href: "https://dsnp.org",
@@ -346,7 +375,7 @@ describe("activity content validations", () => {
         };
         expect(requireGetSupportedContentAttachments([validAttachment, invalidAttachment])).toHaveLength(1);
       });
-      it("with multiple attachments of different types", () => {
+      it("with multiple valid attachments of different types, returns all attachments", () => {
         const validImageAttachment = {
           type: "Image",
           url: [
