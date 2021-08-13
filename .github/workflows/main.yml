@@ -41,6 +41,12 @@ jobs:
         run: npm run lint
         working-directory: ./main
 
+      - name: Danger
+        run: npx danger ci --dangerfile ./dangerfile.ts
+        working-directory: ./main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Test
         run: npm run test
         working-directory: ./main
