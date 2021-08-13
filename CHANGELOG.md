@@ -17,6 +17,9 @@
 - sdk.core.contracts.publisher.dsnpBatchFilter is no longer async
 - Updated Ethers from 5.3.0 -> 5.4.4
 
+### Fixed
+- Fixed bug resulting in incorrect output from sdk.core.contracts.publisher.dsnpBatchFilter when passed Tombstone
+
 ## [2.0.1] - 2021-08-04
 ### Changes
 - Updated registry.resolveRegistration to support not found cases for nodes that do not return a failure reason.
