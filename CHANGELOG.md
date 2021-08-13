@@ -10,7 +10,7 @@
   - Note on naming convention: anything beginning with 'require' will throw when failing the indicated action or validation. For example `requireGetSupportedContentAttachments` throws an error if there are attachments but none are valid.
   - If you wish to simply check for type validity without having to catch errors, use `isActivityContentNoteType` and `isActivityContentProfileType` 
 - Fixed a bug in duration validation.
-- Reworked ActivityContent validations to log or throw informative errors when an ActvityContent is invalid. 
+- Reworked ActivityContent validations to log or throw informative errors when an ActivityContent is invalid. 
 - Fixed a bug in DURATION_REGEX.
 - Fix bug in `getRegistrationsByWalletAddress` by normalizing address to checksum version 
 

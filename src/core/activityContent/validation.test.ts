@@ -10,6 +10,14 @@ import {
 } from "./validation";
 
 describe("activity content validations", () => {
+  const consoleError = console.error;
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = consoleError;
+  });
   describe("isActivityContentProfileType", () => {
     it("returns true for a valid Profile", () => {
       const validProfile = {
