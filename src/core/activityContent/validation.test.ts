@@ -128,7 +128,7 @@ describe("activity content validations", () => {
     describe("when there is one invalid attachment", () => {
       [
         {
-          name: "an Video attachment with multiple URLs and one fails a type check (with a malformed hash)",
+          name: "a Video attachment with multiple URLs and one fails a type check (with a malformed hash)",
           expErr: "DSNPError: Invalid ActivityContent: ActivityContentHash value is invalid",
           attachment: [
             {
@@ -325,7 +325,44 @@ describe("activity content validations", () => {
         });
       });
     });
-    describe("when there are multiple attachments", () => {
+    describe("when there are multiple attachments, and one is invalid by failing type check", () => {
+      it("foo", () => {
+        const validAttachment = {
+          type: "Video",
+          url: [
+            {
+              type: "Link",
+              href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Big_Buck_Bunny_4K.webm",
+              mediaType: "video/webm",
+              hash: [
+                {
+                  algorithm: "keccak256",
+                  value: "0xf841950dfcedc968dbd63132da844b9f28faea3dbfd4cf326b3831b419a20e9a",
+                },
+              ],
+            },
+          ],
+        };
+        const typeCheckFailingAttachment = {
+          type: "Video",
+          url: [
+            {
+              type: "Link",
+              href: "https://upload.wikimedia.org/wikipedia/commons/c/c0/Happy_Rabbits_On_Farm_4K.webm",
+              mediaType: "video/webm",
+              hash: [
+                {
+                  algorithm: "keccak256",
+                  value: "0xdeadbeef",
+                },
+              ],
+            },
+          ],
+        };
+        expect(requireGetSupportedContentAttachments([validAttachment, typeCheckFailingAttachment])).toStrictEqual([
+          validAttachment,
+        ]);
+      });
       it("with two Image attachments but only one is valid, returns the valid one", () => {
         const validAttachment = {
           type: "Image",

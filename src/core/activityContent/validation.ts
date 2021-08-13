@@ -361,12 +361,24 @@ export const requireIsActivityContentProfileType = (obj: unknown): obj is Activi
 
 /**
  * requireGetSupportedContentAttachments iterates over the provided list and returns
- * the valid attachments. If the passed in obj is empty, returns an empty array.
- * If there are attachments but none of them are valid, it throws an error.
+ * the valid+supported attachments. If the passed in obj is empty, returns an empty array.
+ * If there are attachments but none of them are valid+supported, it throws an error.
+ * Attachments MUST first pass a type check to be considered valid at all.
  *
  * @param obj - an array of unknown object types to check for validity
  * @returns an array of all valid ActivityContentAttachments
- * @throws InvalidActivityContentError if there are no valid attachments.
+ * @throws InvalidActivityContentError if there are no valid attachments with
+ * supported Link attachments.
+ *
+ * Examples:
+ * 1. One Image attachment with one URL that points to a TIFF file throws an error.
+ * 2. One Image attachment with two URLs, one that is a TIFF and the other is JPG,
+ *    does not throw.
+ * 3. One Image attachment with two URLs, both are JPG, but one has a malformed
+ *    hash of 0xdeadbeef (it's too short), throws an error due to failing
+ *    the type check.
+ * 4. Two Image attachments, the one from #2 and the one from #3, does NOT throw and
+ *    returns just #2.
  */
 export const requireGetSupportedContentAttachments = (obj: Array<unknown>): Array<ActivityContentAttachment> => {
   if (!obj.length) return [];
