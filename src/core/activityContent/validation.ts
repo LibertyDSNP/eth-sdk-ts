@@ -214,7 +214,7 @@ const requireIsActivityContentLocation = (obj: unknown): obj is ActivityContentL
 
 const requireIsActivityContentTag = (obj: unknown): obj is ActivityContentTag => {
   if (!isRecord(obj)) throw new InvalidActivityContentError(invalidRecordMessage("ActivityContentTag"));
-  if (obj["type"] && obj["type"] === "Mention") {
+  if (obj["type"] === "Mention") {
     return requireIsActivityContentMention(obj);
   }
   return requireIsActivityContentHashtag(obj);
