@@ -13,6 +13,7 @@ import {
   createMention,
   createHash,
 } from "./factories";
+import { createFollowGraphChange, createUnfollowGraphChange } from "../announcements";
 
 describe("activityPub", () => {
   describe("createNote", () => {
@@ -36,6 +37,32 @@ describe("activityPub", () => {
         "@context": "https://www.w3.org/ns/activitystreams",
         type: "Profile",
         name: "🌹🚗",
+      });
+    });
+  });
+
+  describe("GraphChangeAnnouncement", () => {
+    it("createFollowGraphChange", () => {
+      const announcement = createFollowGraphChange("dsnp://0x123", "dsnp://0xabc");
+
+      expect(announcement).toMatchObject({
+        announcementType: 1,
+        changeType: 1,
+        createdAt: expect.any(Number),
+        fromId: "0x123",
+        objectId: "0xabc",
+      });
+    });
+
+    it("createUnfollowGraphChange", () => {
+      const announcement = createUnfollowGraphChange("dsnp://0x123", "dsnp://0xabc");
+
+      expect(announcement).toMatchObject({
+        announcementType: 1,
+        changeType: 0,
+        createdAt: expect.any(Number),
+        fromId: "0x123",
+        objectId: "0xabc",
       });
     });
   });

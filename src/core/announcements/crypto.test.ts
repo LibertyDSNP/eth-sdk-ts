@@ -19,13 +19,13 @@ describe("announcement crypto", () => {
       const signedAnnouncement = await sign(announcement);
 
       expect(signedAnnouncement.signature).toEqual(
-        "0xc3ff4a2a135615f03348dc2796fbecb3ecd68c325d0317a7b1a1f026f840f01915a608cf3ae2891b365b6ec0625a9b847b388fad4592fbbdbc36363eb50b40e91b"
+        "0x64cd1aaad7c54106c2ae58f3f5659f274e0dc212f1afc6975dbe4b5ae3b19bef414ca618014e10ea07f609aab3a40cffc89dd03e11f04a73f26aa6f1376464981b"
       );
     });
   });
 
   describe("#recoverPublicKey", () => {
-    const publicKey = "0x09A60F4A599d80e5dE935FE96c150eF24912D03f";
+    const publicKey = "0x307FBB8320C719B7A4Cd1F9215d8927C28066583";
 
     it("returns the correct public key for a valid signature", () => {
       const announcement = createBroadcast("1", "https://dsnp.org", "0x12345", 1627324121352);
@@ -57,5 +57,31 @@ describe("announcement crypto", () => {
     const signedAnnouncement = await sign(announcement);
 
     expect(recoverPublicKey(announcement, signedAnnouncement.signature)).toEqual(address);
+  });
+
+  it("can build the signature from the spec", async () => {
+    const specAnnouncement = {
+      announcementType: 1,
+      fromId: "0x12345",
+      contentHash: "0x67890",
+      url: "https://www.dsnp.org/",
+      createdAt: +new Date("2021-07-31T10:11:12"),
+    };
+
+    const privateKey = "0xd9d3b5afb7765ffd9f047fd0d1d9b47d4d538b6a56f1cf29dc160ab9c6d30aa3";
+    const signer = new ethers.Wallet(privateKey);
+
+    await setConfig({
+      signer,
+    });
+
+    const signedAnnouncement = await sign(specAnnouncement);
+
+    expect(signedAnnouncement.signature).toEqual(
+      "0xa34e5f6ba5f133cc1c8dfed613ad913f07dc5dff38c92278f9253c07ff43bd1d3f86a862db3db7223a2d2b530dd15cbdc450fb2394917f1f413f4a102822deca1c"
+    );
+    expect(recoverPublicKey(specAnnouncement, signedAnnouncement.signature)).toEqual(
+      "0x59DAD64610319200800D7A9b5259B7CbA937cc12"
+    );
   });
 });

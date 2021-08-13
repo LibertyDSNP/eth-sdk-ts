@@ -69,7 +69,7 @@ describe("handles", () => {
       expect(result).not.toBeNull();
       if (result === null) throw new Error();
       expect(result.contractAddr).toMatch(EthAddressRegex);
-      expect(result.dsnpUserURI).toEqual("dsnp://0x00000000000003e8");
+      expect(result.dsnpUserURI).toEqual("dsnp://0x3e8");
       expect(result.handle).toEqual("taken");
     });
 

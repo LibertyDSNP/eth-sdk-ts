@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
-
 import { isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
+import { serializeToHex } from "../announcements";
 
 /**
  * DSNPAnnouncementURI represents a DSNP Announcement Uri following the DSNP
@@ -18,7 +18,7 @@ export type DSNPAnnouncementURI = string;
  */
 export const isDSNPAnnouncementURI = (id: unknown): id is DSNPAnnouncementURI => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/0x[0-9A-F]{1,16}\/0x[0-9A-F]{64}$/i) !== null;
+  return id.match(/^dsnp:\/\/0x[1-9a-f][0-9a-f]{0,15}\/0x[1-9a-f][0-9a-f]{0,63}$/) !== null;
 };
 
 /**
@@ -43,7 +43,7 @@ export type DSNPUserURI = string;
  */
 export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
   if (!isString(id)) return false;
-  return id.match(/^0x[0-9A-F]{1,16}$/i) !== null;
+  return id.match(/^0x[1-9a-f][0-9a-f]{0,15}$/) !== null;
 };
 
 /**
@@ -54,7 +54,7 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
  */
 export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
   if (!isString(uri)) return false;
-  return uri.match(/^dsnp:\/\/0x[0-9A-F]{1,16}$/i) !== null;
+  return uri.match(/^dsnp:\/\/0x[1-9a-f][0-9a-f]{0,15}$/) !== null;
 };
 
 /**
@@ -64,7 +64,7 @@ export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
  * @param num - The number to convert
  * @returns The same number as a properly formatted DSNPUserId
  */
-export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => num.toHexString();
+export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => serializeToHex(num);
 
 /**
  * convertDSNPUserIdOrURIToBigNumber() convert a DSNP user id or URI to an
@@ -74,9 +74,7 @@ export const convertBigNumberToDSNPUserId = (num: BigNumber): DSNPUserId => num.
  * @returns A big number representation of the same id
  */
 export const convertDSNPUserIdOrURIToBigNumber = (userIdOrUri: DSNPUserId | DSNPUserURI): BigNumber => {
-  // Support DSNP User URI
-  const hex = userIdOrUri.replace("dsnp://", "");
-  return BigNumber.from(hex);
+  return BigNumber.from(serializeToHex(userIdOrUri));
 };
 
 /**
@@ -85,8 +83,9 @@ export const convertDSNPUserIdOrURIToBigNumber = (userIdOrUri: DSNPUserId | DSNP
  * @param userURI - The DSNPUserURI to convert
  * @returns The DSNPUserId of the user
  */
-export const convertDSNPUserURIToDSNPUserId = (userURI: DSNPUserURI): DSNPUserId =>
-  userURI.replace(/dsnp:\/\/0x0+/, "0x0");
+export const convertDSNPUserURIToDSNPUserId = (userURI: DSNPUserURI): DSNPUserId => {
+  return serializeToHex(userURI);
+};
 
 /**
  * convertBigNumberToDSNPUserURI() converts ethers' ridiculous BigNumber
@@ -96,11 +95,7 @@ export const convertDSNPUserURIToDSNPUserId = (userURI: DSNPUserURI): DSNPUserId
  * @returns The same number as a properly formatted DSNPUserURI
  */
 export const convertBigNumberToDSNPUserURI = (num: BigNumber): DSNPUserURI => {
-  const hex = num.toHexString().replace("0x", "");
-  const paddingLength = 16 - hex.length;
-  const padding = Array(paddingLength + 1).join("0");
-
-  return `dsnp://0x${padding}${hex}`;
+  return `dsnp://${serializeToHex(num)}`;
 };
 
 /**
@@ -115,9 +110,7 @@ export const buildDSNPAnnouncementURI = (
   userIdOrUri: DSNPUserId | DSNPUserURI,
   contentHash: HexString
 ): DSNPAnnouncementURI => {
-  const bigNumber = convertDSNPUserIdOrURIToBigNumber(userIdOrUri);
-  const userURI = convertBigNumberToDSNPUserURI(bigNumber);
-  return `${userURI}/${contentHash}`;
+  return `dsnp://${serializeToHex(userIdOrUri)}/${serializeToHex(contentHash)}`;
 };
 
 /**
