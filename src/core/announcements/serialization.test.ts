@@ -14,32 +14,32 @@ describe("serialization", () => {
       );
     });
 
-    it("can serialize the spec value", () => {
-      const message = {
-        announcementType: 1,
-        fromId: "0x12345",
-        contentHash: "0x67890",
-        url: "https://www.dsnp.org/",
-        createdAt: +new Date("2021-07-31T10:11:12"),
-      };
-      const serialized = serialize(message);
-      expect(serialized).toEqual(
-        "announcementType0x1contentHash0x67890createdAt0x17afc0bd600fromId0x12345urlhttps://www.dsnp.org/"
-      );
-    });
+    describe("spec examples", () => {
+      const expectedSerialization =
+        "announcementType0x1contentHash0x67890createdAt0x17afc0bd600fromId0x12345urlhttps://www.dsnp.org/";
+      it("can serialize", () => {
+        const message = {
+          announcementType: 1,
+          fromId: "0x12345",
+          contentHash: "0x67890",
+          url: "https://www.dsnp.org/",
+          createdAt: +new Date("2021-07-31T10:11:12"),
+        };
+        const serialized = serialize(message);
+        expect(serialized).toEqual(expectedSerialization);
+      });
 
-    it("can correct values with zero padding", () => {
-      const message = {
-        announcementType: 1,
-        fromId: "0x000000012345",
-        contentHash: "0x000067890",
-        url: "https://www.dsnp.org/",
-        createdAt: +new Date("2021-07-31T10:11:12"),
-      };
-      const serialized = serialize(message);
-      expect(serialized).toEqual(
-        "announcementType0x1contentHash0x67890createdAt0x17afc0bd600fromId0x12345urlhttps://www.dsnp.org/"
-      );
+      it("can correct values with zero padding", () => {
+        const message = {
+          announcementType: 1,
+          fromId: "0x000000012345",
+          contentHash: "0x000067890",
+          url: "https://www.dsnp.org/",
+          createdAt: +new Date("2021-07-31T10:11:12"),
+        };
+        const serialized = serialize(message);
+        expect(serialized).toEqual(expectedSerialization);
+      });
     });
   });
 
