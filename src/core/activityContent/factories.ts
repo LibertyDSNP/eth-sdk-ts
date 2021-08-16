@@ -185,7 +185,7 @@ export interface ActivityContentHash {
  * object.
  *
  * @param content - The text content to include in the note
- * @param options - Any additional fields for the ActivityContentNote
+ * @param options - Overrides default fields for the ActivityContentNote
  * @returns An ActivityContentNote object
  */
 export const createNote = (content: string, options?: Partial<ActivityContentNote>): ActivityContentNote => ({
@@ -200,7 +200,7 @@ export const createNote = (content: string, options?: Partial<ActivityContentNot
  * createProfile() provides a simple factory for generating an
  * ActivityContentProfile object.
  *
- * @param options - Any fields for the ActivityContentProfile
+ * @param options - Overrides any default fields for the ActivityContentProfile
  * @returns An ActivityContentProfile object
  */
 export const createProfile = (options?: Partial<ActivityContentProfile>): ActivityContentProfile => ({
@@ -214,7 +214,7 @@ export const createProfile = (options?: Partial<ActivityContentProfile>): Activi
  * ActivityContentAudio object.
  *
  * @param links - An array of ActivityContentAudioLink objects to include
- * @param options - Any additional fields for the ActivityContentAudio
+ * @param options - Overrides any default fields for the ActivityContentAudio
  * @returns An ActivityContentAudio object
  */
 export const createAudioAttachment = (
@@ -234,7 +234,7 @@ export const createAudioAttachment = (
  * @param href      - The URL of the file
  * @param mediaType - The MIME type of the file
  * @param hash      - An ActivityContentHash object to authenticate the file
- * @param options - Any additional fields for the ActivityContentAudioLink
+ * @param options - Overrides any default fields for the ActivityContentAudioLink
  * @returns An ActivityContentAudioLink object
  */
 export const createAudioLink = (
@@ -255,7 +255,7 @@ export const createAudioLink = (
  * ActivityContentImage object.
  *
  * @param links - An array of ActivityContentImageLink objects to include
- * @param options - Any additional fields for the ActivityContentImage
+ * @param options - Overrides any default fields for the ActivityContentImage
  * @returns An ActivityContentImage object
  */
 export const createImageAttachment = (
@@ -275,7 +275,7 @@ export const createImageAttachment = (
  * @param href      - The URL of the file
  * @param mediaType - The MIME type of the file
  * @param hash      - An ActivityContentHash object to authenticate the file
- * @param options - Any additional fields for the ActivityContentImageLink
+ * @param options - Overrides any default fields for the ActivityContentImageLink
  * @returns An ActivityContentImageLink object
  */
 export const createImageLink = (
@@ -296,7 +296,7 @@ export const createImageLink = (
  * ActivityContentVideo object.
  *
  * @param links - An array of ActivityContentVideoLink objects to include
- * @param options - Any additional fields for the ActivityContentVideo
+ * @param options - Overrides any default fields for the ActivityContentVideo
  * @returns An ActivityContentVideo object
  */
 export const createVideoAttachment = (
@@ -316,7 +316,7 @@ export const createVideoAttachment = (
  * @param href      - The URL of the file
  * @param mediaType - The MIME type of the file
  * @param hash      - An ActivityContentHash object to authenticate the file
- * @param options - Any additional fields for the ActivityContentVideoLink
+ * @param options - Overrides any default fields for the ActivityContentVideoLink
  * @returns An ActivityContentVideoLink object
  */
 export const createVideoLink = (
@@ -337,7 +337,7 @@ export const createVideoLink = (
  * ActivityContentLink object.
  *
  * @param href - The URL to include in the link
- * @param options - Any additional fields for the ActivityContentLink
+ * @param options - Overrides any default fields for the ActivityContentLink
  * @returns An ActivityContentLink object
  */
 export const createLinkAttachment = (href: string, options?: Partial<ActivityContentLink>): ActivityContentLink => ({
@@ -350,7 +350,7 @@ export const createLinkAttachment = (href: string, options?: Partial<ActivityCon
  * createLocation() provides a simple factory for generating an
  * ActivityContentLocation object.
  *
- * @param options - Any options for the ActivityContentLocation
+ * @param options - Overrides any default fields for the ActivityContentLocation
  * @returns An ActivityContentLocation object
  */
 export const createLocation = (options?: Partial<ActivityContentLocation>): ActivityContentLocation => ({
