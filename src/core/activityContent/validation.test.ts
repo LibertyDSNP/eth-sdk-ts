@@ -548,6 +548,12 @@ describe("activity content validations", () => {
           content: "Hello world!",
           mediaType: "text/plain",
         },
+        "with no attachments and no content": {
+          "@context": "https://www.w3.org/ns/activitystreams",
+          type: "Note",
+          content: "",
+          mediaType: "text/plain",
+        },
         "with a hashtag": {
           "@context": "https://www.w3.org/ns/activitystreams",
           type: "Note",
