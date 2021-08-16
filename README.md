@@ -151,12 +151,12 @@ Tesnet Authority nodes are:
 
 #### Contracts are located at the following addresses:
 
-Migrations contract: 0xe7a6467113c2B7f09Aad3b99C30811718A114013
-Publisher contract: 0xdBA8e92706e48bbFDe1A8496710d4e85d3388E71
-Identity contract: 0xB708186004dAC4019417fa8deF9E8F49a55103b1
-Registry contract: 0xDcc457296d9790C52B6746cD45AFaaD18b7FfEfa
-IdentityCloneFactory factory: 0x31C3fDb70078FD1d64D51ecA713bCdb2f4212E74
-Beacon contract: 0x233FfDa2cEd4579B07bbc5e95bDe7f540A2DFd5a
-Beacon Factory: 0x26b21a1E90b86c779D9a1d31cD09F5cd8C7c8f1d
+MigrationsContract 0xdBA8e92706e48bbFDe1A8496710d4e85d3388E71
+PublisherContract 0xB708186004dAC4019417fa8deF9E8F49a55103b1
+IdentityContract 0xDcc457296d9790C52B6746cD45AFaaD18b7FfEfa
+RegistryContract 0x31C3fDb70078FD1d64D51ecA713bCdb2f4212E74
+IdentityCloneFactory 0x233FfDa2cEd4579B07bbc5e95bDe7f540A2DFd5a
+Beacon 0x26b21a1E90b86c779D9a1d31cD09F5cd8C7c8f1d
+BeaconFactory 0x519fd89B05dab08F14D8fDEeB11C88cacc0bA76A
 
 Contract source code is located [here](https://github.com/LibertyDSNP/contracts)
