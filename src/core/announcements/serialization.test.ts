@@ -23,7 +23,7 @@ describe("serialization", () => {
           fromId: "0x12345",
           contentHash: "0x67890",
           url: "https://www.dsnp.org/",
-          createdAt: +new Date("2021-07-31T10:11:12"),
+          createdAt: +new Date("2021-07-31T10:11:12Z"),
         };
         const serialized = serialize(message);
         expect(serialized).toEqual(expectedSerialization);
@@ -35,7 +35,7 @@ describe("serialization", () => {
           fromId: "0x000000012345",
           contentHash: "0x000067890",
           url: "https://www.dsnp.org/",
-          createdAt: +new Date("2021-07-31T10:11:12"),
+          createdAt: +new Date("2021-07-31T10:11:12Z"),
         };
         const serialized = serialize(message);
         expect(serialized).toEqual(expectedSerialization);
