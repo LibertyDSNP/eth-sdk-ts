@@ -70,10 +70,14 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isActivityContentNote" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isActivityContentProfile" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isValidActivityContentNote" class="tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isValidActivityContentProfile" class="tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isActivityContentNoteType" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#isActivityContentProfileType" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireGetSupportedContentAttachments" class="tsd-kind-icon">require<wbr>Get<wbr>Supported<wbr>Content<wbr>Attachments</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireIsActivityContentNoteType" class="tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Note<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireIsActivityContentProfileType" class="tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Profile<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireToActivityContentAttachment" class="tsd-kind-icon">require<wbr>ToActivity<wbr>Content<wbr>Attachment</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireValidActivityContentNote" class="tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_activityContent_validation.html#requireValidActivityContentProfile" class="tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</a></li>
 							</ul>
 						</section>
 					</div>
@@ -82,10 +86,10 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="isActivityContentNote" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Activity<wbr>Content<wbr>Note</h3>
+					<a name="isActivityContentNoteType" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Activity<wbr>Content<wbr>Note<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentNote.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentNote</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note<wbr>Type<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentNote.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentNote</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -93,11 +97,8 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>isActivityContentNote() is a type check function for ActivityContentNote
-										objects. Note that this function only checks that the given object meets the
-										type definition of an ActivityContentNote. It <strong>does not</strong> perform any logic
-										validations, such as checking the format of string fields or checking that
-									required attachments each include at least one supported format.</p>
+									<p>isActivityContentNoteType is a non-throwing version of <code>requireIsActivityContentNoteType</code>
+									Performs the same checks but catches InvalidActivityContentError and returns false instead.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -110,15 +111,15 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentNote.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentNote</a></h4>
-							<p>A boolean indicating whether or not the object is an ActivityContentNote</p>
+							<p>a boolean - indicating if the object is an ActivityContentNote</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="isActivityContentProfile" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Activity<wbr>Content<wbr>Profile</h3>
+					<a name="isActivityContentProfileType" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Activity<wbr>Content<wbr>Profile<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentProfile.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentProfile</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile<wbr>Type<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentProfile.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentProfile</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -126,12 +127,8 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>isActivityContentProfile() is a type check function for
-										ActivityContentProfile objects. Note that this function only checks that the
-										given object meets the type definition of an ActivityContentProfile. It
-										does not** perform any logic validations, such as checking the format of
-										string fields or checking that the icon field includes at least one supported
-									image format.</p>
+									<p>isActivityContentProfileType is a non-throwing version of <code>requireIsActivityContentProfileType</code>.
+									Performs the same checks but catches InvalidActivityContentError and returns false instead.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -144,15 +141,15 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentProfile.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentProfile</a></h4>
-							<p>A boolean indicating whether or not the object is an ActivityContentProfile</p>
+							<p>a boolean - indicating if the object is an ActivityContentProfile</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="isValidActivityContentNote" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</h3>
+					<a name="requireGetSupportedContentAttachments" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>Get<wbr>Supported<wbr>Content<wbr>Attachments</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">require<wbr>Get<wbr>Supported<wbr>Content<wbr>Attachments<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_activityContent_factories.html#ActivityContentAttachment" class="tsd-signature-type" data-tsd-kind="Type alias">ActivityContentAttachment</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -160,12 +157,173 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>isValidActivityContentNote() validates that a given object meets all
+									<p>requireGetSupportedContentAttachments iterates over the provided list and returns
+										the valid+supported attachments. If the passed in obj is empty, returns an empty array.
+										If there are attachments but none of them are valid+supported, it throws an error.
+									Attachments MUST first pass a type check to be considered valid at all.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>InvalidActivityContentError if there are no valid attachments with
+										supported Link attachments.</p>
+										<p>Examples:</p>
+										<ol>
+											<li>One Image attachment with one URL that points to a TIFF file throws an error.</li>
+											<li>One Image attachment with two URLs, one that is a TIFF and the other is JPG,
+											does not throw.</li>
+											<li>One Image attachment with two URLs, both are JPG, but one has a malformed
+												hash of 0xdeadbeef (it&#39;s too short), throws an error due to failing
+											the type check.</li>
+											<li>Two Image attachments, the one from #2 and the one from #3, does NOT throw and
+											returns just #2.</li>
+										</ol>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>an array of unknown object types to check for validity</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="core_activityContent_factories.html#ActivityContentAttachment" class="tsd-signature-type" data-tsd-kind="Type alias">ActivityContentAttachment</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>an array of all valid ActivityContentAttachments</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="requireIsActivityContentNoteType" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>IsActivity<wbr>Content<wbr>Note<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Note<wbr>Type<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentNote.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentNote</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>requireActivityContentNoteType() is a type check function for ActivityContentNote
+										objects. Note that this function only checks that the given object meets the
+										first-level type definition of an ActivityContentNote. It <strong>does not</strong> perform
+										deeper type validations or any logic
+										validations, such as checking the format of string fields or checking that
+									required attachments each include at least one supported format.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>InvalidActivityContentError if type checks fail.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to check</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentNote.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentNote</a></h4>
+							<p>true if the object is an ActivityContentNote, otherwise throws an Error.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="requireIsActivityContentProfileType" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>IsActivity<wbr>Content<wbr>Profile<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Profile<wbr>Type<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentProfile.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentProfile</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>requireIsActivityContentProfileType() is a type check function for
+										ActivityContentProfile objects. Note that this function only checks that the
+										given object meets the first-level type definition of an ActivityContentProfile. It
+										does not** perform deeper type validations or any logic validations, such as checking the format of
+										string fields or checking that the icon field includes at least one supported
+									image format.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>InvalidActivityContentError if type checks fail.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to check</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_activityContent_factories.ActivityContentProfile.html" class="tsd-signature-type" data-tsd-kind="Interface">ActivityContentProfile</a></h4>
+							<p>true if the object is an ActivityContentProfile,otherwise throws an Error</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="requireToActivityContentAttachment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>ToActivity<wbr>Content<wbr>Attachment</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">require<wbr>ToActivity<wbr>Content<wbr>Attachment<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_activityContent_factories.html#ActivityContentAttachment" class="tsd-signature-type" data-tsd-kind="Type alias">ActivityContentAttachment</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>requireActivityContentAttachment validates an unknown object and returns it
+									as an ActivityContentAttachment type if valid, and throws an error if not.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the object to convert</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="core_activityContent_factories.html#ActivityContentAttachment" class="tsd-signature-type" data-tsd-kind="Type alias">ActivityContentAttachment</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="requireValidActivityContentNote" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>requireValidActivityContentNote() validates that a given object meets all
 										necessary specification requirements for an ActivityContentNote object,
 										include string field formats and other logical validations. Note that this
 										function <strong>does not</strong> attempt to fetch any attachments to validate that their
 									hashes are correct.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>InvalidActivityContentError if not valid, with a message</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -177,15 +335,15 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>A boolean indicating whether or not the object is a valid ActivityContentNote</p>
+							<p>true if valid</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="isValidActivityContentProfile" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</h3>
+					<a name="requireValidActivityContentProfile" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -193,12 +351,17 @@
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>isValidActivityContentProfile() validates that a given object meets all
+									<p>requireValidActivityContentProfile() validates that a given object meets all
 										necessary specification requirements for an ActivityContentProfile object,
 										include string field formats and other logical validations. Note that this
 										function <strong>does not</strong> attempt to fetch any icons to validate that their
 									hashes are correct.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>InvalidActivityContentError if not valid, with a message</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -210,7 +373,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>A boolean indicating whether or not the object is a valid ActivityContentProfile</p>
+							<p>true if valid.</p>
 						</li>
 					</ul>
 				</section>
@@ -230,16 +393,28 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activityContent_validation.html#isActivityContentNote" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note</a>
+						<a href="core_activityContent_validation.html#isActivityContentNoteType" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Note<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activityContent_validation.html#isActivityContentProfile" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile</a>
+						<a href="core_activityContent_validation.html#isActivityContentProfileType" class="tsd-kind-icon">is<wbr>Activity<wbr>Content<wbr>Profile<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activityContent_validation.html#isValidActivityContentNote" class="tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</a>
+						<a href="core_activityContent_validation.html#requireGetSupportedContentAttachments" class="tsd-kind-icon">require<wbr>Get<wbr>Supported<wbr>Content<wbr>Attachments</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="core_activityContent_validation.html#isValidActivityContentProfile" class="tsd-kind-icon">is<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</a>
+						<a href="core_activityContent_validation.html#requireIsActivityContentNoteType" class="tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Note<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activityContent_validation.html#requireIsActivityContentProfileType" class="tsd-kind-icon">require<wbr>IsActivity<wbr>Content<wbr>Profile<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activityContent_validation.html#requireToActivityContentAttachment" class="tsd-kind-icon">require<wbr>ToActivity<wbr>Content<wbr>Attachment</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activityContent_validation.html#requireValidActivityContentNote" class="tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Note</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_activityContent_validation.html#requireValidActivityContentProfile" class="tsd-kind-icon">require<wbr>Valid<wbr>Activity<wbr>Content<wbr>Profile</a>
 					</li>
 				</ul>
 			</nav>

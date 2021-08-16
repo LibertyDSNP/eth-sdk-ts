@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DSNPError | @dsnp/sdk</title>
+	<title>InvalidTombstoneAnnouncementTypeError | @dsnp/sdk</title>
 	<meta name="description" content="Documentation for @dsnp/sdk">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -53,13 +53,13 @@
 					<a href="../modules.html">@dsnp/sdk</a>
 				</li>
 				<li>
-					<a href="../modules/core_errors_errors.html">core/errors/errors</a>
+					<a href="../modules/core_announcements_errors.html">core/announcements/errors</a>
 				</li>
 				<li>
-					<a href="core_errors_errors.DSNPError.html">DSNPError</a>
+					<a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html">InvalidTombstoneAnnouncementTypeError</a>
 				</li>
 			</ul>
-			<h1>Class DSNPError</h1>
+			<h1>Class InvalidTombstoneAnnouncementTypeError</h1>
 		</div>
 	</div>
 </header>
@@ -69,9 +69,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>DSNPError is a base class for other errors in the DSNP SDK. All errors thrown
-							extending this class can be assumed to have originated in the DSNP SDK, not
-						in any underlying adapters or higher level client code.</p>
+						<p>InvalidTombstoneAnnouncementTypeError indicates an invalid Announcement type
+						included as a Tombstone target.</p>
 					</div>
 				</div>
 			</section>
@@ -79,33 +78,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Error</span>
+						<a href="core_announcements_errors.AnnouncementError.html" class="tsd-signature-type" data-tsd-kind="Class">AnnouncementError</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">DSNPError</span>
-								<ul class="tsd-hierarchy">
-									<li>
-										<a href="core_activityContent_errors.ActivityContentError.html" class="tsd-signature-type" data-tsd-kind="Class">ActivityContentError</a>
-									</li>
-									<li>
-										<a href="core_announcements_errors.AnnouncementError.html" class="tsd-signature-type" data-tsd-kind="Class">AnnouncementError</a>
-									</li>
-									<li>
-										<a href="core_batch_errors.BatchError.html" class="tsd-signature-type" data-tsd-kind="Class">BatchError</a>
-									</li>
-									<li>
-										<a href="core_config_errors.ConfigError.html" class="tsd-signature-type" data-tsd-kind="Class">ConfigError</a>
-									</li>
-									<li>
-										<a href="core_contracts_errors.ContractError.html" class="tsd-signature-type" data-tsd-kind="Class">ContractError</a>
-									</li>
-									<li>
-										<a href="core_errors_errors.InvalidHexadecimalSerialization.html" class="tsd-signature-type" data-tsd-kind="Class">InvalidHexadecimalSerialization</a>
-									</li>
-									<li>
-										<a href="core_identifiers_errors.IdentifierError.html" class="tsd-signature-type" data-tsd-kind="Class">IdentifierError</a>
-									</li>
-								</ul>
+								<span class="target">InvalidTombstoneAnnouncementTypeError</span>
 							</li>
 						</ul>
 					</li>
@@ -118,7 +94,13 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="core_errors_errors.DSNPError.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html#announcementType" class="tsd-kind-icon">announcement<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -130,22 +112,32 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new DSNPError<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_errors_errors.DSNPError.html" class="tsd-signature-type" data-tsd-kind="Class">DSNPError</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Invalid<wbr>Tombstone<wbr>Announcement<wbr>Type<wbr>Error<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html" class="tsd-signature-type" data-tsd-kind="Class">InvalidTombstoneAnnouncementTypeError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides Error.constructor</p>
+								<p>Overrides <a href="core_announcements_errors.AnnouncementError.html">AnnouncementError</a>.<a href="core_announcements_errors.AnnouncementError.html#constructor">constructor</a></p>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>message: <span class="tsd-signature-type">string</span></h5>
+									<h5>announcementType: <a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="core_errors_errors.DSNPError.html" class="tsd-signature-type" data-tsd-kind="Class">DSNPError</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html" class="tsd-signature-type" data-tsd-kind="Class">InvalidTombstoneAnnouncementTypeError</a></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="announcementType" class="tsd-anchor"></a>
+					<h3>announcement<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">announcement<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></div>
+					<aside class="tsd-sources">
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -156,27 +148,33 @@
 						<a href="../modules.html">Modules</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/core_errors_errors.html">core/errors/errors</a>
+						<a href="../modules/core_announcements_errors.html">core/announcements/errors</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="core_announcements_errors.AnnouncementError.html" class="tsd-kind-icon">Announcement<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="core_announcements_errors.InvalidAnnouncementTypeError.html" class="tsd-kind-icon">Invalid<wbr>Announcement<wbr>Type<wbr>Error</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="core_errors_errors.DSNPError.html" class="tsd-kind-icon">DSNPError</a>
+						<a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html" class="tsd-kind-icon">Invalid<wbr>Tombstone<wbr>Announcement<wbr>Type<wbr>Error</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="core_errors_errors.DSNPError.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="core_announcements_errors.InvalidTombstoneAnnouncementTypeError.html#announcementType" class="tsd-kind-icon">announcement<wbr>Type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="core_errors_errors.InvalidHexadecimalSerialization.html" class="tsd-kind-icon">Invalid<wbr>Hexadecimal<wbr>Serialization</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -194,12 +192,13 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>

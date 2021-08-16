@@ -71,6 +71,7 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_serialization.html#serialize" class="tsd-kind-icon">serialize</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_serialization.html#serializeToHex" class="tsd-kind-icon">serialize<wbr>ToHex</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,6 +108,41 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="serializeToHex" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> serialize<wbr>ToHex</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">serialize<wbr>ToHex<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>serializeToHex() takes in just about anything and attempts to coerce the value to DSNP hexadecimal standard</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_errors_errors.InvalidHexadecimalSerialization.html">InvalidHexadecimalSerialization</a>
+										Thrown if the coercion failed</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>DSNP User Id/URI BigNumber BigInt number and even unknown</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>A hexadecimal serialized value</p>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -124,6 +160,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_announcements_serialization.html#serialize" class="tsd-kind-icon">serialize</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_announcements_serialization.html#serializeToHex" class="tsd-kind-icon">serialize<wbr>ToHex</a>
 					</li>
 				</ul>
 			</nav>
