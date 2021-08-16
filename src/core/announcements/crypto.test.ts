@@ -67,7 +67,6 @@ describe("announcement crypto", () => {
       url: "https://www.dsnp.org/",
       createdAt: +new Date("2021-07-31T10:11:12Z"),
     };
-    console.log(specAnnouncement);
 
     const privateKey = "0xd9d3b5afb7765ffd9f047fd0d1d9b47d4d538b6a56f1cf29dc160ab9c6d30aa3";
     const signer = new ethers.Wallet(privateKey);
