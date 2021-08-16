@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [2.1.0] - 2021-08-16
 ### Added
 - sdk.core.identifiers.convertDSNPUserIdOrURIToBigNumber supports non-0x prefixed strings
 - sdk.core.utilities.serializeToHex for predictable hexadecimal to string values
