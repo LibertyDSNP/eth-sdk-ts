@@ -46,18 +46,18 @@
   "devDependencies": {
     "@dsnp/test-generators": "^0.1.0",
     "@typechain/ethers-v5": "^7.0.1",
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.0.1",
     "@types/mkdirp": "^1.0.2",
     "@types/request": "^2.48.7",
-    "@typescript-eslint/eslint-plugin": "4.29.0",
-    "@typescript-eslint/parser": "4.29.0",
+    "@typescript-eslint/eslint-plugin": "4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
     "babel-jest": "^27.0.6",
     "dotenv": "^10.0.0 ",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-const-case": "^1.2.2",
     "eslint-plugin-jest": "24.4.0",
-    "eslint-plugin-jsdoc": "^36.0.6",
+    "eslint-plugin-jsdoc": "^36.0.7",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-tsdoc": "^0.2.14",
     "jest": "27.0.6",
@@ -65,7 +65,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.3.2",
     "stream": "^0.0.2",
-    "ts-jest": "27.0.4",
+    "ts-jest": "27.0.5",
     "ts-node": "10.2.0",
     "typechain": "^5.1.2",
     "typedoc": "0.21.5",
@@ -106,11 +106,11 @@
   },
   "dependencies": {
     "@dsnp/contracts": "1.0.1",
-    "@dsnp/parquetjs": "^1.1.1",
+    "@dsnp/parquetjs": "^1.1.2",
     "@dsnp/test-generators": "^0.1.0",
     "@ethersproject/abi": "^5.4.0",
     "ethers": "^5.4.4",
     "js-sha3": "^0.8.0",
-    "ws": "^8.0.0"
+    "ws": "^8.1.0"
   }
 }
