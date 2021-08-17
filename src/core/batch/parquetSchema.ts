@@ -27,6 +27,25 @@ type typing = { type: string };
 export type Schema = Record<columnName, typing>;
 
 /**
+ * Tombstone: a public tombstone post
+ */
+export const TombstoneSchema = {
+  announcementType: { type: "INT32" },
+  fromId: { type: "BYTE_ARRAY" },
+  targetAnnouncementType: { type: "INT32" },
+  targetSignature: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
+};
+
+/**
+ * TombstoneBloomFilter: bloom filter options for batching broadcast announcements
+ */
+export const TombstoneBloomFilterOptions: BloomFilterOptions = {
+  bloomFilters: [{ column: "fromId" }],
+};
+
+/**
  * Broadcast: a public post
  */
 export const BroadcastSchema = {
@@ -133,6 +152,8 @@ export const ReactionBloomFilterOptions = {
  */
 export const getSchemaFor = (announcementType: AnnouncementType): Schema => {
   switch (announcementType) {
+    case AnnouncementType.Tombstone:
+      return TombstoneSchema;
     case AnnouncementType.GraphChange:
       return GraphChangeSchema;
     case AnnouncementType.Broadcast:
@@ -158,6 +179,8 @@ export const getSchemaFor = (announcementType: AnnouncementType): Schema => {
  */
 export const getBloomFilterOptionsFor = (announcementType: AnnouncementType): BloomFilterOptions => {
   switch (announcementType) {
+    case AnnouncementType.Tombstone:
+      return TombstoneBloomFilterOptions;
     case AnnouncementType.GraphChange:
       return GraphChangeBloomFilterOptions;
     case AnnouncementType.Broadcast:

@@ -2,6 +2,19 @@ import { getSchemaFor, getBloomFilterOptionsFor } from "./parquetSchema";
 import { InvalidAnnouncementTypeError } from "../announcements";
 
 describe("#getSchemaFor", () => {
+  it("returns the schema for announcementType Tombstone", () => {
+    const result = getSchemaFor(0);
+
+    expect(result).toEqual({
+      announcementType: { type: "INT32" },
+      fromId: { type: "BYTE_ARRAY" },
+      targetAnnouncementType: { type: "INT32" },
+      targetSignature: { type: "BYTE_ARRAY" },
+      signature: { type: "BYTE_ARRAY" },
+      createdAt: { type: "INT64" },
+    });
+  });
+
   it("returns the schema for announcementType GraphChange", () => {
     const result = getSchemaFor(1);
 
@@ -69,11 +82,19 @@ describe("#getSchemaFor", () => {
   });
 
   it("throws InvalidAnnouncementTypeError", () => {
-    expect(() => getSchemaFor(0)).toThrow(InvalidAnnouncementTypeError);
+    expect(() => getSchemaFor(-1)).toThrow(InvalidAnnouncementTypeError);
   });
 });
 
 describe("#getBloomFilterOptionsFor", () => {
+  it("returns the bloom filter options for announcementType Tombstone", () => {
+    const result = getBloomFilterOptionsFor(0);
+
+    expect(result).toEqual({
+      bloomFilters: [{ column: "fromId" }],
+    });
+  });
+
   it("returns the bloom filter options for announcementType GraphChange", () => {
     const result = getBloomFilterOptionsFor(1);
 
@@ -113,6 +134,6 @@ describe("#getBloomFilterOptionsFor", () => {
   });
 
   it("throws InvalidAnnouncementTypeError", () => {
-    expect(() => getSchemaFor(0)).toThrow(InvalidAnnouncementTypeError);
+    expect(() => getSchemaFor(-1)).toThrow(InvalidAnnouncementTypeError);
   });
 });
