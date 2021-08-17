@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
 import * as batch from "./batch";
@@ -5,7 +6,7 @@ import { MixedTypeBatchError, EmptyBatchError } from "./errors";
 import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
-import { SignedAnnouncement } from "../announcements";
+import { sign, SignedAnnouncement } from "../announcements";
 
 describe("batch", () => {
   describe("includes", () => {
@@ -135,6 +136,33 @@ describe("batch", () => {
         const mockStore = new TestStore();
         await expect(createFile("batch.parquet", badMessages, { store: mockStore })).rejects.toThrow(EmptyBatchError);
       });
+    });
+  });
+
+  describe("#readFile", () => {
+    const { createFile, readFile } = batch;
+    const mockStore = new TestStore();
+    const announcements: SignedAnnouncement[] = [];
+
+    beforeAll(async () => {
+      for (let i = 0; i < 1; i++) {
+        const announcement = generateBroadcast();
+        const signedAnnouncement = await sign(announcement, { signer: ethers.Wallet.createRandom() });
+        announcements.push(signedAnnouncement);
+      }
+      await createFile("batch.parquet", announcements, { store: mockStore });
+    });
+
+    it("triggers callbacks with appropriate announcements", async () => {
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      for (let i = 0; i < 1; i++) {
+        expect(callback).toHaveBeenNthCalledWith(i + 1, announcements[i]);
+      }
     });
   });
 });

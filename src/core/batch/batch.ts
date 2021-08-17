@@ -1,6 +1,12 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 
-import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
+import {
+  AnnouncementWithSignature,
+  AnnouncementType,
+  InvalidAnnouncementTypeError,
+  SignedAnnouncement,
+  TypedAnnouncement,
+} from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./errors";
 import { ConfigOpts, requireGetStore } from "../config";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
@@ -8,8 +14,8 @@ import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
 import { getHashGenerator, AsyncOrSyncIterable } from "../utilities";
 
-type ReadRowFunction = {
-  (row: AnnouncementType): void;
+type ReadRowFunction<T extends SignedAnnouncement> = {
+  (row: T): void;
 };
 
 interface SplitBlockBloomFilter {
@@ -30,6 +36,48 @@ interface BatchFileData {
 type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterable<
   AnnouncementWithSignature<TypedAnnouncement<T>>
 >;
+
+type ParquetRecord = Record<string, Uint8Array> & { announcementType: AnnouncementType };
+
+const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
+  if (record.announcementType === AnnouncementType.Tombstone) {
+    return {
+      ...record,
+    } as unknown as T;
+  }
+  if (record.announcementType === AnnouncementType.GraphChange) {
+    return {
+      ...record,
+    } as unknown as T;
+  }
+  if (record.announcementType === AnnouncementType.Broadcast) {
+    return {
+      ...record,
+      url: record.url.toString(),
+      contentHash: record.contentHash.toString(),
+      fromId: record.fromId.toString(),
+      signature: record.signature.toString(),
+      createdAt: record.createdAt,
+    } as unknown as T;
+  }
+  if (record.announcementType === AnnouncementType.Reply) {
+    return {
+      ...record,
+    } as unknown as T;
+  }
+  if (record.announcementType === AnnouncementType.Reaction) {
+    return {
+      ...record,
+    } as unknown as T;
+  }
+  if (record.announcementType === AnnouncementType.Profile) {
+    return {
+      ...record,
+    } as unknown as T;
+  }
+
+  throw new InvalidAnnouncementTypeError(record.announcementType);
+};
 
 /**
  * createFile() takes a series of Signed Announcements, writes them to a file at
@@ -148,12 +196,16 @@ export const openFile = async (path: string): Promise<typeof ParquetReader> => P
  * @param doReadRow - The callback for each row
  * @returns void.
  */
-export const readFile = async (reader: typeof ParquetReader, doReadRow: ReadRowFunction): Promise<void> => {
+export const readFile = async <T extends SignedAnnouncement>(
+  reader: typeof ParquetReader,
+  doReadRow: ReadRowFunction<T>
+): Promise<void> => {
   const cursor = reader.getCursor();
 
-  let record = null;
+  let record: ParquetRecord | null = null;
   while ((record = await cursor.next())) {
-    doReadRow(record);
+    const announcement = parseAnnouncement<T>(record);
+    doReadRow(announcement);
   }
 
   return reader.close();
