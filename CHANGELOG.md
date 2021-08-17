@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixed
+- Fixed bug where graph change annoucements stored in parquet batch files would drop their `objectId` field.
+
 ## [2.1.0] - 2021-08-16
 ### Added
 - sdk.core.identifiers.convertDSNPUserIdOrURIToBigNumber supports non-0x prefixed strings

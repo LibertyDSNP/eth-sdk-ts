@@ -9,6 +9,7 @@ describe("#getSchemaFor", () => {
       changeType: { type: "INT32" },
       announcementType: { type: "INT32" },
       fromId: { type: "BYTE_ARRAY" },
+      objectId: { type: "BYTE_ARRAY" },
       signature: { type: "BYTE_ARRAY" },
       createdAt: { type: "INT64" },
     });
