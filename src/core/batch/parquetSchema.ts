@@ -27,6 +27,25 @@ type typing = { type: string };
 export type Schema = Record<columnName, typing>;
 
 /**
+ * Tombstone: a public tombstone post
+ */
+export const TombstoneSchema = {
+  announcementType: { type: "INT32" },
+  fromId: { type: "BYTE_ARRAY" },
+  targetAnnouncementType: { type: "INT32" },
+  targetSignature: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
+};
+
+/**
+ * TombstoneBloomFilter: bloom filter options for batching broadcast announcements
+ */
+export const TombstoneBloomFilterOptions: BloomFilterOptions = {
+  bloomFilters: [{ column: "fromId" }, { column: "targetSignature" }],
+};
+
+/**
  * Broadcast: a public post
  */
 export const BroadcastSchema = {
@@ -35,6 +54,7 @@ export const BroadcastSchema = {
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -54,6 +74,7 @@ export const ReplySchema = {
   inReplyTo: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -88,9 +109,11 @@ export const GraphChangeBloomFilterOptions = {
  */
 export const ProfileSchema = {
   announcementType: { type: "INT32" },
+  contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -109,6 +132,7 @@ export const ReactionSchema = {
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -127,20 +151,18 @@ export const ReactionBloomFilterOptions = {
  * @returns The corresponding parquet schema
  */
 export const getSchemaFor = (announcementType: AnnouncementType): Schema => {
-  switch (announcementType) {
-    case AnnouncementType.GraphChange:
-      return GraphChangeSchema;
-    case AnnouncementType.Broadcast:
-      return BroadcastSchema;
-    case AnnouncementType.Reply:
-      return ReplySchema;
-    case AnnouncementType.Reaction:
-      return ReactionSchema;
-    case AnnouncementType.Profile:
-      return ProfileSchema;
-  }
+  const schemas: Record<AnnouncementType, Schema> = {
+    [AnnouncementType.Tombstone]: TombstoneSchema,
+    [AnnouncementType.GraphChange]: GraphChangeSchema,
+    [AnnouncementType.Broadcast]: BroadcastSchema,
+    [AnnouncementType.Reply]: ReplySchema,
+    [AnnouncementType.Reaction]: ReactionSchema,
+    [AnnouncementType.Profile]: ProfileSchema,
+  };
 
-  throw new InvalidAnnouncementTypeError(announcementType);
+  if (schemas[announcementType] === undefined) throw new InvalidAnnouncementTypeError(announcementType);
+
+  return schemas[announcementType];
 };
 
 /**
@@ -152,18 +174,16 @@ export const getSchemaFor = (announcementType: AnnouncementType): Schema => {
  * @returns The corresponding parquet bloom filter options
  */
 export const getBloomFilterOptionsFor = (announcementType: AnnouncementType): BloomFilterOptions => {
-  switch (announcementType) {
-    case AnnouncementType.GraphChange:
-      return GraphChangeBloomFilterOptions;
-    case AnnouncementType.Broadcast:
-      return BroadcastBloomFilterOptions;
-    case AnnouncementType.Reply:
-      return ReplyBloomFilterOptions;
-    case AnnouncementType.Reaction:
-      return ReactionBloomFilterOptions;
-    case AnnouncementType.Profile:
-      return ProfileBloomFilterOptions;
-  }
+  const bloomFilters: Record<AnnouncementType, BloomFilterOptions> = {
+    [AnnouncementType.Tombstone]: TombstoneBloomFilterOptions,
+    [AnnouncementType.GraphChange]: GraphChangeBloomFilterOptions,
+    [AnnouncementType.Broadcast]: BroadcastBloomFilterOptions,
+    [AnnouncementType.Reply]: ReplyBloomFilterOptions,
+    [AnnouncementType.Reaction]: ReactionBloomFilterOptions,
+    [AnnouncementType.Profile]: ProfileBloomFilterOptions,
+  };
 
-  throw new InvalidAnnouncementTypeError(announcementType);
+  if (bloomFilters[announcementType] === undefined) throw new InvalidAnnouncementTypeError(announcementType);
+
+  return bloomFilters[announcementType];
 };
