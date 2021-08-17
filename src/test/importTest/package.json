@@ -11,6 +11,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@dsnp/sdk": "file:../../../dsnp-sdk.tgz",
+    "assert": "^2.0.0",
     "typescript": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.6.1"
   }
 }
