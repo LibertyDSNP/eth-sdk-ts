@@ -7,6 +7,7 @@
 
 ### Fixed
 - Fixed bug where graph change announcements stored in parquet batch files would drop their `objectId` field.
+- Updated parquet schema to match announcement spec
 
 ## [2.1.0] - 2021-08-16
 ### Added
