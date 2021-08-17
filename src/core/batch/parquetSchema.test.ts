@@ -91,7 +91,7 @@ describe("#getBloomFilterOptionsFor", () => {
     const result = getBloomFilterOptionsFor(0);
 
     expect(result).toEqual({
-      bloomFilters: [{ column: "fromId" }],
+      bloomFilters: [{ column: "fromId" }, { column: "targetSignature" }],
     });
   });
 

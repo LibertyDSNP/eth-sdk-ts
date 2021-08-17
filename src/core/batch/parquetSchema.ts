@@ -42,7 +42,7 @@ export const TombstoneSchema = {
  * TombstoneBloomFilter: bloom filter options for batching broadcast announcements
  */
 export const TombstoneBloomFilterOptions: BloomFilterOptions = {
-  bloomFilters: [{ column: "fromId" }],
+  bloomFilters: [{ column: "fromId" }, { column: "targetSignature" }],
 };
 
 /**
