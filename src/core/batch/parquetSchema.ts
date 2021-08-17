@@ -35,6 +35,7 @@ export const BroadcastSchema = {
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -54,6 +55,7 @@ export const ReplySchema = {
   inReplyTo: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -88,9 +90,11 @@ export const GraphChangeBloomFilterOptions = {
  */
 export const ProfileSchema = {
   announcementType: { type: "INT32" },
+  contentHash: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   url: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
@@ -109,6 +113,7 @@ export const ReactionSchema = {
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
   signature: { type: "BYTE_ARRAY" },
+  createdAt: { type: "INT64" },
 };
 
 /**
