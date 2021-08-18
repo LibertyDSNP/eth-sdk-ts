@@ -26,13 +26,13 @@ export interface BloomFilterOptions {
  * Parquet Schema for an announcement type
  */
 export type Schema<T extends AnnouncementType> = {
-  [Property in keyof AnnouncementWithSignature<T>]: { type: string };
+  [Property in keyof AnnouncementWithSignature<T>]: { type: string; statistics?: boolean };
 };
 
 type AnnouncementTypeToSchema = {
   [T in AnnouncementType]: {
     // Cannot just put Schema<T> here as TS cannot handle nested mappings correctly
-    [Property in keyof AnnouncementWithSignature<T>]: { type: string };
+    [Property in keyof AnnouncementWithSignature<T>]: { type: string; statistics?: boolean };
   };
 };
 
@@ -41,11 +41,11 @@ type AnnouncementTypeToSchema = {
  */
 export const TombstoneSchema: Schema<AnnouncementType.Tombstone> = {
   announcementType: { type: "INT32" },
-  fromId: { type: "BYTE_ARRAY" },
-  targetAnnouncementType: { type: "INT32" },
-  targetSignature: { type: "BYTE_ARRAY" },
-  signature: { type: "BYTE_ARRAY" },
   createdAt: { type: "INT64" },
+  fromId: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
+  targetAnnouncementType: { type: "INT32" },
+  targetSignature: { type: "BYTE_ARRAY", statistics: false },
 };
 
 /**
@@ -60,11 +60,11 @@ export const TombstoneBloomFilterOptions: BloomFilterOptions = {
  */
 export const BroadcastSchema: Schema<AnnouncementType.Broadcast> = {
   announcementType: { type: "INT32" },
-  contentHash: { type: "BYTE_ARRAY" },
-  fromId: { type: "BYTE_ARRAY" },
-  url: { type: "BYTE_ARRAY" },
-  signature: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY", statistics: false },
   createdAt: { type: "INT64" },
+  fromId: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
+  url: { type: "BYTE_ARRAY" },
 };
 
 /**
@@ -79,12 +79,12 @@ export const BroadcastBloomFilterOptions: BloomFilterOptions = {
  */
 export const ReplySchema: Schema<AnnouncementType.Reply> = {
   announcementType: { type: "INT32" },
-  contentHash: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY", statistics: false },
+  createdAt: { type: "INT64" },
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
   url: { type: "BYTE_ARRAY" },
-  signature: { type: "BYTE_ARRAY" },
-  createdAt: { type: "INT64" },
 };
 
 /**
@@ -100,11 +100,11 @@ export const ReplyBloomFilterOptions = {
  */
 export const GraphChangeSchema: Schema<AnnouncementType.GraphChange> = {
   announcementType: { type: "INT32" },
+  changeType: { type: "INT32" },
+  createdAt: { type: "INT64" },
   fromId: { type: "BYTE_ARRAY" },
   objectId: { type: "BYTE_ARRAY" },
-  changeType: { type: "INT32" },
-  signature: { type: "BYTE_ARRAY" },
-  createdAt: { type: "INT64" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
 };
 
 /**
@@ -119,11 +119,11 @@ export const GraphChangeBloomFilterOptions = {
  */
 export const ProfileSchema: Schema<AnnouncementType.Profile> = {
   announcementType: { type: "INT32" },
-  contentHash: { type: "BYTE_ARRAY" },
-  fromId: { type: "BYTE_ARRAY" },
-  url: { type: "BYTE_ARRAY" },
-  signature: { type: "BYTE_ARRAY" },
+  contentHash: { type: "BYTE_ARRAY", statistics: false },
   createdAt: { type: "INT64" },
+  fromId: { type: "BYTE_ARRAY" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
+  url: { type: "BYTE_ARRAY" },
 };
 
 /**
@@ -138,11 +138,11 @@ export const ProfileBloomFilterOptions = {
  */
 export const ReactionSchema: Schema<AnnouncementType.Reaction> = {
   announcementType: { type: "INT32" },
+  createdAt: { type: "INT64" },
   emoji: { type: "BYTE_ARRAY" },
   fromId: { type: "BYTE_ARRAY" },
   inReplyTo: { type: "BYTE_ARRAY" },
-  signature: { type: "BYTE_ARRAY" },
-  createdAt: { type: "INT64" },
+  signature: { type: "BYTE_ARRAY", statistics: false },
 };
 
 /**
