@@ -19,6 +19,7 @@
 ### Fixed
 - Changed isValidAnnouncement to return false for all announcements missing a createdAt big int
 - Updated content.react() to throw InvalidAnnouncementUriError as specified in its documentation
+- Updated Mentions so they require a DSNP User URI [per spec](https://spec.dsnp.org/ActivityContent/Associated/Tag#mention) instead of an Id
 
 ### Removed
 - sdk.core.activityContent.serialize: Serialization of activityContent is just JSON.stringify
