@@ -1,9 +1,10 @@
 import { ethers } from "ethers";
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
+import { createFollowGraphChange, createProfile, createTombstone, AnnouncementType } from "../announcements";
 import * as batch from "./batch";
 import { MixedTypeBatchError, EmptyBatchError } from "./errors";
-import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
+import { generateBroadcast, generateReply, generateReaction } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
 import { sign, SignedAnnouncement } from "../announcements";
@@ -142,27 +143,95 @@ describe("batch", () => {
   describe("#readFile", () => {
     const { createFile, readFile } = batch;
     const mockStore = new TestStore();
-    const announcements: SignedAnnouncement[] = [];
 
-    beforeAll(async () => {
-      for (let i = 0; i < 1; i++) {
-        const announcement = generateBroadcast();
-        const signedAnnouncement = await sign(announcement, { signer: ethers.Wallet.createRandom() });
-        announcements.push(signedAnnouncement);
-      }
-      await createFile("batch.parquet", announcements, { store: mockStore });
-    });
+    it("triggers callbacks with expected format for broadcasts", async () => {
+      const broadcast = generateBroadcast();
+      const signedBroadcast = await sign(broadcast, { signer: ethers.Wallet.createRandom() });
 
-    it("triggers callbacks with appropriate announcements", async () => {
+      await createFile("batch.parquet", [signedBroadcast], { store: mockStore });
+
       const file = mockStore.getStore()["batch.parquet"];
       const reader = await ParquetReader.openBuffer(file);
       const callback = jest.fn();
 
       await readFile(reader, callback);
 
-      for (let i = 0; i < 1; i++) {
-        expect(callback).toHaveBeenNthCalledWith(i + 1, announcements[i]);
-      }
+      expect(callback).toHaveBeenCalledWith(signedBroadcast);
+    });
+
+    it("triggers callbacks with expected format for replies", async () => {
+      const reply = generateReply();
+      const signedReply = await sign(reply, { signer: ethers.Wallet.createRandom() });
+
+      await createFile("batch.parquet", [signedReply], { store: mockStore });
+
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      expect(callback).toHaveBeenCalledWith(signedReply);
+    });
+
+    it("triggers callbacks with expected format for reactions", async () => {
+      const reaction = generateReaction();
+      const signedReaction = await sign(reaction, { signer: ethers.Wallet.createRandom() });
+
+      await createFile("batch.parquet", [signedReaction], { store: mockStore });
+
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      expect(callback).toHaveBeenCalledWith(signedReaction);
+    });
+
+    it("triggers callbacks with expected format for profiles", async () => {
+      const profile = createProfile("0x1234567890", "https://spec.dsnp.org", "0x1234567890");
+      const signedProfile = await sign(profile, { signer: ethers.Wallet.createRandom() });
+
+      await createFile("batch.parquet", [signedProfile], { store: mockStore });
+
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      expect(callback).toHaveBeenCalledWith(signedProfile);
+    });
+
+    it("triggers callbacks with expected format for graph changes", async () => {
+      const follow = createFollowGraphChange("0x1234567890", "0x1234567890");
+      const signedFollow = await sign(follow, { signer: ethers.Wallet.createRandom() });
+
+      await createFile("batch.parquet", [signedFollow], { store: mockStore });
+
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      expect(callback).toHaveBeenCalledWith(signedFollow);
+    });
+
+    it("triggers callbacks with expected format for tombstones", async () => {
+      const tombstone = createTombstone("0x1234567890", AnnouncementType.Broadcast, "0x123456789");
+      const signedTombstone = await sign(tombstone, { signer: ethers.Wallet.createRandom() });
+
+      await createFile("batch.parquet", [signedTombstone], { store: mockStore });
+
+      const file = mockStore.getStore()["batch.parquet"];
+      const reader = await ParquetReader.openBuffer(file);
+      const callback = jest.fn();
+
+      await readFile(reader, callback);
+
+      expect(callback).toHaveBeenCalledWith(signedTombstone);
     });
   });
 });

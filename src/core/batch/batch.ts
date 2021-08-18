@@ -43,11 +43,20 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
   if (record.announcementType === AnnouncementType.Tombstone) {
     return {
       ...record,
+      fromId: record.fromId.toString(),
+      signature: record.signature.toString(),
+      targetSignature: record.targetSignature.toString(),
+      targetAnnouncementType: Number(record.targetAnnouncementType),
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.GraphChange) {
     return {
       ...record,
+      fromId: record.fromId.toString(),
+      objectId: record.objectId.toString(),
+      signature: record.signature.toString(),
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Broadcast) {
@@ -57,22 +66,38 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       contentHash: record.contentHash.toString(),
       fromId: record.fromId.toString(),
       signature: record.signature.toString(),
-      createdAt: record.createdAt,
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Reply) {
     return {
       ...record,
+      url: record.url.toString(),
+      contentHash: record.contentHash.toString(),
+      inReplyTo: record.inReplyTo.toString(),
+      fromId: record.fromId.toString(),
+      signature: record.signature.toString(),
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Reaction) {
     return {
       ...record,
+      emoji: record.emoji.toString(),
+      inReplyTo: record.inReplyTo.toString(),
+      fromId: record.fromId.toString(),
+      signature: record.signature.toString(),
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Profile) {
     return {
       ...record,
+      url: record.url.toString(),
+      contentHash: record.contentHash.toString(),
+      fromId: record.fromId.toString(),
+      signature: record.signature.toString(),
+      createdAt: Number(record.createdAt),
     } as unknown as T;
   }
 
