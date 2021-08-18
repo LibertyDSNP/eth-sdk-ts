@@ -171,7 +171,7 @@ describe("validation", () => {
           userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-          "dsnp://0x1000/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         const signedAnnouncement = await sign(announcement);
 
@@ -183,7 +183,7 @@ describe("validation", () => {
           userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-          "dsnp://0x1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
@@ -197,7 +197,7 @@ describe("validation", () => {
         const announcement = await createReaction(
           userUri,
           "🎉",
-          "dsnp://0x1000/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         const signedAnnouncement = await sign(announcement);
 
@@ -208,7 +208,7 @@ describe("validation", () => {
         const announcement = await createReaction(
           userUri,
           "🎉",
-          "dsnp://0x1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);

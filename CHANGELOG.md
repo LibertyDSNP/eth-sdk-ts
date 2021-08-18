@@ -13,6 +13,11 @@
 - Exported announcement.isValidEmoji() for testing emoji strings
 - Exported announcement.isValidSignature() for testing signature strings
 - Removed statistics from parquet files for signature and hash fields
+- BREAKING: Update to Spec v0.10.0
+- BREAKING: Use BigInt for DSNPUserId
+- BREAKING: Store byte data in parquet as bytes
+- BREAKING: Parquet Schema changes
+- BREAKING: Use Spec v0.10.0 serialization for signatures
 
 ### Added
 - Added announcement.isTombstoneableType() for testing if a given announcement type can be tombstoned

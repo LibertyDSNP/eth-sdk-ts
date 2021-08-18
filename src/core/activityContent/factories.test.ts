@@ -270,11 +270,11 @@ describe("activityPub", () => {
 
   describe("createMention", () => {
     it("returns an ActivityContentMention with the given parameters", () => {
-      const activityContentMention = createMention("dsnp://0x0123456789ABCDEF");
+      const activityContentMention = createMention("dsnp://1234");
 
       expect(activityContentMention).toMatchObject({
         type: "Mention",
-        id: "dsnp://0x0123456789ABCDEF",
+        id: "dsnp://1234",
       });
     });
   });

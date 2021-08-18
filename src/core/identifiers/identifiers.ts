@@ -1,6 +1,8 @@
-import { isString } from "../utilities/validation";
+import { isBigInt, isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
-import { serializeToHex } from "../announcements";
+import { BigNumber } from "ethers";
+
+const DSNP_SCHEMA_REGEX = /^dsnp:\/\//i;
 
 /**
  * DSNPAnnouncementURI represents a DSNP Announcement Uri following the DSNP
@@ -17,7 +19,7 @@ export type DSNPAnnouncementURI = string;
  */
 export const isDSNPAnnouncementURI = (id: unknown): id is DSNPAnnouncementURI => {
   if (!isString(id)) return false;
-  return id.match(/^dsnp:\/\/0x[1-9a-f][0-9a-f]{0,15}\/0x[1-9a-f][0-9a-f]{0,63}$/) !== null;
+  return id.match(/^dsnp:\/\/[0-9]{1,20}\/0x[0-9a-f]{64}$/) !== null;
 };
 
 /**
@@ -25,7 +27,7 @@ export const isDSNPAnnouncementURI = (id: unknown): id is DSNPAnnouncementURI =>
  * [Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Identifiers.md)
  * specification.
  */
-export type DSNPUserId = string;
+export type DSNPUserId = bigint;
 
 /**
  * DSNPUserURI represents a URI targeting a user following the DSNP
@@ -40,10 +42,7 @@ export type DSNPUserURI = string;
  * @param id - The object to validate
  * @returns True of false depending on whether the string is a valid DSNPUserId
  */
-export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
-  if (!isString(id)) return false;
-  return id.match(/^0x[1-9a-f][0-9a-f]{0,15}$/) !== null;
-};
+export const isDSNPUserId = (id: unknown): id is DSNPUserId => isBigInt(id);
 
 /**
  * isDSNPUserURI validates a given object as a DSNPUserURI.
@@ -53,7 +52,7 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => {
  */
 export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
   if (!isString(uri)) return false;
-  return uri.match(/^dsnp:\/\/0x[1-9a-f][0-9a-f]{0,15}$/) !== null;
+  return uri.match(/^dsnp:\/\/[0-9]{1,20}$/) !== null;
 };
 
 /**
@@ -64,7 +63,18 @@ export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
  * @returns The same value as a properly formatted DSNPUserId
  */
 export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
-  return serializeToHex(value);
+  if (typeof value === "bigint") return value;
+  if (typeof value === "number") return BigInt(value);
+  if (BigNumber.isBigNumber(value)) value.toBigInt();
+
+  if (typeof value === "string") {
+    if (isDSNPUserURI(value)) {
+      return BigInt(value.replace(DSNP_SCHEMA_REGEX, ""));
+    }
+    return BigInt(value);
+  }
+  // Cast or throw?
+  return BigInt(String(value));
 };
 
 /**
@@ -90,7 +100,7 @@ export const buildDSNPAnnouncementURI = (
   userIdOrUri: DSNPUserId | DSNPUserURI,
   contentHash: HexString
 ): DSNPAnnouncementURI => {
-  return `dsnp://${convertToDSNPUserId(userIdOrUri)}/${serializeToHex(contentHash)}`;
+  return `dsnp://${convertToDSNPUserId(userIdOrUri)}/${contentHash}`;
 };
 
 /**
@@ -104,5 +114,5 @@ export const parseDSNPAnnouncementURI = (
   announcementUri: DSNPAnnouncementURI
 ): { userId: DSNPUserId; contentHash: HexString } => {
   const [userId, contentHash] = announcementUri.replace("dsnp://", "").split("/");
-  return { userId, contentHash };
+  return { userId: BigInt(userId), contentHash };
 };

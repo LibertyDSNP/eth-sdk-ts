@@ -167,7 +167,7 @@ export const getDSNPRegistryUpdateEvents = async (
 ): Promise<RegistryUpdateLogData[]> => {
   const contract = await getContract(opts);
 
-  const userId = filter.dsnpUserURI ? parseInt(convertToDSNPUserId(filter.dsnpUserURI)) : undefined;
+  const userId = filter.dsnpUserURI ? convertToDSNPUserId(filter.dsnpUserURI) : undefined;
   const eventFilter: ethers.EventFilter = contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr);
 
   const logs = await contract.queryFilter(eventFilter, filter.fromBlock, filter.endBlock);

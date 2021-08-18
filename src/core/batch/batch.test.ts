@@ -158,15 +158,15 @@ describe("batch", () => {
         name: "reactions",
       },
       {
-        announcement: createProfile("0x1234567890", "https://spec.dsnp.org", "0x1234567890"),
+        announcement: createProfile("dsnp://1234567890", "https://spec.dsnp.org", "0x1234567890"),
         name: "profiles",
       },
       {
-        announcement: createFollowGraphChange("0x1234567890", "0x1234567890"),
+        announcement: createFollowGraphChange("dsnp://1234567890", "0x1234567890"),
         name: "graph changes",
       },
       {
-        announcement: createTombstone("0x1234567890", AnnouncementType.Broadcast, "0x123456789"),
+        announcement: createTombstone("dsnp://1234567890", AnnouncementType.Broadcast, "0x1234567890abcdef"),
         name: "tombstones",
       },
     ].forEach(({ announcement, name }) => {

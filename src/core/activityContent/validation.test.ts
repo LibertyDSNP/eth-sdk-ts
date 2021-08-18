@@ -567,8 +567,8 @@ describe("activity content validations", () => {
           content: "Hello world!",
           mediaType: "text/plain",
           tag: [
-            { type: "Mention", id: "dsnp://0x1001", name: "Spoopy" },
-            { type: "Mention", id: "dsnp://0x1002", name: "Snoopy" },
+            { type: "Mention", id: "dsnp://1001", name: "Spoopy" },
+            { type: "Mention", id: "dsnp://1002", name: "Snoopy" },
           ],
         },
         "with an audio attachment": {

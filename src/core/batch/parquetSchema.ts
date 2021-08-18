@@ -41,8 +41,8 @@ type AnnouncementTypeToSchema = {
  */
 export const TombstoneSchema: Schema<AnnouncementType.Tombstone> = {
   announcementType: { type: "INT32" },
-  createdAt: { type: "INT64" },
-  fromId: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  fromId: { type: "UINT_64" },
   signature: { type: "BYTE_ARRAY", statistics: false },
   targetAnnouncementType: { type: "INT32" },
   targetSignature: { type: "BYTE_ARRAY", statistics: false },
@@ -61,10 +61,10 @@ export const TombstoneBloomFilterOptions: BloomFilterOptions = {
 export const BroadcastSchema: Schema<AnnouncementType.Broadcast> = {
   announcementType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY", statistics: false },
-  createdAt: { type: "INT64" },
-  fromId: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  fromId: { type: "UINT_64" },
   signature: { type: "BYTE_ARRAY", statistics: false },
-  url: { type: "BYTE_ARRAY" },
+  url: { type: "UTF8" },
 };
 
 /**
@@ -80,11 +80,11 @@ export const BroadcastBloomFilterOptions: BloomFilterOptions = {
 export const ReplySchema: Schema<AnnouncementType.Reply> = {
   announcementType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY", statistics: false },
-  createdAt: { type: "INT64" },
-  fromId: { type: "BYTE_ARRAY" },
-  inReplyTo: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  fromId: { type: "UINT_64" },
+  inReplyTo: { type: "UTF8" },
   signature: { type: "BYTE_ARRAY", statistics: false },
-  url: { type: "BYTE_ARRAY" },
+  url: { type: "UTF8" },
 };
 
 /**
@@ -101,9 +101,9 @@ export const ReplyBloomFilterOptions = {
 export const GraphChangeSchema: Schema<AnnouncementType.GraphChange> = {
   announcementType: { type: "INT32" },
   changeType: { type: "INT32" },
-  createdAt: { type: "INT64" },
-  fromId: { type: "BYTE_ARRAY" },
-  objectId: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  fromId: { type: "UINT_64" },
+  objectId: { type: "UINT_64" },
   signature: { type: "BYTE_ARRAY", statistics: false },
 };
 
@@ -120,10 +120,10 @@ export const GraphChangeBloomFilterOptions = {
 export const ProfileSchema: Schema<AnnouncementType.Profile> = {
   announcementType: { type: "INT32" },
   contentHash: { type: "BYTE_ARRAY", statistics: false },
-  createdAt: { type: "INT64" },
-  fromId: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  fromId: { type: "UINT_64" },
   signature: { type: "BYTE_ARRAY", statistics: false },
-  url: { type: "BYTE_ARRAY" },
+  url: { type: "UTF8" },
 };
 
 /**
@@ -138,10 +138,10 @@ export const ProfileBloomFilterOptions = {
  */
 export const ReactionSchema: Schema<AnnouncementType.Reaction> = {
   announcementType: { type: "INT32" },
-  createdAt: { type: "INT64" },
-  emoji: { type: "BYTE_ARRAY" },
-  fromId: { type: "BYTE_ARRAY" },
-  inReplyTo: { type: "BYTE_ARRAY" },
+  createdAt: { type: "UINT_64" },
+  emoji: { type: "UTF8" },
+  fromId: { type: "UINT_64" },
+  inReplyTo: { type: "UTF8" },
   signature: { type: "BYTE_ARRAY", statistics: false },
 };
 
