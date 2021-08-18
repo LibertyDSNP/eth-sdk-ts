@@ -10,12 +10,12 @@ import { isAuthorizedTo } from "./identity";
 import {
   Announcement,
   SignedAnnouncement,
-  serialize,
   convertSignedAnnouncementToAnnouncement,
-  isSignedAnnouncement,
   isAnnouncement,
+  isSignedAnnouncement,
+  serialize,
 } from "../announcements";
-import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
+import { convertToDSNPUserId, convertToDSNPUserURI, DSNPUserId, DSNPUserURI } from "../identifiers";
 import { LogEventData } from "./utilities";
 import { isString } from "../utilities/validation";
 
@@ -78,7 +78,7 @@ export const resolveRegistration = async (handle: Handle, opts?: ConfigOpts): Pr
   }
   return {
     handle,
-    dsnpUserURI: convertBigNumberToDSNPUserURI(userId),
+    dsnpUserURI: convertToDSNPUserURI(userId),
     contractAddr,
   };
 };
@@ -167,7 +167,7 @@ export const getDSNPRegistryUpdateEvents = async (
 ): Promise<RegistryUpdateLogData[]> => {
   const contract = await getContract(opts);
 
-  const userId = filter.dsnpUserURI ? convertDSNPUserIdOrURIToBigNumber(filter.dsnpUserURI) : undefined;
+  const userId = filter.dsnpUserURI ? parseInt(convertToDSNPUserId(filter.dsnpUserURI)) : undefined;
   const eventFilter: ethers.EventFilter = contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr);
 
   const logs = await contract.queryFilter(eventFilter, filter.fromBlock, filter.endBlock);
@@ -178,7 +178,7 @@ export const getDSNPRegistryUpdateEvents = async (
     return {
       blockNumber: desc.blockNumber,
       transactionHash: desc.transactionHash,
-      dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+      dsnpUserURI: convertToDSNPUserURI(id),
       contractAddr: addr,
       handle,
       transactionIndex: desc.transactionIndex,
@@ -202,7 +202,7 @@ export const getDSNPRegistryUpdateEvents = async (
  * Thrown if the announcement provided is invalid
  * @param signature - the signature for the announcement
  * @param announcement - the signed, unsigned or serialized announcement
- * @param dsnpUserURI - the DSNP User URI of the supposed signer
+ * @param dsnpUserURIOrId - the DSNP User URI or Id of the supposed signer
  * @param permission - the permissions to check for
  * @param blockTag - (optional). A block number or string BlockTag
  *    (see https://docs.ethers.io/v5/api/providers/types/)
@@ -212,11 +212,12 @@ export const getDSNPRegistryUpdateEvents = async (
 export const isSignatureAuthorizedTo = async (
   signature: HexString,
   announcement: SignedAnnouncement | Announcement | string,
-  dsnpUserURI: DSNPUserURI,
+  dsnpUserURIOrId: DSNPUserURI | DSNPUserId,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
   opts?: ConfigOpts
 ): Promise<boolean> => {
+  const dsnpUserURI = convertToDSNPUserURI(dsnpUserURIOrId);
   const registrations = await getDSNPRegistryUpdateEvents(
     {
       dsnpUserURI,

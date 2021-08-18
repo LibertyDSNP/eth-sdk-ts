@@ -7,7 +7,7 @@ import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
 import { ethers } from "ethers";
 import { EthAddressRegex } from "./test/matchers";
-import { convertDSNPUserIdOrURIToBigNumber } from "./core/identifiers";
+import { convertToDSNPUserId } from "./core/identifiers";
 
 const createIdentityContract = async () => {
   const receipt = await (await createCloneProxy()).wait();
@@ -109,9 +109,9 @@ describe("handles", () => {
 
     it("returns a DSNP User URI", async () => {
       const dsnpUserURI = await createRegistration(fakeAddress, handle);
-      const id = convertDSNPUserIdOrURIToBigNumber(dsnpUserURI);
+      const id = convertToDSNPUserId(dsnpUserURI);
 
-      expect(id.toNumber()).toBeGreaterThan(999);
+      expect(parseInt(id)).toBeGreaterThan(999);
       expect(dsnpUserURI.substr(0, 9)).toEqual("dsnp://0x");
     });
   });

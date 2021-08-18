@@ -2,7 +2,7 @@ import * as config from "./core/config";
 import { Registration, Handle, getDSNPRegistryUpdateEvents, resolveRegistration } from "./core/contracts/registry";
 import { createAndRegisterBeaconProxy } from "./core/contracts/identity";
 import { findEvent } from "./core/contracts/contract";
-import { convertBigNumberToDSNPUserURI, DSNPUserURI } from "./core/identifiers";
+import { convertToDSNPUserURI, DSNPUserURI } from "./core/identifiers";
 import { HexString } from "./types/Strings";
 
 /**
@@ -29,7 +29,7 @@ export const createRegistration = async (
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return convertBigNumberToDSNPUserURI(registerEvent.args[0]);
+  return convertToDSNPUserURI(registerEvent.args[0]);
 };
 
 /**

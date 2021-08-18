@@ -16,6 +16,8 @@
 
 ### Added
 - Added announcement.isTombstoneableType() for testing if a given announcement type can be tombstoned
+- sdk.convertToDSNPUserURI for taking most any value and converting it to the DSNP User URI format
+- sdk.convertToDSNPUserId for taking most any value and converting it to the DSNP User Id format
 
 ### Fixed
 - Changed isValidAnnouncement to return false for all announcements missing a createdAt big int
@@ -25,6 +27,10 @@
 ### Removed
 - sdk.core.activityContent.serialize: Serialization of activityContent is just JSON.stringify
 - sdk.core.utilities.sortObject: Unused method
+- sdk.convertBigNumberToDSNPUserId: Not supporting BigNumber anymore
+- sdk.convertDSNPUserIdOrURIToBigNumber: Not supporting BigNumber anymore
+- sdk.convertBigNumberToDSNPUserURI: Not supporting BigNumber anymore
+- Removed sdk.convertDSNPUserURIToDSNPUserId: Just use convertToDSNPUserId and convertToDSNPUserURI 
 
 ## [2.1.2] - 2021-08-20
 ### fixed

@@ -10,9 +10,9 @@ import {
   createTombstone,
   Announcement,
   AnnouncementType,
+  GraphChangeAnnouncement,
 } from "./factories";
-import { DSNPUserId } from "../identifiers";
-import { serializeToHex } from "./serialization";
+import { convertToDSNPUserURI, DSNPUserURI } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { getURIFromRegisterTransaction } from "../../test/testAccounts";
@@ -22,7 +22,7 @@ import { isValidAnnouncement } from "./validation";
 
 describe("validation", () => {
   const { signer, provider } = setupConfig();
-  let userId: DSNPUserId;
+  let userUri: DSNPUserURI;
 
   setConfig({
     store: new TestStore(),
@@ -35,10 +35,10 @@ describe("validation", () => {
     const userIdentityContract = await new Identity__factory(signer).deploy(userAddress);
     await userIdentityContract.deployed();
     const userTransaction = await register(userIdentityContract.address, "Bob Loblaw");
-    userId = serializeToHex(await getURIFromRegisterTransaction(userTransaction));
+    userUri = convertToDSNPUserURI(await getURIFromRegisterTransaction(userTransaction));
 
     setConfig({
-      currentFromURI: userId,
+      currentFromURI: userUri,
     });
   });
 
@@ -48,7 +48,7 @@ describe("validation", () => {
 
   describe("isValidAnnouncement", () => {
     describe("for GraphChangeAnnouncements", () => {
-      let followeeId: DSNPUserId;
+      let followeeUri: DSNPUserURI;
 
       setupSnapshot();
 
@@ -58,7 +58,7 @@ describe("validation", () => {
         const followeeIdentityContract = await new Identity__factory(signer).deploy(followeeAddress);
         await followeeIdentityContract.deployed();
         const followeeTransaction = await register(followeeIdentityContract.address, "George Bluth");
-        followeeId = serializeToHex(await getURIFromRegisterTransaction(followeeTransaction));
+        followeeUri = convertToDSNPUserURI(await getURIFromRegisterTransaction(followeeTransaction));
       });
 
       afterAll(async () => {
@@ -66,30 +66,30 @@ describe("validation", () => {
       });
 
       it("returns true for valid graph change announcements", async () => {
-        const announcement = createFollowGraphChange(userId, followeeId);
+        const announcement = createFollowGraphChange(userUri, followeeUri);
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
       });
 
       it("returns false for graph change announcements with invalid fromIds", async () => {
-        const announcement = createFollowGraphChange(userId, followeeId);
+        const announcement: Record<string, unknown> = createFollowGraphChange(userUri, followeeUri);
         announcement["fromId"] = "badbadbad";
-        const signedAnnouncement = await sign(announcement);
+        const signedAnnouncement = await sign(announcement as GraphChangeAnnouncement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("returns false for graph change announcements with invalid objectIds", async () => {
-        const announcement = createFollowGraphChange(userId, followeeId);
+        const announcement: Record<string, unknown> = createFollowGraphChange(userUri, followeeUri);
         announcement["objectId"] = "badbadbad";
-        const signedAnnouncement = await sign(announcement);
+        const signedAnnouncement = await sign(announcement as GraphChangeAnnouncement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("returns false for graph change announcements without createdAt", async () => {
-        const announcement = createFollowGraphChange(userId, followeeId);
+        const announcement = createFollowGraphChange(userUri, followeeUri);
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement as unknown as Announcement);
 
@@ -100,7 +100,7 @@ describe("validation", () => {
     describe("for TombstoneAnnouncement", () => {
       it("returns true for valid tombstone announcements", async () => {
         const announcement = createTombstone(
-          userId,
+          userUri,
           AnnouncementType.Broadcast,
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
         );
@@ -110,7 +110,7 @@ describe("validation", () => {
       });
 
       it("returns false for a tombstone announcements with an invalid target signature", async () => {
-        const announcement = createTombstone(userId, AnnouncementType.Broadcast, "0x0");
+        const announcement = createTombstone(userUri, AnnouncementType.Broadcast, "0x0");
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -118,7 +118,7 @@ describe("validation", () => {
 
       it("return false for a tombstone announcements with an invalid target type", async () => {
         const announcement = createTombstone(
-          userId,
+          userUri,
           AnnouncementType.GraphChange,
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
         );
@@ -129,7 +129,7 @@ describe("validation", () => {
 
       it("throws for tombstone announcements without createdAt", async () => {
         const announcement = createTombstone(
-          userId,
+          userUri,
           AnnouncementType.Broadcast,
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
         );
@@ -143,7 +143,7 @@ describe("validation", () => {
     describe("for BroadcastAnnouncement", () => {
       it("returns true for valid broadcast announcements", async () => {
         const announcement = await createBroadcast(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
@@ -154,7 +154,7 @@ describe("validation", () => {
 
       it("returns false for broadcast announcements without createdAt", async () => {
         const announcement = await createBroadcast(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
@@ -168,10 +168,10 @@ describe("validation", () => {
     describe("for ReplyAnnouncement", () => {
       it("returns true for valid reply announcements", async () => {
         const announcement = await createReply(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://0x1000/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         const signedAnnouncement = await sign(announcement);
 
@@ -180,10 +180,10 @@ describe("validation", () => {
 
       it("returns false for reply announcements without createdAt", async () => {
         const announcement = await createReply(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://0x1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
@@ -195,9 +195,9 @@ describe("validation", () => {
     describe("for ReactionAnnouncement", () => {
       it("returns true for valid reaction announcements", async () => {
         const announcement = await createReaction(
-          userId,
+          userUri,
           "🎉",
-          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://0x1000/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         const signedAnnouncement = await sign(announcement);
 
@@ -206,9 +206,9 @@ describe("validation", () => {
 
       it("returns false for reaction announcements without createdAt", async () => {
         const announcement = await createReaction(
-          userId,
+          userUri,
           "🎉",
-          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          "dsnp://0x1000/0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
@@ -220,7 +220,7 @@ describe("validation", () => {
     describe("for ProfileAnnouncement", () => {
       it("returns true for valid profile announcements", async () => {
         const announcement = await createProfile(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
@@ -231,7 +231,7 @@ describe("validation", () => {
 
       it("returns false for profile announcements without createdAt", async () => {
         const announcement = await createProfile(
-          userId,
+          userUri,
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
