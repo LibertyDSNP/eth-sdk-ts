@@ -4,6 +4,8 @@ import { BigNumber } from "ethers";
 import { HexString } from "../../types/Strings";
 import { InvalidHexadecimalSerialization } from "../errors";
 
+export type HexSerializable = BigNumber | HexString | DSNPUserId | DSNPUserURI | number | bigint | unknown;
+
 /**
  * serialize() takes an announcement and returns a serialized string.
  *
@@ -25,9 +27,7 @@ export const serialize = (announcement: Announcement): string => {
  * Thrown if the coercion failed
  * @returns A hexadecimal serialized value
  */
-export const serializeToHex = (
-  value: BigNumber | HexString | DSNPUserId | DSNPUserURI | number | bigint | unknown
-): HexString => {
+export const serializeToHex = (value: HexSerializable): HexString => {
   if (typeof value === "number" || typeof value === "bigint") {
     return prefixAndStrip(value.toString(16));
   }

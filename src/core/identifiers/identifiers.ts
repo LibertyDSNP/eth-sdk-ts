@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 import { isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
-import { serializeToHex } from "../announcements";
+import { HexSerializable, serializeToHex } from "../announcements";
 
 /**
  * DSNPAnnouncementURI represents a DSNP Announcement Uri following the DSNP
@@ -96,6 +96,17 @@ export const convertDSNPUserURIToDSNPUserId = (userURI: DSNPUserURI): DSNPUserId
  */
 export const convertBigNumberToDSNPUserURI = (num: BigNumber): DSNPUserURI => {
   return `dsnp://${serializeToHex(num)}`;
+};
+
+/**
+ * convertToDSNPUserURI() converts just about any valid DSNP User id, BigNumber,
+ * hex string, etc... to a proper DSNP user URI.
+ *
+ * @param value - The string
+ * @returns The same value as a properly formatted DSNPUserURI
+ */
+export const convertToDSNPUserURI = (value: HexSerializable): DSNPUserURI => {
+  return `dsnp://${serializeToHex(value)}`;
 };
 
 /**

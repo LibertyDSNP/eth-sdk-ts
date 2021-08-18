@@ -4,6 +4,7 @@ import {
   convertBigNumberToDSNPUserURI,
   convertDSNPUserIdOrURIToBigNumber,
   convertDSNPUserURIToDSNPUserId,
+  convertToDSNPUserURI,
   isDSNPAnnouncementURI,
   isDSNPUserURI,
   parseDSNPAnnouncementURI,
@@ -100,6 +101,24 @@ describe("identifiers", () => {
   describe("convertBigNumberToDSNPUserId", () => {
     it("is prefixed with 0x", () => {
       expect(convertBigNumberToDSNPUserId(BigNumber.from(4660))).toEqual("0x1234");
+    });
+  });
+
+  describe("convertToDSNPUserURI", () => {
+    it("big number", () => {
+      expect(convertToDSNPUserURI(BigNumber.from(4660))).toEqual("dsnp://0x1234");
+    });
+
+    it("number", () => {
+      expect(convertToDSNPUserURI(4660)).toEqual("dsnp://0x1234");
+    });
+
+    it("hex string", () => {
+      expect(convertToDSNPUserURI("0x0001234")).toEqual("dsnp://0x1234");
+    });
+
+    it("dsnp user uri", () => {
+      expect(convertToDSNPUserURI("dsnp://0x1234")).toEqual("dsnp://0x1234");
     });
   });
 

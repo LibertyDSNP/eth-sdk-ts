@@ -5,6 +5,9 @@
 - BREAKING: Changed batch.readFile() to pass parsed announcements instead of parquet records to callback
 - BREAKING: Changed createdAt on announcements to BigInt instead of number
 
+### Added
+- sdk.core.identifiers.convertToDSNPUserURI for taking any serializable value and converting it to the DSNP User URI format
+
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies
