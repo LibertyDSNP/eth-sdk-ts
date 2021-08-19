@@ -5,6 +5,8 @@
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies
+- Changed batch.readFile() to pass parsed announcements instead of parquet records to callback
+- Changed createdAt on announcements to BigInt instead of number
 
 ### Fixed
 - Fixed bug where graph change announcements stored in parquet batch files would drop their `objectId` field.
