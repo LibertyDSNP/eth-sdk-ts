@@ -16,7 +16,7 @@ import {
 } from "./factories";
 import { isDSNPUserId, isDSNPAnnouncementURI } from "../identifiers";
 import { convertSignedAnnouncementToAnnouncement } from "./services";
-import { isRecord, isString, isNumber } from "../utilities/validation";
+import { isRecord, isString, isNumber, isBigInt } from "../utilities/validation";
 
 const SIGNATURE_REGEX = /^0x[0-9a-f]{130}$/i;
 const EMOJI_REGEX = /^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u;
@@ -71,7 +71,7 @@ export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncem
   if (obj["announcementType"] != AnnouncementType.Tombstone)
     throw new AnnouncementError("Announcement is not tombstone");
   if (!isDSNPUserId(obj["fromId"])) throw new AnnouncementError("Announcement has invalid fromId");
-  if (!isNumber(obj["createdAt"])) throw new AnnouncementError("Announcement has invalid createdAt");
+  if (!isBigInt(obj["createdAt"])) throw new AnnouncementError("Announcement has invalid createdAt");
   if (!isAnnouncementType(obj["targetAnnouncementType"]))
     throw new AnnouncementError("Announcement has invalid targetAnnouncementType");
   if (
@@ -100,7 +100,7 @@ export const isGraphChangeAnnouncement = (obj: unknown): obj is GraphChangeAnnou
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isGraphChangeType(obj["changeType"])) return false;
   if (!isDSNPUserId(obj["objectId"])) return false;
-  if (!isNumber(obj["createdAt"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
   return true;
 };
 

@@ -64,7 +64,7 @@ describe("validation", () => {
           fromId: userId,
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          createdAt: +Date.now(),
+          createdAt: BigInt(+Date.now()),
           objectId: followeeId,
         };
         const signedAnnouncement = await sign(announcement);
@@ -77,7 +77,7 @@ describe("validation", () => {
           fromId: "not a valid id",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          createdAt: +Date.now(),
+          createdAt: BigInt(+Date.now()),
           objectId: followeeId,
         };
         const signedAnnouncement = await sign(announcement);
@@ -90,7 +90,7 @@ describe("validation", () => {
           fromId: userId,
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
-          createdAt: +Date.now(),
+          createdAt: BigInt(+Date.now()),
           objectId: "not a valid id",
         };
         const signedAnnouncement = await sign(announcement);

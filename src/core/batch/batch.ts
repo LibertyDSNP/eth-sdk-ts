@@ -47,7 +47,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       signature: record.signature.toString(),
       targetSignature: record.targetSignature.toString(),
       targetAnnouncementType: Number(record.targetAnnouncementType),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.GraphChange) {
@@ -56,7 +56,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       fromId: record.fromId.toString(),
       objectId: record.objectId.toString(),
       signature: record.signature.toString(),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Broadcast) {
@@ -66,7 +66,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       contentHash: record.contentHash.toString(),
       fromId: record.fromId.toString(),
       signature: record.signature.toString(),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Reply) {
@@ -77,7 +77,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       inReplyTo: record.inReplyTo.toString(),
       fromId: record.fromId.toString(),
       signature: record.signature.toString(),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Reaction) {
@@ -87,7 +87,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       inReplyTo: record.inReplyTo.toString(),
       fromId: record.fromId.toString(),
       signature: record.signature.toString(),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
   if (record.announcementType === AnnouncementType.Profile) {
@@ -97,7 +97,7 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
       contentHash: record.contentHash.toString(),
       fromId: record.fromId.toString(),
       signature: record.signature.toString(),
-      createdAt: Number(record.createdAt),
+      createdAt: BigInt(record.createdAt.toString()),
     } as unknown as T;
   }
 
