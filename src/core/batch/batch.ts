@@ -1,12 +1,6 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 
-import {
-  AnnouncementWithSignature,
-  AnnouncementType,
-  InvalidAnnouncementTypeError,
-  SignedAnnouncement,
-  TypedAnnouncement,
-} from "../announcements";
+import { AnnouncementWithSignature, AnnouncementType, SignedAnnouncement, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./errors";
 import { ConfigOpts, requireGetStore } from "../config";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
@@ -40,68 +34,22 @@ type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterabl
 type ParquetRecord = Record<string, Uint8Array> & { announcementType: AnnouncementType };
 
 const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
-  if (record.announcementType === AnnouncementType.Tombstone) {
-    return {
-      ...record,
-      fromId: record.fromId.toString(),
-      signature: record.signature.toString(),
-      targetSignature: record.targetSignature.toString(),
-      targetAnnouncementType: Number(record.targetAnnouncementType),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
-  }
-  if (record.announcementType === AnnouncementType.GraphChange) {
-    return {
-      ...record,
-      fromId: record.fromId.toString(),
-      objectId: record.objectId.toString(),
-      signature: record.signature.toString(),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
-  }
-  if (record.announcementType === AnnouncementType.Broadcast) {
-    return {
-      ...record,
-      url: record.url.toString(),
-      contentHash: record.contentHash.toString(),
-      fromId: record.fromId.toString(),
-      signature: record.signature.toString(),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
-  }
-  if (record.announcementType === AnnouncementType.Reply) {
-    return {
-      ...record,
-      url: record.url.toString(),
-      contentHash: record.contentHash.toString(),
-      inReplyTo: record.inReplyTo.toString(),
-      fromId: record.fromId.toString(),
-      signature: record.signature.toString(),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
-  }
-  if (record.announcementType === AnnouncementType.Reaction) {
-    return {
-      ...record,
-      emoji: record.emoji.toString(),
-      inReplyTo: record.inReplyTo.toString(),
-      fromId: record.fromId.toString(),
-      signature: record.signature.toString(),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
-  }
-  if (record.announcementType === AnnouncementType.Profile) {
-    return {
-      ...record,
-      url: record.url.toString(),
-      contentHash: record.contentHash.toString(),
-      fromId: record.fromId.toString(),
-      signature: record.signature.toString(),
-      createdAt: BigInt(record.createdAt.toString()),
-    } as unknown as T;
+  const schema = getSchemaFor(record.announcementType);
+  const announcement: Record<string, string | number | BigInt> = {};
+
+  for (const key in schema) {
+    if (schema[key].type === "BYTE_ARRAY") {
+      announcement[key] = record[key].toString();
+    }
+    if (schema[key].type === "INT32") {
+      announcement[key] = Number(record[key]);
+    }
+    if (schema[key].type === "INT64") {
+      announcement[key] = BigInt(record[key].toString());
+    }
   }
 
-  throw new InvalidAnnouncementTypeError(record.announcementType);
+  return announcement as unknown as T;
 };
 
 /**
@@ -217,6 +165,8 @@ export const openFile = async (path: string): Promise<typeof ParquetReader> => P
 /**
  * readFile() reads a Parquet file by row.
  *
+ * @throws {@link InvalidAnnouncementTypeError}
+ * Thrown if the provided announcementType enum is not a valid value.
  * @param reader - a ParquetReader object.
  * @param doReadRow - The callback for each row
  * @returns void.
