@@ -1,4 +1,6 @@
 # Changelog
+### fixed
+- added `transactionIndex` and `logIndex` to batch and registry subcriptions
 
 ## Unreleased
 
