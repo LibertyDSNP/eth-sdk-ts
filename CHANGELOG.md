@@ -9,6 +9,10 @@
 ### Added
 - sdk.core.identifiers.convertToDSNPUserURI for taking any serializable value and converting it to the DSNP User URI format
 
+### Removed
+- sdk.core.activityContent.serialize: Serialization of activityContent is just JSON.stringify
+- sdk.core.utilities.sortObject: Unused method
+
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies

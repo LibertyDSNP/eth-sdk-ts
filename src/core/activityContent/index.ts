@@ -19,5 +19,4 @@
 
 export * from "./factories";
 export * from "./errors";
-export * from "./serialization";
 export * from "./validation";
