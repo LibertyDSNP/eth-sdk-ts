@@ -492,7 +492,7 @@ const siftDelegateLogs = (logs: ParsedLog[]): DelegateLogData[] => {
         args: { delegate, endBlock },
         name,
       },
-      log: { address, blockNumber, transactionHash },
+      log: { address, blockNumber, transactionHash, transactionIndex, logIndex },
     } = item;
 
     return {
@@ -502,6 +502,8 @@ const siftDelegateLogs = (logs: ParsedLog[]): DelegateLogData[] => {
       transactionHash,
       blockNumber,
       ...(endBlock !== undefined ? { endBlock: endBlock.toNumber() } : {}),
+      logIndex,
+      transactionIndex,
     };
   });
 };
