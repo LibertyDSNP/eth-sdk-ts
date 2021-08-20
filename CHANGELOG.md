@@ -9,6 +9,9 @@
 - Changed AnnouncementWithSignature to take an AnnouncementType instead of a TypedAnnouncement
 - Changed to use bigint for types instead of BigInt
 
+### Fixed
+- Changed isValidAnnouncement to return false for all announcements missing a createdAt big int
+
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies
