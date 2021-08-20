@@ -31,20 +31,18 @@ type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterabl
   AnnouncementWithSignature<TypedAnnouncement<T>>
 >;
 
-type ParquetRecord = Record<string, Uint8Array> & { announcementType: AnnouncementType };
+type ParquetRecord = Record<string, Buffer | Uint8Array | BigInt | number>;
 
 const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
-  const schema = getSchemaFor(record.announcementType);
+  const schema = getSchemaFor(Number(record.announcementType));
   const announcement: Record<string, string | number | BigInt> = {};
 
   for (const key in schema) {
     if (schema[key].type === "BYTE_ARRAY") {
       announcement[key] = record[key].toString();
-    }
-    if (schema[key].type === "INT32") {
+    } else if (typeof record[key] === "number") {
       announcement[key] = Number(record[key]);
-    }
-    if (schema[key].type === "INT64") {
+    } else if (typeof record[key] === "bigint") {
       announcement[key] = BigInt(record[key].toString());
     }
   }
