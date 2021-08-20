@@ -1,18 +1,25 @@
-import { createNote, createProfile } from "../activityContent";
 import { setConfig } from "../../config";
-import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
 import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
-import { createTombstone, AnnouncementType, DSNPGraphChangeType, GraphChangeAnnouncement } from "./factories";
-import { buildDSNPAnnouncementURI, DSNPUserId } from "../identifiers";
+import {
+  createBroadcast,
+  createReply,
+  createReaction,
+  createFollowGraphChange,
+  createProfile,
+  createTombstone,
+  Announcement,
+  AnnouncementType,
+} from "./factories";
+import { DSNPUserId } from "../identifiers";
+import { serializeToHex } from "./serialization";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
-import TestStore from "../../test/testStore";
 import { getURIFromRegisterTransaction } from "../../test/testAccounts";
+import TestStore from "../../test/testStore";
 import { Identity__factory } from "../../types/typechain";
 import { isValidAnnouncement } from "./validation";
-import { serializeToHex } from "./serialization";
 
 describe("validation", () => {
   const { signer, provider } = setupConfig();
@@ -60,40 +67,32 @@ describe("validation", () => {
       });
 
       it("returns true for valid graph change announcements", async () => {
-        const announcement: GraphChangeAnnouncement = {
-          fromId: userId,
-          announcementType: AnnouncementType.GraphChange,
-          changeType: DSNPGraphChangeType.Follow,
-          createdAt: BigInt(+Date.now()),
-          objectId: followeeId,
-        };
+        const announcement = createFollowGraphChange(userId, followeeId);
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
       });
 
       it("returns false for graph change announcements with invalid fromIds", async () => {
-        const announcement: GraphChangeAnnouncement = {
-          fromId: "not a valid id",
-          announcementType: AnnouncementType.GraphChange,
-          changeType: DSNPGraphChangeType.Follow,
-          createdAt: BigInt(+Date.now()),
-          objectId: followeeId,
-        };
+        const announcement = createFollowGraphChange(userId, followeeId);
+        announcement["fromId"] = "badbadbad";
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("returns false for graph change announcements with invalid objectIds", async () => {
-        const announcement = {
-          fromId: userId,
-          announcementType: AnnouncementType.GraphChange,
-          changeType: DSNPGraphChangeType.Follow,
-          createdAt: BigInt(+Date.now()),
-          objectId: "not a valid id",
-        };
-        const signedAnnouncement = await sign(announcement as GraphChangeAnnouncement);
+        const announcement = createFollowGraphChange(userId, followeeId);
+        announcement["objectId"] = "badbadbad";
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
+      });
+
+      it("returns false for graph change announcements without createdAt", async () => {
+        const announcement = createFollowGraphChange(userId, followeeId);
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement as unknown as Announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
@@ -128,54 +127,119 @@ describe("validation", () => {
 
         await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(InvalidTombstoneAnnouncementTypeError);
       });
+
+      it("throws for tombstone announcements without createdAt", async () => {
+        const announcement = createTombstone(
+          userId,
+          AnnouncementType.Broadcast,
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
+        );
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement);
+
+        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
+      });
     });
 
     describe("for BroadcastAnnouncement", () => {
-      const activityContent = createNote("words words words");
-
       it("returns true for valid broadcast announcements", async () => {
-        const announcement = await broadcast(activityContent);
+        const announcement = await createBroadcast(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        const signedAnnouncement = await sign(announcement);
 
-        expect(await isValidAnnouncement(announcement)).toEqual(true);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
+      });
+
+      it("returns false for broadcast announcements without createdAt", async () => {
+        const announcement = await createBroadcast(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
 
     describe("for ReplyAnnouncement", () => {
-      const linkContent = createNote("hey");
-      const noteContent = createNote("hi");
-
       it("returns true for valid reply announcements", async () => {
-        const broadcastAnnouncement = await broadcast(linkContent);
-        const replyAnnouncement = await reply(
-          noteContent,
-          buildDSNPAnnouncementURI(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+        const announcement = await createReply(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
+        const signedAnnouncement = await sign(announcement);
 
-        expect(await isValidAnnouncement(replyAnnouncement)).toEqual(true);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
+      });
+
+      it("returns false for reply announcements without createdAt", async () => {
+        const announcement = await createReply(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
 
     describe("for ReactionAnnouncement", () => {
-      const linkContent = createNote("blahblehblah");
-
       it("returns true for valid reaction announcements", async () => {
-        const broadcastAnnouncement = await broadcast(linkContent);
-        const reactionAnnouncement = await react(
+        const announcement = await createReaction(
+          userId,
           "🎉",
-          buildDSNPAnnouncementURI(broadcastAnnouncement.fromId, broadcastAnnouncement.contentHash)
+          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
+        const signedAnnouncement = await sign(announcement);
 
-        expect(await isValidAnnouncement(reactionAnnouncement)).toEqual(true);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
+      });
+
+      it("returns false for reaction announcements without createdAt", async () => {
+        const announcement = await createReaction(
+          userId,
+          "🎉",
+          "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
 
     describe("for ProfileAnnouncement", () => {
-      const activityContent = createProfile({ name: "🌹🚗" });
+      it("returns true for valid profile announcements", async () => {
+        const announcement = await createProfile(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        const signedAnnouncement = await sign(announcement);
 
-      it("returns true for valid broadcast announcements", async () => {
-        const announcement = await profile(activityContent);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
+      });
 
-        expect(await isValidAnnouncement(announcement)).toEqual(true);
+      it("returns false for profile announcements without createdAt", async () => {
+        const announcement = await createProfile(
+          userId,
+          "https://fakeurl.org",
+          "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        );
+        announcement["createdAt"] = undefined as unknown as BigInt;
+        const signedAnnouncement = await sign(announcement);
+
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
   });
