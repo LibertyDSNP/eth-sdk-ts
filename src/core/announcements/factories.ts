@@ -25,7 +25,7 @@ export type Announcement = TypedAnnouncement<AnnouncementType>;
 export interface TypedAnnouncement<T extends AnnouncementType> {
   announcementType: T;
   fromId: DSNPUserId;
-  createdAt: number;
+  createdAt: BigInt;
 }
 
 /**
@@ -43,14 +43,14 @@ export interface TombstoneAnnouncement extends TypedAnnouncement<AnnouncementTyp
  * @param fromURI         - The id of the user from whom the announcement is posted
  * @param targetType      - The DSNP announcement type of the target announcement
  * @param targetSignature - The signature of the target announcement
- * @param createdAt       - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt       - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A TombstoneAnnouncement
  */
 export const createTombstone = (
   fromURI: DSNPUserURI,
   targetType: AnnouncementType,
   targetSignature: HexString,
-  createdAt?: number
+  createdAt?: BigInt
 ): TombstoneAnnouncement => ({
   announcementType: AnnouncementType.Tombstone,
   targetAnnouncementType: targetType,
@@ -74,14 +74,14 @@ export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementTyp
  * @param fromURI   - The id of the user from whom the announcement is posted
  * @param url       - The URL of the activity content to reference
  * @param hash      - The hash of the content at the URL
- * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A BroadcastAnnouncement
  */
 export const createBroadcast = (
   fromURI: DSNPUserURI,
   url: string,
   hash: HexString,
-  createdAt?: number
+  createdAt?: BigInt
 ): BroadcastAnnouncement => ({
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
@@ -107,7 +107,7 @@ export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Re
  * @param url       - The URL of the activity content to reference
  * @param hash      - The hash of the content at the URL
  * @param inReplyTo - The DSNP Announcement Uri of the parent announcement
- * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A ReplyAnnouncement
  */
 export const createReply = (
@@ -115,7 +115,7 @@ export const createReply = (
   url: string,
   hash: HexString,
   inReplyTo: DSNPAnnouncementURI,
-  createdAt?: number
+  createdAt?: BigInt
 ): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
@@ -140,14 +140,14 @@ export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType
  * @param fromURI   - The id of the user from whom the announcement is posted
  * @param emoji     - The emoji to respond with
  * @param inReplyTo - The DSNP Announcement Uri of the parent announcement
- * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A ReactionAnnouncement
  */
 export const createReaction = (
   fromURI: DSNPUserURI,
   emoji: string,
   inReplyTo: DSNPAnnouncementURI,
-  createdAt?: number
+  createdAt?: BigInt
 ): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,
   createdAt: createdAtOrNow(createdAt),
@@ -178,13 +178,13 @@ export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementT
  *
  * @param fromURI     - The id of the user from whom the announcement is posted
  * @param followeeURI - The id of the user to follow
- * @param createdAt   - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt   - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A GraphChangeAnnouncement
  */
 export const createFollowGraphChange = (
   fromURI: DSNPUserURI,
   followeeURI: DSNPUserURI,
-  createdAt?: number
+  createdAt?: BigInt
 ): GraphChangeAnnouncement => ({
   fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
@@ -199,13 +199,13 @@ export const createFollowGraphChange = (
  *
  * @param fromURI     - The id of the user from whom the announcement is posted
  * @param followeeURI - The id of the user to unfollow
- * @param createdAt   - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt   - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A GraphChangeAnnouncement
  */
 export const createUnfollowGraphChange = (
   fromURI: DSNPUserURI,
   followeeURI: DSNPUserURI,
-  createdAt?: number
+  createdAt?: BigInt
 ): GraphChangeAnnouncement => ({
   fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
@@ -228,14 +228,14 @@ export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.
  * @param fromURI   - The id of the user from whom the announcement is posted
  * @param url       - The URL of the activity content to reference
  * @param hash      - The hash of the content at the URL
- * @param createdAt - Optional. The createdAt timestamp of the announcement as number of milliseconds since UNIX epoch
+ * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A ProfileAnnouncement
  */
 export const createProfile = (
   fromURI: DSNPUserURI,
   url: string,
   hash: HexString,
-  createdAt?: number
+  createdAt?: BigInt
 ): ProfileAnnouncement => ({
   announcementType: AnnouncementType.Profile,
   contentHash: hash,

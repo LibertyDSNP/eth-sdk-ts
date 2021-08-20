@@ -7,7 +7,7 @@
 export const isRecord = (obj: unknown): obj is Record<string, unknown> => typeof obj == "object";
 
 /**
- * isString is a type check for records
+ * isString is a type check for strings
  *
  * @param obj - The object to test
  * @returns True if the object is a string, otherwise false
@@ -15,12 +15,20 @@ export const isRecord = (obj: unknown): obj is Record<string, unknown> => typeof
 export const isString = (obj: unknown): obj is string => typeof obj == "string";
 
 /**
- * isNumber is a type check for records
+ * isNumber is a type check for numbers
  *
  * @param obj - The object to test
  * @returns True if the object is a number, otherwise false
  */
 export const isNumber = (obj: unknown): obj is number => typeof obj == "number";
+
+/**
+ * isBigInt is a type check for big ints
+ *
+ * @param obj - The object to test
+ * @returns True if the object is a big int, otherwise false
+ */
+export const isBigInt = (obj: unknown): obj is BigInt => typeof obj == "bigint";
 
 /**
  * isArrayOfType

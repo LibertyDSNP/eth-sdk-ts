@@ -1,11 +1,13 @@
+import { ethers } from "ethers";
 import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
 
+import { createFollowGraphChange, createProfile, createTombstone, AnnouncementType } from "../announcements";
 import * as batch from "./batch";
 import { MixedTypeBatchError, EmptyBatchError } from "./errors";
-import { generateBroadcast, generateReply } from "../../generators/dsnpGenerators";
+import { generateBroadcast, generateReply, generateReaction } from "../../generators/dsnpGenerators";
 import { BroadcastSchema } from "./parquetSchema";
 import TestStore from "../../test/testStore";
-import { SignedAnnouncement } from "../announcements";
+import { sign, SignedAnnouncement } from "../announcements";
 
 describe("batch", () => {
   describe("includes", () => {
@@ -134,6 +136,52 @@ describe("batch", () => {
       it("throws EmptyBatchError", async () => {
         const mockStore = new TestStore();
         await expect(createFile("batch.parquet", badMessages, { store: mockStore })).rejects.toThrow(EmptyBatchError);
+      });
+    });
+  });
+
+  describe("#readFile", () => {
+    const { createFile, readFile } = batch;
+    const mockStore = new TestStore();
+
+    [
+      {
+        announcement: generateBroadcast(),
+        name: "broadcasts",
+      },
+      {
+        announcement: generateReply(),
+        name: "replies",
+      },
+      {
+        announcement: generateReaction(),
+        name: "reactions",
+      },
+      {
+        announcement: createProfile("0x1234567890", "https://spec.dsnp.org", "0x1234567890"),
+        name: "profiles",
+      },
+      {
+        announcement: createFollowGraphChange("0x1234567890", "0x1234567890"),
+        name: "graph changes",
+      },
+      {
+        announcement: createTombstone("0x1234567890", AnnouncementType.Broadcast, "0x123456789"),
+        name: "tombstones",
+      },
+    ].forEach(({ announcement, name }) => {
+      it(`triggers callbacks with expected format for ${name}`, async () => {
+        const signedAnnouncement = await sign(announcement, { signer: ethers.Wallet.createRandom() });
+
+        await createFile("batch.parquet", [signedAnnouncement], { store: mockStore });
+
+        const file = mockStore.getStore()["batch.parquet"];
+        const reader = await ParquetReader.openBuffer(file);
+        const callback = jest.fn();
+
+        await readFile(reader, callback);
+
+        expect(callback).toHaveBeenCalledWith(signedAnnouncement);
       });
     });
   });

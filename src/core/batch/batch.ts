@@ -1,6 +1,6 @@
 import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
 
-import { AnnouncementWithSignature, AnnouncementType, TypedAnnouncement } from "../announcements";
+import { AnnouncementWithSignature, AnnouncementType, SignedAnnouncement, TypedAnnouncement } from "../announcements";
 import { MixedTypeBatchError, EmptyBatchError } from "./errors";
 import { ConfigOpts, requireGetStore } from "../config";
 import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
@@ -8,8 +8,8 @@ import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
 import { getHashGenerator, AsyncOrSyncIterable } from "../utilities";
 
-type ReadRowFunction = {
-  (row: AnnouncementType): void;
+type ReadRowFunction<T extends SignedAnnouncement> = {
+  (row: T): void;
 };
 
 interface SplitBlockBloomFilter {
@@ -30,6 +30,25 @@ interface BatchFileData {
 type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterable<
   AnnouncementWithSignature<TypedAnnouncement<T>>
 >;
+
+type ParquetRecord = Record<string, Buffer | Uint8Array | BigInt | number>;
+
+const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
+  const schema = getSchemaFor(Number(record.announcementType));
+  const announcement: Record<string, string | number | BigInt> = {};
+
+  for (const key in schema) {
+    if (schema[key].type === "BYTE_ARRAY") {
+      announcement[key] = record[key].toString();
+    } else if (typeof record[key] === "number") {
+      announcement[key] = Number(record[key]);
+    } else if (typeof record[key] === "bigint") {
+      announcement[key] = BigInt(record[key].toString());
+    }
+  }
+
+  return announcement as unknown as T;
+};
 
 /**
  * createFile() takes a series of Signed Announcements, writes them to a file at
@@ -144,16 +163,22 @@ export const openFile = async (path: string): Promise<typeof ParquetReader> => P
 /**
  * readFile() reads a Parquet file by row.
  *
+ * @throws {@link InvalidAnnouncementTypeError}
+ * Thrown if the provided announcementType enum is not a valid value.
  * @param reader - a ParquetReader object.
  * @param doReadRow - The callback for each row
  * @returns void.
  */
-export const readFile = async (reader: typeof ParquetReader, doReadRow: ReadRowFunction): Promise<void> => {
+export const readFile = async <T extends SignedAnnouncement>(
+  reader: typeof ParquetReader,
+  doReadRow: ReadRowFunction<T>
+): Promise<void> => {
   const cursor = reader.getCursor();
 
-  let record = null;
+  let record: ParquetRecord | null = null;
   while ((record = await cursor.next())) {
-    doReadRow(record);
+    const announcement = parseAnnouncement<T>(record);
+    doReadRow(announcement);
   }
 
   return reader.close();
