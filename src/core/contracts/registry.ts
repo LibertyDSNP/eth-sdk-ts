@@ -1,15 +1,23 @@
 import { ethers, ContractTransaction } from "ethers";
 
 import { getContractAddress } from "./contract";
-import { MissingRegistrationError } from "./errors";
+import { MissingRegistrationError, InvalidAnnouncementParameterError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
 import { Registry__factory, Registry } from "../../types/typechain";
 import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
-import { Announcement, serialize } from "../announcements";
+import {
+  Announcement,
+  SignedAnnouncement,
+  serialize,
+  convertSignedAnnouncementToAnnouncement,
+  isSignedAnnouncement,
+  isAnnouncement,
+} from "../announcements";
 import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
 import { LogEventData } from "./utilities";
+import { isString } from "../utilities/validation";
 
 const CONTRACT_NAME = "Registry";
 
@@ -199,7 +207,7 @@ export const getDSNPRegistryUpdateEvents = async (
  */
 export const isSignatureAuthorizedTo = async (
   signature: HexString,
-  message: Announcement | string,
+  message: SignedAnnouncement | Announcement | string,
   dsnpUserURI: DSNPUserURI,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
@@ -221,7 +229,17 @@ export const isSignatureAuthorizedTo = async (
     const bn = (await provider?.getBlock(blockNumber))?.number;
     if (bn) blockNumber = bn;
   }
-  const signedString = typeof message === "string" ? (message as string) : serialize(message);
+
+  let signedString: string;
+  if (isString(message)) {
+    signedString = message;
+  } else if (isSignedAnnouncement(message)) {
+    signedString = serialize(convertSignedAnnouncementToAnnouncement(message));
+  } else if (isAnnouncement(message)) {
+    signedString = serialize(message);
+  } else {
+    throw new InvalidAnnouncementParameterError(message);
+  }
 
   const signerAddr = ethers.utils.verifyMessage(signedString, signature);
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
