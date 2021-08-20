@@ -77,6 +77,8 @@ export const createTypedData = (
 export interface LogEventData {
   transactionHash: HexString;
   blockNumber: number;
+  transactionIndex: number;
+  logIndex: number;
 }
 
 /**
