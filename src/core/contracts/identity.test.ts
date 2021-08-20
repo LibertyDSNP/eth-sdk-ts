@@ -543,6 +543,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
       ];
 
@@ -566,6 +568,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -574,6 +578,8 @@ describe("identity", () => {
           blockNumber: 331,
           endBlock: 400,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
       ];
 
@@ -597,6 +603,8 @@ describe("identity", () => {
             delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
             blockNumber: 330,
             transactionHash: expect.any(String),
+            transactionIndex: expect.any(Number),
+            logIndex: expect.any(Number),
           },
           {
             name: "DSNPRemoveDelegate",
@@ -605,6 +613,8 @@ describe("identity", () => {
             blockNumber: 331,
             endBlock: 0,
             transactionHash: expect.any(String),
+            transactionIndex: expect.any(Number),
+            logIndex: expect.any(Number),
           },
         ];
 
@@ -626,6 +636,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -634,6 +646,8 @@ describe("identity", () => {
           blockNumber: 331,
           endBlock: 333,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
         {
           name: "DSNPAddDelegate",
@@ -641,6 +655,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 332,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
       ];
 
@@ -665,6 +681,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 330,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
         {
           name: "DSNPAddDelegate",
@@ -672,6 +690,8 @@ describe("identity", () => {
           delegate: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
           blockNumber: 332,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
         {
           name: "DSNPRemoveDelegate",
@@ -680,6 +700,8 @@ describe("identity", () => {
           blockNumber: 333,
           endBlock: 400,
           transactionHash: expect.any(String),
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         },
       ];
 

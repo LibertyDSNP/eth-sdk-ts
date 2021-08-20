@@ -212,6 +212,8 @@ describe("subscription", () => {
           fileUrl: publications1[0].fileUrl,
           fileHash: publications1[0].fileHash,
           announcementType: publications1[0].announcementType,
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         })
       );
       expect(mock.mock.calls[1][0]).toEqual(
@@ -219,6 +221,8 @@ describe("subscription", () => {
           fileUrl: publications2[0].fileUrl,
           fileHash: publications2[0].fileHash,
           announcementType: publications2[0].announcementType,
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         })
       );
       expect(mock.mock.calls[2][0]).toEqual(
@@ -226,6 +230,8 @@ describe("subscription", () => {
           fileUrl: publications3[0].fileUrl,
           fileHash: publications3[0].fileHash,
           announcementType: publications3[0].announcementType,
+          transactionIndex: expect.any(Number),
+          logIndex: expect.any(Number),
         })
       );
 
@@ -281,6 +287,8 @@ describe("subscription", () => {
             dsnpUserURI: expect.any(String),
             contractAddr: identityContractAddress,
             handle: handle,
+            transactionIndex: expect.any(Number),
+            logIndex: expect.any(Number),
           })
         );
         expect(mock.mock.calls[1][0]).toEqual(
@@ -290,6 +298,8 @@ describe("subscription", () => {
             dsnpUserURI: expect.any(String),
             contractAddr: identityContractAddress,
             handle: handleTwo,
+            transactionIndex: expect.any(Number),
+            logIndex: expect.any(Number),
           })
         );
         expect(mock.mock.calls[2][0]).toEqual(
@@ -299,6 +309,8 @@ describe("subscription", () => {
             dsnpUserURI: expect.any(String),
             contractAddr: identityContractAddress,
             handle: handleThree,
+            transactionIndex: expect.any(Number),
+            logIndex: expect.any(Number),
           })
         );
 
