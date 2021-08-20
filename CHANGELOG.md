@@ -4,6 +4,8 @@
 ### Changed
 - BREAKING: Changed batch.readFile() to pass parsed announcements instead of parquet records to callback
 - BREAKING: Changed createdAt on announcements to BigInt instead of number
+- Changed isSignatureAuthorizedTo to work with SignedAnnouncements
+- Changed isSignatureAuthorizedTo to throw InvalidAnnouncementParameterError when passed an invalid object as announcement
 
 ## [2.1.1] - 2021-08-17
 ### Changed
