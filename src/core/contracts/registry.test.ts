@@ -2,6 +2,7 @@ import { ethers, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 import { DSNPError } from "../errors";
+import { InvalidAnnouncementParameterError } from "./errors";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import {
   changeAddress,
@@ -428,6 +429,12 @@ describe("registry", () => {
 
     it("returns true if provided a signed announcement", async () => {
       await expect(isSignatureAuthorizedTo(sig, signedAnnouncement, dsnpUserURI, permAllowed)).resolves.toBeTruthy();
+    });
+
+    it("throws if provided an invalid object as an announcement", async () => {
+      await expect(isSignatureAuthorizedTo(sig, 3 as unknown as string, dsnpUserURI, permAllowed)).rejects.toThrow(
+        InvalidAnnouncementParameterError
+      );
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {
