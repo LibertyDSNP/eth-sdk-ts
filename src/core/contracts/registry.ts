@@ -186,9 +186,9 @@ export const getDSNPRegistryUpdateEvents = async (
 };
 
 /**
- * isSignatureAuthorizedTo() validates a serialized message or announcement against a signature and then checks that the
- * signer has the permissions specified. Announcements should be passed as is,
- * without serializing, to guarantee consistent results.
+ * isSignatureAuthorizedTo() validates an announcement, either as a string, a
+ * SignedAnnouncement or unsigned Announcement, against a signature and then
+ * checks that the signer has the permissions specified.
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -196,8 +196,10 @@ export const getDSNPRegistryUpdateEvents = async (
  * Thrown if a registration cannot be found for the given DSNP User URI.
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
- * @param signature - the signature for the message
- * @param message - the signed announcement or string
+ * @throws {@link InvalidAnnouncementParameterError}
+ * Thrown if the announcement provided is invalid
+ * @param signature - the signature for the announcement
+ * @param announcement - the signed, unsigned or serialized announcement
  * @param dsnpUserURI - the DSNP User URI of the supposed signer
  * @param permission - the permissions to check for
  * @param blockTag - (optional). A block number or string BlockTag
@@ -207,7 +209,7 @@ export const getDSNPRegistryUpdateEvents = async (
  */
 export const isSignatureAuthorizedTo = async (
   signature: HexString,
-  message: SignedAnnouncement | Announcement | string,
+  announcement: SignedAnnouncement | Announcement | string,
   dsnpUserURI: DSNPUserURI,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
@@ -231,14 +233,14 @@ export const isSignatureAuthorizedTo = async (
   }
 
   let signedString: string;
-  if (isString(message)) {
-    signedString = message;
-  } else if (isSignedAnnouncement(message)) {
-    signedString = serialize(convertSignedAnnouncementToAnnouncement(message));
-  } else if (isAnnouncement(message)) {
-    signedString = serialize(message);
+  if (isString(announcement)) {
+    signedString = announcement;
+  } else if (isSignedAnnouncement(announcement)) {
+    signedString = serialize(convertSignedAnnouncementToAnnouncement(announcement));
+  } else if (isAnnouncement(announcement)) {
+    signedString = serialize(announcement);
   } else {
-    throw new InvalidAnnouncementParameterError(message);
+    throw new InvalidAnnouncementParameterError(announcement);
   }
 
   const signerAddr = ethers.utils.verifyMessage(signedString, signature);
