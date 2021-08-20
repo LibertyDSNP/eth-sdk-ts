@@ -1,8 +1,11 @@
 # Changelog
-### fixed
-- added `transactionIndex` and `logIndex` to batch and registry subcriptions
-
 ## Unreleased
+
+## [2.1.2] - 2021-08-20
+### fixed
+- added `transactionIndex` and `logIndex` to batch and registry subscriptions
+
+
 
 ## [2.1.1] - 2021-08-17
 ### Changed
