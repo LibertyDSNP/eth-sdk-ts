@@ -4,7 +4,7 @@ import { broadcast, reply, react, profile } from "../../content";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
 import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
-import { createTombstone, AnnouncementType, DSNPGraphChangeType } from "./factories";
+import { createTombstone, AnnouncementType, DSNPGraphChangeType, GraphChangeAnnouncement } from "./factories";
 import { buildDSNPAnnouncementURI, DSNPUserId } from "../identifiers";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -60,7 +60,7 @@ describe("validation", () => {
       });
 
       it("returns true for valid graph change announcements", async () => {
-        const announcement = {
+        const announcement: GraphChangeAnnouncement = {
           fromId: userId,
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
@@ -73,7 +73,7 @@ describe("validation", () => {
       });
 
       it("returns false for graph change announcements with invalid fromIds", async () => {
-        const announcement = {
+        const announcement: GraphChangeAnnouncement = {
           fromId: "not a valid id",
           announcementType: AnnouncementType.GraphChange,
           changeType: DSNPGraphChangeType.Follow,
@@ -93,7 +93,8 @@ describe("validation", () => {
           createdAt: BigInt(+Date.now()),
           objectId: "not a valid id",
         };
-        const signedAnnouncement = await sign(announcement);
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        const signedAnnouncement = await sign(announcement as any);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });

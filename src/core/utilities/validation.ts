@@ -28,7 +28,7 @@ export const isNumber = (obj: unknown): obj is number => typeof obj == "number";
  * @param obj - The object to test
  * @returns True if the object is a big int, otherwise false
  */
-export const isBigInt = (obj: unknown): obj is BigInt => typeof obj == "bigint";
+export const isBigInt = (obj: unknown): obj is bigint => typeof obj == "bigint";
 
 /**
  * isArrayOfType

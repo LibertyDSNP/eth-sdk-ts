@@ -6,4 +6,4 @@
  * @param createdAt - Optional. The createdAt value to return
  * @returns The number of milliseconds since the UNIX epoch to the specified date
  */
-export const createdAtOrNow = (createdAt?: BigInt): BigInt => createdAt || BigInt(new Date().getTime());
+export const createdAtOrNow = (createdAt?: bigint): bigint => createdAt || BigInt(new Date().getTime());

@@ -1,5 +1,5 @@
-import { SignedAnnouncement } from "./crypto";
-import { Announcement } from "./factories";
+import { AnnouncementWithSignature } from "./crypto";
+import { AnnouncementType, TypedAnnouncement } from "./factories";
 
 /**
  * convertSignedAnnouncementToAnnouncement() takes a SignedAnnouncement and
@@ -8,12 +8,12 @@ import { Announcement } from "./factories";
  * @param obj - The SignedAnnouncement to convert
  * @returns An unsigned version of the Announcement
  */
-export const convertSignedAnnouncementToAnnouncement = (obj: SignedAnnouncement): Announcement => {
-  const newObj: Record<string, unknown> = {};
+export const convertSignedAnnouncementToAnnouncement = <T extends AnnouncementType>(
+  obj: AnnouncementWithSignature<T>
+): TypedAnnouncement<T> => {
+  const newObj: TypedAnnouncement<T> = { ...obj };
 
-  for (const key in obj) {
-    if (key != "signature") newObj[key] = (obj as unknown as Record<string, unknown>)[key];
-  }
+  delete (newObj as Record<string, unknown>)["signature"];
 
-  return newObj as unknown as Announcement;
+  return newObj;
 };

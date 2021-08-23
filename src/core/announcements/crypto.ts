@@ -1,64 +1,56 @@
 import { ConfigOpts, requireGetSigner } from "../config";
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
-import {
-  Announcement,
-  TombstoneAnnouncement,
-  BroadcastAnnouncement,
-  GraphChangeAnnouncement,
-  ProfileAnnouncement,
-  ReactionAnnouncement,
-  ReplyAnnouncement,
-} from "./factories";
+import { Announcement, TypedAnnouncement, AnnouncementType } from "./factories";
 import { serialize } from "./serialization";
 
 /**
  * A Generic Signed Announcement ready for inclusion in a Batch File
  * {@link Announcement}
  */
-export type AnnouncementWithSignature<T extends Announcement> = T & { signature: HexString };
+export type AnnouncementWithSignature<T extends AnnouncementType> = TypedAnnouncement<T> & { signature: HexString };
 
 /**
  * A Signed Announcement ready for inclusion in a Batch File
  * {@link Announcement}
  */
-export type SignedAnnouncement = AnnouncementWithSignature<Announcement>;
+export type SignedAnnouncement = AnnouncementWithSignature<AnnouncementType>;
 
 /**
  * A Signed Tombstone Announcement ready for inclusion in a Batch File
  * {@link TombstoneAnnouncement}
  */
-export type SignedTombstoneAnnouncement = AnnouncementWithSignature<TombstoneAnnouncement>;
+export type SignedTombstoneAnnouncement = AnnouncementWithSignature<AnnouncementType.Tombstone>;
 
 /**
  * A Signed Broadcast Announcement ready for inclusion in a Batch File
  * {@link BroadcastAnnouncement}
  */
-export type SignedBroadcastAnnouncement = AnnouncementWithSignature<BroadcastAnnouncement>;
+export type SignedBroadcastAnnouncement = AnnouncementWithSignature<AnnouncementType.Broadcast>;
 
 /**
  * A Signed Reply Announcement ready for inclusion in a Batch File
  * {@link ReplyAnnouncement}
  */
-export type SignedReplyAnnouncement = AnnouncementWithSignature<ReplyAnnouncement>;
+export type SignedReplyAnnouncement = AnnouncementWithSignature<AnnouncementType.Reply>;
 
 /**
  * A Signed Reaction Announcement ready for inclusion in a Batch File
  * {@link ReactionAnnouncement}
  */
-export type SignedReactionAnnouncement = AnnouncementWithSignature<ReactionAnnouncement>;
+export type SignedReactionAnnouncement = AnnouncementWithSignature<AnnouncementType.Reaction>;
 
 /**
  * A Signed Profile Announcement ready for inclusion in a Batch File
  * {@link ProfileAnnouncement}
  */
-export type SignedProfileAnnouncement = AnnouncementWithSignature<ProfileAnnouncement>;
+export type SignedProfileAnnouncement = AnnouncementWithSignature<AnnouncementType.Profile>;
 
 /**
  * A Signed Graph Change Announcement ready for inclusion in a Batch File
  * {@link GraphChangeAnnouncement}
  */
-export type SignedGraphChangeAnnouncement = AnnouncementWithSignature<GraphChangeAnnouncement>;
+export type SignedGraphChangeAnnouncement = AnnouncementWithSignature<AnnouncementType.GraphChange>;
 
 /**
  * sign() takes an Announcement and returns a Signed Announcement ready for
@@ -70,8 +62,8 @@ export type SignedGraphChangeAnnouncement = AnnouncementWithSignature<GraphChang
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns The signed announcement
  */
-export const sign = async <T extends Announcement>(
-  announcement: T,
+export const sign = async <T extends AnnouncementType>(
+  announcement: TypedAnnouncement<T>,
   opts?: ConfigOpts
 ): Promise<AnnouncementWithSignature<T>> => {
   const signer = requireGetSigner(opts);
