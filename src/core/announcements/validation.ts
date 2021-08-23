@@ -20,18 +20,32 @@ import { isRecord, isString, isNumber, isBigInt } from "../utilities/validation"
 const SIGNATURE_REGEX = /^0x[0-9a-f]{130}$/i;
 const EMOJI_REGEX = /^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u;
 
-const isValidEmoji = (obj: unknown): boolean => {
+/**
+ * isValidEmoji() is a helper function for checking if a given emoji string is
+ * valid according to the spec.
+ *
+ * @param obj - The object to test
+ * @returns True if the given object is a valid emoji, otherwise false
+ */
+export const isValidEmoji = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
   return obj.match(EMOJI_REGEX) !== null;
 };
 
-const isValidSignature = (obj: unknown): boolean => {
+/**
+ * isValidSignature() is a helper function for checking if a given signature is
+ * properly formatted.
+ *
+ * @param obj - The object to test
+ * @returns True if the given object is a valid signature, otherwise false
+ */
+export const isValidSignature = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
   return obj.match(SIGNATURE_REGEX) !== null;
 };
 
 /**
- * isTombstoneableType() is helper function for checking if a particular
+ * isTombstoneableType() is a helper function for checking if a particular
  * announcement type can be tombstoned.
  *
  * @param announcementType - The announcement type to check
