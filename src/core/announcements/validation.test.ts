@@ -91,7 +91,7 @@ describe("validation", () => {
 
       it("returns false for graph change announcements without createdAt", async () => {
         const announcement = createFollowGraphChange(userId, followeeId);
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement as unknown as Announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -134,7 +134,7 @@ describe("validation", () => {
           AnnouncementType.Broadcast,
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01"
         );
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
         await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
@@ -159,7 +159,7 @@ describe("validation", () => {
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -186,7 +186,7 @@ describe("validation", () => {
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
           "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -211,7 +211,7 @@ describe("validation", () => {
           "🎉",
           "dsnp://0x1234567/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
@@ -236,7 +236,7 @@ describe("validation", () => {
           "https://fakeurl.org",
           "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
         );
-        announcement["createdAt"] = undefined as unknown as BigInt;
+        announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
