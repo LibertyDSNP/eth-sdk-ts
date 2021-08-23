@@ -8,9 +8,17 @@
 - Changed isSignatureAuthorizedTo to throw InvalidAnnouncementParameterError when passed an invalid object as announcement
 - Changed AnnouncementWithSignature to take an AnnouncementType instead of a TypedAnnouncement
 - Changed to use bigint for types instead of BigInt
+- Changed content.react() to throw InvalidEmojiStringError when passed an invalid emoji string
+- Changed content.tombstone() to throw InvalidTombstoneAnnouncementTypeError or InvalidTombstoneAnnouncementSignatureError depending on which aspect of the provided target is invalid instead of simply throwing InvalidTombstoneAnnouncementTypeError for both
+- Exported announcement.isValidEmoji() for testing emoji strings
+- Exported announcement.isValidSignature() for testing signature strings
+
+### Added
+- Added announcement.isTombstoneableType() for testing if a given announcement type can be tombstoned
 
 ### Fixed
 - Changed isValidAnnouncement to return false for all announcements missing a createdAt big int
+- Updated content.react() to throw InvalidAnnouncementUriError as specified in its documentation
 
 ## [2.1.1] - 2021-08-17
 ### Changed
