@@ -6,6 +6,8 @@
 - BREAKING: Changed createdAt on announcements to BigInt instead of number
 - Changed isSignatureAuthorizedTo to work with SignedAnnouncements
 - Changed isSignatureAuthorizedTo to throw InvalidAnnouncementParameterError when passed an invalid object as announcement
+- Changed AnnouncementWithSignature to take an AnnouncementType instead of a TypedAnnouncement
+- Changed to use bigint for types instead of BigInt
 
 ## [2.1.1] - 2021-08-17
 ### Changed

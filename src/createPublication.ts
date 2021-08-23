@@ -3,12 +3,7 @@ import { createFile, EmptyBatchError } from "./core/batch";
 import { filterIterable, AsyncOrSyncIterable } from "./core/utilities";
 import { Publication } from "./core/contracts/publisher";
 import { getRandomString } from "./core/utilities/random";
-import {
-  AnnouncementWithSignature,
-  AnnouncementType,
-  SignedAnnouncement,
-  TypedAnnouncement,
-} from "./core/announcements";
+import { AnnouncementWithSignature, AnnouncementType, SignedAnnouncement } from "./core/announcements";
 
 /**
  * createPublication() takes an Announcement type and an array of announcements of the given
@@ -26,7 +21,7 @@ import {
  * @returns A promise of the generated publication
  */
 export const createPublication = async <T extends AnnouncementType>(
-  announcements: AsyncOrSyncIterable<AnnouncementWithSignature<TypedAnnouncement<T>>>,
+  announcements: AsyncOrSyncIterable<AnnouncementWithSignature<T>>,
   opts?: ConfigOpts
 ): Promise<Publication> => {
   const filename = getRandomString();

@@ -6,6 +6,7 @@ import * as pq from "../core/batch/parquetSchema";
 import { EthereumAddress } from "../types/Strings";
 import { generateHexString } from "@dsnp/test-generators";
 import {
+  AnnouncementType,
   SignedBroadcastAnnouncement,
   SignedReactionAnnouncement,
   SignedReplyAnnouncement,
@@ -70,7 +71,7 @@ export const generateReactionBatchFile = async (rootDir: string, numRows: number
 type writeBatchOptions = {
   rootDir: string;
   numRows: number;
-  schema: pq.Schema;
+  schema: pq.Schema<AnnouncementType>;
   generator: BatchGenerator;
   bloomOptions?: pq.BloomFilterOptions;
 };

@@ -22,19 +22,53 @@ export type Announcement = TypedAnnouncement<AnnouncementType>;
 /**
  * TypedAnnouncement: an Announcement with a particular AnnouncementType
  */
-export interface TypedAnnouncement<T extends AnnouncementType> {
+export type TypedAnnouncement<T extends AnnouncementType> = {
   announcementType: T;
   fromId: DSNPUserId;
-  createdAt: BigInt;
-}
+  createdAt: bigint;
+} & (TombstoneFields | BroadcastFields | ReplyFields | ReactionFields | GraphChangeFields | ProfileFields);
+
+type TombstoneFields = {
+  announcementType: AnnouncementType.Tombstone;
+  targetAnnouncementType: AnnouncementType;
+  targetSignature: HexString;
+};
+
+type BroadcastFields = {
+  announcementType: AnnouncementType.Broadcast;
+  contentHash: HexString;
+  url: string;
+};
+
+type ReplyFields = {
+  announcementType: AnnouncementType.Reply;
+  contentHash: HexString;
+  inReplyTo: DSNPAnnouncementURI;
+  url: string;
+};
+
+type ReactionFields = {
+  announcementType: AnnouncementType.Reaction;
+  emoji: string;
+  inReplyTo: DSNPAnnouncementURI;
+};
+
+type GraphChangeFields = {
+  announcementType: AnnouncementType.GraphChange;
+  changeType: DSNPGraphChangeType;
+  objectId: DSNPUserId;
+};
+
+type ProfileFields = {
+  announcementType: AnnouncementType.Profile;
+  contentHash: HexString;
+  url: string;
+};
 
 /**
  * TombstoneAnnouncement: an Announcement of type Tombstone
  */
-export interface TombstoneAnnouncement extends TypedAnnouncement<AnnouncementType.Tombstone> {
-  targetAnnouncementType: AnnouncementType;
-  targetSignature: HexString;
-}
+export type TombstoneAnnouncement = TypedAnnouncement<AnnouncementType.Tombstone>;
 
 /**
  * createTombstone() generates a tombstone announcement from a given URL and
@@ -50,7 +84,7 @@ export const createTombstone = (
   fromURI: DSNPUserURI,
   targetType: AnnouncementType,
   targetSignature: HexString,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): TombstoneAnnouncement => ({
   announcementType: AnnouncementType.Tombstone,
   targetAnnouncementType: targetType,
@@ -62,10 +96,7 @@ export const createTombstone = (
 /**
  * BroadcastAnnouncement: an Announcement of type Broadcast
  */
-export interface BroadcastAnnouncement extends TypedAnnouncement<AnnouncementType.Broadcast> {
-  contentHash: HexString;
-  url: string;
-}
+export type BroadcastAnnouncement = TypedAnnouncement<AnnouncementType.Broadcast>;
 
 /**
  * createBroadcast() generates a broadcast announcement from a given URL and
@@ -81,7 +112,7 @@ export const createBroadcast = (
   fromURI: DSNPUserURI,
   url: string,
   hash: HexString,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): BroadcastAnnouncement => ({
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
@@ -93,11 +124,7 @@ export const createBroadcast = (
 /**
  * ReplyAnnouncement: am announcement of type Reply
  */
-export interface ReplyAnnouncement extends TypedAnnouncement<AnnouncementType.Reply> {
-  contentHash: HexString;
-  inReplyTo: DSNPAnnouncementURI;
-  url: string;
-}
+export type ReplyAnnouncement = TypedAnnouncement<AnnouncementType.Reply>;
 
 /**
  * createReply() generates a reply announcement from a given URL, hash and
@@ -115,7 +142,7 @@ export const createReply = (
   url: string,
   hash: HexString,
   inReplyTo: DSNPAnnouncementURI,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
@@ -128,10 +155,7 @@ export const createReply = (
 /**
  * ReactionAnnouncement: an Announcement of type Reaction
  */
-export interface ReactionAnnouncement extends TypedAnnouncement<AnnouncementType.Reaction> {
-  emoji: string;
-  inReplyTo: DSNPAnnouncementURI;
-}
+export type ReactionAnnouncement = TypedAnnouncement<AnnouncementType.Reaction>;
 
 /**
  * createReaction() generates a reaction announcement from a given URL, hash and
@@ -147,7 +171,7 @@ export const createReaction = (
   fromURI: DSNPUserURI,
   emoji: string,
   inReplyTo: DSNPAnnouncementURI,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,
   createdAt: createdAtOrNow(createdAt),
@@ -167,10 +191,7 @@ export enum DSNPGraphChangeType {
 /**
  * GraphChangeAnnouncement: an Announcement of type GraphChange
  */
-export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementType.GraphChange> {
-  changeType: DSNPGraphChangeType;
-  objectId: DSNPUserId;
-}
+export type GraphChangeAnnouncement = TypedAnnouncement<AnnouncementType.GraphChange>;
 
 /**
  * createFollowGraphChange() generates a follow graph change announcement from
@@ -184,7 +205,7 @@ export interface GraphChangeAnnouncement extends TypedAnnouncement<AnnouncementT
 export const createFollowGraphChange = (
   fromURI: DSNPUserURI,
   followeeURI: DSNPUserURI,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): GraphChangeAnnouncement => ({
   fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
@@ -205,7 +226,7 @@ export const createFollowGraphChange = (
 export const createUnfollowGraphChange = (
   fromURI: DSNPUserURI,
   followeeURI: DSNPUserURI,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): GraphChangeAnnouncement => ({
   fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
@@ -217,10 +238,7 @@ export const createUnfollowGraphChange = (
 /**
  * ProfileAnnouncement: an Announcement of type Profile
  */
-export interface ProfileAnnouncement extends TypedAnnouncement<AnnouncementType.Profile> {
-  contentHash: HexString;
-  url: string;
-}
+export type ProfileAnnouncement = TypedAnnouncement<AnnouncementType.Profile>;
 
 /**
  * createProfile() generates a profile announcement from a given URL and hash.
@@ -235,7 +253,7 @@ export const createProfile = (
   fromURI: DSNPUserURI,
   url: string,
   hash: HexString,
-  createdAt?: BigInt
+  createdAt?: bigint
 ): ProfileAnnouncement => ({
   announcementType: AnnouncementType.Profile,
   contentHash: hash,

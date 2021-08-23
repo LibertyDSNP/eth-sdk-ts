@@ -1,12 +1,12 @@
-import { ParquetReader, ParquetWriter, ParquetSchema } from "@dsnp/parquetjs";
+import { ParquetReader, ParquetSchema, ParquetWriter } from "@dsnp/parquetjs";
 
-import { AnnouncementWithSignature, AnnouncementType, SignedAnnouncement, TypedAnnouncement } from "../announcements";
-import { MixedTypeBatchError, EmptyBatchError } from "./errors";
+import { AnnouncementType, AnnouncementWithSignature, SignedAnnouncement } from "../announcements";
+import { EmptyBatchError, MixedTypeBatchError } from "./errors";
 import { ConfigOpts, requireGetStore } from "../config";
-import { getSchemaFor, getBloomFilterOptionsFor, Schema, BloomFilterOptions } from "./parquetSchema";
+import { BloomFilterOptions, getBloomFilterOptionsFor, getSchemaFor, Schema } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
-import { getHashGenerator, AsyncOrSyncIterable } from "../utilities";
+import { AsyncOrSyncIterable, getHashGenerator } from "../utilities";
 
 type ReadRowFunction<T extends SignedAnnouncement> = {
   (row: T): void;
@@ -27,25 +27,26 @@ interface BatchFileData {
   hash: HexString;
 }
 
-type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterable<
-  AnnouncementWithSignature<TypedAnnouncement<T>>
->;
+type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterable<AnnouncementWithSignature<T>>;
 
-type ParquetRecord = Record<string, Buffer | Uint8Array | BigInt | number>;
+type ParquetRecord = Record<string, Buffer | Uint8Array | bigint | number>;
 
 const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
-  const schema = getSchemaFor(Number(record.announcementType));
-  const announcement: Record<string, string | number | BigInt> = {};
+  const schemas = getSchemaFor(record.announcementType as AnnouncementType);
 
-  for (const key in schema) {
-    if (schema[key].type === "BYTE_ARRAY") {
-      announcement[key] = record[key].toString();
-    } else if (typeof record[key] === "number") {
-      announcement[key] = Number(record[key]);
-    } else if (typeof record[key] === "bigint") {
-      announcement[key] = BigInt(record[key].toString());
-    }
-  }
+  const announcement = Object.entries(schemas).reduce<Record<string, string | number | bigint>>(
+    (acc, [key, schema]) => {
+      if (schema.type === "BYTE_ARRAY") {
+        acc[key] = record[key].toString();
+      } else if (typeof record[key] === "number") {
+        acc[key] = Number(record[key]);
+      } else if (typeof record[key] === "bigint") {
+        acc[key] = BigInt(record[key].toString());
+      }
+      return acc;
+    },
+    {}
+  );
 
   return announcement as unknown as T;
 };
@@ -126,7 +127,7 @@ export const createFile = async <T extends AnnouncementType>(
  */
 export const writeBatch = async <T extends AnnouncementType>(
   writeStream: WriteStream,
-  schema: Schema,
+  schema: Schema<T>,
   announcements: SignedAnnouncementIterable<T>,
   opts?: BloomFilterOptions
 ): Promise<void> => {
