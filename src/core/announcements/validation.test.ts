@@ -1,7 +1,6 @@
 import { setConfig } from "../../config";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
-import { AnnouncementError } from "./errors";
 import {
   createBroadcast,
   createReply,
@@ -137,7 +136,7 @@ describe("validation", () => {
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
-        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
 
