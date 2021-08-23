@@ -64,7 +64,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","mediaType":"text\/plain","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","type":"Note","mediaType":"text\/plain","content":"Hello world!"\}/
           );
         });
 
@@ -159,7 +159,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","content":"Hello world!","mediaType":"text\/plain","type":"Note"\}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","type":"Note","mediaType":"text\/plain","content":"Hello world!"\}/
           );
         });
 
@@ -356,7 +356,7 @@ describe("content", () => {
           expect(keys.length).toEqual(1);
 
           expect(storeContents[keys[0]].toString()).toMatch(
-            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","name":"🌹🚗","type":"Profile"}/
+            /\{"@context":"https:\/\/www\.w3\.org\/ns\/activitystreams","type":"Profile","name":"🌹🚗"}/
           );
         });
 
