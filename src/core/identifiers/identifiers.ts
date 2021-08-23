@@ -89,7 +89,7 @@ export const convertDSNPUserURIToDSNPUserId = (userURI: DSNPUserURI): DSNPUserId
 
 /**
  * convertBigNumberToDSNPUserURI() converts ethers' ridiculous BigNumber
- * implementation hex output to a proper DSNP user URI with zero padding.
+ * implementation hex output to a proper DSNP user URI.
  *
  * @param num - The number to convert
  * @returns The same number as a properly formatted DSNPUserURI

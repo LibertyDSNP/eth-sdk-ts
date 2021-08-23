@@ -20,6 +20,10 @@
 - Changed isValidAnnouncement to return false for all announcements missing a createdAt big int
 - Updated content.react() to throw InvalidAnnouncementUriError as specified in its documentation
 
+### Removed
+- sdk.core.activityContent.serialize: Serialization of activityContent is just JSON.stringify
+- sdk.core.utilities.sortObject: Unused method
+
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies
