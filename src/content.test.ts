@@ -8,6 +8,7 @@ import {
   AnnouncementType,
   SignedBroadcastAnnouncement,
   InvalidTombstoneAnnouncementTypeError,
+  InvalidTombstoneAnnouncementSignatureError,
 } from "./core/announcements";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
 import { createCloneProxy } from "./core/contracts/identity";
@@ -460,6 +461,22 @@ describe("content", () => {
 
         await expect(content.tombstone(followAnnouncement as unknown as SignedBroadcastAnnouncement)).rejects.toThrow(
           InvalidTombstoneAnnouncementTypeError
+        );
+      });
+    });
+
+    describe("with an invalid target signature", () => {
+      it("throws InvalidTombstoneAnnouncementSignatureError", async () => {
+        setConfig({
+          currentFromURI: "dsnp://0x00000000000003e8",
+          signer,
+          provider,
+        });
+        const broadcastAnnouncement = await content.broadcast(noteObject);
+        broadcastAnnouncement.signature = "0x0";
+
+        await expect(content.tombstone(broadcastAnnouncement)).rejects.toThrow(
+          InvalidTombstoneAnnouncementSignatureError
         );
       });
     });

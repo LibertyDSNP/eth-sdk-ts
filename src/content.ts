@@ -12,9 +12,11 @@ import {
   createReaction,
   createReply,
   createTombstone,
-  isValidAnnouncement,
+  isTombstoneableType,
+  isValidSignature,
   sign,
   InvalidTombstoneAnnouncementTypeError,
+  InvalidTombstoneAnnouncementSignatureError,
   SignedBroadcastAnnouncement,
   SignedProfileAnnouncement,
   SignedReactionAnnouncement,
@@ -187,6 +189,8 @@ export const profile = async (
  * Thrown if the provided inReplyTo DSNP Message Id is invalid.
  * @throws {@link InvalidTombstoneAnnouncementTypeError}
  * Thrown if the target type provided for the tombstone is invalid.
+ * @throws {@link InvalidTombstoneAnnouncementSignatureError}
+ * Thrown if the target signature provided for the tombstone is invalid.
  * @param target - The DSNP Announcement to tombstone
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A Signed Tombstone Announcement ready for inclusion in a batch
@@ -195,13 +199,14 @@ export const tombstone = async (
   target: SignedBroadcastAnnouncement | SignedReplyAnnouncement | SignedReactionAnnouncement,
   opts?: ConfigOpts
 ): Promise<SignedTombstoneAnnouncement> => {
+  if (!isTombstoneableType(target.announcementType))
+    throw new InvalidTombstoneAnnouncementTypeError(target.announcementType);
+  if (!isValidSignature(target.signature)) throw new InvalidTombstoneAnnouncementSignatureError(target.signature);
+
   const currentFromURI = requireGetCurrentFromURI(opts);
 
   const announcement = createTombstone(currentFromURI, target.announcementType, target.signature);
   const signedAnnouncement = await sign(announcement, opts);
-
-  if (!(await isValidAnnouncement(signedAnnouncement)))
-    throw new InvalidTombstoneAnnouncementTypeError(target.announcementType);
 
   return signedAnnouncement;
 };
