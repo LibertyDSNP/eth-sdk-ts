@@ -2,7 +2,6 @@ import { ConfigOpts } from "../config";
 import { Permission } from "../contracts/identity";
 import { isSignatureAuthorizedTo } from "../contracts/registry";
 import { SignedAnnouncement } from "./crypto";
-import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
 import {
   Announcement,
   DSNPGraphChangeType,
@@ -21,15 +20,41 @@ import { isRecord, isString, isNumber, isBigInt } from "../utilities/validation"
 const SIGNATURE_REGEX = /^0x[0-9a-f]{130}$/i;
 const EMOJI_REGEX = /^[\u{2000}-\u{2BFF}\u{E000}-\u{FFFF}\u{1F000}-\u{FFFFF}]+$/u;
 
-const isValidEmoji = (obj: unknown): boolean => {
+/**
+ * isValidEmoji() is a helper function for checking if a given emoji string is
+ * valid according to the spec.
+ *
+ * @param obj - The object to test
+ * @returns True if the given object is a valid emoji, otherwise false
+ */
+export const isValidEmoji = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
   return obj.match(EMOJI_REGEX) !== null;
 };
 
-const isValidSignature = (obj: unknown): boolean => {
+/**
+ * isValidSignature() is a helper function for checking if a given signature is
+ * properly formatted.
+ *
+ * @param obj - The object to test
+ * @returns True if the given object is a valid signature, otherwise false
+ */
+export const isValidSignature = (obj: unknown): boolean => {
   if (!isString(obj)) return false;
   return obj.match(SIGNATURE_REGEX) !== null;
 };
+
+/**
+ * isTombstoneableType() is a helper function for checking if a particular
+ * announcement type can be tombstoned.
+ *
+ * @param announcementType - The announcement type to check
+ * @returns True if the announcement type can be tombstoned, otherwise false
+ */
+export const isTombstoneableType = (announcementType: AnnouncementType): boolean =>
+  announcementType === AnnouncementType.Broadcast ||
+  announcementType === AnnouncementType.Reply ||
+  announcementType === AnnouncementType.Reaction;
 
 /**
  * isGraphChangeType() is a type check for DSNPGraphChangeType
@@ -67,23 +92,13 @@ export const isAnnouncementType = (obj: unknown): obj is AnnouncementType => {
  * @returns True if the object is a TombstoneAnnouncement, otherwise false
  */
 export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncement => {
-  if (!isRecord(obj)) throw new AnnouncementError("Announcement is not an object");
-  if (obj["announcementType"] != AnnouncementType.Tombstone)
-    throw new AnnouncementError("Announcement is not tombstone");
-  if (!isDSNPUserId(obj["fromId"])) throw new AnnouncementError("Announcement has invalid fromId");
-  if (!isBigInt(obj["createdAt"])) throw new AnnouncementError("Announcement has invalid createdAt");
-  if (!isAnnouncementType(obj["targetAnnouncementType"]))
-    throw new AnnouncementError("Announcement has invalid targetAnnouncementType");
-  if (
-    !(
-      obj["targetAnnouncementType"] === AnnouncementType.Broadcast ||
-      obj["targetAnnouncementType"] === AnnouncementType.Reply ||
-      obj["targetAnnouncementType"] === AnnouncementType.Reaction
-    )
-  )
-    throw new InvalidTombstoneAnnouncementTypeError(obj["targetAnnouncementType"]);
-  if (!isValidSignature(obj["targetSignature"]))
-    throw new AnnouncementError("Announcement has invalid target signature");
+  if (!isRecord(obj)) return false;
+  if (obj["announcementType"] != AnnouncementType.Tombstone) return false;
+  if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
+  if (!isAnnouncementType(obj["targetAnnouncementType"])) return false;
+  if (!isTombstoneableType(obj["targetAnnouncementType"])) return false;
+  if (!isValidSignature(obj["targetSignature"])) return false;
 
   return true;
 };

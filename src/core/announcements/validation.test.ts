@@ -1,7 +1,6 @@
 import { setConfig } from "../../config";
 import { register } from "../contracts/registry";
 import { sign } from "./crypto";
-import { AnnouncementError, InvalidTombstoneAnnouncementTypeError } from "./errors";
 import {
   createBroadcast,
   createReply,
@@ -110,14 +109,14 @@ describe("validation", () => {
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(true);
       });
 
-      it("throws for a tombstone announcements with an invalid target signature", async () => {
+      it("returns false for a tombstone announcements with an invalid target signature", async () => {
         const announcement = createTombstone(userId, AnnouncementType.Broadcast, "0x0");
         const signedAnnouncement = await sign(announcement);
 
-        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
-      it("throws for a tombstone announcements with an invalid target type", async () => {
+      it("return false for a tombstone announcements with an invalid target type", async () => {
         const announcement = createTombstone(
           userId,
           AnnouncementType.GraphChange,
@@ -125,7 +124,7 @@ describe("validation", () => {
         );
         const signedAnnouncement = await sign(announcement);
 
-        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(InvalidTombstoneAnnouncementTypeError);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
 
       it("throws for tombstone announcements without createdAt", async () => {
@@ -137,7 +136,7 @@ describe("validation", () => {
         announcement["createdAt"] = undefined as unknown as bigint;
         const signedAnnouncement = await sign(announcement);
 
-        await expect(isValidAnnouncement(signedAnnouncement)).rejects.toThrow(AnnouncementError);
+        expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
     });
 

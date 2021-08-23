@@ -7,7 +7,9 @@ import { createNote, createProfile, InvalidActivityContentError } from "./core/a
 import {
   AnnouncementType,
   SignedBroadcastAnnouncement,
+  InvalidEmojiStringError,
   InvalidTombstoneAnnouncementTypeError,
+  InvalidTombstoneAnnouncementSignatureError,
 } from "./core/announcements";
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
 import { createCloneProxy } from "./core/contracts/identity";
@@ -311,6 +313,22 @@ describe("content", () => {
         ).rejects.toThrow(MissingFromIdConfigError);
       });
     });
+
+    describe("with an invalid emoji string", () => {
+      it("throws InvalidEmojiStringError", async () => {
+        setConfig({
+          currentFromURI: undefined,
+          signer,
+        });
+
+        await expect(
+          content.react(
+            "not emoji",
+            "dsnp://0x123456789abcdef/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          )
+        ).rejects.toThrow(InvalidEmojiStringError);
+      });
+    });
   });
 
   describe("profile", () => {
@@ -460,6 +478,22 @@ describe("content", () => {
 
         await expect(content.tombstone(followAnnouncement as unknown as SignedBroadcastAnnouncement)).rejects.toThrow(
           InvalidTombstoneAnnouncementTypeError
+        );
+      });
+    });
+
+    describe("with an invalid target signature", () => {
+      it("throws InvalidTombstoneAnnouncementSignatureError", async () => {
+        setConfig({
+          currentFromURI: "dsnp://0x00000000000003e8",
+          signer,
+          provider,
+        });
+        const broadcastAnnouncement = await content.broadcast(noteObject);
+        broadcastAnnouncement.signature = "0x0";
+
+        await expect(content.tombstone(broadcastAnnouncement)).rejects.toThrow(
+          InvalidTombstoneAnnouncementSignatureError
         );
       });
     });

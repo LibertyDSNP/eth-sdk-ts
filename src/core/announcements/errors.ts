@@ -1,5 +1,6 @@
 import { AnnouncementType } from "./factories";
 import { DSNPError } from "../errors";
+import { HexString } from "../../types/Strings";
 
 /**
  * AnnouncementError indicates an error in a DSNP announcement or type.
@@ -32,5 +33,31 @@ export class InvalidTombstoneAnnouncementTypeError extends AnnouncementError {
   constructor(announcementType: AnnouncementType) {
     super(`Invalid Tombstone Target Type: ${announcementType}`);
     this.announcementType = announcementType;
+  }
+}
+
+/**
+ * InvalidTombstoneAnnouncementSignatureError indicates an invalid Announcement
+ * signature included as Tombstone target.
+ */
+export class InvalidTombstoneAnnouncementSignatureError extends AnnouncementError {
+  signature: HexString;
+
+  constructor(signature: HexString) {
+    super(`Invalid Tombstone Target Signature: ${signature}`);
+    this.signature = signature;
+  }
+}
+
+/**
+ * InvalidEmojiStringError indicates that the emoji string provided is not valid
+ * according to the spec.
+ */
+export class InvalidEmojiStringError extends AnnouncementError {
+  emoji: string;
+
+  constructor(emoji: string) {
+    super(`Invalid Emoji String: ${emoji}`);
+    this.emoji = emoji;
   }
 }
