@@ -31,6 +31,18 @@ const isValidSignature = (obj: unknown): boolean => {
 };
 
 /**
+ * isTombstoneableType() is helper function for checking if a particular
+ * announcement type can be tombstoned.
+ *
+ * @param announcementType - The announcement type to check
+ * @returns True if the announcement type can be tombstoned, otherwise false
+ */
+export const isTombstoneableType = (announcementType: AnnouncementType): boolean =>
+  announcementType === AnnouncementType.Broadcast ||
+  announcementType === AnnouncementType.Reply ||
+  announcementType === AnnouncementType.Reaction;
+
+/**
  * isGraphChangeType() is a type check for DSNPGraphChangeType
  *
  * @param obj - The object to check
@@ -71,14 +83,7 @@ export const isTombstoneAnnouncement = (obj: unknown): obj is TombstoneAnnouncem
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isBigInt(obj["createdAt"])) return false;
   if (!isAnnouncementType(obj["targetAnnouncementType"])) return false;
-  if (
-    !(
-      obj["targetAnnouncementType"] === AnnouncementType.Broadcast ||
-      obj["targetAnnouncementType"] === AnnouncementType.Reply ||
-      obj["targetAnnouncementType"] === AnnouncementType.Reaction
-    )
-  )
-    return false;
+  if (!isTombstoneableType(obj["targetAnnouncementType"])) return false;
   if (!isValidSignature(obj["targetSignature"])) return false;
 
   return true;
