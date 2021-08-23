@@ -93,8 +93,7 @@ describe("validation", () => {
           createdAt: BigInt(+Date.now()),
           objectId: "not a valid id",
         };
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const signedAnnouncement = await sign(announcement as any);
+        const signedAnnouncement = await sign(announcement as GraphChangeAnnouncement);
 
         expect(await isValidAnnouncement(signedAnnouncement)).toEqual(false);
       });
