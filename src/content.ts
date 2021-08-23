@@ -13,8 +13,10 @@ import {
   createReply,
   createTombstone,
   isTombstoneableType,
+  isValidEmoji,
   isValidSignature,
   sign,
+  InvalidEmojiStringError,
   InvalidTombstoneAnnouncementTypeError,
   InvalidTombstoneAnnouncementSignatureError,
   SignedBroadcastAnnouncement,
@@ -119,6 +121,8 @@ export const reply = async (
  * Thrown if the from id is not configured.
  * @throws {@link InvalidAnnouncementUriError}
  * Thrown if the provided inReplyTo DSNP Message Id is invalid.
+ * @throws {@link InvalidEmojiStringError}
+ * Thrown if the emoji provided is invalid.
  * @param emoji - The emoji with which to react
  * @param inReplyTo - The DSNP Announcement Uri of the announcement to which to react
  * @param opts - Optional. Configuration overrides, such as from address, if any
@@ -129,6 +133,9 @@ export const react = async (
   inReplyTo: DSNPAnnouncementURI,
   opts?: ConfigOpts
 ): Promise<SignedReactionAnnouncement> => {
+  if (!isDSNPAnnouncementURI(inReplyTo)) throw new InvalidAnnouncementUriError(inReplyTo);
+  if (!isValidEmoji(emoji)) throw new InvalidEmojiStringError(emoji);
+
   const currentFromURI = requireGetCurrentFromURI(opts);
 
   const announcement = createReaction(currentFromURI, emoji, inReplyTo);

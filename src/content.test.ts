@@ -7,6 +7,7 @@ import { createNote, createProfile, InvalidActivityContentError } from "./core/a
 import {
   AnnouncementType,
   SignedBroadcastAnnouncement,
+  InvalidEmojiStringError,
   InvalidTombstoneAnnouncementTypeError,
   InvalidTombstoneAnnouncementSignatureError,
 } from "./core/announcements";
@@ -310,6 +311,22 @@ describe("content", () => {
             "dsnp://0x123456789abcdef/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
           )
         ).rejects.toThrow(MissingFromIdConfigError);
+      });
+    });
+
+    describe("with an invalid emoji string", () => {
+      it("throws InvalidEmojiStringError", async () => {
+        setConfig({
+          currentFromURI: undefined,
+          signer,
+        });
+
+        await expect(
+          content.react(
+            "not emoji",
+            "dsnp://0x123456789abcdef/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+          )
+        ).rejects.toThrow(InvalidEmojiStringError);
       });
     });
   });

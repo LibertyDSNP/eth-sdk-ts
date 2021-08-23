@@ -48,3 +48,16 @@ export class InvalidTombstoneAnnouncementSignatureError extends AnnouncementErro
     this.signature = signature;
   }
 }
+
+/**
+ * InvalidEmojiStringError indicates that the emoji string provided is not valid
+ * according to the spec.
+ */
+export class InvalidEmojiStringError extends AnnouncementError {
+  emoji: string;
+
+  constructor(emoji: string) {
+    super(`Invalid Emoji String: ${emoji}`);
+    this.emoji = emoji;
+  }
+}
