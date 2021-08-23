@@ -181,6 +181,8 @@ export const getDSNPRegistryUpdateEvents = async (
       dsnpUserURI: convertBigNumberToDSNPUserURI(id),
       contractAddr: addr,
       handle,
+      transactionIndex: desc.transactionIndex,
+      logIndex: desc.logIndex,
     };
   });
 };

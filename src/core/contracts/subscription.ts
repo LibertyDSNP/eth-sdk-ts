@@ -92,6 +92,8 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
         fileUrl: item.fragment.args.fileUrl,
         blockNumber: item.log.blockNumber,
         transactionHash: item.log.transactionHash,
+        transactionIndex: item.log.transactionIndex,
+        logIndex: item.log.logIndex,
       };
     });
 };
@@ -146,6 +148,8 @@ const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Reg
       dsnpUserURI: convertBigNumberToDSNPUserURI(id),
       contractAddr: addr,
       handle,
+      transactionIndex: log.transactionIndex,
+      logIndex: log.logIndex,
     };
   });
 };

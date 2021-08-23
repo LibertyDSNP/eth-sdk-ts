@@ -24,6 +24,10 @@
 - sdk.core.activityContent.serialize: Serialization of activityContent is just JSON.stringify
 - sdk.core.utilities.sortObject: Unused method
 
+## [2.1.2] - 2021-08-20
+### fixed
+- added `transactionIndex` and `logIndex` to batch and registry subscriptions
+
 ## [2.1.1] - 2021-08-17
 ### Changed
 - Updated dependencies
