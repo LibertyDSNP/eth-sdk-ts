@@ -114,6 +114,7 @@ export const isBroadcastAnnouncement = (obj: unknown): obj is BroadcastAnnouncem
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Broadcast) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
 
@@ -130,6 +131,7 @@ export const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Reply) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
   if (!isDSNPAnnouncementURI(obj["inReplyTo"])) return false;
@@ -147,6 +149,7 @@ export const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncemen
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Reaction) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
   if (!isValidEmoji(obj["emoji"])) return false;
   if (!isDSNPAnnouncementURI(obj["inReplyTo"])) return false;
 
@@ -163,6 +166,7 @@ export const isProfileAnnouncement = (obj: unknown): obj is ProfileAnnouncement 
   if (!isRecord(obj)) return false;
   if (obj["announcementType"] != AnnouncementType.Profile) return false;
   if (!isDSNPUserId(obj["fromId"])) return false;
+  if (!isBigInt(obj["createdAt"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
 
