@@ -47,3 +47,13 @@ export class NoLogsFoundContractError extends ContractError {
     this.eventName = eventName;
   }
 }
+
+/**
+ * InvalidAnnouncementParameterError indicates that something other than an
+ * announcement was passed as an announcement.
+ */
+export class InvalidAnnouncementParameterError extends ContractError {
+  constructor(announcement: unknown) {
+    super(`Invalid announcement parameter: ${announcement}.`);
+  }
+}

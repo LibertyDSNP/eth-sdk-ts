@@ -21,4 +21,5 @@ export * from "./errors";
 export * from "./factories";
 export * from "./crypto";
 export * from "./serialization";
+export * from "./services";
 export * from "./validation";

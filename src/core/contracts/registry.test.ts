@@ -1,6 +1,8 @@
 import { ethers, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
+
 import { DSNPError } from "../errors";
+import { InvalidAnnouncementParameterError } from "./errors";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "../../test/hardhatRPC";
 import {
   changeAddress,
@@ -16,7 +18,7 @@ import {
 import { Identity__factory } from "../../types/typechain";
 import { setupConfig } from "../../test/sdkTestConfig";
 import { Permission } from "./identity";
-import { Announcement, sign } from "../announcements";
+import { createBroadcast, Announcement, SignedAnnouncement, sign } from "../announcements";
 import { generateBroadcast } from "../../generators/dsnpGenerators";
 import {
   getSignerForAccount,
@@ -25,7 +27,7 @@ import {
   RegistrationWithSigner,
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
-import { DSNPUserURI } from "../identifiers";
+import { convertDSNPUserURIToDSNPUserId, DSNPUserURI } from "../identifiers";
 import { EthereumAddress } from "../../types/Strings";
 import { mineBlocks } from "../../test/utilities";
 
@@ -390,7 +392,8 @@ describe("registry", () => {
   });
 
   describe("validateMessage", () => {
-    const msg: Announcement = generateBroadcast();
+    let msg: Announcement;
+    let signedAnnouncement: SignedAnnouncement;
 
     const permAllowed = Permission.ANNOUNCE;
     const permDenied = Permission.OWNERSHIP_TRANSFER;
@@ -407,8 +410,13 @@ describe("registry", () => {
       contractAddr = identityContract.address;
       const tx = await register(contractAddr, "Animaniacs");
       dsnpUserURI = await getURIFromRegisterTransaction(tx);
-      const signedMessage = await sign(msg);
-      sig = signedMessage.signature;
+      msg = createBroadcast(
+        convertDSNPUserURIToDSNPUserId(dsnpUserURI),
+        "https://fakeurl.org",
+        "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+      );
+      signedAnnouncement = await sign(msg);
+      sig = signedAnnouncement.signature;
     });
 
     afterAll(async () => {
@@ -416,7 +424,17 @@ describe("registry", () => {
     });
 
     it("returns true if the signer is authorized for the given permissions", async () => {
-      await expect(isSignatureAuthorizedTo(sig, msg, dsnpUserURI, permAllowed)).toBeTruthy();
+      await expect(isSignatureAuthorizedTo(sig, msg, dsnpUserURI, permAllowed)).resolves.toBeTruthy();
+    });
+
+    it("returns true if provided a signed announcement", async () => {
+      await expect(isSignatureAuthorizedTo(sig, signedAnnouncement, dsnpUserURI, permAllowed)).resolves.toBeTruthy();
+    });
+
+    it("throws if provided an invalid object as an announcement", async () => {
+      await expect(isSignatureAuthorizedTo(sig, 3 as unknown as string, dsnpUserURI, permAllowed)).rejects.toThrow(
+        InvalidAnnouncementParameterError
+      );
     });
 
     it("returns false if the signer is not authorized for the given permissions", async () => {

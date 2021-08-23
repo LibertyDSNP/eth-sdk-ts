@@ -1,15 +1,23 @@
 import { ethers, ContractTransaction } from "ethers";
 
 import { getContractAddress } from "./contract";
-import { MissingRegistrationError } from "./errors";
+import { MissingRegistrationError, InvalidAnnouncementParameterError } from "./errors";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetSigner, requireGetProvider } from "../config";
 import { Registry__factory, Registry } from "../../types/typechain";
 import { getDelegateIdentitiesFor, Permission } from "./identity";
 import { isAuthorizedTo } from "./identity";
-import { Announcement, serialize } from "../announcements";
+import {
+  Announcement,
+  SignedAnnouncement,
+  serialize,
+  convertSignedAnnouncementToAnnouncement,
+  isSignedAnnouncement,
+  isAnnouncement,
+} from "../announcements";
 import { convertBigNumberToDSNPUserURI, convertDSNPUserIdOrURIToBigNumber, DSNPUserURI } from "../identifiers";
 import { LogEventData } from "./utilities";
+import { isString } from "../utilities/validation";
 
 const CONTRACT_NAME = "Registry";
 
@@ -178,9 +186,9 @@ export const getDSNPRegistryUpdateEvents = async (
 };
 
 /**
- * isSignatureAuthorizedTo() validates a serialized message or announcement against a signature and then checks that the
- * signer has the permissions specified. Announcements should be passed as is,
- * without serializing, to guarantee consistent results.
+ * isSignatureAuthorizedTo() validates an announcement, either as a string, a
+ * SignedAnnouncement or unsigned Announcement, against a signature and then
+ * checks that the signer has the permissions specified.
  *
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
@@ -188,8 +196,10 @@ export const getDSNPRegistryUpdateEvents = async (
  * Thrown if a registration cannot be found for the given DSNP User URI.
  * @throws {@link MissingContractAddressError}
  * Thrown if the requested contract address cannot be found.
- * @param signature - the signature for the message
- * @param message - the signed announcement or string
+ * @throws {@link InvalidAnnouncementParameterError}
+ * Thrown if the announcement provided is invalid
+ * @param signature - the signature for the announcement
+ * @param announcement - the signed, unsigned or serialized announcement
  * @param dsnpUserURI - the DSNP User URI of the supposed signer
  * @param permission - the permissions to check for
  * @param blockTag - (optional). A block number or string BlockTag
@@ -199,7 +209,7 @@ export const getDSNPRegistryUpdateEvents = async (
  */
 export const isSignatureAuthorizedTo = async (
   signature: HexString,
-  message: Announcement | string,
+  announcement: SignedAnnouncement | Announcement | string,
   dsnpUserURI: DSNPUserURI,
   permission: Permission,
   blockTag?: ethers.providers.BlockTag,
@@ -221,7 +231,17 @@ export const isSignatureAuthorizedTo = async (
     const bn = (await provider?.getBlock(blockNumber))?.number;
     if (bn) blockNumber = bn;
   }
-  const signedString = typeof message === "string" ? (message as string) : serialize(message);
+
+  let signedString: string;
+  if (isString(announcement)) {
+    signedString = announcement;
+  } else if (isSignedAnnouncement(announcement)) {
+    signedString = serialize(convertSignedAnnouncementToAnnouncement(announcement));
+  } else if (isAnnouncement(announcement)) {
+    signedString = serialize(announcement);
+  } else {
+    throw new InvalidAnnouncementParameterError(announcement);
+  }
 
   const signerAddr = ethers.utils.verifyMessage(signedString, signature);
   return isAuthorizedTo(signerAddr, reg.contractAddr, permission, blockNumber);
