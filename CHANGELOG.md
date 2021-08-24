@@ -12,6 +12,7 @@
 - Changed content.tombstone() to throw InvalidTombstoneAnnouncementTypeError or InvalidTombstoneAnnouncementSignatureError depending on which aspect of the provided target is invalid instead of simply throwing InvalidTombstoneAnnouncementTypeError for both
 - Exported announcement.isValidEmoji() for testing emoji strings
 - Exported announcement.isValidSignature() for testing signature strings
+- Removed statistics from parquet files for signature and hash fields
 
 ### Added
 - Added announcement.isTombstoneableType() for testing if a given announcement type can be tombstoned

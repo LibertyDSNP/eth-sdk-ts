@@ -7,11 +7,11 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      fromId: { type: "BYTE_ARRAY" },
-      targetAnnouncementType: { type: "INT32" },
-      targetSignature: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
       createdAt: { type: "INT64" },
+      fromId: { type: "BYTE_ARRAY" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
+      targetAnnouncementType: { type: "INT32" },
+      targetSignature: { type: "BYTE_ARRAY", statistics: false },
     });
   });
 
@@ -19,12 +19,12 @@ describe("#getSchemaFor", () => {
     const result = getSchemaFor(1);
 
     expect(result).toEqual({
-      changeType: { type: "INT32" },
       announcementType: { type: "INT32" },
+      changeType: { type: "INT32" },
+      createdAt: { type: "INT64" },
       fromId: { type: "BYTE_ARRAY" },
       objectId: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
-      createdAt: { type: "INT64" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
     });
   });
 
@@ -33,11 +33,11 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      contentHash: { type: "BYTE_ARRAY" },
-      fromId: { type: "BYTE_ARRAY" },
-      url: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
+      contentHash: { type: "BYTE_ARRAY", statistics: false },
       createdAt: { type: "INT64" },
+      fromId: { type: "BYTE_ARRAY" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
+      url: { type: "BYTE_ARRAY" },
     });
   });
 
@@ -46,12 +46,12 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      contentHash: { type: "BYTE_ARRAY" },
+      contentHash: { type: "BYTE_ARRAY", statistics: false },
+      createdAt: { type: "INT64" },
       fromId: { type: "BYTE_ARRAY" },
       inReplyTo: { type: "BYTE_ARRAY" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
       url: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
-      createdAt: { type: "INT64" },
     });
   });
 
@@ -60,11 +60,11 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      contentHash: { type: "BYTE_ARRAY" },
-      fromId: { type: "BYTE_ARRAY" },
-      url: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
+      contentHash: { type: "BYTE_ARRAY", statistics: false },
       createdAt: { type: "INT64" },
+      fromId: { type: "BYTE_ARRAY" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
+      url: { type: "BYTE_ARRAY" },
     });
   });
 
@@ -73,11 +73,11 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
+      createdAt: { type: "INT64" },
       emoji: { type: "BYTE_ARRAY" },
       fromId: { type: "BYTE_ARRAY" },
       inReplyTo: { type: "BYTE_ARRAY" },
-      signature: { type: "BYTE_ARRAY" },
-      createdAt: { type: "INT64" },
+      signature: { type: "BYTE_ARRAY", statistics: false },
     });
   });
 
