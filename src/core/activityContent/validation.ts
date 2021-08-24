@@ -15,7 +15,7 @@ import {
   ActivityContentMention,
   ActivityContentLocation,
 } from "./factories";
-import { isDSNPUserId } from "../identifiers";
+import { isDSNPUserURI } from "../identifiers";
 import { isRecord, isString, isNumber, isArrayOfType } from "../utilities/validation";
 import { InvalidActivityContentError } from "./errors";
 
@@ -228,8 +228,8 @@ const requireIsActivityContentHashtag = (obj: unknown): obj is ActivityContentHa
 
 const requireIsActivityContentMention = (obj: unknown): obj is ActivityContentMention => {
   if (!isRecord(obj)) throw new InvalidActivityContentError(invalidRecordMessage("ActivityContentMention")); // this check is required for type checking to work
-  if (!isDSNPUserId(obj["id"]))
-    throw new InvalidActivityContentError("ActivityContentMention id is not a valid DSNPUserId");
+  if (!isDSNPUserURI(obj["id"]))
+    throw new InvalidActivityContentError("ActivityContentMention id is not a valid DSNPUserURI");
   if (obj["name"]) requireToString(obj["name"], "ActivityContentMention name");
   return true;
 };

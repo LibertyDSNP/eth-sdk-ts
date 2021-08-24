@@ -1,4 +1,4 @@
-import { DSNPUserId } from "../identifiers";
+import { DSNPUserURI } from "../identifiers";
 import { hash } from "../utilities";
 
 interface ActivityContentBase {
@@ -64,7 +64,7 @@ export interface ActivityContentHashtag {
  */
 export interface ActivityContentMention {
   type: "Mention";
-  id: DSNPUserId;
+  id: DSNPUserURI;
   name?: string;
 }
 
@@ -377,7 +377,7 @@ export const createHashtag = (name: string): ActivityContentHashtag => ({
  * @param options - Any additional fields for the ActivityContentMention
  * @returns An ActivityContentMention object
  */
-export const createMention = (id: DSNPUserId, options?: Partial<ActivityContentMention>): ActivityContentMention => ({
+export const createMention = (id: DSNPUserURI, options?: Partial<ActivityContentMention>): ActivityContentMention => ({
   type: "Mention",
   id,
   ...options,

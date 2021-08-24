@@ -567,8 +567,8 @@ describe("activity content validations", () => {
           content: "Hello world!",
           mediaType: "text/plain",
           tag: [
-            { type: "Mention", id: "0x1001", name: "Spoopy" },
-            { type: "Mention", id: "0x1002", name: "Snoopy" },
+            { type: "Mention", id: "dsnp://0x1001", name: "Spoopy" },
+            { type: "Mention", id: "dsnp://0x1002", name: "Snoopy" },
           ],
         },
         "with an audio attachment": {
@@ -1193,12 +1193,12 @@ describe("activity content validations", () => {
         },
         {
           name: "when a mention tag is invalid",
-          expErr: "ActivityContentMention id is not a valid DSNPUserId",
+          expErr: "ActivityContentMention id is not a valid DSNPUserURI",
           testObject: {
             "@context": "https://www.w3.org/ns/activitystreams",
             type: "Profile",
             content: "Me",
-            tag: [{ type: "Mention", id: 1234, name: "spoopy" }],
+            tag: [{ type: "Mention", id: "badwolf", name: "spoopy" }],
           },
         },
         {
