@@ -7,12 +7,7 @@ import { DSNPGraphChangeType, AnnouncementType } from "./core/announcements";
 import { Identity__factory } from "./types/typechain";
 import { setupConfig } from "./test/sdkTestConfig";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
-import {
-  convertBigNumberToDSNPUserId,
-  convertBigNumberToDSNPUserURI,
-  DSNPUserId,
-  DSNPUserURI,
-} from "./core/identifiers";
+import { convertToDSNPUserId, convertToDSNPUserURI, DSNPUserId, DSNPUserURI } from "./core/identifiers";
 
 describe("network", () => {
   let registerId: DSNPUserId;
@@ -32,8 +27,8 @@ describe("network", () => {
     const receipt = await txn.wait(1);
 
     const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-    registerURI = convertBigNumberToDSNPUserURI(registerEvent.args[0]);
-    registerId = convertBigNumberToDSNPUserId(registerEvent.args[0]);
+    registerURI = convertToDSNPUserURI(registerEvent.args[0]);
+    registerId = convertToDSNPUserId(registerEvent.args[0]);
   });
 
   afterAll(async () => {

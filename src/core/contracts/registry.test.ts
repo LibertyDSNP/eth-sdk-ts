@@ -27,7 +27,7 @@ import {
   RegistrationWithSigner,
 } from "../../test/testAccounts";
 import { generateHexString } from "@dsnp/test-generators";
-import { convertDSNPUserURIToDSNPUserId, DSNPUserURI } from "../identifiers";
+import { DSNPUserURI } from "../identifiers";
 import { EthereumAddress } from "../../types/Strings";
 import { mineBlocks } from "../../test/utilities";
 
@@ -194,15 +194,17 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
+      const { dsnpUserURI } = (await resolveRegistration(handle)) || {};
+
       const regs = await getDSNPRegistryUpdateEvents({
-        contractAddr: identityContractAddress,
+        dsnpUserURI,
       });
 
       const expected = expect.objectContaining({
         transactionHash: expect.any(String),
         blockNumber: expect.any(Number),
         contractAddr: identityContractAddress,
-        dsnpUserURI: "dsnp://0x" + Number(1000).toString(16),
+        dsnpUserURI,
         handle: handle,
       });
 
@@ -411,7 +413,7 @@ describe("registry", () => {
       const tx = await register(contractAddr, "Animaniacs");
       dsnpUserURI = await getURIFromRegisterTransaction(tx);
       msg = createBroadcast(
-        convertDSNPUserURIToDSNPUserId(dsnpUserURI),
+        dsnpUserURI,
         "https://fakeurl.org",
         "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
       );

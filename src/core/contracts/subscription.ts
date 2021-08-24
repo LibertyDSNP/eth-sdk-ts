@@ -6,8 +6,8 @@ import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
 import { LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
 import { RegistryUpdateLogData, getContract } from "./registry";
-import { convertBigNumberToDSNPUserURI } from "../identifiers";
 import { Registry } from "../../types/typechain";
+import { convertToDSNPUserURI } from "../identifiers";
 
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
@@ -145,7 +145,7 @@ const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Reg
     return {
       blockNumber,
       transactionHash,
-      dsnpUserURI: convertBigNumberToDSNPUserURI(id),
+      dsnpUserURI: convertToDSNPUserURI(id),
       contractAddr: addr,
       handle,
       transactionIndex: log.transactionIndex,

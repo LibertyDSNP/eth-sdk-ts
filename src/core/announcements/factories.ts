@@ -1,4 +1,4 @@
-import { convertDSNPUserURIToDSNPUserId, DSNPAnnouncementURI, DSNPUserId, DSNPUserURI } from "../identifiers";
+import { convertToDSNPUserId, DSNPAnnouncementURI, DSNPUserId, DSNPUserURI } from "../identifiers";
 import { HexString } from "../../types/Strings";
 import { createdAtOrNow } from "../utilities";
 
@@ -90,7 +90,7 @@ export const createTombstone = (
   targetAnnouncementType: targetType,
   targetSignature,
   createdAt: createdAtOrNow(createdAt),
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+  fromId: convertToDSNPUserId(fromURI),
 });
 
 /**
@@ -117,7 +117,7 @@ export const createBroadcast = (
   announcementType: AnnouncementType.Broadcast,
   contentHash: hash,
   createdAt: createdAtOrNow(createdAt),
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+  fromId: convertToDSNPUserId(fromURI),
   url,
 });
 
@@ -147,7 +147,7 @@ export const createReply = (
   announcementType: AnnouncementType.Reply,
   contentHash: hash,
   createdAt: createdAtOrNow(createdAt),
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+  fromId: convertToDSNPUserId(fromURI),
   inReplyTo,
   url,
 });
@@ -176,7 +176,7 @@ export const createReaction = (
   announcementType: AnnouncementType.Reaction,
   createdAt: createdAtOrNow(createdAt),
   emoji,
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+  fromId: convertToDSNPUserId(fromURI),
   inReplyTo,
 });
 
@@ -207,11 +207,11 @@ export const createFollowGraphChange = (
   followeeURI: DSNPUserURI,
   createdAt?: bigint
 ): GraphChangeAnnouncement => ({
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Follow,
   createdAt: createdAtOrNow(createdAt),
-  objectId: convertDSNPUserURIToDSNPUserId(followeeURI),
+  fromId: convertToDSNPUserId(fromURI),
+  objectId: convertToDSNPUserId(followeeURI),
 });
 
 /**
@@ -228,11 +228,11 @@ export const createUnfollowGraphChange = (
   followeeURI: DSNPUserURI,
   createdAt?: bigint
 ): GraphChangeAnnouncement => ({
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
   announcementType: AnnouncementType.GraphChange,
   changeType: DSNPGraphChangeType.Unfollow,
   createdAt: createdAtOrNow(createdAt),
-  objectId: convertDSNPUserURIToDSNPUserId(followeeURI),
+  fromId: convertToDSNPUserId(fromURI),
+  objectId: convertToDSNPUserId(followeeURI),
 });
 
 /**
@@ -258,6 +258,6 @@ export const createProfile = (
   announcementType: AnnouncementType.Profile,
   contentHash: hash,
   createdAt: createdAtOrNow(createdAt),
-  fromId: convertDSNPUserURIToDSNPUserId(fromURI),
+  fromId: convertToDSNPUserId(fromURI),
   url,
 });

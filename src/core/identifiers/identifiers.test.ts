@@ -1,9 +1,7 @@
 import {
   buildDSNPAnnouncementURI,
-  convertBigNumberToDSNPUserId,
-  convertBigNumberToDSNPUserURI,
-  convertDSNPUserIdOrURIToBigNumber,
-  convertDSNPUserURIToDSNPUserId,
+  convertToDSNPUserId,
+  convertToDSNPUserURI,
   isDSNPAnnouncementURI,
   isDSNPUserURI,
   parseDSNPAnnouncementURI,
@@ -12,16 +10,12 @@ import { BigNumber } from "ethers";
 
 describe("identifiers", () => {
   describe("isDSNPUserURI", () => {
-    const validDSNPUserURIs = [
-      "dsnp://0xa123456789abcdef", // Lowercase
-    ];
+    const validDSNPUserURIs = ["dsnp://0xa123456789abcdef"];
 
     const invalidDSNPUserURIs = [
-      "dsnp://0xa123456789ABCDEF", // Uppercase
-      "dsnp://0x0000456789abcdef", // Leading Zeros
-      "dsnp://0123456789abcdef", // No 0x user
-      "dsnp://0xbadwolf", // Bad user URI
-      "dsnp://0xa123456789abcdefa", // URI too long
+      "dsnp://123", // hex
+      "dsnp://badwolf", // Bad user URI
+      "dsnp://184467440737095516150", // URI too long
     ];
 
     for (const id of validDSNPUserURIs) {
@@ -97,43 +91,39 @@ describe("identifiers", () => {
     });
   });
 
-  describe("convertBigNumberToDSNPUserId", () => {
-    it("is prefixed with 0x", () => {
-      expect(convertBigNumberToDSNPUserId(BigNumber.from(4660))).toEqual("0x1234");
+  describe("convertToDSNPUserURI", () => {
+    it("big number", () => {
+      expect(convertToDSNPUserURI(BigNumber.from(4660))).toEqual("dsnp://0x1234");
+    });
+
+    it("number", () => {
+      expect(convertToDSNPUserURI(4660)).toEqual("dsnp://0x1234");
+    });
+
+    it("hex string", () => {
+      expect(convertToDSNPUserURI("0x0001234")).toEqual("dsnp://0x1234");
+    });
+
+    it("dsnp user uri", () => {
+      expect(convertToDSNPUserURI("dsnp://0x1234")).toEqual("dsnp://0x1234");
     });
   });
 
-  describe("convertDSNPUserIdOrURIToBigNumber", () => {
-    it("can convert a DSNP URI", () => {
-      const result = convertDSNPUserIdOrURIToBigNumber("dsnp://0x1234");
-      expect(BigNumber.isBigNumber(result)).toBeTruthy();
-      expect(result.toNumber()).toEqual(0x1234);
+  describe("convertToDSNPUserId", () => {
+    it("big number", () => {
+      expect(convertToDSNPUserId(BigNumber.from(4660))).toEqual("0x1234");
     });
 
-    it("can convert a DSNP Id", () => {
-      const result = convertDSNPUserIdOrURIToBigNumber("0x01234");
-      expect(BigNumber.isBigNumber(result)).toBeTruthy();
-      expect(result.toNumber()).toEqual(0x1234);
+    it("number", () => {
+      expect(convertToDSNPUserId(4660)).toEqual("0x1234");
     });
 
-    it("can convert a DSNP Id even without the prefix", () => {
-      const result = convertDSNPUserIdOrURIToBigNumber("1234");
-      expect(BigNumber.isBigNumber(result)).toBeTruthy();
-      expect(result.toNumber()).toEqual(0x1234);
+    it("hex string", () => {
+      expect(convertToDSNPUserId("0x0001234")).toEqual("0x1234");
     });
-  });
 
-  describe("convertBigNumberToDSNPUserURI", () => {
-    it("has no zero padding", () => {
-      const result = convertBigNumberToDSNPUserURI(BigNumber.from("0x000000123"));
-      expect(result).toEqual("dsnp://0x123");
-    });
-  });
-
-  describe("convertDSNPUserURIToDSNPUserId", () => {
-    it("returns no leading zeros", () => {
-      const result = convertDSNPUserURIToDSNPUserId("dsnp://0x123");
-      expect(result).toEqual("0x123");
+    it("dsnp user uri", () => {
+      expect(convertToDSNPUserId("dsnp://0x1234")).toEqual("0x1234");
     });
   });
 });
