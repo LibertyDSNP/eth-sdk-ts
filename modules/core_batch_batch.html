@@ -74,7 +74,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#includes" class="tsd-kind-icon">includes</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openFile" class="tsd-kind-icon">open<wbr>File</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#openURL" class="tsd-kind-icon">openURL</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_batch.html#readFile" class="tsd-kind-icon">read<wbr>File</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_batch.html#readFile" class="tsd-kind-icon">read<wbr>File</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_batch.html#writeBatch" class="tsd-kind-icon">write<wbr>Batch</a></li>
 							</ul>
 						</section>
@@ -244,11 +244,11 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="readFile" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> read<wbr>File</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>File<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, doReadRow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReadRowFunction</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">read<wbr>File&lt;T&gt;<span class="tsd-signature-symbol">(</span>reader<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, doReadRow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReadRowFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -258,7 +258,19 @@
 								<div class="lead">
 									<p>readFile() reads a Parquet file by row.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p><a href="../classes/core_announcements_errors.InvalidAnnouncementTypeError.html">InvalidAnnouncementTypeError</a>
+										Thrown if the provided announcementType enum is not a valid value.</p>
+									</dd>
+								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="core_announcements_crypto.html#SignedAnnouncement" class="tsd-signature-type" data-tsd-kind="Type alias">SignedAnnouncement</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -268,7 +280,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>doReadRow: <span class="tsd-signature-type">ReadRowFunction</span></h5>
+									<h5>doReadRow: <span class="tsd-signature-type">ReadRowFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The callback for each row</p>
 									</div>
@@ -283,7 +295,7 @@
 					<a name="writeBatch" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> write<wbr>Batch</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">write<wbr>Batch&lt;T&gt;<span class="tsd-signature-symbol">(</span>writeStream<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_store_interface.WriteStream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a>, schema<span class="tsd-signature-symbol">: </span><a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a>, announcements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">write<wbr>Batch&lt;T&gt;<span class="tsd-signature-symbol">(</span>writeStream<span class="tsd-signature-symbol">: </span><a href="../interfaces/core_store_interface.WriteStream.html" class="tsd-signature-type" data-tsd-kind="Interface">WriteStream</a>, schema<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, announcements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SignedAnnouncementIterable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -320,7 +332,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>schema: <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></h5>
+									<h5>schema: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The ParquetJS schema for the announcements announcement type</p>
 									</div>
@@ -370,7 +382,7 @@
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_batch_batch.html#openURL" class="tsd-kind-icon">openURL</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="core_batch_batch.html#readFile" class="tsd-kind-icon">read<wbr>File</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
@@ -393,11 +405,10 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

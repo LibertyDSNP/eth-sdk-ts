@@ -78,6 +78,8 @@
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#DSNPGraphChangeType" class="tsd-kind-icon">DSNPGraph<wbr>Change<wbr>Type</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#GraphChangeAnnouncement" class="tsd-kind-icon">Graph<wbr>Change<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#InvalidAnnouncementTypeError" class="tsd-kind-icon">Invalid<wbr>Announcement<wbr>Type<wbr>Error</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#InvalidEmojiStringError" class="tsd-kind-icon">Invalid<wbr>Emoji<wbr>String<wbr>Error</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#InvalidTombstoneAnnouncementSignatureError" class="tsd-kind-icon">Invalid<wbr>Tombstone<wbr>Announcement<wbr>Signature<wbr>Error</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#InvalidTombstoneAnnouncementTypeError" class="tsd-kind-icon">Invalid<wbr>Tombstone<wbr>Announcement<wbr>Type<wbr>Error</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#ProfileAnnouncement" class="tsd-kind-icon">Profile<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#ReactionAnnouncement" class="tsd-kind-icon">Reaction<wbr>Announcement</a></li>
@@ -91,6 +93,7 @@
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#SignedTombstoneAnnouncement" class="tsd-kind-icon">Signed<wbr>Tombstone<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#TombstoneAnnouncement" class="tsd-kind-icon">Tombstone<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#TypedAnnouncement" class="tsd-kind-icon">Typed<wbr>Announcement</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#convertSignedAnnouncementToAnnouncement" class="tsd-kind-icon">convert<wbr>Signed<wbr>Announcement<wbr>ToAnnouncement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#createBroadcast" class="tsd-kind-icon">create<wbr>Broadcast</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#createFollowGraphChange" class="tsd-kind-icon">create<wbr>Follow<wbr>Graph<wbr>Change</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#createProfile" class="tsd-kind-icon">create<wbr>Profile</a></li>
@@ -108,10 +111,12 @@
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isReplyAnnouncement" class="tsd-kind-icon">is<wbr>Reply<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isSignedAnnouncement" class="tsd-kind-icon">is<wbr>Signed<wbr>Announcement</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isTombstoneAnnouncement" class="tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isTombstoneableType" class="tsd-kind-icon">is<wbr>Tombstoneable<wbr>Type</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isValidAnnouncement" class="tsd-kind-icon">is<wbr>Valid<wbr>Announcement</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isValidEmoji" class="tsd-kind-icon">is<wbr>Valid<wbr>Emoji</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#isValidSignature" class="tsd-kind-icon">is<wbr>Valid<wbr>Signature</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#recoverPublicKey" class="tsd-kind-icon">recover<wbr>Public<wbr>Key</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#serialize" class="tsd-kind-icon">serialize</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#serializeToHex" class="tsd-kind-icon">serialize<wbr>ToHex</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="core_announcements.html#sign" class="tsd-kind-icon">sign</a></li>
 							</ul>
 						</section>
@@ -143,7 +148,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="BroadcastAnnouncement" class="tsd-anchor"></a>
 					<h3>Broadcast<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.BroadcastAnnouncement.html">BroadcastAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#BroadcastAnnouncement">BroadcastAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="DSNPGraphChangeType" class="tsd-anchor"></a>
@@ -153,12 +158,22 @@
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="GraphChangeAnnouncement" class="tsd-anchor"></a>
 					<h3>Graph<wbr>Change<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.GraphChangeAnnouncement.html">GraphChangeAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#GraphChangeAnnouncement">GraphChangeAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="InvalidAnnouncementTypeError" class="tsd-anchor"></a>
 					<h3>Invalid<wbr>Announcement<wbr>Type<wbr>Error</h3>
 					Re-exports <a href="../classes/core_announcements_errors.InvalidAnnouncementTypeError.html">InvalidAnnouncementTypeError</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="InvalidEmojiStringError" class="tsd-anchor"></a>
+					<h3>Invalid<wbr>Emoji<wbr>String<wbr>Error</h3>
+					Re-exports <a href="../classes/core_announcements_errors.InvalidEmojiStringError.html">InvalidEmojiStringError</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="InvalidTombstoneAnnouncementSignatureError" class="tsd-anchor"></a>
+					<h3>Invalid<wbr>Tombstone<wbr>Announcement<wbr>Signature<wbr>Error</h3>
+					Re-exports <a href="../classes/core_announcements_errors.InvalidTombstoneAnnouncementSignatureError.html">InvalidTombstoneAnnouncementSignatureError</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="InvalidTombstoneAnnouncementTypeError" class="tsd-anchor"></a>
@@ -168,17 +183,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="ProfileAnnouncement" class="tsd-anchor"></a>
 					<h3>Profile<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.ProfileAnnouncement.html">ProfileAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#ProfileAnnouncement">ProfileAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="ReactionAnnouncement" class="tsd-anchor"></a>
 					<h3>Reaction<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.ReactionAnnouncement.html">ReactionAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#ReactionAnnouncement">ReactionAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="ReplyAnnouncement" class="tsd-anchor"></a>
 					<h3>Reply<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.ReplyAnnouncement.html">ReplyAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#ReplyAnnouncement">ReplyAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="SignedAnnouncement" class="tsd-anchor"></a>
@@ -218,12 +233,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="TombstoneAnnouncement" class="tsd-anchor"></a>
 					<h3>Tombstone<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.TombstoneAnnouncement.html">TombstoneAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#TombstoneAnnouncement">TombstoneAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="TypedAnnouncement" class="tsd-anchor"></a>
 					<h3>Typed<wbr>Announcement</h3>
-					Re-exports <a href="../interfaces/core_announcements_factories.TypedAnnouncement.html">TypedAnnouncement</a>
+					Re-exports <a href="core_announcements_factories.html#TypedAnnouncement">TypedAnnouncement</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="convertSignedAnnouncementToAnnouncement" class="tsd-anchor"></a>
+					<h3>convert<wbr>Signed<wbr>Announcement<wbr>ToAnnouncement</h3>
+					Re-exports <a href="core_announcements_services.html#convertSignedAnnouncementToAnnouncement">convertSignedAnnouncementToAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="createBroadcast" class="tsd-anchor"></a>
@@ -311,9 +331,24 @@
 					Re-exports <a href="core_announcements_validation.html#isTombstoneAnnouncement">isTombstoneAnnouncement</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isTombstoneableType" class="tsd-anchor"></a>
+					<h3>is<wbr>Tombstoneable<wbr>Type</h3>
+					Re-exports <a href="core_announcements_validation.html#isTombstoneableType">isTombstoneableType</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="isValidAnnouncement" class="tsd-anchor"></a>
 					<h3>is<wbr>Valid<wbr>Announcement</h3>
 					Re-exports <a href="core_announcements_validation.html#isValidAnnouncement">isValidAnnouncement</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isValidEmoji" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Emoji</h3>
+					Re-exports <a href="core_announcements_validation.html#isValidEmoji">isValidEmoji</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isValidSignature" class="tsd-anchor"></a>
+					<h3>is<wbr>Valid<wbr>Signature</h3>
+					Re-exports <a href="core_announcements_validation.html#isValidSignature">isValidSignature</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="recoverPublicKey" class="tsd-anchor"></a>
@@ -324,11 +359,6 @@
 					<a name="serialize" class="tsd-anchor"></a>
 					<h3>serialize</h3>
 					Re-exports <a href="core_announcements_serialization.html#serialize">serialize</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="serializeToHex" class="tsd-anchor"></a>
-					<h3>serialize<wbr>ToHex</h3>
-					Re-exports <a href="core_announcements_serialization.html#serializeToHex">serializeToHex</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="sign" class="tsd-anchor"></a>
@@ -375,6 +405,12 @@
 						<a href="core_announcements.html#InvalidAnnouncementTypeError" class="tsd-kind-icon">Invalid<wbr>Announcement<wbr>Type<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#InvalidEmojiStringError" class="tsd-kind-icon">Invalid<wbr>Emoji<wbr>String<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#InvalidTombstoneAnnouncementSignatureError" class="tsd-kind-icon">Invalid<wbr>Tombstone<wbr>Announcement<wbr>Signature<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#InvalidTombstoneAnnouncementTypeError" class="tsd-kind-icon">Invalid<wbr>Tombstone<wbr>Announcement<wbr>Type<wbr>Error</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
@@ -412,6 +448,9 @@
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#TypedAnnouncement" class="tsd-kind-icon">Typed<wbr>Announcement</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#convertSignedAnnouncementToAnnouncement" class="tsd-kind-icon">convert<wbr>Signed<wbr>Announcement<wbr>ToAnnouncement</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#createBroadcast" class="tsd-kind-icon">create<wbr>Broadcast</a>
@@ -465,16 +504,22 @@
 						<a href="core_announcements.html#isTombstoneAnnouncement" class="tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#isTombstoneableType" class="tsd-kind-icon">is<wbr>Tombstoneable<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#isValidAnnouncement" class="tsd-kind-icon">is<wbr>Valid<wbr>Announcement</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#isValidEmoji" class="tsd-kind-icon">is<wbr>Valid<wbr>Emoji</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="core_announcements.html#isValidSignature" class="tsd-kind-icon">is<wbr>Valid<wbr>Signature</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#recoverPublicKey" class="tsd-kind-icon">recover<wbr>Public<wbr>Key</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#serialize" class="tsd-kind-icon">serialize</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="core_announcements.html#serializeToHex" class="tsd-kind-icon">serialize<wbr>ToHex</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="core_announcements.html#sign" class="tsd-kind-icon">sign</a>
@@ -496,11 +541,10 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

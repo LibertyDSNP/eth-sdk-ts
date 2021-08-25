@@ -77,7 +77,7 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="core_batch_parquetSchema.html#Schema" class="tsd-kind-icon">Schema</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_parquetSchema.html#Schema" class="tsd-kind-icon">Schema</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -100,8 +100,8 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_parquetSchema.html#getBloomFilterOptionsFor" class="tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_batch_parquetSchema.html#getSchemaFor" class="tsd-kind-icon">get<wbr>Schema<wbr>For</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_parquetSchema.html#getBloomFilterOptionsFor" class="tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="core_batch_parquetSchema.html#getSchemaFor" class="tsd-kind-icon">get<wbr>Schema<wbr>For</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,12 +109,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="Schema" class="tsd-anchor"></a>
 					<h3>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">columnName</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">typing</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">Schema&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{</span><span class="tsd-signature-symbol">[ </span><span class="tsd-signature-type">Property</span><span class="tsd-signature-symbol"> in </span><span class="tsd-signature-symbol">keyof </span><a href="core_announcements_crypto.html#AnnouncementWithSignature" class="tsd-signature-type" data-tsd-kind="Type alias">AnnouncementWithSignature</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>statistics<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Parquet Schema for an announcement type</p>
+						</div>
+					</div>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -134,66 +145,13 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="BroadcastSchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Broadcast<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Broadcast<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>contentHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Broadcast<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#Broadcast" class="tsd-signature-type" data-tsd-kind="Enumeration member">Broadcast</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Broadcast: a public post</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>content<wbr>Hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
@@ -219,7 +177,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="GraphChangeSchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Graph<wbr>Change<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Graph<wbr>Change<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>changeType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>objectId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Graph<wbr>Change<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#GraphChange" class="tsd-signature-type" data-tsd-kind="Enumeration member">GraphChange</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -227,59 +185,6 @@
 							<p>GraphChange: a public follow/unfollow
 							Note followType will be only 0 or 1; other values are invalid</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>change<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>object<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
@@ -305,66 +210,13 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="ProfileSchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Profile<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Profile<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>contentHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Profile<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#Profile" class="tsd-signature-type" data-tsd-kind="Enumeration member">Profile</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Profile - a profile change message</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>content<wbr>Hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
@@ -390,66 +242,13 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="ReactionSchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Reaction<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Reaction<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>emoji<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>inReplyTo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Reaction<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reaction" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reaction</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Reaction: a visual reply to a Broadcast message (aka post)</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>emoji<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>in<wbr>Reply<wbr>To<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
@@ -475,74 +274,13 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="ReplySchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Reply<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Reply<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>contentHash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>inReplyTo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Reply<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reply" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reply</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Reply: A public reply post</p>
 						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>content<wbr>Hash<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>in<wbr>Reply<wbr>To<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
@@ -560,7 +298,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="TombstoneSchema" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> Tombstone<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">Tombstone<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>targetAnnouncementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>targetSignature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<div class="tsd-signature tsd-kind-icon">Tombstone<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><a href="../enums/core_announcements_factories.AnnouncementType.html#Tombstone" class="tsd-signature-type" data-tsd-kind="Enumeration member">Tombstone</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -568,68 +306,15 @@
 							<p>Tombstone: a public tombstone post</p>
 						</div>
 					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>created<wbr>At<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>from<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>target<wbr>Announcement<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-							<li class="tsd-parameter">
-								<h5>target<wbr>Signature<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="getBloomFilterOptionsFor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For&lt;T&gt;<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">BloomFilterOptions</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -646,10 +331,16 @@
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>announcementType: <a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h5>
+									<h5>announcementType: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>a announcementType</p>
 									</div>
@@ -660,11 +351,11 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="getSchemaFor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> get<wbr>Schema<wbr>For</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Schema<wbr>For<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></li>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Schema<wbr>For&lt;T&gt;<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -681,16 +372,22 @@
 									</dd>
 								</dl>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>announcementType: <a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h5>
+									<h5>announcementType: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>a announcementType</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="core_batch_parquetSchema.html#Schema" class="tsd-signature-type" data-tsd-kind="Type alias">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>The corresponding parquet schema</p>
 						</li>
 					</ul>
@@ -716,7 +413,7 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/core_batch_parquetSchema.BloomFilterOptions.html" class="tsd-kind-icon">Bloom<wbr>Filter<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="core_batch_parquetSchema.html#Schema" class="tsd-kind-icon">Schema</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
@@ -755,10 +452,10 @@
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="core_batch_parquetSchema.html#TombstoneSchema" class="tsd-kind-icon">Tombstone<wbr>Schema</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="core_batch_parquetSchema.html#getBloomFilterOptionsFor" class="tsd-kind-icon">get<wbr>Bloom<wbr>Filter<wbr>Options<wbr>For</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="core_batch_parquetSchema.html#getSchemaFor" class="tsd-kind-icon">get<wbr>Schema<wbr>For</a>
 					</li>
 				</ul>
@@ -778,11 +475,10 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

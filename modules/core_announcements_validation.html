@@ -80,7 +80,10 @@
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isReplyAnnouncement" class="tsd-kind-icon">is<wbr>Reply<wbr>Announcement</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isSignedAnnouncement" class="tsd-kind-icon">is<wbr>Signed<wbr>Announcement</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isTombstoneAnnouncement" class="tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isTombstoneableType" class="tsd-kind-icon">is<wbr>Tombstoneable<wbr>Type</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isValidAnnouncement" class="tsd-kind-icon">is<wbr>Valid<wbr>Announcement</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isValidEmoji" class="tsd-kind-icon">is<wbr>Valid<wbr>Emoji</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="core_announcements_validation.html#isValidSignature" class="tsd-kind-icon">is<wbr>Valid<wbr>Signature</a></li>
 							</ul>
 						</section>
 					</div>
@@ -150,7 +153,7 @@
 					<a name="isBroadcastAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Broadcast<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Broadcast<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.BroadcastAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">BroadcastAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Broadcast<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Broadcast" class="tsd-signature-type" data-tsd-kind="Enumeration member">Broadcast</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">BroadcastFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -170,7 +173,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.BroadcastAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">BroadcastAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Broadcast" class="tsd-signature-type" data-tsd-kind="Enumeration member">Broadcast</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">BroadcastFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></h4>
 							<p>True if the object is a BroadcastAnnouncement, otherwise false</p>
 						</li>
 					</ul>
@@ -179,7 +182,7 @@
 					<a name="isGraphChangeAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Graph<wbr>Change<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Graph<wbr>Change<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.GraphChangeAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">GraphChangeAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Graph<wbr>Change<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#GraphChange" class="tsd-signature-type" data-tsd-kind="Enumeration member">GraphChange</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">GraphChangeFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -199,7 +202,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.GraphChangeAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">GraphChangeAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#GraphChange" class="tsd-signature-type" data-tsd-kind="Enumeration member">GraphChange</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">GraphChangeFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></h4>
 							<p>True if the object is a GraphChangeAnnouncement, otherwise false</p>
 						</li>
 					</ul>
@@ -237,7 +240,7 @@
 					<a name="isProfileAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Profile<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Profile<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ProfileAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ProfileAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Profile<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Profile" class="tsd-signature-type" data-tsd-kind="Enumeration member">Profile</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ProfileFields</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -257,7 +260,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ProfileAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ProfileAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Profile" class="tsd-signature-type" data-tsd-kind="Enumeration member">Profile</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ProfileFields</span></h4>
 							<p>True if the object is a ProfileAnnouncement, otherwise false</p>
 						</li>
 					</ul>
@@ -266,7 +269,7 @@
 					<a name="isReactionAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Reaction<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Reaction<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ReactionAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ReactionAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Reaction<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reaction" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reaction</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReactionFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -286,7 +289,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ReactionAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ReactionAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reaction" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reaction</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReactionFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></h4>
 							<p>True if the object is a ReactionAnnouncement, otherwise false</p>
 						</li>
 					</ul>
@@ -295,7 +298,7 @@
 					<a name="isReplyAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Reply<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Reply<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ReplyAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ReplyAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Reply<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reply" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reply</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReplyFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -315,7 +318,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.ReplyAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">ReplyAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Reply" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reply</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">ReplyFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></h4>
 							<p>True if the object is a ReplyAnnouncement, otherwise false</p>
 						</li>
 					</ul>
@@ -353,7 +356,7 @@
 					<a name="isTombstoneAnnouncement" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Tombstone<wbr>Announcement</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.TombstoneAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">TombstoneAnnouncement</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Tombstone" class="tsd-signature-type" data-tsd-kind="Enumeration member">Tombstone</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">TombstoneFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -373,8 +376,38 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><a href="../interfaces/core_announcements_factories.TombstoneAnnouncement.html" class="tsd-signature-type" data-tsd-kind="Interface">TombstoneAnnouncement</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">obj</span><span class="tsd-signature-symbol"> is </span><span class="tsd-signature-symbol">{ </span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html#Tombstone" class="tsd-signature-type" data-tsd-kind="Enumeration member">Tombstone</a><span class="tsd-signature-symbol">; </span>createdAt<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol">; </span>fromId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">bigint</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">TombstoneFields</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">never</span></h4>
 							<p>True if the object is a TombstoneAnnouncement, otherwise false</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isTombstoneableType" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Tombstoneable<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Tombstoneable<wbr>Type<span class="tsd-signature-symbol">(</span>announcementType<span class="tsd-signature-symbol">: </span><a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>isTombstoneableType() is a helper function for checking if a particular
+									announcement type can be tombstoned.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>announcementType: <a href="../enums/core_announcements_factories.AnnouncementType.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AnnouncementType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The announcement type to check</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if the announcement type can be tombstoned, otherwise false</p>
 						</li>
 					</ul>
 				</section>
@@ -414,6 +447,66 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>True if the announcement is valid, otherwise false</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isValidEmoji" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Emoji</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Emoji<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>isValidEmoji() is a helper function for checking if a given emoji string is
+									valid according to the spec.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to test</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if the given object is a valid emoji, otherwise false</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="isValidSignature" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Valid<wbr>Signature</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Valid<wbr>Signature<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>isValidSignature() is a helper function for checking if a given signature is
+									properly formatted.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">unknown</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to test</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if the given object is a valid signature, otherwise false</p>
 						</li>
 					</ul>
 				</section>
@@ -463,7 +556,16 @@
 						<a href="core_announcements_validation.html#isTombstoneAnnouncement" class="tsd-kind-icon">is<wbr>Tombstone<wbr>Announcement</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_announcements_validation.html#isTombstoneableType" class="tsd-kind-icon">is<wbr>Tombstoneable<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="core_announcements_validation.html#isValidAnnouncement" class="tsd-kind-icon">is<wbr>Valid<wbr>Announcement</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_announcements_validation.html#isValidEmoji" class="tsd-kind-icon">is<wbr>Valid<wbr>Emoji</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="core_announcements_validation.html#isValidSignature" class="tsd-kind-icon">is<wbr>Valid<wbr>Signature</a>
 					</li>
 				</ul>
 			</nav>
@@ -482,11 +584,10 @@
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
