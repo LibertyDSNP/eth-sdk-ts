@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [3.0.0] - 2021-08-25
 ### Changed
 - BREAKING: Changed batch.readFile() to pass parsed announcements instead of parquet records to callback
 - BREAKING: Changed createdAt on announcements to BigInt instead of number
