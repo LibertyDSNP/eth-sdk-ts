@@ -30,7 +30,7 @@ describe("dsnp functions", () => {
     const dsnpMsg = generateBroadcast();
     expect(dsnpMsg).not.toBeUndefined();
     expect(dsnpMsg.announcementType).toEqual(AnnouncementType.Broadcast);
-    expect(dsnpMsg.fromId.length).toBeGreaterThan(0);
+    expect(dsnpMsg.fromId).toBeGreaterThan(0);
 
     // validates that it gets a parseable URL and not garbage.
     const url = new URL(dsnpMsg.url);

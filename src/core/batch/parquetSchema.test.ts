@@ -7,8 +7,8 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      createdAt: { type: "INT64" },
-      fromId: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      fromId: { type: "UINT_64" },
       signature: { type: "BYTE_ARRAY", statistics: false },
       targetAnnouncementType: { type: "INT32" },
       targetSignature: { type: "BYTE_ARRAY", statistics: false },
@@ -21,9 +21,9 @@ describe("#getSchemaFor", () => {
     expect(result).toEqual({
       announcementType: { type: "INT32" },
       changeType: { type: "INT32" },
-      createdAt: { type: "INT64" },
-      fromId: { type: "BYTE_ARRAY" },
-      objectId: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      fromId: { type: "UINT_64" },
+      objectId: { type: "UINT_64" },
       signature: { type: "BYTE_ARRAY", statistics: false },
     });
   });
@@ -34,10 +34,10 @@ describe("#getSchemaFor", () => {
     expect(result).toEqual({
       announcementType: { type: "INT32" },
       contentHash: { type: "BYTE_ARRAY", statistics: false },
-      createdAt: { type: "INT64" },
-      fromId: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      fromId: { type: "UINT_64" },
       signature: { type: "BYTE_ARRAY", statistics: false },
-      url: { type: "BYTE_ARRAY" },
+      url: { type: "UTF8" },
     });
   });
 
@@ -47,11 +47,11 @@ describe("#getSchemaFor", () => {
     expect(result).toEqual({
       announcementType: { type: "INT32" },
       contentHash: { type: "BYTE_ARRAY", statistics: false },
-      createdAt: { type: "INT64" },
-      fromId: { type: "BYTE_ARRAY" },
-      inReplyTo: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      fromId: { type: "UINT_64" },
+      inReplyTo: { type: "UTF8" },
       signature: { type: "BYTE_ARRAY", statistics: false },
-      url: { type: "BYTE_ARRAY" },
+      url: { type: "UTF8" },
     });
   });
 
@@ -61,10 +61,10 @@ describe("#getSchemaFor", () => {
     expect(result).toEqual({
       announcementType: { type: "INT32" },
       contentHash: { type: "BYTE_ARRAY", statistics: false },
-      createdAt: { type: "INT64" },
-      fromId: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      fromId: { type: "UINT_64" },
       signature: { type: "BYTE_ARRAY", statistics: false },
-      url: { type: "BYTE_ARRAY" },
+      url: { type: "UTF8" },
     });
   });
 
@@ -73,10 +73,10 @@ describe("#getSchemaFor", () => {
 
     expect(result).toEqual({
       announcementType: { type: "INT32" },
-      createdAt: { type: "INT64" },
-      emoji: { type: "BYTE_ARRAY" },
-      fromId: { type: "BYTE_ARRAY" },
-      inReplyTo: { type: "BYTE_ARRAY" },
+      createdAt: { type: "UINT_64" },
+      emoji: { type: "UTF8" },
+      fromId: { type: "UINT_64" },
+      inReplyTo: { type: "UTF8" },
       signature: { type: "BYTE_ARRAY", statistics: false },
     });
   });

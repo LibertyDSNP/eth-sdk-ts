@@ -9,12 +9,12 @@ import {
   ReactionAnnouncement,
   ReplyAnnouncement,
 } from "../core/announcements";
-import { EthereumAddress } from "../types/Strings";
 import { generateHexString, randInt, sample } from "@dsnp/test-generators";
-import { addresses, sampleText } from "@dsnp/test-generators/";
+import { sampleText } from "@dsnp/test-generators/";
+import { convertToDSNPUserURI, DSNPUserURI } from "../core/identifiers";
 
 const PREFAB_URLS = sampleText.prefabURLs;
-const generateEthereumAddress = addresses.generateEthereumAddress;
+const generateDSNPUri = () => convertToDSNPUserURI(BigInt(randInt(100000)));
 
 /**
  * generateDSNPStream is meant to simulate incoming Announcements of all kinds.
@@ -72,26 +72,21 @@ export const writeFixture = (data: Array<Announcement>, jsonFilePath: string): n
   return ws.bytesWritten;
 };
 
-export const generateBroadcast = (from?: EthereumAddress): BroadcastAnnouncement =>
-  createBroadcast(from ? from : generateEthereumAddress(), sample(PREFAB_URLS), generateHexString(64));
+export const generateBroadcast = (from?: DSNPUserURI): BroadcastAnnouncement =>
+  createBroadcast(from ? from : generateDSNPUri(), sample(PREFAB_URLS), generateHexString(64));
 
 /**
  * generateReply
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReply = (from?: EthereumAddress): ReplyAnnouncement =>
-  createReply(
-    from ? from : generateEthereumAddress(),
-    sample(PREFAB_URLS),
-    generateHexString(64),
-    generateHexString(64)
-  );
+export const generateReply = (from?: DSNPUserURI): ReplyAnnouncement =>
+  createReply(from ? from : generateDSNPUri(), sample(PREFAB_URLS), generateHexString(64), generateHexString(64));
 
 /**
  * generateReaction
  *
  * @param from - a desired fromID (optional)
  */
-export const generateReaction = (from?: EthereumAddress): ReactionAnnouncement =>
-  createReaction(from ? from : generateEthereumAddress(), generateHexString(20), generateHexString(64));
+export const generateReaction = (from?: DSNPUserURI): ReactionAnnouncement =>
+  createReaction(from ? from : generateDSNPUri(), generateHexString(20), generateHexString(64));

@@ -9,17 +9,3 @@ export class DSNPError extends Error {
     this.name = this.constructor.name;
   }
 }
-
-/**
- * InvalidHexadecimalSerialization indicates an attempt to coerce a string to hexadecimal serialization failed.
- */
-export class InvalidHexadecimalSerialization extends DSNPError {
-  outcomeValue: string;
-  originalValue: unknown;
-
-  constructor(originalValue: unknown, outcomeValue: string) {
-    super(`Invalid Hexadecimal Serialization: ${outcomeValue}`);
-    this.outcomeValue = outcomeValue;
-    this.originalValue = originalValue;
-  }
-}

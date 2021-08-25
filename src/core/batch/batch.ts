@@ -3,10 +3,11 @@ import { ParquetReader, ParquetSchema, ParquetWriter } from "@dsnp/parquetjs";
 import { AnnouncementType, AnnouncementWithSignature, SignedAnnouncement } from "../announcements";
 import { EmptyBatchError, MixedTypeBatchError } from "./errors";
 import { ConfigOpts, requireGetStore } from "../config";
-import { BloomFilterOptions, getBloomFilterOptionsFor, getSchemaFor, Schema } from "./parquetSchema";
+import { BloomFilterOptions, getBloomFilterOptionsFor, getSchemaFor } from "./parquetSchema";
 import { WriteStream } from "../store";
 import { HexString } from "../../types/Strings";
 import { AsyncOrSyncIterable, getHashGenerator } from "../utilities";
+import { hexToUint8Array, uint8ArrayToHex } from "./buffers";
 
 type ReadRowFunction<T extends SignedAnnouncement> = {
   (row: T): void;
@@ -36,12 +37,11 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
 
   const announcement = Object.entries(schemas).reduce<Record<string, string | number | bigint>>(
     (acc, [key, schema]) => {
-      if (schema.type === "BYTE_ARRAY") {
-        acc[key] = record[key].toString();
-      } else if (typeof record[key] === "number") {
-        acc[key] = Number(record[key]);
-      } else if (typeof record[key] === "bigint") {
-        acc[key] = BigInt(record[key].toString());
+      const value = record[key];
+      if (typeof value === "string" || typeof value === "number" || typeof value === "bigint") {
+        acc[key] = value;
+      } else if (schema.type === "BYTE_ARRAY") {
+        acc[key] = uint8ArrayToHex(value);
       }
       return acc;
     },
@@ -49,6 +49,21 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
   );
 
   return announcement as unknown as T;
+};
+
+const encodeParquetRecord = <T extends AnnouncementType>(announcement: AnnouncementWithSignature<T>): ParquetRecord => {
+  const schemas = getSchemaFor(announcement.announcementType);
+  const record: ParquetRecord = {};
+  const schema: Record<string, { type: string }> = schemas;
+  for (const [key, value] of Object.entries(announcement)) {
+    if (schema[key]?.type === "BYTE_ARRAY") {
+      record[key] = hexToUint8Array(value);
+    } else {
+      record[key] = value;
+    }
+  }
+
+  return record;
 };
 
 /**
@@ -127,7 +142,7 @@ export const createFile = async <T extends AnnouncementType>(
  */
 export const writeBatch = async <T extends AnnouncementType>(
   writeStream: WriteStream,
-  schema: Schema<T>,
+  schema: typeof ParquetSchema,
   announcements: SignedAnnouncementIterable<T>,
   opts?: BloomFilterOptions
 ): Promise<void> => {
@@ -137,7 +152,8 @@ export const writeBatch = async <T extends AnnouncementType>(
   for await (const announcement of announcements) {
     if (firstAnnouncementType === undefined) firstAnnouncementType = announcement.announcementType;
     if (announcement.announcementType != firstAnnouncementType) throw new MixedTypeBatchError(writeStream);
-    await writer.appendRow(announcement);
+
+    await writer.appendRow(encodeParquetRecord(announcement));
   }
 
   if (firstAnnouncementType === undefined) throw new EmptyBatchError(writeStream);
