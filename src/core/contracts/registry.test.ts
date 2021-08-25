@@ -326,6 +326,7 @@ describe("registry", () => {
 
       await mineBlocks(10, provider);
       await changeHandle(handleTwo, handleThree);
+      await mineBlocks(10, provider);
 
       const result = await getDSNPRegistryUpdateEvents({
         fromBlock: currentBlockNumber,
