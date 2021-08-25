@@ -32,10 +32,12 @@
     "watch": "run-s build && run-p \"build:cjs -- -w\" \"build:esm -- -w\" \"build:types -- -w\" \"test -- --watch\""
   },
   "files": [
-    "dist/**/*",
+    "dist/cjs/**/!(*.test).js",
+    "dist/esm/**/!(*.test).js",
+    "dist/types/**/!(*.test).d.ts",
     "docs/**/*",
-    "core/**/*",
-    "generators/**/*",
+    "core/**/!(*.test).{js,ts,d.ts}",
+    "generators/**/!(*.test).{js,ts,d.ts}",
     "CONTRIBUTING.md",
     "*.js",
     "*.d.ts"
