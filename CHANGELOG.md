@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+## [3.0.1] - 2021-08-27
 ### Added
 - sdk.core.batch.readFile will now await `doReadRow` 
 
