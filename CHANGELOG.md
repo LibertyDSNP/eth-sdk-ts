@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- sdk.core.batch.readFile will now await `doReadRow` 
+
 ## [3.0.0] - 2021-08-25
 ### Changed
 - BREAKING: Changed batch.readFile() to pass parsed announcements instead of parquet records to callback
