@@ -10,7 +10,7 @@ import { AsyncOrSyncIterable, getHashGenerator } from "../utilities";
 import { hexToUint8Array, uint8ArrayToHex } from "./buffers";
 
 type ReadRowFunction<T extends SignedAnnouncement> = {
-  (row: T): void;
+  (row: T): void | Promise<void>;
 };
 
 interface SplitBlockBloomFilter {
@@ -195,7 +195,7 @@ export const readFile = async <T extends SignedAnnouncement>(
   let record: ParquetRecord | null = null;
   while ((record = await cursor.next())) {
     const announcement = parseAnnouncement<T>(record);
-    doReadRow(announcement);
+    await doReadRow(announcement);
   }
 
   return reader.close();
