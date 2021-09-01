@@ -323,10 +323,10 @@ describe("registry", () => {
 
       const currentBlockNumber = await provider.getBlockNumber();
       await changeHandle(handle, handleTwo);
-
-      await mineBlocks(10, provider);
       await changeHandle(handleTwo, handleThree);
       await mineBlocks(10, provider);
+
+      expect(await provider.getBlockNumber()).toBeGreaterThan(currentBlockNumber + 10);
 
       const result = await getDSNPRegistryUpdateEvents({
         fromBlock: currentBlockNumber,
