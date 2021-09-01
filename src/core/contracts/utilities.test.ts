@@ -38,9 +38,9 @@ describe("#subscribeToEvent", () => {
   });
 
   describe("when a starting block number (fromBlock) is provided", () => {
-    describe("and the starting block number (fromBlock: 50) is less current block number (99)", () => {
-      const fromBlock = 50;
-      const log1 = { blockNumber: 50 } as ethers.providers.Log;
+    describe("and the starting block number (fromBlock: 0) is less current block number (99)", () => {
+      const fromBlock = 0;
+      const log1 = { blockNumber: 0 } as ethers.providers.Log;
       const log2 = { blockNumber: 75 } as ethers.providers.Log;
       const eventFilter: ethers.EventFilter = { topics: [] };
       const providerOn = jest
