@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+### Fixed
+- subscribeToEvent zero value for fromBlock param fetches logs starting at zero
 
 ## [3.0.1] - 2021-08-27
 ### Added

@@ -102,7 +102,7 @@ export const subscribeToEvent = async (
   doReceiveEvent: (log: ethers.providers.Log) => void,
   fromBlock?: number
 ): Promise<UnsubscribeFunction> => {
-  if (!fromBlock) {
+  if (fromBlock === undefined) {
     provider.on(filter, doReceiveEvent);
 
     return () => provider.off(filter);
