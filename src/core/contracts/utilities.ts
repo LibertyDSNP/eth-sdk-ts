@@ -108,12 +108,22 @@ export const subscribeToEvent = async (
     return () => provider.off(filter);
   }
 
-  const currentBlockNumber = await provider.getBlockNumber();
   const newLogsQueue: ethers.providers.Log[] = [];
   let isFetchingPastLogData = true;
 
+  /**
+   * ethers provider.on works by using the provider's cached blockNumber
+   * provider.on will poll forward using the cached blockNumber (if it is not stale)
+   * As long as provider.on is called within 2.1 seconds of provider.getBlockNumber's response
+   * the provider.on will start with the same block number as "currentBlockNumber"
+   * To get previous logs, we fetch all logs up to currentBlockNumber INCLUSIVE
+   * and leave provider.on to be from currentBlockNumber on EXCLUSIVE
+   */
+  const currentBlockNumber = await provider.getBlockNumber();
+
   provider.on(filter, (log: ethers.providers.Log) => {
     if (log.blockNumber < fromBlock) return;
+    // Getting currentBlockNumber results from getLogs
     if (log.blockNumber <= currentBlockNumber) return;
 
     if (isFetchingPastLogData) {
