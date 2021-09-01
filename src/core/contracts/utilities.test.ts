@@ -16,7 +16,7 @@ describe("#subscribeToEvent", () => {
       const log3 = { blockNumber: 53, logIndex: 1, transactionHash: "0xc" } as ethers.providers.Log;
       const log4 = { blockNumber: 55, logIndex: 1, transactionHash: "0xd" } as ethers.providers.Log;
 
-      let mockBlockNumber = 52;
+      const mockBlockNumber = 52;
       let providerOnCallback: ProviderOnCb = jest.fn();
 
       const eventFilter: ethers.EventFilter = { topics: [] };
