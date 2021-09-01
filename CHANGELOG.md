@@ -3,6 +3,7 @@
 ## Unreleased
 ### Fixed
 - subscribeToEvent zero value for fromBlock param fetches logs starting at zero
+- batch.openURL to coerce URL to string before passing to ParquetJS
 
 ## [3.0.1] - 2021-08-27
 ### Added
