@@ -164,10 +164,10 @@ export const writeBatch = async <T extends AnnouncementType>(
 /**
  * openURL() allows users to open a parquet file with a URL.
  *
- * @param url - a URL to fetch parquet file from.
+ * @param url - a URL string to fetch parquet file from.
  * @returns a ParquetReader object.
  */
-export const openURL = (url: URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url);
+export const openURL = (url: string | URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url.toString());
 
 /**
  * openFile() allows users to open a parquet file with a path.

@@ -140,6 +140,30 @@ describe("batch", () => {
     });
   });
 
+  describe("#openURL", () => {
+    describe("when url param is of type string", () => {
+      it("calls ParquetReader.openURL", async () => {
+        const parquetReaderInstance = {};
+
+        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance);
+        await batch.openURL("http://parque-file.com");
+
+        expect(ParquetReader.openUrl).toHaveBeenCalledWith("http://parque-file.com");
+      });
+    });
+
+    describe("when url param is of type URL", () => {
+      it("calls ParquetReader.openURL", async () => {
+        const parquetReaderInstance = {};
+
+        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance);
+        await batch.openURL(new URL("http://parque-file.com"));
+
+        expect(ParquetReader.openUrl).toHaveBeenCalledWith("http://parque-file.com");
+      });
+    });
+  });
+
   describe("#readFile", () => {
     const { createFile, readFile } = batch;
     const mockStore = new TestStore();
