@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [3.0.2] - 2021-09-02
 ### Added
 - Code documentation and additional test on subscribeToEvent
 
