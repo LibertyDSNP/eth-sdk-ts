@@ -8175,11 +8175,20 @@
 									"kindString": "Parameter",
 									"flags": {},
 									"comment": {
-										"text": "a URL to fetch parquet file from."
+										"text": "a URL string to fetch parquet file from."
 									},
 									"type": {
-										"type": "reference",
-										"name": "URL"
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "reference",
+												"name": "URL"
+											}
+										]
 									}
 								}
 							],
