@@ -29,7 +29,6 @@ import {
 import { generateHexString } from "@dsnp/test-generators";
 import { DSNPUserURI } from "../identifiers";
 import { EthereumAddress } from "../../types/Strings";
-import { mineBlocks } from "../../test/utilities";
 
 describe("registry", () => {
   let signer: Signer;
@@ -39,6 +38,10 @@ describe("registry", () => {
 
   beforeAll(() => {
     ({ signer, provider } = setupConfig());
+  });
+
+  beforeEach(async () => {
+    await provider.getBlockNumber();
   });
 
   describe("#resolveRegistration", () => {
@@ -276,20 +279,25 @@ describe("registry", () => {
       const handleTwo = "DonkeyButtons2";
       const handleThree = "DonkeyButtons3";
 
+      // Excluded
       const identityContractAddress = identityContract.address;
-      await register(identityContractAddress, handle);
+      const transaction1 = await register(identityContractAddress, handle);
+      const receipt1 = await transaction1.wait(1);
+      const currentBlockNumber = receipt1.blockNumber;
 
-      await mineBlocks(10, provider);
+      // Included
+      const transaction2 = await changeHandle(handle, handleTwo);
+      const receipt2 = await transaction2.wait(1);
+      expect(receipt2.blockNumber).toBeGreaterThanOrEqual(currentBlockNumber + 1);
 
-      const currentBlockNumber = await provider.getBlockNumber();
-      await changeHandle(handle, handleTwo);
-
-      await mineBlocks(10, provider);
-      await changeHandle(handleTwo, handleThree);
+      // Included
+      const transaction3 = await changeHandle(handleTwo, handleThree);
+      const receipt3 = await transaction3.wait(1);
+      expect(receipt3.blockNumber).toBeGreaterThanOrEqual(currentBlockNumber + 2);
 
       const result = await getDSNPRegistryUpdateEvents({
-        fromBlock: currentBlockNumber,
-        endBlock: currentBlockNumber + 10,
+        fromBlock: currentBlockNumber + 1,
+        endBlock: currentBlockNumber + 2,
       });
 
       const expected = expect.arrayContaining([
@@ -304,7 +312,7 @@ describe("registry", () => {
         }),
       ]);
 
-      expect(result.length).toEqual(1);
+      expect(result.length).toEqual(2);
       expect(result).toEqual(expected);
       expect(result).toEqual(expectedTwo);
     });
@@ -319,14 +327,12 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
-      await mineBlocks(10, provider);
-
       const currentBlockNumber = await provider.getBlockNumber();
       await changeHandle(handle, handleTwo);
+      const transaction = await changeHandle(handleTwo, handleThree);
+      const receipt = await transaction.wait(1);
 
-      await mineBlocks(10, provider);
-      await changeHandle(handleTwo, handleThree);
-      await mineBlocks(10, provider);
+      expect(receipt.blockNumber).toBeGreaterThan(currentBlockNumber);
 
       const result = await getDSNPRegistryUpdateEvents({
         fromBlock: currentBlockNumber,
@@ -361,14 +367,14 @@ describe("registry", () => {
       const identityContractAddress = identityContract.address;
       await register(identityContractAddress, handle);
 
-      await mineBlocks(10, provider);
-
       await changeHandle(handle, handleTwo);
 
       const currentBlockNumber = await provider.getBlockNumber();
 
-      await mineBlocks(10, provider);
-      await changeHandle(handleTwo, handleThree);
+      const transaction = await changeHandle(handleTwo, handleThree);
+      const receipt = await transaction.wait(1);
+      expect(currentBlockNumber).toBeLessThanOrEqual(await provider.getBlockNumber());
+      expect(receipt.blockNumber).toBeGreaterThan(currentBlockNumber);
 
       const result = await getDSNPRegistryUpdateEvents({
         endBlock: currentBlockNumber,
