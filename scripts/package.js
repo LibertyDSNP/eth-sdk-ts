@@ -14,7 +14,9 @@ delete rootPackage["jest-junit"];
 delete rootPackage["jest"];
 
 // Don't keep scripts
-delete rootPackage["scripts"];
+rootPackage["scripts"] = {
+  "prepare": "typechain --target=ethers-v5 ./node_modules/@dsnp/contracts/abi/**/*.json --out-dir ./types/typechain"
+};
 
 // Setup the main and types correctly
 rootPackage["main"] = "index.js";
