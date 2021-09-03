@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "outDir": "dist/cjs",
+    "outDir": "dist",
     "rootDir": "src",
+    "declaration": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "inlineSourceMap": true,
@@ -34,7 +35,7 @@
    * See https://www.typescriptlang.org/tsconfig#lib
    */
   "lib": ["es2017", "esnext", "esnext.asynciterable"],
-  "exclude": ["node_modules/**", "./*.ts", "./src/test/importTest/**", "./examples/**"],
+  "exclude": ["node_modules/**", "./*.ts", "./src/test/**", "./examples/**", "**/*.test.ts"],
   "compileOnSave": false,
   "typedocOptions": {
     "readme": "DOCS.md",

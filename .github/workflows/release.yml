@@ -40,15 +40,19 @@ jobs:
         run: echo "Package.json version ( ${{ steps.package-version.outputs.current-version}} ) does not match release version ( ${{ steps.get_release_version.outputs.version-without-v }} )" && exit 1
         if: steps.package-version.outputs.current-version != steps.get_release_version.outputs.version-without-v
 
+      - name: Build 🏗️
+        run: npm run build
+
       - name: Publish 🚂
         run: npm publish --tag latest
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-      
+        working-directory: ./dist
+
       - name: Revert Release if failure 💣
         if: ${{ failure() }}
         uses: author/action-rollback@stable
-        with: 
+        with:
           tag: ${{ github.event.release.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
