@@ -1,6 +1,12 @@
 # Changelog
 
 ## Unreleased
+### Changed
+- Removed esmodule build. All imports will fallback to esmodule compatible commonjs modules
+- Better cleaner build (removed multimodule script need, dist package directory, and better package.json)
+
+### Removed
+- Internal package `dist` structure. If you were previously importing out of `@dsnp/sdk/dist`, that will need to be updated to the correct export. 
 
 ## [3.0.2] - 2021-09-02
 ### Added
