@@ -54,20 +54,19 @@ jobs:
           RPC_URL: http://localhost:8545
           TESTING_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
-      - name: Build Docs
-        run: npm run doc
+      - name: Build
+        run: npm run build
         working-directory: ./main
 
-      - name: Build & Publish Dry Run
+      - name: Publish Dry Run
         run: npm publish --dry-run
-        working-directory: ./main
+        working-directory: ./main/dist
 
       - name: Pack up for testing project import
         run: |
-          npm run build
           npm pack
-          mv dsnp-sdk-*.tgz dsnp-sdk.tgz
-        working-directory: ./main
+          mv dsnp-sdk-*.tgz ../dsnp-sdk.tgz
+        working-directory: ./main/dist
 
 #     This needs to happen in a non-subfolder of the sdk to prevent resolving from a parent dir node_modules
       - name: Test Project Import

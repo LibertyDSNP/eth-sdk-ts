@@ -28,12 +28,17 @@ jobs:
       - name: Install 💾
         run: npm ci
 
+      - name: Build 🏗️
+        run: npm run build
+
       - name: Version ⬆️
         run: npm version --new-version "v0.0.0-${FULL_SHA:0:6}" --no-git-tag-version
         env:
           FULL_SHA: ${{ github.sha }}
+        working-directory: ./dist
 
       - name: Publish @next 🚂
         run: npm publish --tag next --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+        working-directory: ./dist
