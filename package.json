@@ -12,7 +12,7 @@
     "build": "run-s clean typechain doc:markdown build:cjs build:package build:copy",
     "build:cjs": "tsc -p tsconfig.json",
     "build:package": "node scripts/package.js",
-    "build:copy": "cp CONTRIBUTING.md CHANGELOG.md README.md DOCS.md LICENSE ./dist",
+    "build:copy": "cp CONTRIBUTING.md CHANGELOG.md README.md DOCS.md LICENSE ./dist && cp ./src/types/typechain/*.d.ts ./dist/types/typechain/",
     "pack": "cd dist && npm pack && mv *.tgz ../",
     "coverage": "jest test --runInBand --coverage --collectCoverageFrom='src/**/*.ts'",
     "clean": "rm -Rf dist src/types/typechain ./*.tgz",
