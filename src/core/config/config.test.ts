@@ -1,5 +1,12 @@
 import { providers, Wallet } from "ethers";
-import { getConfig, requireGetCurrentFromURI, requireGetProvider, requireGetSigner, requireGetStore } from "./config";
+import {
+  getConfig,
+  requireGetCurrentFromURI,
+  requireGetDsnpStartBlockNumber,
+  requireGetProvider,
+  requireGetSigner,
+  requireGetStore
+} from "./config";
 import {
   MissingStoreConfigError,
   MissingSignerConfigError,
@@ -39,5 +46,13 @@ describe("config", () => {
       const testRegistration = "0xabcd1234";
       expect(requireGetCurrentFromURI({ currentFromURI: testRegistration })).toEqual(testRegistration);
     });
+
+    it("returns the dsnp start block", () => {
+      expect(requireGetDsnpStartBlockNumber({dsnpStartBlockNumber: 100})).toEqual(100);
+    })
+
+    it("still returns zero for the dsnp start block", () => {
+      expect(requireGetDsnpStartBlockNumber(badConfig)).toEqual(0);
+    })
   });
 });
