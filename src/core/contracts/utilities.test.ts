@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 
-import { subscribeToEvent } from "./utilities";
+import { getFromBlockDefault, subscribeToEvent } from "./utilities";
 import { checkNumberOfFunctionCalls } from "../../test/utilities";
+import { setConfig } from "../config";
 
 type ProviderOnCb = (log: ethers.providers.Log) => void;
 
@@ -167,5 +168,26 @@ describe("#subscribeToEvent", () => {
         });
       });
     });
+  });
+});
+
+describe("#getFromBlockDefault", () => {
+  it("defaults to the default", () => {
+    expect(getFromBlockDefault(undefined, 0)).toEqual(0);
+    expect(getFromBlockDefault(undefined, "latest")).toEqual("latest");
+  });
+
+  it("earliest converts to zero", () => {
+    expect(getFromBlockDefault("earliest", 0)).toEqual(0);
+  });
+
+  it("gets the value from the config", () => {
+    setConfig({ dsnpStartBlockNumber: 22, contracts: {} });
+    expect(getFromBlockDefault("dsnp-start-block", 0)).toEqual(22);
+  });
+
+  it("returns the given value", () => {
+    setConfig({ dsnpStartBlockNumber: 22, contracts: {} });
+    expect(getFromBlockDefault(100, 0)).toEqual(100);
   });
 });

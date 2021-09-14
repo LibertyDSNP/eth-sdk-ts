@@ -1,5 +1,5 @@
 import { ContractTransaction, ethers } from "ethers";
-import { ConfigOpts, requireGetProvider, requireGetSigner } from "../config";
+import { ConfigOpts, requireGetDsnpStartBlockNumber, requireGetProvider, requireGetSigner } from "../config";
 import { EthereumAddress, HexString } from "../../types/Strings";
 import {
   IdentityCloneFactory,
@@ -470,7 +470,7 @@ export const getAllDelegateLogsFor = async (
 
   const logs: ethers.providers.Log[] = await provider.getLogs({
     topics: [[removeDelegateEventSignature, addDelegateEventSignature], [ethers.utils.hexZeroPad(ethereumAddress, 32)]],
-    fromBlock: 0,
+    fromBlock: requireGetDsnpStartBlockNumber(opts),
   });
 
   return logs.map((log: ethers.providers.Log) => {

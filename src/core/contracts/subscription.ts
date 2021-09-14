@@ -4,7 +4,7 @@ import { ConfigOpts, requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
 import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
-import { LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
+import { FromBlockNumber, getFromBlockDefault, LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
 import { RegistryUpdateLogData, getContract } from "./registry";
 import { Registry } from "../../types/typechain";
 import { convertToDSNPUserURI } from "../identifiers";
@@ -35,7 +35,7 @@ export interface ParsedLog {
 
 export interface BatchFilterOptions {
   announcementType?: number;
-  fromBlock?: number;
+  fromBlock?: FromBlockNumber;
 }
 
 /**
@@ -68,7 +68,7 @@ export const subscribeToBatchPublications = async (
 
   const batchFilter: ethers.EventFilter = dsnpBatchFilter(filter?.announcementType);
 
-  return subscribeToEvent(provider, batchFilter, doReceiveEvent, filter?.fromBlock);
+  return subscribeToEvent(provider, batchFilter, doReceiveEvent, getFromBlockDefault(filter?.fromBlock, "latest"));
 };
 
 const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
@@ -101,7 +101,7 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
  * RegistryUpdateSubscriptionFilter filter options for including or excluding certain events
  */
 export interface RegistryUpdateSubscriptionFilter {
-  fromBlock?: number;
+  fromBlock?: FromBlockNumber;
 }
 
 /**
@@ -132,7 +132,12 @@ export const subscribeToRegistryUpdates = async (
     doReceiveRegistryUpdate(logItem);
   };
 
-  return subscribeToEvent(provider, registryUpdateFilter, doReceiveEvent, filter?.fromBlock);
+  return subscribeToEvent(
+    provider,
+    registryUpdateFilter,
+    doReceiveEvent,
+    getFromBlockDefault(filter?.fromBlock, "latest")
+  );
 };
 
 const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Registry): RegistryUpdateLogData[] => {

@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { HexString } from "../../types/Strings";
+import { requireGetDsnpStartBlockNumber } from "../config";
 
 /**
  * DomainData represents EIP-712 unique domain
@@ -87,22 +88,48 @@ export interface LogEventData {
 export type UnsubscribeFunction = () => void;
 
 /**
+ * Block Number
+ * Numerical
+ * "latest" for current block
+ * "dsnp-start-block" for the config dsnpStartBlockNumber
+ */
+export type FromBlockNumber = number | "dsnp-start-block" | "latest" | "earliest";
+
+/**
+ * Convert a user block value to an actual block number.
+ * Defaults to "latest" for subscription needs
+ *
+ * @param userFromBlock - undefined results in using defaultZeroOrLatest
+ * @param defaultZeroOrLatest - undefined = latest or 0?
+ * @returns A block number or "latest"
+ */
+export const getFromBlockDefault = (
+  userFromBlock: FromBlockNumber | undefined,
+  defaultZeroOrLatest: 0 | "latest"
+): number | "latest" => {
+  if (userFromBlock === undefined) return defaultZeroOrLatest;
+  if (userFromBlock === "earliest") return 0;
+  if (userFromBlock === "dsnp-start-block") return requireGetDsnpStartBlockNumber();
+  return userFromBlock;
+};
+
+/**
  * subscribeToEvent() allows users to subscribe to new incoming event
  * and also get events prior the current block.
  *
  * @param provider - initialized provider
  * @param filter - a filter to filter block events
  * @param doReceiveEvent - a callback that handles incoming event logs
- * @param fromBlock - a block number to start receiving event logs
+ * @param fromBlock - a block number to start receiving event logs. Defaults to "latest"
  * @returns An unsubscribe function
  */
 export const subscribeToEvent = async (
   provider: ethers.providers.Provider,
   filter: ethers.EventFilter,
   doReceiveEvent: (log: ethers.providers.Log) => void,
-  fromBlock?: number
+  fromBlock: number | "latest" = "latest"
 ): Promise<UnsubscribeFunction> => {
-  if (fromBlock === undefined) {
+  if (fromBlock === "latest") {
     provider.on(filter, doReceiveEvent);
 
     return () => provider.off(filter);

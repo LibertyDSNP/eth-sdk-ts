@@ -1,7 +1,7 @@
 import { JsonFragment } from "@ethersproject/abi";
 import { ethers } from "ethers";
 
-import { getContracts, ContractName, ConfigOpts } from "../config";
+import { getContracts, ContractName, ConfigOpts, requireGetDsnpStartBlockNumber } from "../config";
 import { MissingContractAddressError, NoLogsFoundContractError } from "./errors";
 import { HexString } from "../../types/Strings";
 import * as types from "../../types/typechain";
@@ -88,7 +88,7 @@ const filterValues = (values: ContractResult[], contractName: string): ContractR
  * @param provider - initialized provider
  * @param contractName - Name of contract to find address for
  * @param opts - Optional. Configuration overrides, such as from address, if any
- * @returns HexString A hexidecimal string representing the contract address
+ * @returns HexString A hexadecimal string representing the contract address
  */
 export const getContractAddress = async (
   provider: ethers.providers.Provider,
@@ -100,10 +100,9 @@ export const getContractAddress = async (
   if (contractOverrides[contractName] !== undefined) return contractOverrides[contractName]!;
 
   const topic = hash(DSNP_MIGRATION_TYPE);
-
   const logs: ethers.providers.Log[] = await provider.getLogs({
     topics: [topic],
-    fromBlock: 0,
+    fromBlock: requireGetDsnpStartBlockNumber(opts),
   });
   const decodedValues = decodeReturnValues(DSNP_MIGRATION_ABI, logs);
   const filteredResults = filterValues(decodedValues, contractName);

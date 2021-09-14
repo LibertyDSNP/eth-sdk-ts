@@ -5,7 +5,7 @@ import {
   requireGetDsnpStartBlockNumber,
   requireGetProvider,
   requireGetSigner,
-  requireGetStore
+  requireGetStore,
 } from "./config";
 import {
   MissingStoreConfigError,
@@ -48,11 +48,11 @@ describe("config", () => {
     });
 
     it("returns the dsnp start block", () => {
-      expect(requireGetDsnpStartBlockNumber({dsnpStartBlockNumber: 100})).toEqual(100);
-    })
+      expect(requireGetDsnpStartBlockNumber({ dsnpStartBlockNumber: 100 })).toEqual(100);
+    });
 
     it("still returns zero for the dsnp start block", () => {
       expect(requireGetDsnpStartBlockNumber(badConfig)).toEqual(0);
-    })
+    });
   });
 });

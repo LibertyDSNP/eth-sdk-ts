@@ -136,12 +136,12 @@ export const requireGetCurrentFromURI = (opts?: ConfigOpts): HexString => {
 /**
  * Get the default start block number
  *
- * @param opts
+ * @param opts - overrides for the current configuration.
  * @returns the block tag for ethers
  */
 export const requireGetDsnpStartBlockNumber = (opts?: ConfigOpts): number => {
   return opts?.dsnpStartBlockNumber || getConfig().dsnpStartBlockNumber || 0;
-}
+};
 
 /**
  * Get the contracts
