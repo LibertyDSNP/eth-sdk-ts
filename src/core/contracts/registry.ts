@@ -157,7 +157,7 @@ export const changeHandle = async (
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the registration contract address cannot be found.
- * @param filter - By dsnpUserURI or Contract Address
+ * @param filter - By dsnpUserURI or Contract Address (supports fromBlock: "latest" | "dsnp-start-block" | number)
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
  */

@@ -52,7 +52,7 @@ export type BatchPublicationCallback = (doReceivePublication: BatchPublicationLo
  * @throws {@link MissingProviderConfigError}
  * Thrown if the provider is not configured.
  * @param doReceivePublication - The callback function to be called when an event is received
- * @param filter - Any filter options for including or excluding certain events
+ * @param filter - Any filter options for including or excluding certain events (supports fromBlock: "latest" | "dsnp-start-block" | number)
  * @returns A function that can be called to remove listener for this type of event
  */
 export const subscribeToBatchPublications = async (
@@ -113,7 +113,7 @@ export type RegistryUpdateCallback = (doReceiveRegistryUpdate: RegistryUpdateLog
  * subscribeToRegistryUpdates() sets up a listener to retrieve DSNPRegistryUpdate events
  *
  * @param doReceiveRegistryUpdate - The callback function to be called when an event is received
- * @param filter - Filter options for including or excluding certain events
+ * @param filter - Filter options for including or excluding certain events (supports fromBlock: "latest" | "dsnp-start-block" | number)
  * @param opts - Optional. Configuration overrides, such as from address, if any
  * @returns A function that can be called to remove listener for this type of event
  */

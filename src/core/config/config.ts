@@ -46,7 +46,7 @@ export interface Config {
   contracts: Contracts;
   /** currentFromURI stores the id of the currently authenticated user */
   currentFromURI?: HexString;
-  /** dsnpStartBlockNumber defaults fromBlock to something other than the zero/genesis block */
+  /** dsnpStartBlockNumber defaults fromBlock to something other than the zero/genesis block or for "dsnp-start-block" */
   dsnpStartBlockNumber?: number;
   /** to allow access of keys by name */
   [index: string]: unknown;
@@ -135,6 +135,7 @@ export const requireGetCurrentFromURI = (opts?: ConfigOpts): HexString => {
 
 /**
  * Get the default start block number
+ * Used for "dsnp-start-block" or when the default is the genesis block
  *
  * @param opts - overrides for the current configuration.
  * @returns the block tag for ethers

@@ -120,7 +120,7 @@ export const getFromBlockDefault = (
  * @param provider - initialized provider
  * @param filter - a filter to filter block events
  * @param doReceiveEvent - a callback that handles incoming event logs
- * @param fromBlock - a block number to start receiving event logs. Defaults to "latest"
+ * @param fromBlock - a block number to start receiving event logs. Defaults to "latest", supports number or "dsnp-start-block"
  * @returns An unsubscribe function
  */
 export const subscribeToEvent = async (
