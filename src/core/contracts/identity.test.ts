@@ -53,9 +53,7 @@ describe("identity", () => {
     ({ provider, signer } = setupConfig());
   });
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+  beforeEach(jest.clearAllMocks);
 
   const getBeacon = async (): Promise<string> => {
     const addr = await getContractAddress(provider, "Beacon");
