@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## [3.0.3] - 2021-09-15
 ### Added
 - `dsnpStartBlockNumber` to config to allow setConfig to default a different value than `0` for `fromBlock`
 - Support "dsnp-start-block" for subscriptions to start from the `dsnpStartBlockNumber`
