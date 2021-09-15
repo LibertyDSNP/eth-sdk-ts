@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { HexString } from "../../types/Strings";
-import { requireGetDsnpStartBlockNumber } from "../config";
+import { ConfigOpts, requireGetDsnpStartBlockNumber } from "../config";
 
 /**
  * DomainData represents EIP-712 unique domain
@@ -99,17 +99,22 @@ export type FromBlockNumber = number | "dsnp-start-block" | "latest" | "earliest
  * Convert a user block value to an actual block number.
  * Defaults to "latest" for subscription needs
  *
- * @param userFromBlock - undefined results in using defaultZeroOrLatest
- * @param defaultZeroOrLatest - undefined = latest or 0?
+ * @param userFromBlock - undefined results in using defaultTo
+ * @param defaultTo - undefined = latest or 0 or dsnp-start-block?
+ * @param opts - (optional) any config overrides.
  * @returns A block number or "latest"
  */
 export const getFromBlockDefault = (
   userFromBlock: FromBlockNumber | undefined,
-  defaultZeroOrLatest: 0 | "latest"
+  defaultTo: 0 | "latest" | "dsnp-start-block",
+  opts?: ConfigOpts
 ): number | "latest" => {
-  if (userFromBlock === undefined) return defaultZeroOrLatest;
+  if (userFromBlock === undefined) {
+    if (defaultTo === "dsnp-start-block") return requireGetDsnpStartBlockNumber(opts);
+    return defaultTo;
+  }
   if (userFromBlock === "earliest") return 0;
-  if (userFromBlock === "dsnp-start-block") return requireGetDsnpStartBlockNumber();
+  if (userFromBlock === "dsnp-start-block") return requireGetDsnpStartBlockNumber(opts);
   return userFromBlock;
 };
 

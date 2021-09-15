@@ -29,6 +29,7 @@ import {
 import { generateHexString } from "@dsnp/test-generators";
 import { DSNPUserURI } from "../identifiers";
 import { EthereumAddress } from "../../types/Strings";
+import * as utilities from "./utilities";
 
 describe("registry", () => {
   let signer: Signer;
@@ -397,6 +398,12 @@ describe("registry", () => {
 
       expect(result).toEqual(expected);
       expect(result).toEqual(expectedTwo);
+    });
+
+    it("defaults to using dsnp-start-block", async () => {
+      (utilities.getFromBlockDefault as unknown) = jest.fn();
+      await getDSNPRegistryUpdateEvents({ dsnpUserURI: "" });
+      expect(utilities.getFromBlockDefault).toHaveBeenCalledWith(undefined, "dsnp-start-block");
     });
   });
 
