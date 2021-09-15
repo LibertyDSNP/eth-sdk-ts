@@ -1,13 +1,13 @@
 import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import { ConfigOpts, requireGetProvider } from "../config";
-import { dsnpBatchFilter } from "./publisher";
-import { Publisher__factory } from "../../types/typechain";
+import { dsnpBatchFilter, Publication } from "./publisher";
+import { Publisher__factory, Registry } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
 import { FromBlockNumber, getFromBlockDefault, LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
 import { RegistryUpdateLogData, getContract } from "./registry";
-import { Registry } from "../../types/typechain";
 import { convertToDSNPUserURI } from "../identifiers";
+import { EventFilter } from "ethers/lib/ethers";
 
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
@@ -97,6 +97,7 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
       };
     });
 };
+
 /**
  * RegistryUpdateSubscriptionFilter filter options for including or excluding certain events
  */
@@ -157,4 +158,47 @@ const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Reg
       logIndex: log.logIndex,
     };
   });
+};
+
+interface BlockRangeOptions {
+  filter: EventFilter;
+  fromBlock?: number;
+  toBlock?: number;
+  blockLimit?: number;
+}
+
+/**
+ * syncPublicationsByRange fetches filtered logs based on the provided filter, in the range specified.
+ *
+ * @param rangeParams - BlockRangeOptions
+ *    - filter is an ethers EventFilter. It is required.
+ *    - toBlock is a number. It is optional and must be :gt;0.  It defaults to the current block height.
+ *    - fromBlock is a number, is optional.  If it is not provided, it defaults to 0.
+ *    - blockLimit is a number. It is optional and must be :gt;0.  If provided the most blocks fetched will be 0.
+ *      If not provided, all blocks matching the other parameters will be returned.
+ * @param opts - ConfigOpts
+ */
+export const syncPublicationsByRange = async (
+  rangeParams: BlockRangeOptions,
+  opts?: ConfigOpts
+): Promise<Array<Publication>> => {
+  const provider = requireGetProvider(opts);
+
+  let toBlock = rangeParams.toBlock;
+  if (!toBlock) {
+    toBlock = await provider.getBlockNumber();
+  }
+
+  const fromBlock = rangeParams.fromBlock ? rangeParams.fromBlock : 0;
+  // if (rangeParams.blockLimit) {
+  //
+  // }
+
+  const logs: ethers.providers.Log[] = await provider.getLogs({
+    topics: dsnpBatchFilter(2).topics,
+    fromBlock: fromBlock,
+    toBlock: toBlock,
+  });
+  const decodedValues = decodeLogsForBatchPublication(logs);
+  return decodedValues;
 };
