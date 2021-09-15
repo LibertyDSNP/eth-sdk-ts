@@ -32,6 +32,13 @@ import { Identity__factory } from "../../types/typechain";
 import { signEIP712Message } from "../../test/helpers/EIP712";
 import { getSignerForAccount } from "../../test/testAccounts";
 import { mineBlocks } from "../../test/utilities";
+import { requireGetDsnpStartBlockNumber } from "../config";
+
+// Mock requireGetDsnpStartBlockNumber for testing
+jest.mock("../config", () => ({
+  ...jest.requireActual("../config"),
+  requireGetDsnpStartBlockNumber: jest.fn().mockReturnValue(0),
+}));
 
 const OWNER = "0x70997970c51812dc3a010c7d01b50e0d17dc79c8";
 const NON_OWNER = "0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc";
@@ -44,6 +51,10 @@ describe("identity", () => {
 
   beforeAll(() => {
     ({ provider, signer } = setupConfig());
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   const getBeacon = async (): Promise<string> => {
@@ -260,6 +271,9 @@ describe("identity", () => {
       };
 
       it("creates an EIP-712 data type and resolves the nonce", async () => {
+        jest.spyOn(identity, "getNonceForDelegate");
+        await createAddDelegateEip712TypedData(contractAddress, message);
+        expect(identity.getNonceForDelegate).toHaveBeenCalled();
         const expected = { ...typedData, message: { ...message, nonce: 0 } };
         expect(await createAddDelegateEip712TypedData(contractAddress, message)).toEqual(expected);
       });
@@ -729,6 +743,11 @@ describe("identity", () => {
 
       it("return an empty array", async () => {
         expect(await getAllDelegateLogsFor(fakeAddress)).toEqual([]);
+      });
+
+      it("calls requireGetDsnpStartBlockNumber", async () => {
+        await getAllDelegateLogsFor(fakeAddress);
+        expect(requireGetDsnpStartBlockNumber).toHaveBeenCalledTimes(1);
       });
     });
 

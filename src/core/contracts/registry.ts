@@ -16,7 +16,7 @@ import {
   serialize,
 } from "../announcements";
 import { convertToDSNPUserId, convertToDSNPUserURI, DSNPUserId, DSNPUserURI } from "../identifiers";
-import { LogEventData } from "./utilities";
+import { FromBlockNumber, getFromBlockDefault, LogEventData } from "./utilities";
 import { isString } from "../utilities/validation";
 
 const CONTRACT_NAME = "Registry";
@@ -41,8 +41,8 @@ export type RegistryUpdateLogData = LogEventData & Registration;
 export interface RegistryUpdateFilterOptions {
   contractAddr?: EthereumAddress;
   dsnpUserURI?: DSNPUserURI;
-  fromBlock?: number;
-  endBlock?: number;
+  fromBlock?: FromBlockNumber;
+  endBlock?: ethers.providers.BlockTag;
 }
 
 /**
@@ -157,7 +157,7 @@ export const changeHandle = async (
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the registration contract address cannot be found.
- * @param filter - By dsnpUserURI or Contract Address
+ * @param filter - By dsnpUserURI or Contract Address (supports fromBlock: "latest" | "dsnp-start-block" | number)
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
  */
@@ -170,7 +170,9 @@ export const getDSNPRegistryUpdateEvents = async (
   const userId = filter.dsnpUserURI ? convertToDSNPUserId(filter.dsnpUserURI) : undefined;
   const eventFilter: ethers.EventFilter = contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr);
 
-  const logs = await contract.queryFilter(eventFilter, filter.fromBlock, filter.endBlock);
+  const fromBlock = getFromBlockDefault(filter.fromBlock, 0);
+
+  const logs = await contract.queryFilter(eventFilter, fromBlock, filter.endBlock);
 
   return logs.map((desc) => {
     const [id, addr, handle] = desc.args;

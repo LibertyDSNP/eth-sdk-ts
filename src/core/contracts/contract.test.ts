@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 
 import { ContractName } from "../config";
+import { setConfig } from "../../config";
 import { getContractAddress } from "./contract";
 import { MissingContractAddressError } from "./errors";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -21,6 +22,11 @@ describe("Contracts", () => {
 
     it("throws MissingContractAddressError if no values found", async () => {
       await expect(getContractAddress(provider, "Test" as ContractName)).rejects.toThrow(MissingContractAddressError);
+    });
+
+    it("cannot find anything if the dsnp start block is too high", async () => {
+      setConfig({ dsnpStartBlockNumber: 1000000 });
+      await expect(getContractAddress(provider, "Publisher")).rejects.toThrow(MissingContractAddressError);
     });
   });
 });

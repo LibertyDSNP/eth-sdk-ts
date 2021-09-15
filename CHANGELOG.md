@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+### Added
+- `dsnpStartBlockNumber` to config to allow setConfig to default a different value than `0` for `fromBlock`
+- Support "dsnp-start-block" for subscriptions to start from the `dsnpStartBlockNumber`
+
 ### Changed
 - Removed esmodule build. All imports will fallback to esmodule compatible commonjs modules
 - Better cleaner build (removed multimodule script need, dist package directory, and better package.json)
