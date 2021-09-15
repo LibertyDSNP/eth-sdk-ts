@@ -157,7 +157,7 @@ export const changeHandle = async (
  * Thrown if the provider is not configured.
  * @throws {@link MissingContractAddressError}
  * Thrown if the registration contract address cannot be found.
- * @param filter - By dsnpUserURI or Contract Address (supports fromBlock: "latest" | "dsnp-start-block" | number)
+ * @param filter - By dsnpUserURI or Contract Address (supports fromBlock: "latest" | "dsnp-start-block" (default) | number)
  * @param opts - (optional) any config overrides.
  * @returns An array of all the matching events
  */
@@ -170,7 +170,7 @@ export const getDSNPRegistryUpdateEvents = async (
   const userId = filter.dsnpUserURI ? convertToDSNPUserId(filter.dsnpUserURI) : undefined;
   const eventFilter: ethers.EventFilter = contract.filters.DSNPRegistryUpdate(userId, filter.contractAddr);
 
-  const fromBlock = getFromBlockDefault(filter.fromBlock, 0);
+  const fromBlock = getFromBlockDefault(filter.fromBlock, "dsnp-start-block");
 
   const logs = await contract.queryFilter(eventFilter, fromBlock, filter.endBlock);
 
