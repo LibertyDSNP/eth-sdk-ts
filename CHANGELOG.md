@@ -4,6 +4,7 @@
 ### Added
 - `dsnpStartBlockNumber` to config to allow setConfig to default a different value than `0` for `fromBlock`
 - Support "dsnp-start-block" for subscriptions to start from the `dsnpStartBlockNumber`
+- Readme configs for Rinkeby and Ropsten
 
 ### Changed
 - Removed esmodule build. All imports will fallback to esmodule compatible commonjs modules

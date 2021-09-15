@@ -40,6 +40,57 @@ setConfig({
 // Do something with the SDK
 ```
 
+#### Contract Configuration
+
+Contracts are self discoverable via log messages for test networks, but public networks should use specific contract addresses:
+
+##### Liberty Testnet
+- node0.testnet.dsnp.org
+- node1.testnet.dsnp.org
+```
+{
+  dsnpStartBlockNumber: 0, 
+  contracts: {
+    Publisher: "0xB708186004dAC4019417fa8deF9E8F49a55103b1",
+    Beacon: "0x26b21a1E90b86c779D9a1d31cD09F5cd8C7c8f1d",
+    BeaconFactory: "0x519fd89B05dab08F14D8fDEeB11C88cacc0bA76A",
+    Identity: "0xDcc457296d9790C52B6746cD45AFaaD18b7FfEfa",
+    IdentityCloneFactory: "0x233FfDa2cEd4579B07bbc5e95bDe7f540A2DFd5a",
+    Registry: "0x31C3fDb70078FD1d64D51ecA713bCdb2f4212E74",
+  }
+}
+```
+
+##### Rinkeby Testnet
+```
+{
+  dsnpStartBlockNumber: 9211311,
+  contracts: {
+    Publisher: "0xeF7B5d418128fB8C1645Dd31270BE2cCAF9015e4",
+    Beacon: "0xe3B7Fb9c43F9E62910Ae2763AA64aec07ec8F308",
+    BeaconFactory: "0xC1F8593D46356B98c5DC7f7E8DF35247A68ED7D8",
+    Identity: "0xa067CEa2859d27CA83700c7E17414f111C1BF561",
+    IdentityCloneFactory: "0xDf962f3C24863A0fb8fb77B3144E31fE2859b9B8",
+    Registry: "0x5d8266342aAfe19CB8EC25A6637f385893389A35",
+  }
+}
+```
+
+##### Ropsten Testnet
+```
+{
+  dsnpStartBlockNumber: 10959123,
+  contracts: {
+    Publisher: "0x9828b9c8E8863267508eB0235370Eb26914D6a78",
+    Beacon: "0x307748fF8c3547a6768B0CD37c1b0F35fFB0ca47",
+    BeaconFactory: "0x024a03CFE1e8EE563382C08C1aB359830c39Cf20",
+    Identity: "0x33707b57CE4Af9f970fb04a4D6CFF15B8342D938",
+    IdentityCloneFactory: "0x61F57538a2621Dd2ba36E513e11cDe4f5936bCe9",
+    Registry: "0xEBF48cE1EE0e727C2E23cb977799B93fD2EbFfda",
+  }
+}
+```
+
 #### Storing Activity Content and Batch Files
 
 Storage solutions can be added so as long it matches the [StoreInterface](https://github.com/LibertyDSNP/sdk-ts/blob/main/src/core/store/interface.ts).
@@ -140,23 +191,3 @@ Documentation is deployed on merge to main to GitHub Pages: https://libertydsnp.
   - Custom Loaded Jest expect matchers like `expect(tx).transactionRejectsWith("message")`
 - test/generators
   - Test Data Generators and fixtures
-
-
-### Testnet
-We are currently running 2 POA nodes for our Testnet
-Tesnet Authority nodes are:
-
-- node0.testnet.dsnp.org
-- node1.testnet.dsnp.org
-
-#### Contracts are located at the following addresses:
-
-MigrationsContract 0xdBA8e92706e48bbFDe1A8496710d4e85d3388E71
-PublisherContract 0xB708186004dAC4019417fa8deF9E8F49a55103b1
-IdentityContract 0xDcc457296d9790C52B6746cD45AFaaD18b7FfEfa
-RegistryContract 0x31C3fDb70078FD1d64D51ecA713bCdb2f4212E74
-IdentityCloneFactory 0x233FfDa2cEd4579B07bbc5e95bDe7f540A2DFd5a
-Beacon 0x26b21a1E90b86c779D9a1d31cD09F5cd8C7c8f1d
-BeaconFactory 0x519fd89B05dab08F14D8fDEeB11C88cacc0bA76A
-
-Contract source code is located [here](https://github.com/LibertyDSNP/contracts)
