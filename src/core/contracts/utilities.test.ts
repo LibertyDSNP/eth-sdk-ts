@@ -175,6 +175,7 @@ describe("#getFromBlockDefault", () => {
   it("defaults to the default", () => {
     expect(getFromBlockDefault(undefined, 0)).toEqual(0);
     expect(getFromBlockDefault(undefined, "latest")).toEqual("latest");
+    expect(getFromBlockDefault(undefined, "dsnp-start-block", { dsnpStartBlockNumber: 10 })).toEqual(10);
   });
 
   it("earliest converts to zero", () => {
