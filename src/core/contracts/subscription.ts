@@ -160,7 +160,7 @@ const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Reg
   });
 };
 
-interface BlockRangeOptions {
+export interface BlockRangeOptions {
   filter: EventFilter;
   fromBlock?: number;
   toBlock?: number;
@@ -178,27 +178,58 @@ interface BlockRangeOptions {
  *      If not provided, all blocks matching the other parameters will be returned.
  * @param opts - ConfigOpts
  */
+
+export interface AsyncIterator<T> {
+  next(value?: any): Promise<IteratorResult<T>>;
+  return?(value?: any): Promise<IteratorResult<T>>;
+  throw?(e?: any): Promise<IteratorResult<T>>;
+}
+
+// TODO: maybe we should actually make it a loglimit instead of a blockLimit so we
+// don't end up sending back lots of empty results.
+const createIterator = (
+  from: number,
+  to: number,
+  pageSize: number,
+  provider: ethers.providers.Provider,
+  filter: EventFilter
+): AsyncIterator<Publication[]> => {
+  const iterator = {
+    startBlock: from,
+    endBlock: to,
+    page: pageSize,
+    currentEndBlock: from + pageSize - 1,
+    next: async function (): Promise<IteratorResult<Publication[]>> {
+      if (this.startBlock > this.endBlock) {
+        return Promise.resolve({ done: true, value: [] });
+      }
+      const logs = await provider.getLogs({
+        topics: filter.topics,
+        fromBlock: this.startBlock,
+        toBlock: this.currentEndBlock,
+      });
+      const decodedValues = decodeLogsForBatchPublication(logs);
+      const done = this.currentEndBlock === this.endBlock;
+      this.startBlock = this.currentEndBlock + 1;
+      this.currentEndBlock = Math.min(this.endBlock, this.startBlock + this.page - 1);
+      return Promise.resolve({ done: done, value: decodedValues });
+    },
+  };
+  return iterator;
+};
+
+// TODO: what happens when we pass a block > currentBlock?
 export const syncPublicationsByRange = async (
   rangeParams: BlockRangeOptions,
   opts?: ConfigOpts
-): Promise<Array<Publication>> => {
+): Promise<AsyncIterator<Array<Publication>>> => {
   const provider = requireGetProvider(opts);
 
+  const fromBlock = rangeParams.fromBlock ? rangeParams.fromBlock : 0;
   let toBlock = rangeParams.toBlock;
   if (!toBlock) {
     toBlock = await provider.getBlockNumber();
   }
-
-  const fromBlock = rangeParams.fromBlock ? rangeParams.fromBlock : 0;
-  // if (rangeParams.blockLimit) {
-  //
-  // }
-
-  const logs: ethers.providers.Log[] = await provider.getLogs({
-    topics: dsnpBatchFilter(2).topics,
-    fromBlock: fromBlock,
-    toBlock: toBlock,
-  });
-  const decodedValues = decodeLogsForBatchPublication(logs);
-  return decodedValues;
+  const pageSize = (rangeParams.blockLimit || toBlock) + 1; // inclusive
+  return createIterator(fromBlock, toBlock, pageSize, provider, rangeParams.filter);
 };

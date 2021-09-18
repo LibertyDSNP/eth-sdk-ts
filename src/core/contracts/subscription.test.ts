@@ -6,6 +6,7 @@ import {
   BatchFilterOptions,
   subscribeToRegistryUpdates,
   syncPublicationsByRange,
+  AsyncIterator,
 } from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
@@ -27,7 +28,7 @@ describe("subscription", () => {
     jest.resetAllMocks();
   });
 
-  describe.skip("subscribeToBatchPublications", () => {
+  describe("subscribeToBatchPublications", () => {
     jest.setTimeout(70000);
     const testUrl = "http://www.testconst.com";
     const fileHash = hash("test");
@@ -149,7 +150,7 @@ describe("subscription", () => {
     });
   });
 
-  describe.skip("BatchPublication events with custom filter", () => {
+  describe("BatchPublication events with custom filter", () => {
     it("returns events that matches filters", async () => {
       const provider = requireGetProvider();
       const mock = jest.fn((opts: BatchPublicationLogData) => {
@@ -176,7 +177,7 @@ describe("subscription", () => {
     });
   });
 
-  describe.skip("get past events from start block", () => {
+  describe("get past events from start block", () => {
     it("retrieves past events based on given start block", async () => {
       const provider = requireGetProvider();
       const mock = jest.fn();
@@ -242,7 +243,7 @@ describe("subscription", () => {
     });
   });
 
-  describe.skip("subscribeToRegistryUpdates", () => {
+  describe("subscribeToRegistryUpdates", () => {
     jest.setTimeout(70000);
 
     describe("get past events from start block", () => {
@@ -320,6 +321,7 @@ describe("subscription", () => {
       });
     });
   });
+
   describe("syncPublicationsByRange", () => {
     let provider: ethers.providers.Provider;
     let filter: ethers.EventFilter;
@@ -334,28 +336,62 @@ describe("subscription", () => {
       { announcementType: 2, fileUrl: [testUrl, filenames[3]].join("/"), fileHash: hash(filenames[3]) },
     ];
 
+    const rcpts: number[] = [];
+
     beforeEach(async () => {
       provider = requireGetProvider();
-      filter = await dsnpBatchFilter(2);
-      console.log("filter: ", filter);
+      filter = dsnpBatchFilter(2);
       for (const pub of publications) {
         const txn = await publish([pub]);
-        await txn.wait(1);
-        // console.log("recpt: ", rcpt);
+        const rcpt = await txn.wait(1);
+        rcpts.push(rcpt.blockNumber);
         await mineBlocks(1, provider as ethers.providers.JsonRpcProvider);
       }
-      await mineBlocks(2, provider as ethers.providers.JsonRpcProvider);
       await new Promise((r) => setTimeout(r, 2000));
     });
 
-    it("fetches all blocks by default", async () => {
-      const res = await syncPublicationsByRange({ filter });
-      expect(res?.length).toEqual(4);
+    describe("when only a filter is passed", () => {
+      let nextResult: IteratorResult<Publication[]>;
+      let iterator: AsyncIterator<Publication[]>;
+      beforeEach(async () => {
+        iterator = await syncPublicationsByRange({ filter });
+        nextResult = await iterator.next();
+      });
+
+      it("fetches all blocks by default", () => {
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value).toHaveLength(4);
+      });
+
+      it("subsequent calls to next return empty results", async () => {
+        nextResult = await iterator.next();
+        expect(nextResult).toEqual({
+          done: true,
+          value: [],
+        });
+      });
     });
 
-    // it("fetches only the number of blocks specified by walkback", async () => {});
-    // it("fetches  specified by walkback", async () => {});
-    // it("fetches only up to the toBlock specified", async () => {});
-    // it("throws an error if walkbackBlockCount is invalid", async () => {});
+    describe("when parameters are passed", () => {
+      it("fetches only the number of blocks specified by blockLimit", async () => {
+        const fromBlock = rcpts[0];
+        const toBlock = rcpts[3];
+        const blockLimit = 2;
+        const iterator = await syncPublicationsByRange({ filter, fromBlock, toBlock, blockLimit });
+        let nextResult = await iterator.next();
+        expect(nextResult?.done).toEqual(false);
+        expect(nextResult?.value.length).toEqual(2);
+        nextResult = await iterator.next();
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value.length).toEqual(2);
+        nextResult = await iterator.next();
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value.length).toEqual(0);
+      });
+
+      // it("fetches  specified by walkback", async () => {});
+      // it("fetches only up to the toBlock specified", async () => {});
+      // it("throws an error if walkbackBlockCount is invalid", async () => {});
+    });
   });
 });
