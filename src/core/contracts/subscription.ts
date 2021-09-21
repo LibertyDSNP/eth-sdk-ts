@@ -5,9 +5,10 @@ import { dsnpBatchFilter, Publication } from "./publisher";
 import { Publisher__factory, Registry } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
 import { FromBlockNumber, getFromBlockDefault, LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
-import { RegistryUpdateLogData, getContract } from "./registry";
+import { getContract, RegistryUpdateLogData } from "./registry";
 import { convertToDSNPUserURI } from "../identifiers";
 import { EventFilter } from "ethers/lib/ethers";
+import { Log as EventLog } from "@ethersproject/abstract-provider";
 
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
 
@@ -160,24 +161,12 @@ const decodeLogsForRegistryUpdate = (logs: ethers.providers.Log[], contract: Reg
   });
 };
 
-export interface BlockRangeOptions {
+interface BlockRangeOptions {
   filter: EventFilter;
-  fromBlock?: number;
-  toBlock?: number;
-  blockLimit?: number;
+  walkbackBlockCount: number;
+  latestBlock: number;
+  earliestBlock: number;
 }
-
-/**
- * syncPublicationsByRange fetches filtered logs based on the provided filter, in the range specified.
- *
- * @param rangeParams - BlockRangeOptions
- *    - filter is an ethers EventFilter. It is required.
- *    - toBlock is a number. It is optional and must be :gt;0.  It defaults to the current block height.
- *    - fromBlock is a number, is optional.  If it is not provided, it defaults to 0.
- *    - blockLimit is a number. It is optional and must be :gt;0.  If provided the most blocks fetched will be 0.
- *      If not provided, all blocks matching the other parameters will be returned.
- * @param opts - ConfigOpts
- */
 
 export interface AsyncIterator<T> {
   next(value?: any): Promise<IteratorResult<T>>;
@@ -185,51 +174,101 @@ export interface AsyncIterator<T> {
   throw?(e?: any): Promise<IteratorResult<T>>;
 }
 
-// TODO: maybe we should actually make it a loglimit instead of a blockLimit so we
-// don't end up sending back lots of empty results.
-const createIterator = (
-  from: number,
-  to: number,
-  pageSize: number,
-  provider: ethers.providers.Provider,
-  filter: EventFilter
-): AsyncIterator<Publication[]> => {
-  const iterator = {
-    startBlock: from,
-    endBlock: to,
-    page: pageSize,
-    currentEndBlock: from + pageSize - 1,
-    next: async function (): Promise<IteratorResult<Publication[]>> {
-      if (this.startBlock > this.endBlock) {
-        return Promise.resolve({ done: true, value: [] });
-      }
-      const logs = await provider.getLogs({
-        topics: filter.topics,
-        fromBlock: this.startBlock,
+// We need to fetch until we get at least one log, then next
+// retrieves each one until we're done.  If we are done with the current collection,
+// fetch more based on walkback.
+
+// so we need a "fetch more" indicator
+// and a "reached earliest block" indicator.
+
+// 1a. if results are empty
+//   while results are empty
+//      fetch the next set of items
+// 1b. increment logIndex
+// 2 Check if we're done:
+//     current
+class AsyncPublicationsIterator {
+  earliestBlock: number;
+  walkbackBlocks: number;
+  currentStartBlock: number;
+  currentEndBlock: number;
+  logIndex: number;
+  publications: Array<Publication>;
+  provider: ethers.providers.Provider;
+  filter: EventFilter;
+
+  constructor(rangeOptions: BlockRangeOptions, provider: ethers.providers.Provider) {
+    this.earliestBlock = rangeOptions.earliestBlock;
+    this.walkbackBlocks = rangeOptions.walkbackBlockCount;
+    this.currentEndBlock = rangeOptions.latestBlock;
+    this.currentStartBlock = rangeOptions.latestBlock - this.walkbackBlocks + 1;
+    this.filter = rangeOptions.filter;
+    this.provider = provider;
+    this.logIndex = 0;
+    this.publications = [];
+  }
+
+  reachedEarliestBlock(): boolean {
+    return this.currentEndBlock < this.earliestBlock;
+  }
+
+  // we should fetch logs from the chain initially or if we've returned the last item
+  // fetched last time.
+  shouldFetchLogs(): boolean {
+    return !this.publications.length || this.logIndex === this.publications.length - 1;
+  }
+
+  doneFetching(): boolean {
+    return this.reachedEarliestBlock() && this.logIndex === this.publications.length;
+  }
+
+  async fetchUntilWeGetSomeLogs() {
+    this.publications = [];
+    let logs: EventLog[] = [];
+    // keep going until we get something or we hit the earliest requested block height.
+    while (!logs.length && !this.reachedEarliestBlock()) {
+      logs = await this.provider.getLogs({
+        topics: this.filter.topics,
+        fromBlock: this.currentStartBlock,
         toBlock: this.currentEndBlock,
       });
-      const decodedValues = decodeLogsForBatchPublication(logs);
-      const done = this.currentEndBlock === this.endBlock;
-      this.startBlock = this.currentEndBlock + 1;
-      this.currentEndBlock = Math.min(this.endBlock, this.startBlock + this.page - 1);
-      return Promise.resolve({ done: done, value: decodedValues });
-    },
-  };
-  return iterator;
-};
-
-// TODO: what happens when we pass a block > currentBlock?
-export const syncPublicationsByRange = async (
-  rangeParams: BlockRangeOptions,
-  opts?: ConfigOpts
-): Promise<AsyncIterator<Array<Publication>>> => {
-  const provider = requireGetProvider(opts);
-
-  const fromBlock = rangeParams.fromBlock ? rangeParams.fromBlock : 0;
-  let toBlock = rangeParams.toBlock;
-  if (!toBlock) {
-    toBlock = await provider.getBlockNumber();
+      this.logIndex = 0;
+      this.currentEndBlock = this.currentStartBlock - 1; // check off by 1
+      this.currentStartBlock = Math.max(this.currentStartBlock - this.walkbackBlocks, this.earliestBlock);
+    }
+    this.publications = decodeLogsForBatchPublication(logs);
   }
-  const pageSize = (rangeParams.blockLimit || toBlock) + 1; // inclusive
-  return createIterator(fromBlock, toBlock, pageSize, provider, rangeParams.filter);
+
+  public async next(): Promise<IteratorResult<Publication>> {
+    if (this.shouldFetchLogs()) {
+      await this.fetchUntilWeGetSomeLogs();
+    } else {
+      this.logIndex++;
+    }
+    return Promise.resolve({ done: this.doneFetching(), value: this.publications[this.logIndex] });
+  }
+}
+
+// TODO: what happens when we pass a block > currentBlock? Maybe ethers handles it.
+/**
+ * syncPublicationsByRange fetches filtered logs based on the provided filter, in the range specified.
+ *
+ * @param filter - is an ethers EventFilter. It is required.
+ * @param walkbackBlockCount - is a number. It is required and must be :gt;0.
+ * @param newestBlock - is a number. It is optional and must be :gt;0.  It defaults to the current block height.
+ * @param oldestBlock - is a number, is optional.  If it is not provided, it defaults to 0.
+ * @param opts - ConfigOpts
+ */
+
+export const syncPublicationsByRange = async (
+  filter: EventFilter,
+  walkbackBlockCount: number,
+  newestBlock?: number,
+  oldestBlock?: number,
+  opts?: ConfigOpts
+): Promise<AsyncIterator<Publication>> => {
+  const provider = requireGetProvider(opts);
+  const latestBlock = newestBlock || (await provider.getBlockNumber());
+  const earliestBlock = oldestBlock === undefined ? 0 : oldestBlock;
+  return new AsyncPublicationsIterator({ earliestBlock, latestBlock, walkbackBlockCount, filter }, provider);
 };
