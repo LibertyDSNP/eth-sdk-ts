@@ -2,10 +2,9 @@ import { ethers } from "ethers";
 import { HexString } from "../../types/Strings";
 import { ConfigOpts, requireGetDsnpStartBlockNumber, requireGetProvider } from "../config";
 import { EventFilter } from "ethers/lib/ethers";
-import { Publication } from "./publisher";
 import { Log as EventLog } from "@ethersproject/abstract-provider";
 import { DSNPError } from "../errors";
-import { decodeLogsForBatchPublication } from "./subscription";
+import { BatchPublicationLogData, decodeLogsForBatchPublication } from "./subscription";
 
 /**
  * DomainData represents EIP-712 unique domain
@@ -209,7 +208,7 @@ export class AsyncPublicationsIterator {
   currentStartBlock: number;
   currentEndBlock: number;
   logIndex: number;
-  publications: Array<Publication>;
+  publications: Array<BatchPublicationLogData>;
   provider: ethers.providers.Provider;
   blockRangeOptions: BlockRangeOptions;
 
@@ -241,7 +240,7 @@ export class AsyncPublicationsIterator {
     return this.reachedEarliestBlock() && this.logIndex === this.publications.length;
   }
 
-  async fetchUntilGetLogsOrDone() {
+  async fetchUntilGetLogsOrDone(): Promise<void> {
     let logs: EventLog[] = [];
     // keep going until we get something or we hit the earliest requested block height.
     while (!logs.length && !this.reachedEarliestBlock()) {
@@ -260,6 +259,7 @@ export class AsyncPublicationsIterator {
     }
     this.logIndex = 0;
     this.publications = decodeLogsForBatchPublication(logs);
+    return;
   }
 
   /**
@@ -270,7 +270,7 @@ export class AsyncPublicationsIterator {
    *    value: a Publication
    * \}
    */
-  public async next(): Promise<IteratorResult<Publication>> {
+  public async next(): Promise<IteratorResult<BatchPublicationLogData>> {
     if (this.shouldFetchLogs()) {
       await this.fetchUntilGetLogsOrDone();
     } else {

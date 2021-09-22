@@ -7,6 +7,7 @@ import { dsnpBatchFilter, Publication, publish } from "./publisher";
 import { hash } from "../utilities";
 import { setupSnapshot } from "../../test/hardhatRPC";
 import { setupConfig } from "../../test/sdkTestConfig";
+import { BatchPublicationLogData } from "./subscription";
 
 type ProviderOnCb = (log: ethers.providers.Log) => void;
 
@@ -231,7 +232,7 @@ describe("#getFromBlockDefault", () => {
     });
 
     const verifyResult = (
-      nextResult: IteratorYieldResult<Publication> | IteratorReturnResult<any>,
+      nextResult: IteratorYieldResult<BatchPublicationLogData> | IteratorReturnResult<BatchPublicationLogData>,
       resultIndex: number
     ) => {
       expect(nextResult?.value?.fileHash).toEqual(publications[resultIndex].fileHash);
@@ -241,10 +242,10 @@ describe("#getFromBlockDefault", () => {
     };
 
     describe("when only a filter + walkback is passed", () => {
-      let nextResult: IteratorResult<Publication>;
-      let iterator: AsyncIterator<Publication>;
+      let nextResult: IteratorResult<BatchPublicationLogData>;
+      let iterator: AsyncIterator<BatchPublicationLogData>;
       describe("chunks are fetched in correct orders", () => {
-        const tests: Record<string, any>[] = [
+        const tests = [
           { wb: 4, order: [2, 3, 0, 1] },
           { wb: 3, order: [3, 1, 2, 0] },
           { wb: 2, order: [3, 2, 1, 0] },
@@ -253,7 +254,7 @@ describe("#getFromBlockDefault", () => {
 
         for (const test of tests) {
           it("for walkback = " + test.wb, async () => {
-            iterator = await getPublicationLogIterator(filter, parseInt(test.wb));
+            iterator = await getPublicationLogIterator(filter, test.wb);
             for (const resultIndex of test.order) {
               nextResult = await iterator.next();
               verifyResult(nextResult, resultIndex);
