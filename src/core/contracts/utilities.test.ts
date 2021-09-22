@@ -230,23 +230,20 @@ describe("#getFromBlockDefault", () => {
       jest.resetAllMocks();
     });
 
-    /**
-     *
-     */
-    async function verifyResult(
+    const verifyResult = (
       nextResult: IteratorYieldResult<Publication> | IteratorReturnResult<any>,
       resultIndex: number
-    ) {
+    ) => {
       expect(nextResult?.value?.fileHash).toEqual(publications[resultIndex].fileHash);
       expect(nextResult?.value?.fileUrl).toEqual(publications[resultIndex].fileUrl);
       expect(nextResult?.value?.blockNumber).toEqual(rcpts[resultIndex]);
       return;
-    }
+    };
 
     describe("when only a filter + walkback is passed", () => {
       let nextResult: IteratorResult<Publication>;
       let iterator: AsyncIterator<Publication>;
-      describe("chunks are fetched in correct order", () => {
+      describe("chunks are fetched in correct orders", () => {
         const tests: Record<string, any>[] = [
           { wb: 4, order: [2, 3, 0, 1] },
           { wb: 3, order: [3, 1, 2, 0] },
