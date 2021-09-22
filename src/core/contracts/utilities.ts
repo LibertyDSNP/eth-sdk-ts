@@ -188,21 +188,16 @@ export const subscribeToEvent = async (
 };
 
 /**
- * BlockRangeOptions for specifying chain filter and block limits.
- *
- * @member filter - an EventFilter
- * @member walkbackBlocks - number of blocks to walk back at a time
- * @member latestBlock - the latest block to start retrieving
- * @member earliestBlock - the first block to stop retrieving
+ * BlockRangeOptions: represents parameters for specifying chain filter and block limits.
  */
-interface BlockRangeOptions {
+export type BlockRangeOptions = {
   filter: EventFilter;
   walkbackBlocks: number;
   latestBlock: number;
   earliestBlock: number;
-}
+};
 
-export const MAX_WALKBACK = 10000;
+export const MAX_ITERATOR_WALKBACK_BLOCKS = 10000;
 
 /**
  *  AsyncPublicationsIterator is an AsyncIterator which implements only an async next() function.
@@ -269,7 +264,7 @@ export class AsyncPublicationsIterator {
   /**
    * next - returns a Promise of an IteratorResult enclosing a Publication.
    * IteratorResult = \{
-   *    done: true if the earliest block has been reached and the last Publication has
+   *    done: true if the earliest block has been reached AND the last Publication has
    *          been returned via next().
    *    value: a Publication
    * \}
@@ -300,14 +295,15 @@ const requireValidBlockRange = (newestBlock?: number, oldestBlock?: number) => {
 
 const requireValidWalkback = (walkbackBlocks: number) => {
   requirePositive(walkbackBlocks, "walkbackBlocks");
-  if (walkbackBlocks > MAX_WALKBACK) throw new DSNPError("walkbackBlocks must be <= " + MAX_WALKBACK);
+  if (walkbackBlocks > MAX_ITERATOR_WALKBACK_BLOCKS)
+    throw new DSNPError("walkbackBlocks must be <= " + MAX_ITERATOR_WALKBACK_BLOCKS);
 };
 
 /**
  * getPublicationLogIterator fetches filtered logs based on the provided filter, in the range specified.
  *
  * @param filter - is an ethers EventFilter. It is required.
- * @param  walkbackBlocks - is a number. It is required and must be :gt; 0 and &lt; MAX_WALKBACK
+ * @param walkbackBlocks - is a number. It is required and must be :gt; 0 and &lt; MAX_WALKBACK
  * @param newestBlock - is a number. It is optional and must be :gt;0.  It defaults to the current block height.
  * @param oldestBlock - is a number. It is optional, must be :ge;0 , and defaults to 0.
  * @param opts - ConfigOpts
