@@ -1,9 +1,9 @@
 import { requireGetProvider } from "../config";
-import { dsnpBatchFilter, Publication, publish } from "./publisher";
+import { publish, Publication, dsnpBatchFilter } from "./publisher";
 import {
-  BatchFilterOptions,
-  BatchPublicationLogData,
   subscribeToBatchPublications,
+  BatchPublicationLogData,
+  BatchFilterOptions,
   subscribeToRegistryUpdates,
 } from "./subscription";
 import { setupSnapshot } from "../../test/hardhatRPC";

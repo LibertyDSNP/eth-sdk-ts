@@ -11,7 +11,7 @@ const DSNP_MIGRATION_TYPE = "DSNPMigration(address,string)";
 
 type RawLog = { topics: Array<string>; data: string };
 
-export const EVENTS_ABI = new ethers.utils.Interface(
+const EVENTS_ABI = new ethers.utils.Interface(
   [
     types.Publisher__factory,
     types.BeaconFactory__factory,

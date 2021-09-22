@@ -2,13 +2,15 @@ import { HexString } from "../../types/Strings";
 import { ethers } from "ethers";
 import { ConfigOpts, requireGetProvider } from "../config";
 import { dsnpBatchFilter } from "./publisher";
-import { Publisher__factory, Registry } from "../../types/typechain";
+import { Publisher__factory } from "../../types/typechain";
 import { LogDescription } from "@ethersproject/abi";
 import { FromBlockNumber, getFromBlockDefault, LogEventData, subscribeToEvent, UnsubscribeFunction } from "./utilities";
-import { getContract, RegistryUpdateLogData } from "./registry";
+import { RegistryUpdateLogData, getContract } from "./registry";
+import { Registry } from "../../types/typechain";
 import { convertToDSNPUserURI } from "../identifiers";
 
 const PUBLISHER_DECODER = new ethers.utils.Interface(Publisher__factory.abi);
+
 /**
  * BatchPublication represents a struct for a publication data
  */
