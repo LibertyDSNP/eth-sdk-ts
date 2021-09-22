@@ -244,7 +244,6 @@ export class AsyncPublicationsIterator {
     let logs: EventLog[] = [];
     // keep going until we get something or we hit the earliest requested block height.
     while (!logs.length && !this.reachedEarliestBlock()) {
-      console.log({ curEnd: this.currentEndBlock, curStart: this.currentStartBlock });
       logs = await this.provider.getLogs({
         address: this.blockRangeOptions.filter.address,
         topics: this.blockRangeOptions.filter.topics,
