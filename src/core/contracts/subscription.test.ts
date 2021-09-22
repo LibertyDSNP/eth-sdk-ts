@@ -1,21 +1,19 @@
-import {requireGetProvider} from "../config";
-import {dsnpBatchFilter, Publication, publish} from "./publisher";
+import { requireGetProvider } from "../config";
+import { dsnpBatchFilter, Publication, publish } from "./publisher";
 import {
-  AsyncIterator,
   BatchFilterOptions,
   BatchPublicationLogData,
   subscribeToBatchPublications,
   subscribeToRegistryUpdates,
-  syncPublicationsByRange,
 } from "./subscription";
-import {setupSnapshot} from "../../test/hardhatRPC";
-import {setupConfig} from "../../test/sdkTestConfig";
-import {checkNumberOfFunctionCalls, mineBlocks} from "../../test/utilities";
-import {hash} from "../utilities";
-import {ethers, Signer} from "ethers";
-import {changeHandle, getContract, register} from "./registry";
-import {Identity__factory, Registry} from "../../types/typechain";
-import {JsonRpcProvider} from "@ethersproject/providers";
+import { setupSnapshot } from "../../test/hardhatRPC";
+import { setupConfig } from "../../test/sdkTestConfig";
+import { checkNumberOfFunctionCalls, mineBlocks } from "../../test/utilities";
+import { hash } from "../utilities";
+import { ethers, Signer } from "ethers";
+import { changeHandle, getContract, register } from "./registry";
+import { Identity__factory, Registry } from "../../types/typechain";
+import { JsonRpcProvider } from "@ethersproject/providers";
 
 describe("subscription", () => {
   setupSnapshot();
@@ -38,7 +36,7 @@ describe("subscription", () => {
       const mock = jest.fn();
 
       const removeListener = await subscribeToBatchPublications(mock);
-      const publications: Publication[] = [{announcementType: 2, fileUrl: testUrl, fileHash}];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash }];
       await (await publish(publications)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 30, 1);
 
@@ -63,8 +61,8 @@ describe("subscription", () => {
       const mock = jest.fn();
 
       const removeListener = await subscribeToBatchPublications(mock);
-      const publications: Publication[] = [{announcementType: 2, fileUrl: testUrl1, fileHash: hash1}];
-      const publications1: Publication[] = [{announcementType: 2, fileUrl: testUrl2, fileHash: hash2}];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl1, fileHash: hash1 }];
+      const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl2, fileHash: hash2 }];
       await (await publish(publications)).wait(1);
       await (await publish(publications1)).wait(1);
       const numberOfCalls = await checkNumberOfFunctionCalls(mock, 10, 2);
@@ -115,13 +113,13 @@ describe("subscription", () => {
 
           const testUrl = "http://www.test.com";
           const fileHash = hash("test");
-          const publications1: Publication[] = [{announcementType: 2, fileUrl: testUrl, fileHash: fileHash}];
+          const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: fileHash }];
           await (await publish(publications1)).wait(1);
           await new Promise((r) => setTimeout(r, 2000));
 
           await mineBlocks(11, provider as ethers.providers.JsonRpcProvider);
 
-          const publications: Publication[] = [{announcementType: 2, fileUrl: testUrl, fileHash: fileHash}];
+          const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl, fileHash: fileHash }];
 
           await (await publish(publications)).wait(1);
 
@@ -161,9 +159,9 @@ describe("subscription", () => {
       const testUrl4 = "http://www.testconst333.com";
       const hash4 = hash("test333");
 
-      const removeListener = await subscribeToBatchPublications(mock, {announcementType: 2});
-      const publications: Publication[] = [{announcementType: 2, fileUrl: testUrl3, fileHash: hash3}];
-      const publications1: Publication[] = [{announcementType: 4, fileUrl: testUrl4, fileHash: hash4}];
+      const removeListener = await subscribeToBatchPublications(mock, { announcementType: 2 });
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
+      const publications1: Publication[] = [{ announcementType: 4, fileUrl: testUrl4, fileHash: hash4 }];
       await (await publish(publications)).wait(1);
       await (await publish(publications1)).wait(1);
       await checkNumberOfFunctionCalls(mock, 10, 1);
@@ -191,17 +189,17 @@ describe("subscription", () => {
       const testUrl6 = "http://www.testconst666.com";
       const hash6 = hash("test666");
 
-      const publications: Publication[] = [{announcementType: 2, fileUrl: testUrl3, fileHash: hash3}];
-      const publications1: Publication[] = [{announcementType: 2, fileUrl: testUrl4, fileHash: hash4}];
-      const publications2: Publication[] = [{announcementType: 2, fileUrl: testUrl5, fileHash: hash5}];
-      const publications3: Publication[] = [{announcementType: 2, fileUrl: testUrl6, fileHash: hash6}];
+      const publications: Publication[] = [{ announcementType: 2, fileUrl: testUrl3, fileHash: hash3 }];
+      const publications1: Publication[] = [{ announcementType: 2, fileUrl: testUrl4, fileHash: hash4 }];
+      const publications2: Publication[] = [{ announcementType: 2, fileUrl: testUrl5, fileHash: hash5 }];
+      const publications3: Publication[] = [{ announcementType: 2, fileUrl: testUrl6, fileHash: hash6 }];
 
       await (await publish(publications)).wait(1);
 
       const blockNumber = (await provider.getBlockNumber()) + 1;
       await (await publish(publications1)).wait(1);
 
-      const removeListener = await subscribeToBatchPublications(mock, {announcementType: 2, fromBlock: blockNumber});
+      const removeListener = await subscribeToBatchPublications(mock, { announcementType: 2, fromBlock: blockNumber });
 
       await (await publish(publications2)).wait(1);
       await (await publish(publications3)).wait(1);
@@ -253,7 +251,7 @@ describe("subscription", () => {
       setupSnapshot();
 
       beforeAll(() => {
-        ({signer, provider} = setupConfig());
+        ({ signer, provider } = setupConfig());
       });
 
       it("retrieves past events based on given start block", async () => {
@@ -278,7 +276,7 @@ describe("subscription", () => {
         await mineBlocks(10, provider as ethers.providers.JsonRpcProvider);
         await (await changeHandle(handleTwo, handleThree)).wait(1);
 
-        const removeListener = await subscribeToRegistryUpdates(mock, {fromBlock: currentBlockNumber});
+        const removeListener = await subscribeToRegistryUpdates(mock, { fromBlock: currentBlockNumber });
         await checkNumberOfFunctionCalls(mock, 10, 3);
 
         expect(mock).toHaveBeenCalledTimes(3);
@@ -321,73 +319,4 @@ describe("subscription", () => {
       });
     });
   });
-
-  describe("syncPublicationsByRange", () => {
-    let provider: ethers.providers.Provider;
-    let filter: ethers.EventFilter;
-    jest.setTimeout(7000);
-
-    const testUrl = "http://www.testconst.com";
-    const filenames = ["test00", "test01", "test02", "test03"];
-    const publications: Publication[] = [
-      {announcementType: 2, fileUrl: [testUrl, filenames[0]].join("/"), fileHash: hash(filenames[0])},
-      {announcementType: 2, fileUrl: [testUrl, filenames[1]].join("/"), fileHash: hash(filenames[1])},
-      {announcementType: 2, fileUrl: [testUrl, filenames[2]].join("/"), fileHash: hash(filenames[2])},
-      {announcementType: 2, fileUrl: [testUrl, filenames[3]].join("/"), fileHash: hash(filenames[3])},
-    ];
-
-    const rcpts: number[] = [];
-
-    beforeEach(async () => {
-      provider = requireGetProvider();
-      filter = dsnpBatchFilter(2);
-      for (const pub of publications) {
-        const txn = await publish([pub]);
-        const rcpt = await txn.wait(1);
-        rcpts.push(rcpt.blockNumber);
-        await mineBlocks(1, provider as ethers.providers.JsonRpcProvider);
-      }
-      await new Promise((r) => setTimeout(r, 2000));
-    });
-
-    describe("when only a filter + walkback is passed", () => {
-      let nextResult: IteratorResult<Publication>;
-      let iterator: AsyncIterator<Publication>;
-      beforeEach(async () => {
-        iterator = await syncPublicationsByRange(filter, 4);
-        nextResult = await iterator.next();
-      });
-
-      it("fetches chunks in the expected order", async () => {
-        for (const result of [2, 3, 0, 1]) {
-          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
-          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
-          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
-          nextResult = await iterator.next();
-        }
-        expect(nextResult?.done).toEqual(true);
-        expect(nextResult?.value).toBeUndefined();
-      });
-      describe("when parameters are passed", () => {
-        it("fetches only what is up to teh earliest block", async () => {
-          const earliestBlock = rcpts[2];
-          const latestBlock = rcpts[3];
-          const walkbackBlockCount = 2;
-          const iterator = await syncPublicationsByRange(filter, walkbackBlockCount, earliestBlock, latestBlock);
-          let nextResult = await iterator.next();
-          expect(nextResult?.done).toEqual(false);
-          expect(nextResult?.value.length).toEqual(2);
-          nextResult = await iterator.next();
-          expect(nextResult?.done).toEqual(true);
-          expect(nextResult?.value.length).toEqual(2);
-          nextResult = await iterator.next();
-          expect(nextResult?.done).toEqual(true);
-          expect(nextResult?.value.length).toEqual(0);
-        });
-
-        // it("fetches  specified by walkback", async () => {});
-        // it("fetches only up to the toBlock specified", async () => {});
-        // it("throws an error if walkbackBlockCount is invalid", async () => {});
-      });
-    });
-  });
+});

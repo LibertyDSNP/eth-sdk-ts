@@ -1,8 +1,12 @@
 import { ethers } from "ethers";
 
-import { getFromBlockDefault, subscribeToEvent } from "./utilities";
-import { checkNumberOfFunctionCalls } from "../../test/utilities";
-import { setConfig } from "../config";
+import { getFromBlockDefault, subscribeToEvent, getPublicationLogIterator } from "./utilities";
+import { checkNumberOfFunctionCalls, mineBlocks } from "../../test/utilities";
+import { requireGetProvider, setConfig } from "../config";
+import { dsnpBatchFilter, Publication, publish } from "./publisher";
+import { hash } from "../utilities";
+import { setupSnapshot } from "../../test/hardhatRPC";
+import { setupConfig } from "../../test/sdkTestConfig";
 
 type ProviderOnCb = (log: ethers.providers.Log) => void;
 
@@ -190,5 +194,121 @@ describe("#getFromBlockDefault", () => {
   it("returns the given value", () => {
     setConfig({ dsnpStartBlockNumber: 22, contracts: {} });
     expect(getFromBlockDefault(100, 0)).toEqual(100);
+  });
+
+  describe("getPublicationLogIterator", () => {
+    jest.setTimeout(7000);
+    setupSnapshot();
+
+    let provider: ethers.providers.Provider;
+    let filter: ethers.EventFilter;
+
+    const testUrl = "http://www.testconst.com";
+    const filenames = ["test00", "test01", "test02", "test03"];
+    const publications: Publication[] = [
+      { announcementType: 2, fileUrl: [testUrl, filenames[0]].join("/"), fileHash: hash(filenames[0]) },
+      { announcementType: 2, fileUrl: [testUrl, filenames[1]].join("/"), fileHash: hash(filenames[1]) },
+      { announcementType: 2, fileUrl: [testUrl, filenames[2]].join("/"), fileHash: hash(filenames[2]) },
+      { announcementType: 2, fileUrl: [testUrl, filenames[3]].join("/"), fileHash: hash(filenames[3]) },
+    ];
+
+    const rcpts: number[] = [];
+
+    beforeEach(async () => {
+      setupConfig();
+      provider = requireGetProvider();
+      filter = dsnpBatchFilter(2);
+      for (const pub of publications) {
+        const txn = await publish([pub]);
+        const rcpt = await txn.wait(1);
+        rcpts.push(rcpt.blockNumber);
+        await mineBlocks(1, provider as ethers.providers.JsonRpcProvider);
+      }
+      await new Promise((r) => setTimeout(r, 2000));
+    });
+    afterEach(async () => {
+      jest.resetAllMocks();
+    });
+
+    describe("when only a filter + walkback is passed", () => {
+      let nextResult: IteratorResult<Publication>;
+      let iterator: AsyncIterator<Publication>;
+      beforeEach(async () => {
+        iterator = await getPublicationLogIterator(filter, 4);
+        nextResult = await iterator.next();
+      });
+
+      it("fetches chunks in the expected order", async () => {
+        for (const result of [2, 3, 0, 1]) {
+          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
+          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
+          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
+          nextResult = await iterator.next();
+        }
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value).toBeUndefined();
+      });
+    });
+    describe("when parameters are passed", () => {
+      it("fetches only what is up to the earliest block", async () => {
+        const oldestBlock = rcpts[2];
+        const newestBlock = rcpts[3];
+        const walkbackBlockCount = 4;
+        const iterator = await getPublicationLogIterator(filter, walkbackBlockCount, newestBlock, oldestBlock);
+        let nextResult = await iterator.next();
+        for (const result of [2, 3]) {
+          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
+          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
+          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
+          nextResult = await iterator.next();
+        }
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value).toBeUndefined();
+      });
+
+      it("fetches only up to the toBlock specified", async () => {
+        const newestBlock = rcpts[2];
+        const walkbackBlockCount = 5;
+        const iterator = await getPublicationLogIterator(filter, walkbackBlockCount, newestBlock);
+        let nextResult = await iterator.next();
+        for (const result of [0, 1, 2]) {
+          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
+          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
+          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
+          nextResult = await iterator.next();
+        }
+        expect(nextResult?.done).toEqual(true);
+        expect(nextResult?.value).toBeUndefined();
+      });
+    });
+    describe("when invalid parameters are provided", () => {
+      const tests: Record<string, number[]> = {
+        "negative walkback": [-1],
+        "negative newestBlock": [5, -1],
+        "negative oldestBlock": [5, 99, -1],
+        "walkback that's too large": [999999],
+        "newestBlock that's <= oldestBlock": [1, 5, 5],
+      };
+      for (const testName of Object.keys(tests)) {
+        it("throws an error when passing a " + testName, async () => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const [wbk, newest, oldest, ..._unused] = tests[testName];
+          await expect(getPublicationLogIterator(filter, wbk, newest, oldest)).rejects.toThrowError();
+        });
+      }
+    });
+
+    describe("when there are no logs for `walkback` set of blocks", () => {
+      it("next fetches until it gets logs", async () => {
+        const walkBack = 4;
+        // make sure there are more empty blocks than walkback before we get to some log
+        // results
+        await mineBlocks(walkBack + 1, provider as ethers.providers.JsonRpcProvider);
+        const iterator = await getPublicationLogIterator(filter, walkBack);
+        const nextResult = await iterator.next();
+        expect(nextResult?.done).toEqual(false);
+        expect(nextResult?.value?.blockNumber).toEqual(rcpts[3]);
+      });
+    });
   });
 });
