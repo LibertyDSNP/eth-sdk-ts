@@ -206,14 +206,12 @@ export const MAX_ITERATOR_WALKBACK_BLOCKS = 10000;
  *  decoded into Publications.
  */
 export class AsyncPublicationsIterator {
-  earliestBlock: number;
-  walkbackBlocks: number;
   currentStartBlock: number;
   currentEndBlock: number;
   logIndex: number;
   publications: Array<Publication>;
   provider: ethers.providers.Provider;
-  filter: EventFilter;
+  blockRangeOptions: BlockRangeOptions;
 
   /**
    *
@@ -221,18 +219,16 @@ export class AsyncPublicationsIterator {
    * @param provider - ethers.providers.Provider
    */
   constructor(rangeOptions: BlockRangeOptions, provider: ethers.providers.Provider) {
-    this.earliestBlock = rangeOptions.earliestBlock;
-    this.walkbackBlocks = rangeOptions.walkbackBlocks;
+    this.blockRangeOptions = rangeOptions;
     this.currentEndBlock = rangeOptions.latestBlock;
-    this.currentStartBlock = rangeOptions.latestBlock - this.walkbackBlocks + 1;
-    this.filter = rangeOptions.filter;
+    this.currentStartBlock = rangeOptions.latestBlock - rangeOptions.walkbackBlocks + 1;
     this.provider = provider;
     this.logIndex = 0;
     this.publications = [];
   }
 
   reachedEarliestBlock(): boolean {
-    return this.currentEndBlock < this.earliestBlock;
+    return this.currentEndBlock < this.blockRangeOptions.earliestBlock;
   }
 
   // we should fetch logs from the chain initially or if we've returned the last item
@@ -249,13 +245,18 @@ export class AsyncPublicationsIterator {
     let logs: EventLog[] = [];
     // keep going until we get something or we hit the earliest requested block height.
     while (!logs.length && !this.reachedEarliestBlock()) {
+      console.log({ curEnd: this.currentEndBlock, curStart: this.currentStartBlock });
       logs = await this.provider.getLogs({
-        topics: this.filter.topics,
+        address: this.blockRangeOptions.filter.address,
+        topics: this.blockRangeOptions.filter.topics,
         fromBlock: this.currentStartBlock,
         toBlock: this.currentEndBlock,
       });
-      this.currentEndBlock = this.currentStartBlock - 1; // check off by 1
-      this.currentStartBlock = Math.max(this.currentStartBlock - this.walkbackBlocks, this.earliestBlock);
+      this.currentEndBlock = this.currentStartBlock - 1;
+      this.currentStartBlock = Math.max(
+        this.currentStartBlock - this.blockRangeOptions.walkbackBlocks,
+        this.blockRangeOptions.earliestBlock
+      );
     }
     this.logIndex = 0;
     this.publications = decodeLogsForBatchPublication(logs);
@@ -318,7 +319,15 @@ export const getPublicationLogIterator = async (
   requireValidWalkback(walkbackBlocks);
   requireValidBlockRange(newestBlock, oldestBlock);
   const provider = requireGetProvider(opts);
-  const latestBlock = newestBlock || (await provider.getBlockNumber());
-  const earliestBlock = oldestBlock === undefined ? 0 : oldestBlock;
-  return new AsyncPublicationsIterator({ earliestBlock, latestBlock, walkbackBlocks, filter }, provider);
+  const newest = newestBlock || (await provider.getBlockNumber());
+  const oldest = oldestBlock === undefined ? 0 : oldestBlock;
+  return new AsyncPublicationsIterator(
+    {
+      earliestBlock: oldest,
+      latestBlock: newest,
+      walkbackBlocks: Math.min(newest - oldest + 1, walkbackBlocks),
+      filter: filter,
+    },
+    provider
+  );
 };

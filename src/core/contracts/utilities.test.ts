@@ -230,23 +230,42 @@ describe("#getFromBlockDefault", () => {
       jest.resetAllMocks();
     });
 
+    /**
+     *
+     */
+    async function verifyResult(
+      nextResult: IteratorYieldResult<Publication> | IteratorReturnResult<any>,
+      resultIndex: number
+    ) {
+      expect(nextResult?.value?.fileHash).toEqual(publications[resultIndex].fileHash);
+      expect(nextResult?.value?.fileUrl).toEqual(publications[resultIndex].fileUrl);
+      expect(nextResult?.value?.blockNumber).toEqual(rcpts[resultIndex]);
+      return;
+    }
+
     describe("when only a filter + walkback is passed", () => {
       let nextResult: IteratorResult<Publication>;
       let iterator: AsyncIterator<Publication>;
-      beforeEach(async () => {
-        iterator = await getPublicationLogIterator(filter, 4);
-        nextResult = await iterator.next();
-      });
+      describe("chunks are fetched in correct order", () => {
+        const tests: Record<string, any>[] = [
+          { wb: 4, order: [2, 3, 0, 1] },
+          { wb: 3, order: [3, 1, 2, 0] },
+          { wb: 2, order: [3, 2, 1, 0] },
+          { wb: 1, order: [3, 2, 1, 0] },
+        ];
 
-      it("fetches chunks in the expected order", async () => {
-        for (const result of [2, 3, 0, 1]) {
-          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
-          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
-          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
-          nextResult = await iterator.next();
+        for (const test of tests) {
+          it("for walkback = " + test.wb, async () => {
+            iterator = await getPublicationLogIterator(filter, parseInt(test.wb));
+            for (const resultIndex of test.order) {
+              nextResult = await iterator.next();
+              verifyResult(nextResult, resultIndex);
+            }
+            nextResult = await iterator.next();
+            expect(nextResult?.done).toEqual(true);
+            expect(nextResult?.value).toBeUndefined();
+          });
         }
-        expect(nextResult?.done).toEqual(true);
-        expect(nextResult?.value).toBeUndefined();
       });
     });
     describe("when parameters are passed", () => {
@@ -256,10 +275,8 @@ describe("#getFromBlockDefault", () => {
         const walkbackBlockCount = 4;
         const iterator = await getPublicationLogIterator(filter, walkbackBlockCount, newestBlock, oldestBlock);
         let nextResult = await iterator.next();
-        for (const result of [2, 3]) {
-          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
-          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
-          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
+        for (const resultIndex of [2, 3]) {
+          verifyResult(nextResult, resultIndex);
           nextResult = await iterator.next();
         }
         expect(nextResult?.done).toEqual(true);
@@ -271,10 +288,8 @@ describe("#getFromBlockDefault", () => {
         const walkbackBlockCount = 5;
         const iterator = await getPublicationLogIterator(filter, walkbackBlockCount, newestBlock);
         let nextResult = await iterator.next();
-        for (const result of [0, 1, 2]) {
-          expect(nextResult?.value?.fileHash).toEqual(publications[result].fileHash);
-          expect(nextResult?.value?.fileUrl).toEqual(publications[result].fileUrl);
-          expect(nextResult?.value?.blockNumber).toEqual(rcpts[result]);
+        for (const resultIndex of [0, 1, 2]) {
+          verifyResult(nextResult, resultIndex);
           nextResult = await iterator.next();
         }
         expect(nextResult?.done).toEqual(true);
