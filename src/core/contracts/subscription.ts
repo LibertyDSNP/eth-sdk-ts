@@ -71,6 +71,12 @@ export const subscribeToBatchPublications = async (
   return subscribeToEvent(provider, batchFilter, doReceiveEvent, getFromBlockDefault(filter?.fromBlock, "latest"));
 };
 
+/**
+ * decodeLogsForBatchPublication decodes a list of Ethereum log events into an array of BatchPublicationLogData.
+ *
+ * @param logs - an array of type ethers.providers.Log
+ * @returns an array of BatchPublicationLogData
+ */
 export const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
   return logs
     .map((log: ethers.providers.Log) => {
