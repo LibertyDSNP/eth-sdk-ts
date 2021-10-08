@@ -103,9 +103,8 @@ export class AsyncPublicationsIterator {
     return Promise.resolve({ done: this.doneFetching(), value: this.publications[this.logIndex] });
   }
 
-  public async *[Symbol.asyncIterator](): AsyncIterableIterator<BatchPublicationLogData> {
-    const res = await this.next();
-    yield res.value;
+  public [Symbol.asyncIterator](): AsyncIterableIterator<BatchPublicationLogData> {
+    return this;
   }
 }
 

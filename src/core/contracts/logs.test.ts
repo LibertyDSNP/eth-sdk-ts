@@ -83,7 +83,6 @@ describe("getPublicationLogIterator", () => {
         let resultCount = 0;
         for await (const nextResult of iterator) {
           expect(nextResult?.blockNumber).toBeTruthy();
-          console.log(nextResult.blockNumber);
           resultCount++;
         }
         expect(resultCount).toEqual(4);
