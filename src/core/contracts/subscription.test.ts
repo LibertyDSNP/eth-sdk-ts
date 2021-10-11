@@ -241,7 +241,7 @@ describe("subscription", () => {
     });
   });
 
-  describe("#subscribeToRegistrytyUpdates", () => {
+  describe("subscribeToRegistryUpdates", () => {
     jest.setTimeout(70000);
 
     describe("get past events from start block", () => {

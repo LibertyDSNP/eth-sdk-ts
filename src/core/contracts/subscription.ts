@@ -71,7 +71,13 @@ export const subscribeToBatchPublications = async (
   return subscribeToEvent(provider, batchFilter, doReceiveEvent, getFromBlockDefault(filter?.fromBlock, "latest"));
 };
 
-const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
+/**
+ * decodeLogsForBatchPublication decodes a list of Ethereum log events into an array of BatchPublicationLogData.
+ *
+ * @param logs - an array of type ethers.providers.Log
+ * @returns an array of BatchPublicationLogData
+ */
+export const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPublicationLogData[] => {
   return logs
     .map((log: ethers.providers.Log) => {
       try {
@@ -97,6 +103,7 @@ const decodeLogsForBatchPublication = (logs: ethers.providers.Log[]): BatchPubli
       };
     });
 };
+
 /**
  * RegistryUpdateSubscriptionFilter filter options for including or excluding certain events
  */
