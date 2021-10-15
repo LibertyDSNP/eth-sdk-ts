@@ -9,6 +9,14 @@ What I/we did to solve this problem
 
 with @pairperson1
 
+Double Checks:
+---------------
+- [] Did you update the changelog?
+- [] Any new modules need to be exported?
+- [] Are new methods in the right module?
+- [] Are new methods/modules in core or not (i.e. porcelain or plumbing)?
+- [] Do you have good documentation on exported methods?
+
 Change summary:
 ---------------
 * Tidy, well formulated commit message

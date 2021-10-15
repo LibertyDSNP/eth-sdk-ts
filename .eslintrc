@@ -4,9 +4,10 @@
     "commonjs": true,
     "es6": true
   },
-  "plugins": ["jest", "prettier"],
+  "plugins": ["jest", "prettier", "@typescript-eslint", "eslint-plugin-tsdoc", "jsdoc"],
   "parser": "@typescript-eslint/parser",
   "extends": [
+    "plugin:jsdoc/recommended",
     "plugin:@typescript-eslint/recommended",
     "eslint:recommended",
     "plugin:jest/recommended",
@@ -14,15 +15,25 @@
   ],
   "parserOptions": {
     "ecmaVersion": 2018,
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "./tsconfig.eslint.json"
   },
   "rules": {
     "semi": ["error", "always"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "double", { "avoidEscape": true }],
     "prettier/prettier": "error",
     // use @typescript-eslint/no-unused-vars
     "no-use-before-define": "off",
+    "no-unused-vars": "off",
     "no-var": "error",
+    "id-length": [
+      "error",
+      {
+        "exceptionPatterns": ["[i-k]","e","c","x","y", "r", "s", "v"],
+        "properties": "never"
+      }
+    ],
+    "allow-namespace": "off",
     "@typescript-eslint/no-inferrable-types": [
       "warn",
       {
@@ -34,6 +45,27 @@
       {
         "argsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": ["variable"],
+        "modifiers": ["const", "global"],
+        "format": ["UPPER_CASE"],
+        "types": ["string", "number", "array", "boolean"]
+      }
+    ],
+    "tsdoc/syntax": "error",
+    "jsdoc/valid-types": "off",
+    "jsdoc/require-hyphen-before-param-description": ["error", "always"],
+    "jsdoc/check-tag-names": ["error", { "definedTags": ["packageDocumentation"] }],
+    "jsdoc/check-param-names": ["error", { "enableFixer": false }],
+    "jsdoc/require-param": ["error", { "enableFixer": false }],
+    "jsdoc/require-returns": "off",
+    "jsdoc/check-types": "off",
+    "jsdoc/require-param-type": "off",
+    "jsdoc/require-returns-type": "off",
+    "jsdoc/require-returns-check": "off",
+    "jsdoc/require-yields": "off",
   }
 }

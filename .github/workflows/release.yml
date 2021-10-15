@@ -1,0 +1,94 @@
+name: Release Package
+on:
+  release:
+    types: [released]
+jobs:
+  publish-to-npm:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.15.5"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Update npm to v7
+        run: npm i -g npm
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install 💾
+        run: npm ci
+
+      - name: Get package.json version 👀
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Remove v from release version
+        id: get_release_version
+        uses: battila7/get-version-action@v2
+
+      - name: Check package.json version matches release tag ✅
+        run: echo "Package.json version ( ${{ steps.package-version.outputs.current-version}} ) does not match release version ( ${{ steps.get_release_version.outputs.version-without-v }} )" && exit 1
+        if: steps.package-version.outputs.current-version != steps.get_release_version.outputs.version-without-v
+
+      - name: Build 🏗️
+        run: npm run build
+
+      - name: Publish 🚂
+        run: npm publish --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+        working-directory: ./dist
+
+      - name: Revert Release if failure 💣
+        if: ${{ failure() }}
+        uses: author/action-rollback@stable
+        with:
+          tag: ${{ github.event.release.tag_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-and-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.15.5"
+
+      - name: Update npm to v7
+        run: npm i -g npm
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install 💾
+        run: npm ci
+
+      - name: Build HTML Docs 🔨
+        run: npm run doc:html
+
+      - name: Build JSON Docs 🔨
+        run: npm run doc:json
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages
+          folder: dist/docs

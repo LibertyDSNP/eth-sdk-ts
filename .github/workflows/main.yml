@@ -7,9 +7,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-20.04
+    services:
+      ganache:
+        image: dsnp/hardhat:v1.0.1
+        ports:
+          - 8545:8545
     steps:
-      - name: Checkout
+      - name: Checkout SDK
         uses: actions/checkout@v2
+        with:
+          path: main
 
       - uses: actions/cache@v2
         with:
@@ -21,22 +28,50 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '14.5.0'
+          node-version: '14.15.5'
+
+      - name: Update npm to v7
+        run: npm i -g npm
 
       - name: Install
-        run: npm install
-
-      - name: Build
-        run: npm run build
+        run: npm ci
+        working-directory: ./main
 
       - name: Lint
         run: npm run lint
+        working-directory: ./main
+
+      - name: Danger
+        run: npx danger ci --dangerfile ./dangerfile.ts
+        working-directory: ./main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test
         run: npm run test
+        working-directory: ./main
+        env:
+          RPC_URL: http://localhost:8545
+          TESTING_PRIVATE_KEY: ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
-      - name: Report Test
-        uses: IgnusG/jest-report-action@v2.3.3
-        if: always()
-        with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: npm run build
+        working-directory: ./main
+
+      - name: Publish Dry Run
+        run: npm publish --dry-run
+        working-directory: ./main/dist
+
+      - name: Pack up for testing project import
+        run: |
+          npm pack
+          mv dsnp-sdk-*.tgz ../dsnp-sdk.tgz
+        working-directory: ./main/dist
+
+#     This needs to happen in a non-subfolder of the sdk to prevent resolving from a parent dir node_modules
+      - name: Test Project Import
+        run: |
+          cp -r ./main/src/test/importTest ./
+          cd importTest
+          npm i ../main/dsnp-sdk.tgz
+          npm test

@@ -10,9 +10,12 @@ src/**.js
 # Don't commit compiled output
 dist
 /*.d.ts
-/*.map
-/*.js
+/examples/**/*.d.ts
+/core
+/generators
 
+### ignore typechain types
+/src/types/typechain/*
 # Created by https://www.toptal.com/developers/gitignore/api/intellij+all,vim,emacs,vscode,git,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,vim,emacs,vscode,git,node
 

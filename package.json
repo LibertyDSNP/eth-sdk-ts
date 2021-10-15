@@ -1,68 +1,84 @@
 {
-  "name": "@LibertyDSNP/sdk",
-  "version": "0.0.0",
+  "name": "@dsnp/sdk",
+  "version": "3.0.3",
   "description": "SDK Library for the DSNP",
-  "main": "dist/main/index.js",
-  "types": "dist/main/index.d.ts",
-  "module": "dist/module/index.js",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/LibertyDSNP/sdk-ts",
-  "license": "CC-BY-SA-4.0",
+  "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "build": "npm run clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "build:module": "tsc -p tsconfig.module.json",
-    "build:multimodules": "node scripts/multimodules.js",
-    "coverage": "jest test --coverage --collectCoverageFrom='src/**/*.ts'",
-    "clean": "rm -Rf dist ./*.d.ts ./*.js",
-    "doc": "rm -Rf dist/docs && run-s doc:html",
-    "doc:html": "typedoc src/ --plugin none --theme default --out dist/docs",
-    "doc:json": "typedoc src/ --json dist/docs/typedoc.json",
-    "doc:markdown": "rm -Rf docs && typedoc src/ --theme markdown --out docs",
+    "build": "run-s clean typechain doc:markdown build:cjs build:package build:copy",
+    "build:cjs": "tsc -p tsconfig.json",
+    "build:package": "node scripts/package.js",
+    "build:copy": "cp CONTRIBUTING.md CHANGELOG.md README.md DOCS.md LICENSE ./dist && cp ./src/types/typechain/*.d.ts ./dist/types/typechain/",
+    "pack": "cd dist && npm pack && mv *.tgz ../",
+    "coverage": "jest test --runInBand --coverage --collectCoverageFrom='src/**/*.ts'",
+    "clean": "rm -Rf dist src/types/typechain ./*.tgz",
+    "doc": "rm -Rf dist/docs && npm run doc:markdown",
+    "doc:html": "typedoc --options ./typedoc.json --plugin none --theme default --out dist/docs",
+    "doc:config": "typedoc --showConfig --options ./typedoc.json --plugin none --theme default --out dist/docs",
+    "doc:json": "typedoc --options ./typedoc.json --json dist/docs/typedoc.json",
+    "doc:markdown": "typedoc --options ./typedoc.json --theme markdown --out dist/docs",
     "format": "eslint \"**/*.{js,ts}\" --fix",
     "lint": "eslint \"**/*.{js,ts}\"",
-    "prepublishOnly": "npm run build",
-    "postpublish": "npm run clean",
-    "test": "jest",
-    "watch": "run-s build && run-p \"build:main -- -w\" \"build:module -- -w\" \"test -- --watch\""
+    "prepare": "npm run typechain",
+    "test": "jest --runInBand",
+    "typechain": "rm -Rf ./src/types/typechain && typechain --target=ethers-v5 ./node_modules/@dsnp/contracts/abi/**/*.json --out-dir ./src/types/typechain",
+    "watch": "run-s build && run-p \"build:cjs -- -w\" \"test -- --watch\""
   },
-  "files": [
-    "dist/**/*",
-    "*.d.ts",
-    "*.js"
-  ],
   "engines": {
-    "node": ">=14.5.0"
+    "node": ">=14.15.5"
   },
   "devDependencies": {
-    "@types/jest": "26.0.20",
-    "@typescript-eslint/eslint-plugin": "4.15.1",
-    "@typescript-eslint/parser": "4.15.1",
-    "babel-jest": "^26.6.3",
-    "eslint": "7.20.0",
-    "eslint-config-prettier": "7.2.0",
-    "eslint-plugin-jest": "24.1.5",
-    "eslint-plugin-prettier": "3.3.1",
-    "jest": "^26.6.3",
-    "jest-junit": "12.0.0",
+    "@dsnp/test-generators": "^0.1.0",
+    "@typechain/ethers-v5": "^7.0.1",
+    "@types/jest": "27.0.1",
+    "@types/mkdirp": "^1.0.2",
+    "@types/request": "^2.48.7",
+    "@typescript-eslint/eslint-plugin": "4.29.2",
+    "@typescript-eslint/parser": "4.29.2",
+    "babel-jest": "^27.0.6",
+    "danger": "^10.6.6",
+    "dotenv": "^10.0.0 ",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-const-case": "^1.2.2",
+    "eslint-plugin-jest": "24.4.0",
+    "eslint-plugin-jsdoc": "^36.0.7",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-tsdoc": "^0.2.14",
+    "jest": "27.0.6",
+    "jest-junit": "12.2.0",
     "npm-run-all": "4.1.5",
-    "prettier": "2.2.1",
-    "ts-jest": "26.5.1",
-    "typedoc": "0.20.25",
-    "typedoc-plugin-markdown": "3.5.0",
-    "typescript": "4.1.5"
+    "prettier": "2.3.2",
+    "stream": "^0.0.2",
+    "ts-jest": "27.0.5",
+    "ts-node": "10.2.0",
+    "typechain": "^5.1.2",
+    "typedoc": "0.21.5",
+    "typedoc-plugin-markdown": "3.10.4",
+    "typescript": "4.3.5"
   },
   "jest": {
+    "setupFiles": [
+      "./jest.config.js"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
     "globals": {
       "ts-jest": {
         "tsconfig": "tsconfig.json"
       }
     },
-    "reporters": [ "default", "jest-junit" ],
     "testResultsProcessor": "jest-junit",
     "moduleFileExtensions": [
       "ts",
-      "js"
+      "js",
+      "json"
     ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
@@ -76,5 +92,14 @@
     "suiteNameTemplate": "{filepath}",
     "classNameTemplate": "{classname}",
     "titleTemplate": "{title}"
+  },
+  "dependencies": {
+    "@dsnp/contracts": "1.0.1",
+    "@dsnp/parquetjs": "^1.1.2",
+    "@dsnp/test-generators": "^0.1.0",
+    "@ethersproject/abi": "^5.4.0",
+    "ethers": "^5.4.4",
+    "js-sha3": "^0.8.0",
+    "ws": "^8.1.0"
   }
 }

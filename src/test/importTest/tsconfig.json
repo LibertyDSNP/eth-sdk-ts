@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "inlineSourceMap": true,
+
+    "module": "commonjs",
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+
+    "strict": false /* Enable all strict type-checking options. */,
+    "removeComments": false /* Cleanup comments */,
+
+    /* Lint-type Checks */
+    "noUnusedLocals": false /* Report errors on unused locals. */,
+    "noUnusedParameters": false /* Report errors on unused parameters. */,
+    "noImplicitReturns": false /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": false /* Report errors for fallthrough cases in switch statement. */,
+    "forceConsistentCasingInFileNames": false /* issue an error if a program tries to include a file by a casing different from the casing on disk */,
+
+    /* Debugging Options */
+    "traceResolution": false /* Report module resolution log messages. */,
+    "listEmittedFiles": false /* Print names of generated files part of the compilation. */,
+    "listFiles": false /* Print names of files part of the compilation. */,
+    "pretty": true /* Stylize errors and messages using color and context. */,
+  },
+  /* Tell Typescript compiler what version(s) of JS libs to include when compiling.
+   * See https://www.typescriptlang.org/tsconfig#lib
+   */
+  "lib": ["es2017", "esnext"],
+  "compileOnSave": false,
+}
