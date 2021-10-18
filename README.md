@@ -1,8 +1,8 @@
 # DSNP TypeScript SDK
 
-[![Latest release](https://img.shields.io/github/release/LibertyDSNP/sdk-ts)](https://github.com/LibertyDSNP/sdk-ts/releases)
+[![Latest Release](https://img.shields.io/github/release/LibertyDSNP/sdk-ts)](https://github.com/LibertyDSNP/sdk-ts/releases)
 
-[![example workflow](https://github.com/LibertyDSNP/sdk-ts/actions/workflows/main.yml/badge.svg)](https://github.com/LibertyDSNP/sdk-ts/actions)
+[![Actions Status](https://github.com/LibertyDSNP/sdk-ts/actions/workflows/main.yml/badge.svg)](https://github.com/LibertyDSNP/sdk-ts/actions)
 
 Easy to use SDK for the DSNP
 
