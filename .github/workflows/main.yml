@@ -75,3 +75,4 @@ jobs:
           cd importTest
           npm i ../main/dsnp-sdk.tgz
           npm test
+          
