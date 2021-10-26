@@ -29,7 +29,7 @@ export const createRegistration = async (
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  const registration = resolveHandle(registerEvent.args[2])
+  const registration = resolveHandle(registerEvent.args[2]);
   return registration;
 };
 

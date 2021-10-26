@@ -113,7 +113,7 @@ describe("handles", () => {
 
       expect(id).toBeGreaterThan(999);
       expect(registration!.dsnpUserURI.substr(0, 7)).toEqual("dsnp://");
-      expect(registration!.handle === "flarp") 
+      expect(registration!.handle === "flarp");
     });
   });
 });
