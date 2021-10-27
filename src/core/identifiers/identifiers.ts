@@ -1,6 +1,7 @@
 import { isBigInt, isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
 import { BigNumber } from "ethers";
+import { IdentifierError } from "./errors";
 
 const DSNP_SCHEMA_REGEX = /^dsnp:\/\//i;
 
@@ -52,6 +53,14 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => isBigInt(id);
  */
 export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
   if (!isString(uri)) return false;
+  const protocol = uri.substr(0, 7);
+  const serialization = uri.substr(7, uri.length);
+  if (protocol.match(DSNP_SCHEMA_REGEX) === null) {
+    throw new IdentifierError("Invalid DSNP Protocol Identifier: " + protocol);
+  }
+  if (serialization.match(/^[0-9]{1,20}$/) === null || serialization.charAt(0) === "0") {
+    throw new IdentifierError("Invalid DSNP Protocol Serialization: " + serialization);
+  }
   return uri.match(/^dsnp:\/\/[0-9]{1,20}$/) !== null;
 };
 
@@ -68,10 +77,11 @@ export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
   if (BigNumber.isBigNumber(value)) value.toBigInt();
 
   if (typeof value === "string") {
-    if (isDSNPUserURI(value)) {
+    if (value.match(/^[0-9]{1,20}$/) || value.match(/^0x[0-9]{1,7}/)) {
+      return BigInt(value);
+    } else if (isDSNPUserURI(value)) {
       return BigInt(value.replace(DSNP_SCHEMA_REGEX, ""));
     }
-    return BigInt(value);
   }
   // Cast or throw?
   return BigInt(String(value));
