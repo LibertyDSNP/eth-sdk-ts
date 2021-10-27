@@ -2,7 +2,7 @@
 
 ## Unreleased
 - Add an AsyncPublicationsIterator, an AsyncIterator which lazily fetches Publication log events from chain and returns them one at a time based on its initial constructor parameters.
-
+- Updated `tmpl` devDependency to 1.0.5
 
 ## [3.0.3] - 2021-09-15
 ### Added
