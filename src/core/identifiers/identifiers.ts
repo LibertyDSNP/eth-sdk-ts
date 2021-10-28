@@ -53,7 +53,7 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => isBigInt(id);
  */
 export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
   if (!isString(uri)) return false;
-  
+
   return uri.match(/^dsnp:\/\/[0-9]{1,20}$/) !== null;
 };
 
@@ -70,11 +70,10 @@ export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
   if (BigNumber.isBigNumber(value)) value.toBigInt();
 
   if (typeof value === "string") {
-
     if (value.match(/^[0-9]{1,20}/) || value.match(/^0x[0-9]{1,7}/)) {
       return BigInt(value);
     }
-    
+
     const protocol = value.substr(0, 7);
     const serialization = value.substr(7, value.length);
 
@@ -84,7 +83,7 @@ export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
     if (serialization.match(/^[0-9]{1,20}$/) === null || serialization.charAt(0) === "0") {
       throw new IdentifierError("Invalid DSNP Protocol Serialization: " + serialization);
     }
-    
+
     if (isDSNPUserURI(value)) {
       return BigInt(value.replace(DSNP_SCHEMA_REGEX, ""));
     }
