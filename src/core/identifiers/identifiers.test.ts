@@ -6,6 +6,7 @@ import {
   isDSNPUserURI,
   parseDSNPAnnouncementURI,
 } from "./identifiers";
+import { InvalidAnnouncementUriError } from "./errors";
 import { BigNumber } from "ethers";
 
 describe("identifiers", () => {
@@ -132,6 +133,12 @@ describe("identifiers", () => {
 
     it("dsnp user uri", () => {
       expect(convertToDSNPUserId("dsnp://4660")).toEqual(BigInt(4660));
+    });
+
+    it("throws for invalid uri", () => {
+      expect(()=> {
+        convertToDSNPUserId("dsnp://034b")
+      }).toThrow(InvalidAnnouncementUriError)
     });
   });
 });
