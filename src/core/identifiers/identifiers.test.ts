@@ -136,9 +136,9 @@ describe("identifiers", () => {
     });
 
     it("throws for invalid uri", () => {
-      expect(()=> {
-        convertToDSNPUserId("dsnp://034b")
-      }).toThrow(InvalidAnnouncementUriError)
+      expect(() => {
+        convertToDSNPUserId("dsnp://034b");
+      }).toThrow(InvalidAnnouncementUriError);
     });
   });
 });
