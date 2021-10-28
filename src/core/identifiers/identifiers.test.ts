@@ -17,7 +17,6 @@ describe("identifiers", () => {
       "dsnp://badwolf", // Bad user URI
       "dsnp://184467440737095516150", // URI too long
       "dssp://1234", // Invalid protocol
-      "dsnp://01234", // Leading 0 in URI
     ];
 
     for (const id of validDSNPUserURIs) {
@@ -27,10 +26,8 @@ describe("identifiers", () => {
     }
 
     for (const id of invalidDSNPUserURIs) {
-      it(`throws for "${id}"`, () => {
-        expect(() => {
-          isDSNPUserURI(id);
-        }).toThrow();
+      it(`returns false for "${id}"`, () => {
+        expect(isDSNPUserURI(id)).toEqual(false);
       });
     }
   });
@@ -122,6 +119,10 @@ describe("identifiers", () => {
 
     it("number", () => {
       expect(convertToDSNPUserId(4660)).toEqual(BigInt(4660));
+    });
+
+    it("number as string", () => {
+      expect(convertToDSNPUserId("4660")).toEqual(BigInt(4660));
     });
 
     it("hex string", () => {
