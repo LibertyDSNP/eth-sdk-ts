@@ -17,6 +17,7 @@ describe("identifiers", () => {
       "dsnp://badwolf", // Bad user URI
       "dsnp://184467440737095516150", // URI too long
       "dssp://1234", // Invalid protocol
+      "dsnp://01234", // Begins with a 0
     ];
 
     for (const id of validDSNPUserURIs) {

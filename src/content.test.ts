@@ -456,7 +456,7 @@ describe("content", () => {
           signer,
           provider,
         });
-        const followAnnouncement = await follow("dsnp://0");
+        const followAnnouncement = await follow("dsnp://10");
 
         await expect(content.tombstone(followAnnouncement as unknown as SignedBroadcastAnnouncement)).rejects.toThrow(
           InvalidTombstoneAnnouncementTypeError
