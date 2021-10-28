@@ -109,11 +109,11 @@ describe("handles", () => {
 
     it("expect a registration object", async () => {
       const registration = await createRegistration(fakeAddress, handle);
-      const id = convertToDSNPUserId(registration?.dsnpUserURI);
+      const id = convertToDSNPUserId(registration.dsnpUserURI);
 
       expect(id).toBeGreaterThan(999);
-      expect(registration?.dsnpUserURI.substr(0, 7)).toEqual("dsnp://");
-      expect(registration?.handle).toEqual("flarp");
+      expect(registration.dsnpUserURI.substr(0, 7)).toEqual("dsnp://");
+      expect(registration.handle).toEqual("flarp");
     });
   });
 });
