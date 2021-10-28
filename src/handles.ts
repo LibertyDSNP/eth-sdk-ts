@@ -33,7 +33,7 @@ export const createRegistration = async (
     dsnpUserURI: convertToDSNPUserURI(registerEvent.args[0]),
     contractAddr: registerEvent.args[1],
     handle: registerEvent.args[2],
-  }
+  };
 
   return registration;
 };
