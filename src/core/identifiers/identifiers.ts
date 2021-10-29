@@ -1,6 +1,7 @@
 import { isBigInt, isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
 import { BigNumber } from "ethers";
+import { InvalidAnnouncementUriError } from "./errors";
 
 const DSNP_SCHEMA_REGEX = /^dsnp:\/\//i;
 
@@ -52,7 +53,7 @@ export const isDSNPUserId = (id: unknown): id is DSNPUserId => isBigInt(id);
  */
 export const isDSNPUserURI = (uri: unknown): uri is DSNPUserURI => {
   if (!isString(uri)) return false;
-  return uri.match(/^dsnp:\/\/[0-9]{1,20}$/) !== null;
+  return uri.match(/^dsnp:\/\/[1-9][0-9]{0,19}$/) !== null;
 };
 
 /**
@@ -68,10 +69,15 @@ export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
   if (BigNumber.isBigNumber(value)) value.toBigInt();
 
   if (typeof value === "string") {
+    if (value.match(/^[1-9][0-9]{0,19}/) || value.match(/^0x[0-9]{1,7}/)) {
+      return BigInt(value);
+    }
+
     if (isDSNPUserURI(value)) {
       return BigInt(value.replace(DSNP_SCHEMA_REGEX, ""));
+    } else {
+      throw new InvalidAnnouncementUriError(value);
     }
-    return BigInt(value);
   }
   // Cast or throw?
   return BigInt(String(value));
