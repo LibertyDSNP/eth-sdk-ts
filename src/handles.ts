@@ -24,12 +24,18 @@ export const createRegistration = async (
   addr: HexString,
   handle: Handle,
   opts?: config.ConfigOpts
-): Promise<DSNPUserURI> => {
+): Promise<Registration> => {
   const txn = await createAndRegisterBeaconProxy(addr, handle, opts);
   const receipt = await txn.wait(1);
 
   const registerEvent = findEvent("DSNPRegistryUpdate", receipt.logs);
-  return convertToDSNPUserURI(registerEvent.args[0]);
+  const registration = {
+    dsnpUserURI: convertToDSNPUserURI(registerEvent.args[0]),
+    contractAddr: registerEvent.args[1],
+    handle: registerEvent.args[2],
+  };
+
+  return registration;
 };
 
 /**

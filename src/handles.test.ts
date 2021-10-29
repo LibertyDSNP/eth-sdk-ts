@@ -107,12 +107,13 @@ describe("handles", () => {
     const handle = "flarp";
     const fakeAddress = "0x1Ea32de10D5a18e55DEBAf379B26Cc0c6952B168";
 
-    it("returns a DSNP User URI", async () => {
-      const dsnpUserURI = await createRegistration(fakeAddress, handle);
-      const id = convertToDSNPUserId(dsnpUserURI);
+    it("expect a registration object", async () => {
+      const registration = await createRegistration(fakeAddress, handle);
+      const id = convertToDSNPUserId(registration.dsnpUserURI);
 
       expect(id).toBeGreaterThan(999);
-      expect(dsnpUserURI.substr(0, 7)).toEqual("dsnp://");
+      expect(registration.dsnpUserURI.substr(0, 7)).toEqual("dsnp://");
+      expect(registration.handle).toEqual("flarp");
     });
   });
 });
