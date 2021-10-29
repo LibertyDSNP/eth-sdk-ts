@@ -6,6 +6,7 @@ import {
   isDSNPUserURI,
   parseDSNPAnnouncementURI,
 } from "./identifiers";
+import { InvalidAnnouncementUriError } from "./errors";
 import { BigNumber } from "ethers";
 
 describe("identifiers", () => {
@@ -16,6 +17,8 @@ describe("identifiers", () => {
       "dsnp://0x123", // hex
       "dsnp://badwolf", // Bad user URI
       "dsnp://184467440737095516150", // URI too long
+      "dssp://1234", // Invalid protocol
+      "dsnp://01234", // Begins with a 0
     ];
 
     for (const id of validDSNPUserURIs) {
@@ -120,12 +123,22 @@ describe("identifiers", () => {
       expect(convertToDSNPUserId(4660)).toEqual(BigInt(4660));
     });
 
+    it("number as string", () => {
+      expect(convertToDSNPUserId("4660")).toEqual(BigInt(4660));
+    });
+
     it("hex string", () => {
       expect(convertToDSNPUserId("0x0001234")).toEqual(BigInt(4660));
     });
 
     it("dsnp user uri", () => {
       expect(convertToDSNPUserId("dsnp://4660")).toEqual(BigInt(4660));
+    });
+
+    it("throws for invalid uri", () => {
+      expect(() => {
+        convertToDSNPUserId("dsnp://034b");
+      }).toThrow(InvalidAnnouncementUriError);
     });
   });
 });
