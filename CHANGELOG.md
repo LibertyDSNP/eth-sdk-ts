@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Add an AsyncPublicationsIterator, an AsyncIterator which lazily fetches Publication log events from chain and returns them one at a time based on its initial constructor parameters.
+- Updated `tmpl` devDependency to 1.0.5
 - BREAKING: Changed createRegistration to now longer return a user URI and instead returns a Registration Object.
 - Changed `convertToDSNPUserId` function to throw correct errors
 
