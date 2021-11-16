@@ -31,10 +31,9 @@ const HREF_REGEX = /^https?:\/\/.+/;
 const DURATION_REGEX = /^-?P(([0-9]+Y)?([0-9]+M)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.[0-9]+)?S)?)?)+$/;
 const HASH_REGEX = /^0x[0-9A-Fa-f]{64}$/;
 const SUPPORTED_ALGORITHMS = ["keccak256"];
-const SUPPORTED_AUDIO_MEDIA_TYPES = ["audio/mp3", "audio/ogg", "audio/webm"];
+const SUPPORTED_AUDIO_MEDIA_TYPES = ["audio/mpeg", "audio/ogg", "audio/webm"];
 const SUPPORTED_IMAGE_MEDIA_TYPES = [
   "image/jpeg",
-  "image/jpg",
   "image/png",
   "image/svg+xml",
   "image/webp",
