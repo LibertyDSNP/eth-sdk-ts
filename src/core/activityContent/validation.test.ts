@@ -31,7 +31,7 @@ describe("activity content validations", () => {
               {
                 type: "Link",
                 href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 hash: [
                   {
                     algorithm: "keccak256",
@@ -58,7 +58,7 @@ describe("activity content validations", () => {
               {
                 type: "Link",
                 href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 hash: "this should be an array",
               },
             ],
@@ -97,7 +97,7 @@ describe("activity content validations", () => {
               {
                 type: "Link",
                 href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 hash: [
                   {
                     algorithm: "keccak256",
@@ -186,7 +186,7 @@ describe("activity content validations", () => {
                 type: "Link",
                 name: "this is fine",
                 href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 hash: [
                   {
                     algorithm: "keccak256",
@@ -276,7 +276,7 @@ describe("activity content validations", () => {
                 {
                   type: "Link",
                   href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                  mediaType: "image/jpg",
+                  mediaType: "image/jpeg",
                   hash: [
                     {
                       algorithm: "keccak256",
@@ -449,7 +449,7 @@ describe("activity content validations", () => {
             {
               type: "Link",
               href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-              mediaType: "image/jpg",
+              mediaType: "image/jpeg",
               hash: [
                 {
                   algorithm: "keccak256",
@@ -498,7 +498,7 @@ describe("activity content validations", () => {
             {
               type: "Link",
               href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-              mediaType: "image/jpg",
+              mediaType: "image/jpeg",
               hash: [
                 {
                   algorithm: "keccak256",
@@ -607,7 +607,7 @@ describe("activity content validations", () => {
                 {
                   type: "Link",
                   href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                  mediaType: "image/jpg",
+                  mediaType: "image/jpeg",
                   hash: [
                     {
                       algorithm: "keccak256",
@@ -777,7 +777,7 @@ describe("activity content validations", () => {
             {
               type: "Link",
               href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
-              mediaType: "image/jpg",
+              mediaType: "image/jpeg",
               hash: [
                 {
                   algorithm: "keccak256",
@@ -827,7 +827,7 @@ describe("activity content validations", () => {
               {
                 type: "Link",
                 href: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Wilhelm_Scream.jpg",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 hash: [
                   {
                     algorithm: "keccak256",
@@ -894,7 +894,7 @@ describe("activity content validations", () => {
             icon: [
               {
                 type: "Link",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
               },
             ],
@@ -974,7 +974,7 @@ describe("activity content validations", () => {
                 {
                   type: "Link",
                   href: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Mccourt.jpg",
-                  mediaType: "image/jpg",
+                  mediaType: "image/jpeg",
                   hash: [
                     {
                       algorithm: "keccak256",
@@ -1148,7 +1148,7 @@ describe("activity content validations", () => {
             {
               type: "Link",
               href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
-              mediaType: "image/jpg",
+              mediaType: "image/jpeg",
               hash: [
                 {
                   algorithm: "keccak256",
@@ -1221,7 +1221,7 @@ describe("activity content validations", () => {
             icon: [
               {
                 type: "Link",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
                 hash: [
                   {
@@ -1243,7 +1243,7 @@ describe("activity content validations", () => {
             icon: [
               {
                 type: "Link",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 href: "https://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
                 hash: [
                   {
@@ -1265,7 +1265,7 @@ describe("activity content validations", () => {
             icon: [
               {
                 type: "Link",
-                mediaType: "image/jpg",
+                mediaType: "image/jpeg",
                 href: "ftp://pbs.twimg.com/profile_images/847818629840228354/VXyQHfn0_400x400.jpg",
                 hash: [
                   {
