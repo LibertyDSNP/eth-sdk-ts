@@ -7,10 +7,6 @@
 - BREAKING: Changed createRegistration to now longer return a user URI and instead returns a Registration Object.
 - Changed `convertToDSNPUserId` function to throw correct errors
 
-## [4.0.0] - 2022-03-17
-### Changed
-- Updated NodeJs from 14.15.0 to 16.14.0
-
 ## [3.0.3] - 2021-09-15
 ### Added
 - `dsnpStartBlockNumber` to config to allow setConfig to default a different value than `0` for `fromBlock`
