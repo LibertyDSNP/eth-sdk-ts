@@ -102,10 +102,7 @@ export const convertToDSNPUserURI = (value: unknown): DSNPUserURI => {
  * @param contentHash - The content hash of the announcement posted by the user
  * @returns A DSNP Content Uri for the given announcement
  */
-export const buildDSNPContentURI = (
-  userIdOrUri: DSNPUserId | DSNPUserURI,
-  contentHash: HexString
-): DSNPContentURI => {
+export const buildDSNPContentURI = (userIdOrUri: DSNPUserId | DSNPUserURI, contentHash: HexString): DSNPContentURI => {
   return `dsnp://${convertToDSNPUserId(userIdOrUri)}/${contentHash}`;
 };
 
@@ -116,9 +113,7 @@ export const buildDSNPContentURI = (
  * @param contentUri - A DSNP Announcement Id
  * @returns the userId and contentHash from the Content Uri
  */
-export const parseDSNPContentURI = (
-  contentUri: DSNPContentURI
-): { userId: DSNPUserId; contentHash: HexString } => {
+export const parseDSNPContentURI = (contentUri: DSNPContentURI): { userId: DSNPUserId; contentHash: HexString } => {
   const [userId, contentHash] = contentUri.replace("dsnp://", "").split("/");
   return { userId: BigInt(userId), contentHash };
 };

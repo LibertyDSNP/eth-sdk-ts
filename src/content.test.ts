@@ -186,9 +186,7 @@ describe("content", () => {
 
       describe("with an invalid inReplyTo Id", () => {
         it("throws InvalidContentUriError", async () => {
-          await expect(content.reply(noteObject, "dsnp://badbadbad/badbadbad")).rejects.toThrow(
-            InvalidContentUriError
-          );
+          await expect(content.reply(noteObject, "dsnp://badbadbad/badbadbad")).rejects.toThrow(InvalidContentUriError);
         });
       });
 
