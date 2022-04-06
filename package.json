@@ -29,7 +29,7 @@
     "watch": "run-s build && run-p \"build:cjs -- -w\" \"test -- --watch\""
   },
   "engines": {
-    "node": ">=14.15.5"
+    "node": ">=16.14.0"
   },
   "devDependencies": {
     "@dsnp/test-generators": "^0.1.0",

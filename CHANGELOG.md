@@ -7,6 +7,7 @@
 - Updated `tmpl` devDependency to 1.0.5
 - BREAKING: Changed createRegistration to now longer return a user URI and instead returns a Registration Object.
 - Changed `convertToDSNPUserId` function to throw correct errors
+- Updated building to Node 16
 
 ## [3.0.3] - 2021-09-15
 ### Added
