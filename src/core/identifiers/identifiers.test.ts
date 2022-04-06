@@ -1,12 +1,12 @@
 import {
-  buildDSNPAnnouncementURI,
+  buildDSNPContentURI,
   convertToDSNPUserId,
   convertToDSNPUserURI,
-  isDSNPAnnouncementURI,
+  isDSNPContentURI,
   isDSNPUserURI,
-  parseDSNPAnnouncementURI,
+  parseDSNPContentURI,
 } from "./identifiers";
-import { InvalidAnnouncementUriError } from "./errors";
+import { InvalidContentUriError } from "./errors";
 import { BigNumber } from "ethers";
 
 describe("identifiers", () => {
@@ -34,37 +34,37 @@ describe("identifiers", () => {
     }
   });
 
-  describe("isDSNPAnnouncementURI", () => {
-    const validDSNPAnnouncementURIs = [
+  describe("isDSNPContentURI", () => {
+    const validDSNPContentURIs = [
       "dsnp://11611200575284957000/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // Lowercase
     ];
 
-    const invalidDSNPAnnouncementURIs = [
+    const invalidDSNPContentURIs = [
       "dsnp://11611200575284957000/0xa123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF", // Uppercase
       "dsnp://0x0123456789abcdef/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // 0x on user
       "dsnp://11611200575284957000/0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // No 0x on announcement
       "dsnp://badwolf/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // Bad user URI
-      "dsnp://11611200575284957000/0xbadwolf", // Bad announcement URI
+      "dsnp://11611200575284957000/0xbadwolf", // Bad content uri
       "dsnp://184467440737095516150/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", // User URI too long
-      "dsnp://11611200575284957000/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdefa", // Announcement Uri too short
+      "dsnp://11611200575284957000/0xa123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdefa", // Content Uri too short
     ];
 
-    for (const id of validDSNPAnnouncementURIs) {
+    for (const id of validDSNPContentURIs) {
       it(`returns true for "${id}"`, () => {
-        expect(isDSNPAnnouncementURI(id)).toEqual(true);
+        expect(isDSNPContentURI(id)).toEqual(true);
       });
     }
 
-    for (const id of invalidDSNPAnnouncementURIs) {
+    for (const id of invalidDSNPContentURIs) {
       it(`returns false for "${id}"`, () => {
-        expect(isDSNPAnnouncementURI(id)).toEqual(false);
+        expect(isDSNPContentURI(id)).toEqual(false);
       });
     }
   });
 
-  describe("buildDSNPAnnouncementURI", () => {
-    it("returns valid DSNP Announcement Uris", () => {
-      const id = buildDSNPAnnouncementURI(
+  describe("buildDSNPContentURI", () => {
+    it("returns valid DSNP Content Uris", () => {
+      const id = buildDSNPContentURI(
         "11611200575284957000",
         "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
       );
@@ -73,8 +73,8 @@ describe("identifiers", () => {
       );
     });
 
-    it("returns valid DSNP Announcement Uri with a DSNP Uri", () => {
-      const id = buildDSNPAnnouncementURI(
+    it("returns valid DSNP Content Uri with a DSNP Uri", () => {
+      const id = buildDSNPContentURI(
         "dsnp://11611200575284957000",
         "0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
       );
@@ -84,9 +84,9 @@ describe("identifiers", () => {
     });
   });
 
-  describe("parseDSNPAnnouncementURI", () => {
+  describe("parseDSNPContentURI", () => {
     it("returns userId and contentHash", () => {
-      const id = parseDSNPAnnouncementURI(
+      const id = parseDSNPContentURI(
         "dsnp://11611200575284957000/0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
       );
       expect(id).toEqual({
@@ -138,7 +138,7 @@ describe("identifiers", () => {
     it("throws for invalid uri", () => {
       expect(() => {
         convertToDSNPUserId("dsnp://034b");
-      }).toThrow(InvalidAnnouncementUriError);
+      }).toThrow(InvalidContentUriError);
     });
   });
 });
