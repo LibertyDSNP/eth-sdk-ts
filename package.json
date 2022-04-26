@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@dsnp/test-generators": "^0.1.0",
+    "@dsnp/activity-content": "^1.0.0",
     "@typechain/ethers-v5": "^7.0.1",
     "@types/jest": "27.0.1",
     "@types/mkdirp": "^1.0.2",

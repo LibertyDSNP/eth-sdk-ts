@@ -1,10 +1,6 @@
 import { requireGetCurrentFromURI, requireGetStore, ConfigOpts } from "./core/config";
-import {
-  requireValidActivityContentNote,
-  requireValidActivityContentProfile,
-  ActivityContentNote,
-  ActivityContentProfile,
-} from "./core/activityContent";
+import { requireValidActivityContentNote, requireValidActivityContentProfile } from "@dsnp/activity-content/validation";
+import { ActivityContentNote, ActivityContentProfile } from "@dsnp/activity-content/factories";
 import {
   createBroadcast,
   createProfile,
