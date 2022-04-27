@@ -4,7 +4,7 @@ import {
   ActivityContentProfile,
   ActivityContentImage,
   ActivityContentVideo,
-} from "../core/activityContent";
+} from "@dsnp/activity-content/factories";
 
 describe("activityContentGenerators", () => {
   const opText = "Check out this amazing duck!";

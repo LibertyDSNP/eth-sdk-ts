@@ -9,9 +9,6 @@
  *   - `import foo from "@dsnp/sdk/core/foo";`
  */
 
-import * as activityContentImport from "./activityContent";
-export const activityContent = activityContentImport;
-
 import * as batchImport from "./batch";
 export const batch = batchImport;
 
