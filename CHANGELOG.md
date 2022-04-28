@@ -8,7 +8,10 @@
 - BREAKING: Changed createRegistration to now longer return a user URI and instead returns a Registration Object.
 - Changed `convertToDSNPUserId` function to throw correct errors
 - Updated building to Node 16
-- Replaced activity content folder with standalone activity content NPM module
+- BREAKING: Replaced activity content folder with standalone activity content
+  NPM module. All previous modules that references the activity content folder
+  now wrap the activity content NPM package
+  (generators/activityContentGenerators, content).
 
 ## [3.0.3] - 2021-09-15
 ### Added
