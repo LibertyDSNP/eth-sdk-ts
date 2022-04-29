@@ -3,7 +3,8 @@ import { ethers, Signer } from "ethers";
 import { setConfig } from "./config";
 import * as content from "./content";
 import { follow } from "./network";
-import { createNote, createProfile, InvalidActivityContentError } from "./core/activityContent";
+import { createNote, createProfile } from "@dsnp/activity-content/factories";
+import { InvalidActivityContentError } from "@dsnp/activity-content/errors";
 import {
   AnnouncementType,
   SignedBroadcastAnnouncement,

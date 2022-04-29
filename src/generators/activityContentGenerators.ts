@@ -7,7 +7,7 @@ import {
   ActivityContentProfile,
   ActivityContentImage,
   ActivityContentVideo,
-} from "../core/activityContent";
+} from "@dsnp/activity-content/factories";
 import { getRandomHex } from "../core/utilities/random";
 
 const PREFAB_FIRST_NAMES = sampleText.prefabFirstNames;
