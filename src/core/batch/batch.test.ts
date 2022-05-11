@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ParquetReader, ParquetWriter } from "@dsnp/parquetjs";
+import { ParquetReader, ParquetSchema, ParquetWriter } from "@dsnp/parquetjs";
 
 import { createFollowGraphChange, createProfile, createTombstone, AnnouncementType } from "../announcements";
 import * as batch from "./batch";
@@ -11,7 +11,7 @@ import { sign, SignedAnnouncement } from "../announcements";
 
 describe("batch", () => {
   describe("includes", () => {
-    let reader: typeof ParquetReader;
+    let reader: ParquetReader;
 
     beforeEach(() => {
       const MockSplitBlockBloomFilter = {
@@ -28,13 +28,13 @@ describe("batch", () => {
         ],
       };
 
-      reader = { getBloomFilters: jest.fn().mockResolvedValue(bloomFilterData) };
+      reader = { getBloomFiltersFor: jest.fn().mockResolvedValue(bloomFilterData) } as any;
     });
 
     it("calls getBloomFilter", () => {
       batch.includes(reader, "name", "banana");
 
-      expect(reader.getBloomFilters.mock.calls.length).toBe(1);
+      expect((reader.getBloomFiltersFor as jest.Mock).mock.calls.length).toBe(1);
     });
   });
 
@@ -48,7 +48,7 @@ describe("batch", () => {
     const { writeBatch } = batch;
 
     beforeAll(() => {
-      jest.spyOn(ParquetWriter, "openStream").mockResolvedValue(parquetWriterInstance);
+      jest.spyOn(ParquetWriter, "openStream").mockResolvedValue(parquetWriterInstance as any);
     });
 
     beforeEach(jest.clearAllMocks);
@@ -58,17 +58,17 @@ describe("batch", () => {
       const announcements = [{ ...generateBroadcast(), signature: "0xfa1ce" }];
 
       it("calls ParquetWriter#openStream to start a writable stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, announcements);
+        await writeBatch(writeStream, new ParquetSchema(BroadcastSchema), announcements);
         expect(ParquetWriter.openStream).toHaveBeenCalled();
       });
 
       it("calls ParquetWriter#appendRow to add a row to parquet stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, announcements);
+        await writeBatch(writeStream, new ParquetSchema(BroadcastSchema), announcements);
         expect(parquetWriterInstance.appendRow).toHaveBeenCalledTimes(1);
       });
 
       it("calls ParquetWriter#close to end the stream", async () => {
-        await writeBatch(writeStream, BroadcastSchema, announcements);
+        await writeBatch(writeStream, new ParquetSchema(BroadcastSchema), announcements);
         expect(parquetWriterInstance.close).toHaveBeenCalledTimes(1);
       });
     });
@@ -80,11 +80,13 @@ describe("batch", () => {
       ];
 
       it("throws MixedTypeBatchError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toThrow(MixedTypeBatchError);
+        await expect(writeBatch(writeStream, new ParquetSchema(BroadcastSchema), badMessages)).rejects.toThrow(
+          MixedTypeBatchError
+        );
       });
 
       it("includes the write stream handle in the thrown error", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toMatchObject({
+        await expect(writeBatch(writeStream, new ParquetSchema(BroadcastSchema), badMessages)).rejects.toMatchObject({
           fileHandle: writeStream,
         });
       });
@@ -94,11 +96,13 @@ describe("batch", () => {
       const badMessages: Array<SignedAnnouncement> = [];
 
       it("throws EmptyBatchError", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toThrow(EmptyBatchError);
+        await expect(writeBatch(writeStream, new ParquetSchema(BroadcastSchema), badMessages)).rejects.toThrow(
+          EmptyBatchError
+        );
       });
 
       it("includes the write stream handle in the thrown error", async () => {
-        await expect(writeBatch(writeStream, BroadcastSchema, badMessages)).rejects.toMatchObject({
+        await expect(writeBatch(writeStream, new ParquetSchema(BroadcastSchema), badMessages)).rejects.toMatchObject({
           fileHandle: writeStream,
         });
       });
@@ -123,10 +127,10 @@ describe("batch", () => {
         await createFile("batch.parquet", announcements, { store: mockStore });
 
         const file = mockStore.getStore()["batch.parquet"];
-        const reader = await ParquetReader.openBuffer(file);
+        const reader = await ParquetReader.openBuffer(file as any);
 
         expect(batch.writeBatch).toHaveBeenCalled();
-        expect(reader.metadata.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
+        expect(reader!.metadata!.num_rows.buffer.toString("hex")).toEqual("0000000000000001");
       });
     });
 
@@ -145,7 +149,7 @@ describe("batch", () => {
       it("calls ParquetReader.openURL", async () => {
         const parquetReaderInstance = {};
 
-        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance);
+        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance as any);
         await batch.openURL("http://parque-file.com");
 
         expect(ParquetReader.openUrl).toHaveBeenCalledWith("http://parque-file.com");
@@ -156,7 +160,7 @@ describe("batch", () => {
       it("calls ParquetReader.openURL", async () => {
         const parquetReaderInstance = {};
 
-        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance);
+        jest.spyOn(ParquetReader, "openUrl").mockResolvedValue(parquetReaderInstance as any);
         await batch.openURL(new URL("http://parque-file.com"));
 
         expect(ParquetReader.openUrl).toHaveBeenCalledWith("http://parque-file.com");
@@ -200,7 +204,7 @@ describe("batch", () => {
         await createFile("batch.parquet", [signedAnnouncement], { store: mockStore });
 
         const file = mockStore.getStore()["batch.parquet"];
-        const reader = await ParquetReader.openBuffer(file);
+        const reader = await ParquetReader.openBuffer(file as any);
         const callback = jest.fn();
 
         await readFile(reader, callback);

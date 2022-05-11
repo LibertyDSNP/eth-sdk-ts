@@ -27,7 +27,7 @@ describe("batchFileGenerators", () => {
       const reader = await parquet.ParquetReader.openFile(res.path);
       expect(reader).not.toBeUndefined();
       const cursor = reader.getCursor();
-      let record: Record<string, unknown> = {};
+      let record: unknown = {};
       let numRecords = 0;
       while ((record = await cursor.next())) {
         numRecords++;
@@ -42,7 +42,7 @@ describe("batchFileGenerators", () => {
       expect(Object.keys(bloomFilters).length).toEqual(testCase.bloom.length);
       testCase.bloom.forEach((columnName) => {
         const bf = bloomFilters[columnName][0];
-        expect(bf.sbbf.splitBlockFilter).toHaveLength(935);
+        expect(bf.sbbf.getNumFilterBlocks()).toEqual(935);
         expect(bf.rowGroupIndex).toEqual(0);
       });
 

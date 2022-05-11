@@ -13,16 +13,6 @@ type ReadRowFunction<T extends SignedAnnouncement> = {
   (row: T): void | Promise<void>;
 };
 
-interface SplitBlockBloomFilter {
-  check(value: number | string): boolean;
-}
-
-interface BloomFilterData {
-  sbbf: SplitBlockBloomFilter;
-  columnName: string;
-  RowGroupIndex: number;
-}
-
 interface BatchFileData {
   url: URL;
   hash: HexString;
@@ -32,7 +22,8 @@ type SignedAnnouncementIterable<T extends AnnouncementType> = AsyncOrSyncIterabl
 
 type ParquetRecord = Record<string, Buffer | Uint8Array | bigint | number>;
 
-const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord): T => {
+const parseAnnouncement = <T extends SignedAnnouncement>(record: unknown): T => {
+  if (!isParquetRecord(record)) throw new Error("unknown record");
   const schemas = getSchemaFor(record.announcementType as AnnouncementType);
 
   const announcement = Object.entries(schemas).reduce<Record<string, string | number | bigint>>(
@@ -49,6 +40,10 @@ const parseAnnouncement = <T extends SignedAnnouncement>(record: ParquetRecord):
   );
 
   return announcement as unknown as T;
+};
+
+const isParquetRecord = (v: unknown): v is ParquetRecord => {
+  return typeof v === "object";
 };
 
 const encodeParquetRecord = <T extends AnnouncementType>(announcement: AnnouncementWithSignature<T>): ParquetRecord => {
@@ -142,7 +137,7 @@ export const createFile = async <T extends AnnouncementType>(
  */
 export const writeBatch = async <T extends AnnouncementType>(
   writeStream: WriteStream,
-  schema: typeof ParquetSchema,
+  schema: ParquetSchema,
   announcements: SignedAnnouncementIterable<T>,
   opts?: BloomFilterOptions
 ): Promise<void> => {
@@ -167,7 +162,7 @@ export const writeBatch = async <T extends AnnouncementType>(
  * @param url - a URL string to fetch parquet file from.
  * @returns a ParquetReader object.
  */
-export const openURL = (url: string | URL): Promise<typeof ParquetReader> => ParquetReader.openUrl(url.toString());
+export const openURL = (url: string | URL): Promise<ParquetReader> => ParquetReader.openUrl(url.toString());
 
 /**
  * openFile() allows users to open a parquet file with a path.
@@ -175,7 +170,7 @@ export const openURL = (url: string | URL): Promise<typeof ParquetReader> => Par
  * @param path - to parquet file.
  * @returns a ParquetReader object.
  */
-export const openFile = (path: string): Promise<typeof ParquetReader> => ParquetReader.openFile(path);
+export const openFile = (path: string): Promise<ParquetReader> => ParquetReader.openFile(path);
 
 /**
  * readFile() reads a Parquet file by row.
@@ -187,12 +182,12 @@ export const openFile = (path: string): Promise<typeof ParquetReader> => Parquet
  * @returns void.
  */
 export const readFile = async <T extends SignedAnnouncement>(
-  reader: typeof ParquetReader,
+  reader: ParquetReader,
   doReadRow: ReadRowFunction<T>
 ): Promise<void> => {
   const cursor = reader.getCursor();
 
-  let record: ParquetRecord | null = null;
+  let record: unknown = null;
   while ((record = await cursor.next())) {
     const announcement = parseAnnouncement<T>(record);
     await doReadRow(announcement);
@@ -209,12 +204,8 @@ export const readFile = async <T extends SignedAnnouncement>(
  * @param item - a value.
  * @returns void.
  */
-export const includes = async (
-  reader: typeof ParquetReader,
-  column: string,
-  item: number | string
-): Promise<boolean> => {
-  const bloomFilterData = await reader.getBloomFilters([column]);
+export const includes = async (reader: ParquetReader, column: string, item: number | string): Promise<boolean> => {
+  const bloomFilterData = await reader.getBloomFiltersFor([column]);
 
-  return (bloomFilterData[column] || []).some((data: BloomFilterData) => data.sbbf.check(item));
+  return (bloomFilterData[column] || []).some((data) => data.sbbf.check(item));
 };
