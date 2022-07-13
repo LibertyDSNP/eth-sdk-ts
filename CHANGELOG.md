@@ -17,6 +17,7 @@
 - BREAKING: Replaced `buildDSNPAnnouncementURI` with `buildDSNPContentURI` (DIP-148)
 - BREAKING: Replaced `parseDSNPAnnouncementURI` with `parseDSNPContentURI` (DIP-148)
 - BREAKING: Replaced `InvalidAnnouncementUriError` with `InvalidContentUriError` (DIP-148)
+- Updated `@dsnp/parquetjs` dependency to 1.2.1
 
 ## [3.0.3] - 2021-09-15
 ### Added
