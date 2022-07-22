@@ -2,7 +2,7 @@ import assert from "assert";
 
 import sdk from "@dsnp/sdk";
 import { generators } from "@dsnp/sdk";
-import { buildDSNPAnnouncementURI } from "@dsnp/sdk/core/identifiers";
+import { buildDSNPContentURI } from "@dsnp/sdk/core/identifiers";
 import { subscribeToBatchPublications } from "@dsnp/sdk/core/contracts/subscription";
 
 Object.entries({
@@ -11,7 +11,7 @@ Object.entries({
   generators,
   dsnpGenerators: generators.dsnp.generateBroadcast,
   contractSubscription: subscribeToBatchPublications,
-  buildDSNPAnnouncementURI: buildDSNPAnnouncementURI,
+  buildDSNPContentURI: buildDSNPContentURI,
 }).forEach(([key, value]) => {
   assert.notStrictEqual(value, undefined, `Was unable to import ${key}`);
 });

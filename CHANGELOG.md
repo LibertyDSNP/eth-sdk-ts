@@ -12,6 +12,11 @@
   NPM module. All previous modules that references the activity content folder
   now wrap the activity content NPM package
   (generators/activityContentGenerators, content).
+- BREAKING: Replaced `isDSNPAnnouncementURI` with `isDSNPContentURI` (DIP-148)
+- BREAKING: Replaced Type Name `DSNPAnnouncementURI` with `DSNPContentURI` (DIP-148)
+- BREAKING: Replaced `buildDSNPAnnouncementURI` with `buildDSNPContentURI` (DIP-148)
+- BREAKING: Replaced `parseDSNPAnnouncementURI` with `parseDSNPContentURI` (DIP-148)
+- BREAKING: Replaced `InvalidAnnouncementUriError` with `InvalidContentUriError` (DIP-148)
 
 ## [3.0.3] - 2021-09-15
 ### Added
@@ -25,7 +30,7 @@
 - Better cleaner build (removed multimodule script need, dist package directory, and better package.json)
 
 ### Removed
-- Internal package `dist` structure. If you were previously importing out of `@dsnp/sdk/dist`, that will need to be updated to the correct export. 
+- Internal package `dist` structure. If you were previously importing out of `@dsnp/sdk/dist`, that will need to be updated to the correct export.
 
 ## [3.0.2] - 2021-09-02
 ### Added
@@ -38,7 +43,7 @@
 
 ## [3.0.1] - 2021-08-27
 ### Added
-- sdk.core.batch.readFile will now await `doReadRow` 
+- sdk.core.batch.readFile will now await `doReadRow`
 
 ## [3.0.0] - 2021-08-25
 ### Changed
@@ -76,7 +81,7 @@
 - sdk.convertBigNumberToDSNPUserId: Not supporting BigNumber anymore
 - sdk.convertDSNPUserIdOrURIToBigNumber: Not supporting BigNumber anymore
 - sdk.convertBigNumberToDSNPUserURI: Not supporting BigNumber anymore
-- Removed sdk.convertDSNPUserURIToDSNPUserId: Just use convertToDSNPUserId and convertToDSNPUserURI 
+- Removed sdk.convertDSNPUserURIToDSNPUserId: Just use convertToDSNPUserId and convertToDSNPUserURI
 
 ## [2.1.2] - 2021-08-20
 ### fixed

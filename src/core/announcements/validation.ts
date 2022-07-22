@@ -13,7 +13,7 @@ import {
   ReactionAnnouncement,
   ProfileAnnouncement,
 } from "./factories";
-import { isDSNPUserId, isDSNPAnnouncementURI } from "../identifiers";
+import { isDSNPUserId, isDSNPContentURI } from "../identifiers";
 import { convertSignedAnnouncementToAnnouncement } from "./services";
 import { isRecord, isString, isNumber, isBigInt } from "../utilities/validation";
 
@@ -149,7 +149,7 @@ export const isReplyAnnouncement = (obj: unknown): obj is ReplyAnnouncement => {
   if (!isBigInt(obj["createdAt"])) return false;
   if (!isString(obj["url"])) return false;
   if (!isString(obj["contentHash"])) return false;
-  if (!isDSNPAnnouncementURI(obj["inReplyTo"])) return false;
+  if (!isDSNPContentURI(obj["inReplyTo"])) return false;
 
   return true;
 };
@@ -166,7 +166,7 @@ export const isReactionAnnouncement = (obj: unknown): obj is ReactionAnnouncemen
   if (!isDSNPUserId(obj["fromId"])) return false;
   if (!isBigInt(obj["createdAt"])) return false;
   if (!isValidEmoji(obj["emoji"])) return false;
-  if (!isDSNPAnnouncementURI(obj["inReplyTo"])) return false;
+  if (!isDSNPContentURI(obj["inReplyTo"])) return false;
 
   return true;
 };

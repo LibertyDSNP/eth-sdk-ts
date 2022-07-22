@@ -1,4 +1,4 @@
-import { convertToDSNPUserId, DSNPAnnouncementURI, DSNPUserId, DSNPUserURI } from "../identifiers";
+import { convertToDSNPUserId, DSNPContentURI, DSNPUserId, DSNPUserURI } from "../identifiers";
 import { HexString } from "../../types/Strings";
 import { createdAtOrNow } from "../utilities";
 
@@ -43,14 +43,14 @@ type BroadcastFields = {
 type ReplyFields = {
   announcementType: AnnouncementType.Reply;
   contentHash: HexString;
-  inReplyTo: DSNPAnnouncementURI;
+  inReplyTo: DSNPContentURI;
   url: string;
 };
 
 type ReactionFields = {
   announcementType: AnnouncementType.Reaction;
   emoji: string;
-  inReplyTo: DSNPAnnouncementURI;
+  inReplyTo: DSNPContentURI;
 };
 
 type GraphChangeFields = {
@@ -128,12 +128,12 @@ export type ReplyAnnouncement = TypedAnnouncement<AnnouncementType.Reply>;
 
 /**
  * createReply() generates a reply announcement from a given URL, hash and
- * announcement uri.
+ * content uri.
  *
  * @param fromURI   - The id of the user from whom the announcement is posted
  * @param url       - The URL of the activity content to reference
  * @param hash      - The hash of the content at the URL
- * @param inReplyTo - The DSNP Announcement Uri of the parent announcement
+ * @param inReplyTo - The DSNP Content Uri of the parent announcement
  * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A ReplyAnnouncement
  */
@@ -141,7 +141,7 @@ export const createReply = (
   fromURI: DSNPUserURI,
   url: string,
   hash: HexString,
-  inReplyTo: DSNPAnnouncementURI,
+  inReplyTo: DSNPContentURI,
   createdAt?: bigint
 ): ReplyAnnouncement => ({
   announcementType: AnnouncementType.Reply,
@@ -159,18 +159,18 @@ export type ReactionAnnouncement = TypedAnnouncement<AnnouncementType.Reaction>;
 
 /**
  * createReaction() generates a reaction announcement from a given URL, hash and
- * announcement uri.
+ * content uri.
  *
  * @param fromURI   - The id of the user from whom the announcement is posted
  * @param emoji     - The emoji to respond with
- * @param inReplyTo - The DSNP Announcement Uri of the parent announcement
+ * @param inReplyTo - The DSNP Content Uri of the parent announcement
  * @param createdAt - Optional. The createdAt timestamp of the announcement as a BigInt of milliseconds since UNIX epoch
  * @returns A ReactionAnnouncement
  */
 export const createReaction = (
   fromURI: DSNPUserURI,
   emoji: string,
-  inReplyTo: DSNPAnnouncementURI,
+  inReplyTo: DSNPContentURI,
   createdAt?: bigint
 ): ReactionAnnouncement => ({
   announcementType: AnnouncementType.Reaction,

@@ -1,24 +1,24 @@
 import { isBigInt, isString } from "../utilities/validation";
 import { HexString } from "../../types/Strings";
 import { BigNumber } from "ethers";
-import { InvalidAnnouncementUriError } from "./errors";
+import { InvalidContentUriError } from "./errors";
 
 const DSNP_SCHEMA_REGEX = /^dsnp:\/\//i;
 
 /**
- * DSNPAnnouncementURI represents a DSNP Announcement Uri following the DSNP
+ * DSNPContentURI represents a DSNP Content Uri following the DSNP
  * [Identifiers](https://github.com/LibertyDSNP/spec/blob/main/pages/Identifiers.md)
  * specification.
  */
-export type DSNPAnnouncementURI = string;
+export type DSNPContentURI = string;
 
 /**
- * isDSNPAnnouncementURI() validates a given string as a DSNPAnnouncementURI.
+ * isDSNPContentURI() validates a given string as a DSNPContentURI.
  *
  * @param id - The object to validate
- * @returns True of false depending on whether the string is a valid DSNPAnnouncementURI
+ * @returns True of false depending on whether the string is a valid DSNPContentURI
  */
-export const isDSNPAnnouncementURI = (id: unknown): id is DSNPAnnouncementURI => {
+export const isDSNPContentURI = (id: unknown): id is DSNPContentURI => {
   if (!isString(id)) return false;
   return id.match(/^dsnp:\/\/[0-9]{1,20}\/0x[0-9a-f]{64}$/) !== null;
 };
@@ -76,7 +76,7 @@ export const convertToDSNPUserId = (value: unknown): DSNPUserId => {
     if (isDSNPUserURI(value)) {
       return BigInt(value.replace(DSNP_SCHEMA_REGEX, ""));
     } else {
-      throw new InvalidAnnouncementUriError(value);
+      throw new InvalidContentUriError(value);
     }
   }
   // Cast or throw?
@@ -95,30 +95,25 @@ export const convertToDSNPUserURI = (value: unknown): DSNPUserURI => {
 };
 
 /**
- * buildDSNPAnnouncementURI() takes a DSNP user id or URI and a content hash and
- * returns a DSNP Announcement Uri.
+ * buildDSNPContentURI() takes a DSNP user id or URI and a content hash and
+ * returns a DSNP Content Uri.
  *
  * @param userIdOrUri - The DSNP user id or URI of the announcing user
  * @param contentHash - The content hash of the announcement posted by the user
- * @returns A DSNP Announcement Uri for the given announcement
+ * @returns A DSNP Content Uri for the given announcement
  */
-export const buildDSNPAnnouncementURI = (
-  userIdOrUri: DSNPUserId | DSNPUserURI,
-  contentHash: HexString
-): DSNPAnnouncementURI => {
+export const buildDSNPContentURI = (userIdOrUri: DSNPUserId | DSNPUserURI, contentHash: HexString): DSNPContentURI => {
   return `dsnp://${convertToDSNPUserId(userIdOrUri)}/${contentHash}`;
 };
 
 /**
- * parseDSNPAnnouncementURI() takes a DSNP Announcement Uri and returns the
+ * parseDSNPContentURI() takes a DSNP Content Uri and returns the
  * userId and contentHash.
  *
- * @param announcementUri - A DSNP Announcement Id
- * @returns the userId and contentHash from the Announcement Uri
+ * @param contentUri - A DSNP Announcement Id
+ * @returns the userId and contentHash from the Content Uri
  */
-export const parseDSNPAnnouncementURI = (
-  announcementUri: DSNPAnnouncementURI
-): { userId: DSNPUserId; contentHash: HexString } => {
-  const [userId, contentHash] = announcementUri.replace("dsnp://", "").split("/");
+export const parseDSNPContentURI = (contentUri: DSNPContentURI): { userId: DSNPUserId; contentHash: HexString } => {
+  const [userId, contentHash] = contentUri.replace("dsnp://", "").split("/");
   return { userId: BigInt(userId), contentHash };
 };

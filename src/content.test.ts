@@ -15,7 +15,7 @@ import {
 import { MissingSignerConfigError, MissingStoreConfigError, MissingFromIdConfigError } from "./core/config";
 import { createCloneProxy } from "./core/contracts/identity";
 import * as registry from "./core/contracts/registry";
-import { InvalidAnnouncementUriError } from "./core/identifiers";
+import { InvalidContentUriError } from "./core/identifiers";
 import { hash } from "./core/utilities";
 import { revertHardhat, snapshotHardhat, setupSnapshot } from "./test/hardhatRPC";
 import { setupConfig } from "./test/sdkTestConfig";
@@ -185,10 +185,8 @@ describe("content", () => {
       });
 
       describe("with an invalid inReplyTo Id", () => {
-        it("throws InvalidAnnouncementUriError", async () => {
-          await expect(content.reply(noteObject, "dsnp://badbadbad/badbadbad")).rejects.toThrow(
-            InvalidAnnouncementUriError
-          );
+        it("throws InvalidContentUriError", async () => {
+          await expect(content.reply(noteObject, "dsnp://badbadbad/badbadbad")).rejects.toThrow(InvalidContentUriError);
         });
       });
 
