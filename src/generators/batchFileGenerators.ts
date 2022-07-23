@@ -14,7 +14,7 @@ import {
 
 export type DSNPBatchWriteResult = {
   records: number;
-  path: string | undefined;
+  path: string;
   error: string;
 };
 
@@ -94,7 +94,7 @@ const writeBatchFileWithOptions = async (opts: writeBatchOptions): Promise<DSNPB
       itemsWritten++;
     }
     await writer.close();
-  } catch (e) {
+  } catch (e: any) {
     return { records: -1, path: fname, error: e.toString() };
   }
   return { records: itemsWritten, path: fname, error: "" };

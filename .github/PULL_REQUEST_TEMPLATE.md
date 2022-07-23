@@ -1,7 +1,8 @@
 Problem
 =======
-problem statement, including
-[link to Pivotal Tracker #12345678](https://www.pivotaltracker.com/story/show/12345678)
+problem statement
+
+Closes: <!-- GitHub Issue  ->
 
 Solution
 ========

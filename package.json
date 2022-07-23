@@ -97,7 +97,7 @@
   "dependencies": {
     "@dsnp/activity-content": "^1.0.1",
     "@dsnp/contracts": "1.0.1",
-    "@dsnp/parquetjs": "^1.1.2",
+    "@dsnp/parquetjs": "1.2.1",
     "@dsnp/test-generators": "^0.1.0",
     "@ethersproject/abi": "^5.4.0",
     "ethers": "^5.4.4",

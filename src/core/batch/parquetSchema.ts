@@ -3,6 +3,7 @@
  * See Announcement type definitions in DSNP.d.ts for additional documentation of fields.
  */
 
+import { ParquetType, FieldDefinition } from "@dsnp/parquetjs/dist/lib/declare";
 import { AnnouncementType, AnnouncementWithSignature, InvalidAnnouncementTypeError } from "../announcements";
 
 /**
@@ -22,17 +23,21 @@ export interface BloomFilterOptions {
   bloomFilters: Array<BloomFilterColumnOptions>;
 }
 
+interface FieldDef extends FieldDefinition {
+  type: ParquetType;
+}
+
 /**
  * Parquet Schema for an announcement type
  */
 export type Schema<T extends AnnouncementType> = {
-  [Property in keyof AnnouncementWithSignature<T>]: { type: string; statistics?: boolean };
+  [Property in keyof AnnouncementWithSignature<T>]: FieldDef;
 };
 
 type AnnouncementTypeToSchema = {
   [T in AnnouncementType]: {
     // Cannot just put Schema<T> here as TS cannot handle nested mappings correctly
-    [Property in keyof AnnouncementWithSignature<T>]: { type: string; statistics?: boolean };
+    [Property in keyof AnnouncementWithSignature<T>]: FieldDef;
   };
 };
 
