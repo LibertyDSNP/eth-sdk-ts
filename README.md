@@ -1,4 +1,4 @@
-# DSNP TypeScript SDK
+# DSNP Ethereum TypeScript SDK
 
 [![Latest Release](https://img.shields.io/github/release/LibertyDSNP/sdk-ts)](https://github.com/LibertyDSNP/sdk-ts/releases)
 
